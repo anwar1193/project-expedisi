@@ -9,7 +9,7 @@
             <img class="img-90" src="<?php echo e(asset('assets/images/dashboard/1.png')); ?>" alt="" />
         <?php endif; ?>
         
-        <a href="<?php echo e(route('profile')); ?>"> <h6 class="mt-3 f-14 f-w-600"><?php echo e(Session::get('nama')); ?></h6></a>
+        <a href="<?php echo e(route('profile')); ?>"> <h6 class="mt-3 f-14 f-w-600 text-danger"><?php echo e(Session::get('nama')); ?></h6></a>
         <p class="mb-0 font-roboto"><?php echo e(Session::get('nama_satker')); ?></p>
     </div>
     <nav>
@@ -22,7 +22,7 @@
                     </li>
                     <li class="sidebar-main-title">
                         <div>
-                            <h6>Menu</h6>
+                            <h6 class="text-danger">Menu</h6>
                         </div>
                     </li>
 
@@ -35,6 +35,10 @@
 
                     <li>
                         <a class="nav-link menu-title link-nav <?php echo e(prefixActive('/users')); ?>" href="<?php echo e(route('users')); ?>"><i data-feather="user"></i><span>User Management</span></a>
+                    </li>
+
+                    <li>
+                        <a class="nav-link menu-title link-nav <?php echo e(prefixActive('/data-pengiriman')); ?>" href="<?php echo e(route('data-pengiriman')); ?>"><i data-feather="list"></i><span>Data Pengiriman</span></a>
                     </li>
 
                     

@@ -9,7 +9,7 @@
             <img class="img-90" src="{{asset('assets/images/dashboard/1.png')}}" alt="" />
         @endif
         
-        <a href="{{ route('profile') }}"> <h6 class="mt-3 f-14 f-w-600">{{ Session::get('nama') }}</h6></a>
+        <a href="{{ route('profile') }}"> <h6 class="mt-3 f-14 f-w-600 text-danger">{{ Session::get('nama') }}</h6></a>
         <p class="mb-0 font-roboto">{{ Session::get('nama_satker') }}</p>
     </div>
     <nav>
@@ -22,7 +22,7 @@
                     </li>
                     <li class="sidebar-main-title">
                         <div>
-                            <h6>Menu</h6>
+                            <h6 class="text-danger">Menu</h6>
                         </div>
                     </li>
 

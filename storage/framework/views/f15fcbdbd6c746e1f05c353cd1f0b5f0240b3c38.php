@@ -44,7 +44,7 @@
           <div class="container-fluid">
             <div class="row">
               <div class="col-md-6 footer-copyright">
-                <p class="mb-0">Copyright 2024 © Kejaksaan Agung Republik Indonesia.</p>
+                <p class="mb-0">Copyright 2024 © Lion Parcel - Agen Expedisi</p>
               </div>
             </div>
           </div>

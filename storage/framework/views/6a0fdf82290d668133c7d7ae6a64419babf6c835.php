@@ -16,7 +16,7 @@
           <img src="/assets/lionparcel.png" width="200px" alt="">
         </a>
       </div>
-      <div class="toggle-sidebar"><i class="status_toggle middle" data-feather="align-center" id="sidebar-toggle">    </i></div>
+      <div class="toggle-sidebar"><i class="status_toggle middle text-danger" data-feather="align-center" id="sidebar-toggle">    </i></div>
     </div>
     <div class="left-menu-header col">
       <ul>
