@@ -45,6 +45,10 @@
                         <a class="nav-link menu-title link-nav {{prefixActive('/users')}}" href="{{route('users')}}"><i data-feather="user"></i><span>User Management</span></a>
                     </li>
 
+                    <li>
+                        <a class="nav-link menu-title link-nav {{prefixActive('/data-pengiriman')}}" href="{{route('data-pengiriman')}}"><i data-feather="list"></i><span>Data Pengiriman</span></a>
+                    </li>
+
                     {{-- <li>
                         <a class="nav-link menu-title link-nav {{routeActive('pemantauan-gps')}}" href="{{ route('pemantauan-gps') }}"><i data-feather="map-pin"></i><span>Pemantauan GPS</span></a>
                     </li> --}}
