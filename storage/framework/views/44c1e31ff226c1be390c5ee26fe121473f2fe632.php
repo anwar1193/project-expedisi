@@ -37,6 +37,10 @@
                         <a class="nav-link menu-title link-nav <?php echo e(prefixActive('/users')); ?>" href="<?php echo e(route('users')); ?>"><i data-feather="user"></i><span>User Management</span></a>
                     </li>
 
+                    <li>
+                        <a class="nav-link menu-title link-nav <?php echo e(prefixActive('/data-pengiriman')); ?>" href="<?php echo e(route('data-pengiriman')); ?>"><i data-feather="list"></i><span>Data Pengiriman</span></a>
+                    </li>
+
                     
 
                     

@@ -9,6 +9,7 @@ use App\Http\Controllers\LogActivityController;
 use App\Http\Controllers\JenisPerangkatController;
 use App\Http\Controllers\PerangkatController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DataPengirimanController;
 use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\ObdController;
 use App\Http\Controllers\LastLoginController;
@@ -154,6 +155,16 @@ Route::middleware("auth")->group(function() {
 
     Route::prefix('riwayat-armada')->group(function () {
         Route::get('/', [RiwayatArmadaController::class, 'index'])->name('riwayat-armada');
+    });
+    
+    Route::prefix('data-pengiriman')->group(function () {
+        Route::get('/', [DataPengirimanController::class, 'index'])->name('data-pengiriman');
+        Route::get('/create', [DataPengirimanController::class, 'create'])->name('data-pengiriman.create');
+        Route::get('/edit/{id}', [DataPengirimanController::class, 'edit'])->name('data-pengiriman.edit');
+        Route::post('/', [DataPengirimanController::class, 'store'])->name('data-pengiriman.store');
+        Route::post('/update/{id}', [DataPengirimanController::class, 'update'])->name('data-pengiriman.update');
+        Route::get('/delete/{id}', [DataPengirimanController::class, 'delete'])->name('data-pengiriman.delete');
+        Route::post('/status-pembayaran', [DataPengirimanController::class, 'ubah_status_pembayaran'])->name('data-pengiriman.status');
     });
 
     Route::get('user-level', [UserController::class, 'listLevel'])->name('level');
