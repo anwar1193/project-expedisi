@@ -72,6 +72,21 @@
 									</div>
 								</div>
 							</div>
+							
+                            <div class="row">
+								<div class="col">
+									<div class="mb-3">
+										<label class="form-label" for="">Nama Penerima</label>
+										<input class="form-control @error('nama_penerima') is-invalid @enderror" type="text" name="nama_penerima" autocomplete="off" value="{{ old('nama_penerima') }}"/>
+
+										@error('nama_penerima')
+										<div class="text-danger">
+											{{ $message }}
+										</div>
+										@enderror
+									</div>
+								</div>
+							</div>
 
 							<div class="row">
 								<div class="col">

@@ -69,8 +69,9 @@
 	                                <tr>
 	                                    <th>No</th>
 										<th>No Resi</th>
-	                                    <th>Kota Tujuan</th>
+										<th>Nama Penrima</th>
 	                                    <th>No HP Penerima</th>
+	                                    <th>Kota Tujuan</th>
 	                                    <th>Berat Barang</th>
 	                                    <th>Ongkir</th>
 	                                    <th>Status Pembayaran</th>
@@ -82,8 +83,9 @@
 										<tr>
 											<td>{{ $loop->iteration; }}</td>
 											<td>{{ $data->no_resi }}</td>
-											<td>{{ $data->kota_tujuan }}</td>
+											<td>{{ $data->nama_penerima }}</td>
 											<td>{{ $data->no_hp_penerima }}</td>
+											<td>{{ $data->kota_tujuan }}</td>
 											<td>{{ $data->berat_barang }}</td>
 											<td>{{ $data->ongkir }}</td>
 											<td>{{ $data->status_pembayaran == 1 ? 'Lunas' : 'Pending'; }}</td>

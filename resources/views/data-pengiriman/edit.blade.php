@@ -72,6 +72,21 @@
 									</div>
 								</div>
 							</div>
+							
+                            <div class="row">
+								<div class="col">
+									<div class="mb-3">
+										<label class="form-label" for="">Nama Penerima</label>
+										<input class="form-control @error('nama_penerima') is-invalid @enderror" type="text" name="nama_penerima" autocomplete="off" value="{{ old('nama_penerima', $datas->nama_penerima) }}"/>
+
+										@error('nama_penerima')
+										<div class="text-danger">
+											{{ $message }}
+										</div>
+										@enderror
+									</div>
+								</div>
+							</div>
 
 							<div class="row">
 								<div class="col">
@@ -186,7 +201,6 @@
 									<div class="mb-3">
 										<label class="form-label" for="">Metode Pembayaran</label>
                                         <select name="metode_pembayaran" id="metode_pembayaran" class="form-control @error('metode_pembayaran') is-invalid @enderror">
-											<option value="">- Pilih Metode Pembayaran -</option>
 											<option value="tunai" {{ $datas->metode_pembayaran == 'tunai' ? 'selected' : NULL }}>Tunai</option>
 											<option value="transfer" {{ $datas->metode_pembayaran == 'transfer' ? 'selected' : NULL }}>Transfer</option>
 										</select>

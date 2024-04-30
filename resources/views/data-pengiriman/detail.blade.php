@@ -47,6 +47,11 @@
                                         <div class="col-4">{{ $data->nama_pengirim }}</div>
                                     </div>
                                     <div class="row d-flex py-1 text-start justify-content-start">
+                                        <div class="col-6">Nama Penerima</div>
+                                        <div class="col-2">:</div>
+                                        <div class="col-4">{{ $data->nama_penerima }}</div>
+                                    </div>
+                                    <div class="row d-flex py-1 text-start justify-content-start">
                                         <div class="col-6">Kota Tujuan</div>
                                         <div class="col-2">:</div>
                                         <div class="col-4">{{ $data->kota_tujuan }}</div>

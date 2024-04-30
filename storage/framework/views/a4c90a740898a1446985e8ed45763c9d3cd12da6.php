@@ -71,8 +71,9 @@
 	                                <tr>
 	                                    <th>No</th>
 										<th>No Resi</th>
-	                                    <th>Kota Tujuan</th>
+										<th>Nama Penrima</th>
 	                                    <th>No HP Penerima</th>
+	                                    <th>Kota Tujuan</th>
 	                                    <th>Berat Barang</th>
 	                                    <th>Ongkir</th>
 	                                    <th>Status Pembayaran</th>
@@ -84,8 +85,9 @@
 										<tr>
 											<td><?php echo e($loop->iteration); ?></td>
 											<td><?php echo e($data->no_resi); ?></td>
-											<td><?php echo e($data->kota_tujuan); ?></td>
+											<td><?php echo e($data->nama_penerima); ?></td>
 											<td><?php echo e($data->no_hp_penerima); ?></td>
+											<td><?php echo e($data->kota_tujuan); ?></td>
 											<td><?php echo e($data->berat_barang); ?></td>
 											<td><?php echo e($data->ongkir); ?></td>
 											<td><?php echo e($data->status_pembayaran == 1 ? 'Lunas' : 'Pending'); ?></td>
