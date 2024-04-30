@@ -26,6 +26,7 @@
                         </div>
                     </li>
 
+                    {{-- Test Push Github --}}
                     <li>
                         <a class="nav-link menu-title link-nav {{prefixActive('/')}}"" href="{{ route('index') }}"><i data-feather="home"></i><span>Dashboard</span></a>
                     </li>
