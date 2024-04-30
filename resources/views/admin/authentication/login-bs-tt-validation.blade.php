@@ -19,10 +19,11 @@
 						@csrf
 
 						<div class="logo mb-3" style="text-align: center">
-							<img src="/assets/logo-kejaksaan.png" width="100px" alt="">
+							{{-- <img src="/assets/logo-kejaksaan.png" width="100px" alt=""> --}}
+							<img src="/assets/lionparcel.png" width="250px" alt="">
 						</div>
 
-	                    <p class="mb-3">PERANGKAT SEKURITAS INFLUENTIAL PERSONAL BERBASIS INTERFERENCE SIGNAL</p>
+	                    <p class="mb-3">AGEN EXPEDISI</p>
 
 	                    {{-- <h6>Selamat Datang! Silahkan Masuk Ke akun Anda.</h6> --}}
 						
@@ -68,7 +69,7 @@
                         </div>
 
 	                    <div class="form-group">
-	                        <button class="btn btn-primary btn-block" type="submit">Masuk</button>
+	                        <button class="btn btn-danger btn-block" type="submit">Masuk</button>
 	                    </div>
 	                </form>
 	            </div>

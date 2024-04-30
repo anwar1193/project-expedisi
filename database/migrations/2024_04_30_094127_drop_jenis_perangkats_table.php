@@ -13,13 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('front_cameras', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('car_id');
-            $table->foreign('car_id')->references('id')->on('surveilance_cars');
-            $table->string('foto');
-            $table->timestamps();
-        });
+        Schema::dropIfExists('jenis_perangkats');
     }
 
     /**
@@ -29,6 +23,11 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('front_cameras');
+        Schema::create('jenis_perangkats', function (Blueprint $table) {
+            $table->id();
+            $table->string('kode_jenis');
+            $table->string('jenis');
+            $table->timestamps();
+        });
     }
 };

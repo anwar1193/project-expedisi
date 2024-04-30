@@ -15,21 +15,13 @@ class DashboardController extends Controller
     {
         $tahun_terpilih = $request->input("tahun") ? $request->input("tahun") : Carbon::now()->year;
 
-        $jumlahArmada = SurveilanceCar::select("merk")
-                        ->whereYear('created_at', $tahun_terpilih)
-                        ->get()->count();
+        // $jumlahArmada = SurveilanceCar::select("merk")
+        //                 ->whereYear('created_at', $tahun_terpilih)
+        //                 ->get()->count();
 
-        $jammer = Perangkat::select("*")->where("jenis_perangkat", "JMR")
-                    ->whereYear('created_at', $tahun_terpilih)       
-                    ->get()->count();
-
-        $otherDevice = Perangkat::select("*")->where("jenis_perangkat", "!=", "JMR")
-                        ->whereYear('created_at', $tahun_terpilih)
-                        ->get()->count();
-
-        $armada = SurveilanceCar::select("*")
-                    ->whereYear('created_at', $tahun_terpilih)            
-                    ->get();
+        // $armada = SurveilanceCar::select("*")
+        //             ->whereYear('created_at', $tahun_terpilih)            
+        //             ->get();
 
         $aktifitas = [];
 
@@ -42,7 +34,7 @@ class DashboardController extends Controller
             array_push($aktifitas, $jumlah);
         }
 
-        return view("admin.dashboard.default", compact(["jumlahArmada", "jammer", "otherDevice", "armada", "aktifitas"]));
+        return view("admin.dashboard.default", compact(["aktifitas"]));
     }
 
     public function riwayatArmada($id) 

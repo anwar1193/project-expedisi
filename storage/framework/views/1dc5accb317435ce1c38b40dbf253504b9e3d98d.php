@@ -26,8 +26,9 @@
                         </div>
                     </li>
 
+                    
                     <li>
-                        <a class="nav-link menu-title link-nav <?php echo e(prefixActive('/')); ?>"" href="<?php echo e(route('index')); ?>"><i data-feather="home"></i><span>Dashboard</span></a>
+                        <a class="nav-link menu-title link-nav <?php echo e(prefixActive('/')); ?>" href="<?php echo e(route('index')); ?>"><i data-feather="home"></i><span>Dashboard</span></a>
                     </li>
 
                     
