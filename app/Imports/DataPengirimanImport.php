@@ -29,9 +29,9 @@ class DataPengirimanImport implements ToModel
             'berat_barang' => $row[8],
             'ongkir' => $row[9],
             'komisi' => $row[10],
-            'status_pembayaran' => $row[11],
+            'status_pembayaran' => $row[11] == "Lunas" ? 1 : 2,
             'metode_pembayaran' => $row[12],
-            'bukti_pembayaran' => $row[13],
+            'bukti_pembayaran' => $row[13] ?? "Belum Ada Gambar",
         ]);
     }
 }
