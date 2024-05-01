@@ -165,6 +165,7 @@ Route::middleware("auth")->group(function() {
         Route::post('/update/{id}', [DataPengirimanController::class, 'update'])->name('data-pengiriman.update');
         Route::get('/delete/{id}', [DataPengirimanController::class, 'delete'])->name('data-pengiriman.delete');
         Route::post('/status-pembayaran', [DataPengirimanController::class, 'ubah_status_pembayaran'])->name('data-pengiriman.status');
+        Route::post('/import-excel', [DataPengirimanController::class, 'import_excel'])->name('data-pengiriman.import_excel');
     });
 
     Route::get('user-level', [UserController::class, 'listLevel'])->name('level');
