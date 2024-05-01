@@ -80,7 +80,7 @@
 	                                    <th>Berat Barang</th>
 	                                    <th>Ongkir</th>
 	                                    <th>Status Pembayaran</th>
-										<th width="30%" class="text-center">Aksi</th>
+										<th width="35%" class="text-center">Aksi</th>
 	                                </tr>
 	                            </thead>
 	                            <tbody>                                        
