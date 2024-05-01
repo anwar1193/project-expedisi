@@ -9,6 +9,8 @@ Use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class DataPengirimanImport implements ToModel
 {
+    private $firstRowSkipped = false;
+
     /**
     * @param array $row
     *
@@ -16,6 +18,11 @@ class DataPengirimanImport implements ToModel
     */
     public function model(array $row)
     {
+        if (!$this->firstRowSkipped) {
+            $this->firstRowSkipped = true;
+            return null;
+        }
+
         $tgl_transaksi = Date::excelToDateTimeObject($row[2])->format('Y-m-d');
 
         return new DataPengiriman([
