@@ -155,9 +155,9 @@ class DataPengirimanController extends Controller
 
         $namafile = $data->getClientOriginalName();
 
-        $path = $data->storeAs('excel/data_pengiriman', $namafile);
+        $path = $data->storeAs('public/excel/data_pengiriman', $namafile);
 
-        Excel::import(new DataPengirimanImport, storage_path('app/' . $path));
+        Excel::import(new DataPengirimanImport, public_path('storage/excel/data_pengiriman/' . $namafile));
 
         return back()->with('success', 'Data berhasil diimport');
     }
