@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Helper;
+use App\Imports\DataPengirimanImport;
 use App\Models\DataPengiriman;
+use Dflydev\DotAccessData\Data;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DataPengirimanController extends Controller
 {
@@ -140,5 +143,22 @@ class DataPengirimanController extends Controller
         Helper::logActivity('Data status pembayaran berhasi diperbarui');
 
         return back()->with('success', 'Data status pembayaran berhasi diperbarui');
+    }
+
+    public function import_excel(Request $request)
+    {
+        $validateData = $request->validate([
+            'file' => 'required|mimes:csv,xls,xlsx'
+        ]);
+        
+        $data = $request->file('file');
+
+        $namafile = $data->getClientOriginalName();
+
+        $path = $data->storeAs('excel/data_pengiriman', $namafile);
+
+        Excel::import(new DataPengirimanImport, storage_path('app/' . $path));
+
+        return back()->with('success', 'Data berhasil diimport');
     }
 }
