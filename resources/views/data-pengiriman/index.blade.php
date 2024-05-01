@@ -24,6 +24,11 @@
                     <a href="{{ route('data-pengiriman.create') }}" class="btn btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Tambah Data">
                         <i class="fa fa-plus"></i> Tambah
                     </a>
+
+					<a class="btn btn-success" type="button" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalImport" title="Import Excel">
+						<i class="fa fa-file-excel-o"></i> Import Excel
+					</a>
+					@include('data-pengiriman.modal-import')
                 {{-- @endif --}}
             </div>
         </ol>
