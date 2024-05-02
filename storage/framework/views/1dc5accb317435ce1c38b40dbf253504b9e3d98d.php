@@ -48,6 +48,8 @@
                     
 
                     
+
+                    
                     
                     <li>
                         <a class="nav-link menu-title link-nav <?php echo e(routeActive('log-activity')); ?>" href="<?php echo e(route('log-activity')); ?>"><i data-feather="clock"></i><span>Log Aktifitas</span></a>

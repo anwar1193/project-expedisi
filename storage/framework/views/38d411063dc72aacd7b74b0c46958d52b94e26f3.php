@@ -2,7 +2,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Daftar Armada</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Ubah Status Pembayaran</h5>
                 <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form class="form theme-form" method="POST" action="<?php echo e(route('data-pengiriman.status')); ?>">

@@ -50,6 +50,10 @@
                     </li>
 
                     {{-- <li>
+                        <a class="nav-link menu-title link-nav {{prefixActive('/pemasukan-lainnya')}}" href="{{route('pemasukan-lainnya')}}"><i data-feather="list"></i><span>Pemasukan Lainnya</span></a>
+                    </li> --}}
+
+                    {{-- <li>
                         <a class="nav-link menu-title link-nav {{routeActive('pemantauan-gps')}}" href="{{ route('pemantauan-gps') }}"><i data-feather="map-pin"></i><span>Pemantauan GPS</span></a>
                     </li> --}}
 

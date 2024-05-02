@@ -168,6 +168,10 @@ Route::middleware("auth")->group(function() {
         Route::post('/import-excel', [DataPengirimanController::class, 'import_excel'])->name('data-pengiriman.import_excel');
     });
 
+    Route::prefix('pemasukan-lainnya')->group(function () {
+        Route::get('/', [PemasukanLainnya::class, 'index'])->name('data-pengiriman');
+    });
+
     Route::get('user-level', [UserController::class, 'listLevel'])->name('level');
 
     Route::get('testing', [TestingController::class, 'index']);

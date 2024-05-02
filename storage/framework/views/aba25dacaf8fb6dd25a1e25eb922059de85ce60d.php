@@ -29,24 +29,6 @@
                         </tr>
 
                         <tr>
-                            <th>NIP</th>
-                            <th class="text-center">:</th>
-                            <td><?php echo e($user->nip); ?></td>
-                        </tr>
-
-                        <tr>
-                            <th>Kode Satker</th>
-                            <th class="text-center">:</th>
-                            <td><?php echo e($user->kode_satker); ?></td>
-                        </tr>
-
-                        <tr>
-                            <th>Nama Satker</th>
-                            <th class="text-center">:</th>
-                            <td><?php echo e($user->nama_satker); ?></td>
-                        </tr>
-
-                        <tr>
                             <th>Username</th>
                             <th class="text-center">:</th>
                             <td><?php echo e($user->username); ?></td>

@@ -30,24 +30,6 @@
                         </tr>
 
                         <tr>
-                            <th>NIP</th>
-                            <th class="text-center">:</th>
-                            <td>{{ $user->nip }}</td>
-                        </tr>
-
-                        <tr>
-                            <th>Kode Satker</th>
-                            <th class="text-center">:</th>
-                            <td>{{ $user->kode_satker }}</td>
-                        </tr>
-
-                        <tr>
-                            <th>Nama Satker</th>
-                            <th class="text-center">:</th>
-                            <td>{{ $user->nama_satker }}</td>
-                        </tr>
-
-                        <tr>
                             <th>Username</th>
                             <th class="text-center">:</th>
                             <td>{{ $user->username }}</td>

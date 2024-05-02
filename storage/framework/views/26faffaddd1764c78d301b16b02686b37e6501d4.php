@@ -5,8 +5,8 @@
                 <h5 class="modal-title" id="exampleModalLabel">Import Data Pengiriman</h5>
                 <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form class="form theme-form" enctype="multipart/form-data" method="POST" action="{{ route('data-pengiriman.import_excel') }}">
-            @csrf
+            <form class="form theme-form" enctype="multipart/form-data" method="POST" action="<?php echo e(route('data-pengiriman.import_excel')); ?>">
+            <?php echo csrf_field(); ?>
                 <div class="modal-body">
                     <div class="row">
                         <div class="col">
@@ -15,22 +15,30 @@
                                     <input type="file" name="file" id="file" required>
                                 </div>
 
-                                @error('status_pembayaran')
+                                <?php $__errorArgs = ['status_pembayaran'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
                                 <div class="text-danger">
-                                    {{ $message }}
+                                    <?php echo e($message); ?>
+
                                 </div>
-                                @enderror
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-light  text-white" type="button" data-bs-dismiss="modal">Kembali</button>
-                    {{-- <button class="btn btn-warning text-white" type="button" >Download Format</button> --}}
+                    
                     <a href="excel_format/DataPengiriman.xlsx" class="btn btn-warning">Download Format</a>
                     <button class="btn btn-primary text-white" type="submit">Simpan</button>
                 </div>
             </form>
         </div>
     </div>
-</div>
+</div><?php /**PATH /Users/munawarahmad/Documents/Applications/projectku/frontend/resources/views/data-pengiriman/modal-import.blade.php ENDPATH**/ ?>

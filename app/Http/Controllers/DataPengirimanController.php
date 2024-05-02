@@ -85,12 +85,12 @@ class DataPengirimanController extends Controller
             'metode_pembayaran' => 'required'
         ]);
 
-        $foto = $request->file('foto');
+        $foto = $request->file('bukti_pembayaran');
 
         $getImage = DataPengiriman::find($id);
 
         if($foto != ''){
-            Storage::delete('public/bukti_pembayaran/'.$getImage->foto);
+            Storage::delete('public/bukti_pembayaran/'.$getImage->bukti_pembayaran);
             $foto->storeAs('public/bukti_pembayaran', $foto->hashName());
         }
 

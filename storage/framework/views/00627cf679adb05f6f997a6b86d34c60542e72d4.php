@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{ $title }}</title>
+    <title><?php echo e($title); ?></title>
 
     <style>
         #emp{
@@ -38,7 +38,7 @@
 <body>
     <div style="text-align: center;">
         <h2>Data User</h2>
-        <em>Dicetak Pada : {{ $waktu_cetak }}</em>
+        <em>Dicetak Pada : <?php echo e($waktu_cetak); ?></em>
     </div>
     
     <table id="emp" style="margin-top:20px">
@@ -53,16 +53,16 @@
         </thead>
 
         <tbody>
-            @foreach ($users as $row)
+            <?php $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $row): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <tr class="small">
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{{ $row->nama }}</td>
-                    <td>{{ $row->email }}</td>
-                    <td>{{ $row->nomor_telepon }}</td>
-                    <td>{{ $row->username }}</td>
+                    <td><?php echo e($loop->iteration); ?></td>
+                    <td><?php echo e($row->nama); ?></td>
+                    <td><?php echo e($row->email); ?></td>
+                    <td><?php echo e($row->nomor_telepon); ?></td>
+                    <td><?php echo e($row->username); ?></td>
                 </tr>
-            @endforeach
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </tbody>
     </table>
 </body>
-</html>
+</html><?php /**PATH /Users/munawarahmad/Documents/Applications/projectku/frontend/resources/views/admin/master/users/pdf.blade.php ENDPATH**/ ?>

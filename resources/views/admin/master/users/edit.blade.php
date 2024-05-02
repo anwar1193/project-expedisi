@@ -30,36 +30,6 @@
 
 							<input type="text" name="id" value="{{ $user->id }}" hidden>
 							<input type="text" name="old_foto" value="{{ $user->foto }}" hidden>
-							
-							<div class="row">
-								<div class="col">
-									<div class="mb-3">
-										<label class="form-label" for="">Kode Satker</label>
-										<input class="form-control @error('kode_satker') is-invalid @enderror" type="text" name="kode_satker" autocomplete="off" value="{{ old('kode_satker', $user->kode_satker) }}"/>
-
-										@error('kode_satker')
-										<div class="text-danger">
-											{{ $message }}
-										</div>
-										@enderror
-									</div>
-								</div>
-							</div>
-
-							<div class="row">
-								<div class="col">
-									<div class="mb-3">
-										<label class="form-label" for="">Satker</label>
-										<input class="form-control @error('nama_satker') is-invalid @enderror" type="text" name="nama_satker" autocomplete="off" value="{{ old('nama_satker', $user->nama_satker) }}"/>
-
-										@error('nama_satker')
-										<div class="text-danger">
-											{{ $message }}
-										</div>
-										@enderror
-									</div>
-								</div>
-							</div>
 
 							<div class="row">
 								<div class="col">
@@ -68,21 +38,6 @@
 										<input class="form-control @error('nama') is-invalid @enderror" type="text" name="nama" autocomplete="off" value="{{ old('nama', $user->nama) }}"/>
 
 										@error('nama')
-										<div class="text-danger">
-											{{ $message }}
-										</div>
-										@enderror
-									</div>
-								</div>
-							</div>
-
-							<div class="row">
-								<div class="col">
-									<div class="mb-3">
-										<label class="form-label" for="">NIP</label>
-										<input class="form-control @error('nip') is-invalid @enderror" type="text" name="nip" autocomplete="off" value="{{ old('nip', $user->nip) }}"/>
-
-										@error('nip')
 										<div class="text-danger">
 											{{ $message }}
 										</div>
