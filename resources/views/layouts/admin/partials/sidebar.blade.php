@@ -48,27 +48,12 @@
                     <li>
                         <a class="nav-link menu-title link-nav {{prefixActive('/data-pengiriman')}}" href="{{route('data-pengiriman')}}"><i data-feather="list"></i><span>Data Pengiriman</span></a>
                     </li>
-
-                    {{-- <li>
-                        <a class="nav-link menu-title link-nav {{routeActive('pemantauan-gps')}}" href="{{ route('pemantauan-gps') }}"><i data-feather="map-pin"></i><span>Pemantauan GPS</span></a>
-                    </li> --}}
-
-                    {{-- <li>
-                        <a class="nav-link menu-title link-nav {{prefixActive('/obd-tracker')}}" href="{{ route('obd-tracker') }}"><i data-feather="cpu"></i><span>OBD II Tracker</span></a>
-                    </li> --}}
-
-                    {{-- <li class="dropdown">
-                        <a class="nav-link menu-title {{ prefixActive('/pemantauan-camera') }}" href="javascript:void(0)"><i data-feather="video"></i><span>Pemantauan Kamera</span></a>
-                        <ul class="nav-submenu menu-content"  style="display: {{ prefixBlock('/pemantauan-camera') }};">
-                            <li><a href="{{ route('pemantauan-camera') }}" class="{{routeActive('pemantauan-camera')}}">List Armada</a></li>
-                            <li><a href="{{ route('front-camera') }}" class="{{ routeActive('front-camera') }}">Front Camera</a></li>
-                            <li><a href="{{ route('rear-camera') }}" class="{{ routeActive('rear-camera') }}">Rear Camera</a></li>
-                        </ul>
-                    </li> --}}
-
-                    {{-- <li>
-                        <a class="nav-link menu-title link-nav {{prefixActive('/riwayat-armada')}}" href="{{ route('riwayat-armada') }}"><i data-feather="list"></i><span>Riwayat Armada</span></a>
-                    </li> --}}
+                    
+                    @if (isAdmin())
+                        <li>
+                            <a class="nav-link menu-title link-nav {{prefixActive('/daftar-pengeluaran')}}" href="{{route('daftar-pengeluaran')}}"><i data-feather="list"></i><span>Daftar Pengeluaran</span></a>
+                        </li>
+                    @endif
                     
                     <li>
                         <a class="nav-link menu-title link-nav {{routeActive('log-activity')}}" href="{{ route('log-activity') }}"><i data-feather="clock"></i><span>Log Aktifitas</span></a>
