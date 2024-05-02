@@ -1,6 +1,6 @@
 @extends('layouts.admin.master')
 
-@section('title')Data Pengiriman
+@section('title')Daftar Pengeluaran
  {{ $title }}
 @endsection
 
@@ -11,9 +11,9 @@
 @section('content')
 	@component('components.breadcrumb')
 		@slot('breadcrumb_title')
-			<h3>Data Pengiriman</h3>
+			<h3>Daftar Pengeluaran</h3>
 		@endslot
-		<li class="breadcrumb-item active"><a href="{{ route('data-pengiriman') }}">Data Pengiriman</a></li>
+		<li class="breadcrumb-item active"><a href="{{ route('daftar-pengeluaran') }}">Daftar Pengeluaran</a></li>
 		<li class="breadcrumb-item active">Table</li>
 	@endcomponent
 
@@ -21,14 +21,9 @@
         <ol class="breadcrumb align-items-center">
             <div class="d-grid gap-2 d-md-block mx-2">
                 {{-- @if (isAdmin()) --}}
-                    <a href="{{ route('data-pengiriman.create') }}" class="btn btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Tambah Data">
+                    <a href="{{ route('daftar-pengeluaran.create') }}" class="btn btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Tambah Data">
                         <i class="fa fa-plus"></i> Tambah
                     </a>
-
-					<a class="btn btn-success" type="button" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalImport" title="Import Excel">
-						<i class="fa fa-file-excel-o"></i> Import Excel
-					</a>
-					@include('data-pengiriman.modal-import')
                 {{-- @endif --}}
             </div>
         </ol>
@@ -73,13 +68,12 @@
 	                            <thead>
 	                                <tr>
 	                                    <th>No</th>
-										<th>No Resi</th>
-										<th>Nama Penrima</th>
-	                                    <th>No HP Penerima</th>
-	                                    <th>Kota Tujuan</th>
-	                                    <th>Berat Barang</th>
-	                                    <th>Ongkir</th>
-	                                    <th>Status Pembayaran</th>
+										<th>Tanggal Pengeluaran</th>
+										<th>Keterangan</th>
+	                                    <th>Jumlah Pembayaran</th>
+	                                    <th>Pengguna Terkait</th>
+	                                    <th>Status Pengeluaran</th>
+	                                    <th>Jenis Pengeluaran</th>
 										<th width="35%" class="text-center">Action</th>
 	                                </tr>
 	                            </thead>
@@ -87,31 +81,25 @@
                                     @foreach ($datas as $data)
 										<tr>
 											<td>{{ $loop->iteration; }}</td>
-											<td>{{ $data->no_resi }}</td>
-											<td>{{ $data->nama_penerima }}</td>
-											<td>{{ $data->no_hp_penerima }}</td>
-											<td>{{ $data->kota_tujuan }}</td>
-											<td>{{ $data->berat_barang }}</td>
-											<td>{{ $data->ongkir }}</td>
-											<td>{{ $data->status_pembayaran == 1 ? 'Lunas' : 'Pending'; }}</td>
+											<td>{{ $data->tgl_pengeluaran }}</td>
+											<td>{{ $data->keterangan }}</td>
+											<td>{{ $data->jumlah_pembayaran }}</td>
+											<td>{{ $data->pengguna_terkait }}</td>
+											<td>{{ $data->status_pengeluaran == 1 ? 'Disetujui' : 'Pending'; }}</td>
+											<td>{{ $data->jenis_pengeluaran }}</td>
 											<td class="text-center">
 												<a class="btn btn-square btn-info btn-xs" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalDataPengiriman{{ $data->id }}"title="Detail Data">
 													<i class="fa fa-eye"></i>
 												</a>
 
-												<a href="{{ route('data-pengiriman.edit', $data->id) }}" class="btn btn-square btn-warning btn-xs" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Data">
+												<a href="{{ route('daftar-pengeluaran.edit', $data->id) }}" class="btn btn-square btn-warning btn-xs" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Data">
 													<i class="fa fa-edit"></i>
 												</a>
 												
-												<a href="{{ route('data-pengiriman.delete', $data->id) }}" class="btn btn-square btn-danger btn-xs" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Data" onclick="return confirm('Apakah Anda Yakin?')">
+												<a href="{{ route('daftar-pengeluaran.delete', $data->id) }}" class="btn btn-square btn-danger btn-xs" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Data" onclick="return confirm('Apakah Anda Yakin?')">
 													<i class="fa fa-trash"></i>
 												</a>
-
-												<a class="btn btn-square btn-warning btn-xs" type="button" data-bs-toggle="modal" data-original-title="test" data-bs-target="#statusPembayaran{{ $data->id }}" title="Edit Status Pembayaran">
-													<i class="fa fa-credit-card"></i>
-												</a>
-												@include('data-pengiriman.detail')
-												@include('data-pengiriman.status-pembayaran')
+												@include('daftar-pengeluaran.detail')
 											</td>
 										</tr>
 									@endforeach
@@ -128,29 +116,7 @@
 	
 	@push('scripts')
 	<script src="{{ asset('assets/js/datatable/datatables/jquery.dataTables.min.js') }}"></script>
-    <script>
-		$(document).ready(function() {
-			$('#basic-1').DataTable({
-				language: {
-					"emptyTable": "Tidak ada data yang tersedia pada tabel ini",
-					"info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
-					"infoEmpty": "Menampilkan 0 sampai 0 dari 0 entri",
-					"infoFiltered": " (disaring dari _MAX_ entri keseluruhan)",
-					"lengthMenu": "Tampilkan _MENU_ entri",
-					"loadingRecords": "Sedang memuat...",
-					"processing": "Sedang memproses...",
-					"search": "Cari:",
-					"zeroRecords": "Tidak ditemukan data yang sesuai",
-					"paginate": {
-					"first": "Pertama",
-					"last": "Terakhir",
-					"next": "Selanjutnya",
-					"previous": "Sebelumnya"
-					},
-				},
-			});
-		})
-	</script>
+    <script src="{{ asset('assets/js/datatable/datatables/datatable.custom.js') }}"></script>
 	@endpush
 
 @endsection

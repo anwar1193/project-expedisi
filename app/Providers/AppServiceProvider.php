@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $project_title = '| SIPBIS';
+        $project_title = '| Lion Parcel';
         View::share('title', $project_title);   
     }
 }

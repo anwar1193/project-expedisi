@@ -7,8 +7,10 @@ use App\Imports\DataPengirimanImport;
 use App\Models\DataPengiriman;
 use Dflydev\DotAccessData\Data;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
+use Yaza\LaravelGoogleDriveStorage\Gdrive;
 
 class DataPengirimanController extends Controller
 {
@@ -89,9 +91,15 @@ class DataPengirimanController extends Controller
 
         $getImage = DataPengiriman::find($id);
 
+        $namafile = 'data-pengiriman/'.$foto->hashName();
+        $path = public_path('storage/bukti_pembayaran/' . $foto->hashName());
+
         if($foto != ''){
             Storage::delete('public/bukti_pembayaran/'.$getImage->bukti_pembayaran);
             $foto->storeAs('public/bukti_pembayaran', $foto->hashName());
+
+            Gdrive::delete('data-pengiriman/'.$getImage->bukti_pembayaran);
+            Storage::disk('google')->put($namafile, File::get($path));
         }
 
         $validateData['bukti_pembayaran'] = ($foto != '' ? $foto->hashName() : '');
@@ -124,6 +132,8 @@ class DataPengirimanController extends Controller
         if(Storage::exists('public/bukti_pembayaran/'. $getImage->bukti_pembayaran)){
             Storage::delete('public/bukti_pembayaran/'. $getImage->bukti_pembayaran);
         }
+
+        Gdrive::delete('data-pengiriman/'.$getImage->bukti_pembayaran);
 
         Helper::logActivity('Hapus data pengiriman dengan no resi : '.$getImage->no_resi);
 

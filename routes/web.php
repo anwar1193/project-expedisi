@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CameraController;
+use App\Http\Controllers\DaftarPengeluaranController;
 use App\Http\Controllers\SurveilanceCarController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\LogActivityController;
@@ -166,6 +167,15 @@ Route::middleware("auth")->group(function() {
         Route::get('/delete/{id}', [DataPengirimanController::class, 'delete'])->name('data-pengiriman.delete');
         Route::post('/status-pembayaran', [DataPengirimanController::class, 'ubah_status_pembayaran'])->name('data-pengiriman.status');
         Route::post('/import-excel', [DataPengirimanController::class, 'import_excel'])->name('data-pengiriman.import_excel');
+    });
+    
+    Route::prefix('daftar-pengeluaran')->group(function () {
+        Route::get('/', [DaftarPengeluaranController::class, 'index'])->name('daftar-pengeluaran');
+        Route::get('/create', [DaftarPengeluaranController::class, 'create'])->name('daftar-pengeluaran.create');
+        Route::get('/edit/{id}', [DaftarPengeluaranController::class, 'edit'])->name('daftar-pengeluaran.edit');
+        Route::post('/', [DaftarPengeluaranController::class, 'store'])->name('daftar-pengeluaran.store');
+        Route::post('/update/{id}', [DaftarPengeluaranController::class, 'update'])->name('daftar-pengeluaran.update');
+        Route::get('/delete/{id}', [DaftarPengeluaranController::class, 'delete'])->name('daftar-pengeluaran.delete');
     });
 
     Route::prefix('pemasukan-lainnya')->group(function () {
