@@ -94,11 +94,11 @@
 										<label class="form-label" for="">Metode Pembayaran</label>
 										<select name="metode_pembayaran" id="metode_pembayaran" class="form-control @error('metode_pembayaran') is-invalid @enderror">
 											<option value="">- Pilih Metode Pembayaran -</option>
-											<option value="Tunai">Tunai</option>
-											<option value="Transfer">Transfer</option>
+											<option value="tunai">Tunai</option>
+											<option value="transfer">Transfer</option>
 										</select>
 
-										@error('kota_tujuan')
+										@error('metode_pembayaran')
 										<div class="text-danger">
 											{{ $message }}
 										</div>
@@ -126,7 +126,7 @@
 								<div class="col">
 									<div class="mb-3">
 										<label class="form-label" for="">Status Pengeluaran</label>
-										<select name="status_pengeluaran" id="status_pembayaran" class="form-control @error('status_pengeluaran') is-invalid @enderror">
+										<select name="status_pengeluaran" id="status_pstatus_pengeluaranembayaran" class="form-control @error('status_pengeluaran') is-invalid @enderror">
 											<option value="">- Pilih Status Pengeluaran -</option>
 											<option value="1">Disetujui</option>
 											<option value="2">Pending</option>
