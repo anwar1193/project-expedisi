@@ -13,7 +13,7 @@
 			<h3>Data Pengiriman</h3>
 		<?php $__env->endSlot(); ?>
 		<li class="breadcrumb-item active"><a href="<?php echo e(route('users')); ?>">Data Pengiriman</a></li>
-        <li class="breadcrumb-item active">Tambah</li>
+        <li class="breadcrumb-item active">Edit</li>
 	<?php echo $__env->renderComponent(); ?>
 	
 	<div class="container-fluid">

@@ -82,7 +82,7 @@
 	                                    <th>Berat Barang</th>
 	                                    <th>Ongkir</th>
 	                                    <th>Status Pembayaran</th>
-										<th width="35%" class="text-center">Aksi</th>
+										<th width="35%" class="text-center">Action</th>
 	                                </tr>
 	                            </thead>
 	                            <tbody>                                        
