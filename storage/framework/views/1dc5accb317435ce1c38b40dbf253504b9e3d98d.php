@@ -37,19 +37,17 @@
                         <a class="nav-link menu-title link-nav <?php echo e(prefixActive('/users')); ?>" href="<?php echo e(route('users')); ?>"><i data-feather="user"></i><span>User Management</span></a>
                     </li>
 
-                    <li>
-                        <a class="nav-link menu-title link-nav <?php echo e(prefixActive('/data-pengiriman')); ?>" href="<?php echo e(route('data-pengiriman')); ?>"><i data-feather="list"></i><span>Data Pengiriman</span></a>
-                    </li>
-
                     
-
                     
+                    <?php if(isAdmin()): ?>
+                        <li>
+                            <a class="nav-link menu-title link-nav <?php echo e(prefixActive('/data-pengiriman')); ?>" href="<?php echo e(route('data-pengiriman')); ?>"><i data-feather="list"></i><span>Data Pengiriman</span></a>
+                        </li>
 
-                    
-
-                    
-
-                    
+                        <li>
+                            <a class="nav-link menu-title link-nav <?php echo e(prefixActive('/daftar-pengeluaran')); ?>" href="<?php echo e(route('daftar-pengeluaran')); ?>"><i data-feather="list"></i><span>Daftar Pengeluaran</span></a>
+                        </li>
+                    <?php endif; ?>
                     
                     <li>
                         <a class="nav-link menu-title link-nav <?php echo e(routeActive('log-activity')); ?>" href="<?php echo e(route('log-activity')); ?>"><i data-feather="clock"></i><span>Log Aktifitas</span></a>

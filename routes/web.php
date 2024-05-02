@@ -178,10 +178,6 @@ Route::middleware("auth")->group(function() {
         Route::get('/delete/{id}', [DaftarPengeluaranController::class, 'delete'])->name('daftar-pengeluaran.delete');
     });
 
-    Route::prefix('pemasukan-lainnya')->group(function () {
-        Route::get('/', [PemasukanLainnya::class, 'index'])->name('data-pengiriman');
-    });
-
     Route::get('user-level', [UserController::class, 'listLevel'])->name('level');
 
     Route::get('testing', [TestingController::class, 'index']);
