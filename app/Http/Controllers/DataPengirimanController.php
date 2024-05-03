@@ -91,12 +91,12 @@ class DataPengirimanController extends Controller
 
         $getImage = DataPengiriman::find($id);
 
-        $namafile = 'data-pengiriman/'.$foto->hashName();
-        $path = public_path('storage/bukti_pembayaran/' . $foto->hashName());
-
         if($foto != ''){
             Storage::delete('public/bukti_pembayaran/'.$getImage->bukti_pembayaran);
             $foto->storeAs('public/bukti_pembayaran', $foto->hashName());
+
+            $namafile = 'data-pengiriman/'.$foto->hashName();
+            $path = public_path('storage/bukti_pembayaran/' . $foto->hashName());
 
             Gdrive::delete('data-pengiriman/'.$getImage->bukti_pembayaran);
             Storage::disk('google')->put($namafile, File::get($path));
