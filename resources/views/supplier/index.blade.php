@@ -97,7 +97,7 @@
 												<a href="{{ route('supplier.delete', $data->id) }}" class="btn btn-square btn-danger btn-xs" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Data" onclick="return confirm('Apakah Anda Yakin?')">
 													<i class="fa fa-trash"></i>
 												</a>
-												@include('daftar-pengeluaran.detail')
+												@include('supplier.detail')
 											</td>
 										</tr>
 									@endforeach
