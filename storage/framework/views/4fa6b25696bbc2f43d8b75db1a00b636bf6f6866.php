@@ -160,11 +160,11 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>">
 											<option value="">- Pilih Metode Pembayaran -</option>
-											<option value="Tunai">Tunai</option>
-											<option value="Transfer">Transfer</option>
+											<option value="tunai">Tunai</option>
+											<option value="transfer">Transfer</option>
 										</select>
 
-										<?php $__errorArgs = ['kota_tujuan'];
+										<?php $__errorArgs = ['metode_pembayaran'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -215,7 +215,7 @@ unset($__errorArgs, $__bag); ?>
 								<div class="col">
 									<div class="mb-3">
 										<label class="form-label" for="">Status Pengeluaran</label>
-										<select name="status_pengeluaran" id="status_pembayaran" class="form-control <?php $__errorArgs = ['status_pengeluaran'];
+										<select name="status_pengeluaran" id="status_pstatus_pengeluaranembayaran" class="form-control <?php $__errorArgs = ['status_pengeluaran'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
