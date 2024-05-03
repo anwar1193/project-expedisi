@@ -22,7 +22,7 @@
 							
 						</div>
 
-	                    
+	                    <p class="mb-3">AGEN EXPEDISI</p>
 
 	                    
 						

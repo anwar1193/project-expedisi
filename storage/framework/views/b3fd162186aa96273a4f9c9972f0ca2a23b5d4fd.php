@@ -12,8 +12,7 @@
       <div class="dark-logo-wrapper">
         <a href="<?php echo e(route('index')); ?>">
           
-          
-          
+          <img src="/assets/lionparcel.png" width="200px" alt="">
         </a>
       </div>
       <div class="toggle-sidebar"><i class="status_toggle middle text-danger" data-feather="align-center" id="sidebar-toggle">    </i></div>
