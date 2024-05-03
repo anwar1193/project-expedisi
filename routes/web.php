@@ -17,6 +17,7 @@ use App\Http\Controllers\LastLoginController;
 use App\Http\Controllers\ObdTrackerController;
 use App\Http\Controllers\PemantauanController;
 use App\Http\Controllers\RiwayatArmadaController;
+use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TestingController;
 
 /*
@@ -176,6 +177,15 @@ Route::middleware("auth")->group(function() {
         Route::post('/', [DaftarPengeluaranController::class, 'store'])->name('daftar-pengeluaran.store');
         Route::post('/update/{id}', [DaftarPengeluaranController::class, 'update'])->name('daftar-pengeluaran.update');
         Route::get('/delete/{id}', [DaftarPengeluaranController::class, 'delete'])->name('daftar-pengeluaran.delete');
+    });
+    
+    Route::prefix('supplier')->group(function () {
+        Route::get('/', [SupplierController::class, 'index'])->name('supplier');
+        Route::get('/create', [SupplierController::class, 'create'])->name('supplier.create');
+        Route::get('/edit/{id}', [SupplierController::class, 'edit'])->name('supplier.edit');
+        Route::post('/', [SupplierController::class, 'store'])->name('supplier.store');
+        Route::post('/update/{id}', [SupplierController::class, 'update'])->name('supplier.update');
+        Route::get('/delete/{id}', [SupplierController::class, 'delete'])->name('supplier.delete');
     });
 
     Route::get('user-level', [UserController::class, 'listLevel'])->name('level');
