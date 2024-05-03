@@ -72,7 +72,7 @@
 										<th>Keterangan Barang</th>
 	                                    <th>Harga</th>
 	                                    <th>Jumlah Barang</th>
-	                                    <th>No Hp </th>
+	                                    <th>No Hp</th>
 										<th width="35%" class="text-center">Action</th>
 	                                </tr>
 	                            </thead>

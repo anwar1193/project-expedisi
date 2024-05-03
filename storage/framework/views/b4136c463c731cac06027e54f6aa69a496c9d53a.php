@@ -1,4 +1,4 @@
-<div class="modal fade modal-bookmark" id="modalSupplier{{ $data->id }}" tabindex="-1" role="dialog"
+<div class="modal fade modal-bookmark" id="modalSupplier<?php echo e($data->id); ?>" tabindex="-1" role="dialog"
     aria-labelledby="modalSupplierLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content justify-content-start">
@@ -16,27 +16,27 @@
                                     <div class="row d-flex py-1 text-start justify-content-start">
                                         <div class="col-6">Nama Supplier</div>
                                         <div class="col-2">:</div>
-                                        <div class="col-4">{{ $data->nama_supplier}}</div>
+                                        <div class="col-4"><?php echo e($data->nama_supplier); ?></div>
                                     </div>
                                     <div class="row d-flex py-1 text-start justify-content-start">
                                         <div class="col-6">Keterangan Barang</div>
                                         <div class="col-2">:</div>
-                                        <div class="col-4 text-capitalize">{{ $data->keterangan_barang }}</div>
+                                        <div class="col-4 text-capitalize"><?php echo e($data->keterangan_barang); ?></div>
                                     </div>
                                     <div class="row text-start d-flex justify-content-start">
                                         <div class="col-6">Harga</div>
                                         <div class="col-2">:</div>
-                                        <div class="col-4">{{ $data->harga }}</div>
+                                        <div class="col-4"><?php echo e($data->harga); ?></div>
                                     </div>
                                     <div class="row d-flex py-1 text-start justify-content-start">
                                         <div class="col-6">Jumlah Barang</div>
                                         <div class="col-2">:</div>
-                                        <div class="col-4">{{ $data->jumlah_barang }}</div>
+                                        <div class="col-4"><?php echo e($data->jumlah_barang); ?></div>
                                     </div>
                                     <div class="row d-flex py-1 text-start justify-content-start">
                                         <div class="col-6">No Hp</div>
                                         <div class="col-2">:</div>
-                                        <div class="col-4">{{ $data->nomor_hp }}</div>
+                                        <div class="col-4"><?php echo e($data->nomor_hp); ?></div>
                                     </div>
                                 </div>
                             </div>
@@ -46,4 +46,4 @@
             </div>
         </div>
     </div>
-</div>
+</div><?php /**PATH /Applications/MAMP/htdocs/project-expedisi/resources/views/supplier/detail.blade.php ENDPATH**/ ?>

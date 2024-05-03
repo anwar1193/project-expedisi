@@ -74,7 +74,7 @@
 										<th>Keterangan Barang</th>
 	                                    <th>Harga</th>
 	                                    <th>Jumlah Barang</th>
-	                                    <th>No Hp </th>
+	                                    <th>No Hp</th>
 										<th width="35%" class="text-center">Action</th>
 	                                </tr>
 	                            </thead>
@@ -99,7 +99,7 @@
 												<a href="<?php echo e(route('supplier.delete', $data->id)); ?>" class="btn btn-square btn-danger btn-xs" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Data" onclick="return confirm('Apakah Anda Yakin?')">
 													<i class="fa fa-trash"></i>
 												</a>
-												<?php echo $__env->make('daftar-pengeluaran.detail', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+												<?php echo $__env->make('supplier.detail', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 											</td>
 										</tr>
 									<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
