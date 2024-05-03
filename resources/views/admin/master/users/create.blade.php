@@ -27,36 +27,6 @@
 					<form class="form theme-form" method="POST" action="{{ route('users.store') }}" enctype="multipart/form-data">
                         @csrf
 						<div class="card-body">
-							
-							<div class="row">
-								<div class="col">
-									<div class="mb-3">
-										<label class="form-label" for="">Kode Satker</label>
-										<input class="form-control @error('kode_satker') is-invalid @enderror" type="text" name="kode_satker" autocomplete="off" value="{{ old('kode_satker') }}"/>
-
-										@error('kode_satker')
-										<div class="text-danger">
-											{{ $message }}
-										</div>
-										@enderror
-									</div>
-								</div>
-							</div>
-
-							<div class="row">
-								<div class="col">
-									<div class="mb-3">
-										<label class="form-label" for="">Satker</label>
-										<input class="form-control @error('nama_satker') is-invalid @enderror" type="text" name="nama_satker" autocomplete="off" value="{{ old('nama_satker') }}"/>
-
-										@error('nama_satker')
-										<div class="text-danger">
-											{{ $message }}
-										</div>
-										@enderror
-									</div>
-								</div>
-							</div>
 
 							<div class="row">
 								<div class="col">
@@ -65,21 +35,6 @@
 										<input class="form-control @error('nama') is-invalid @enderror" type="text" name="nama" autocomplete="off" value="{{ old('nama') }}"/>
 
 										@error('nama')
-										<div class="text-danger">
-											{{ $message }}
-										</div>
-										@enderror
-									</div>
-								</div>
-							</div>
-
-							<div class="row">
-								<div class="col">
-									<div class="mb-3">
-										<label class="form-label" for="">NIP</label>
-										<input class="form-control @error('nip') is-invalid @enderror" type="text" name="nip" autocomplete="off" value="{{ old('nip') }}"/>
-
-										@error('nip')
 										<div class="text-danger">
 											{{ $message }}
 										</div>

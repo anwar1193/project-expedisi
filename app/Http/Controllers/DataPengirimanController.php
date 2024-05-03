@@ -95,7 +95,7 @@ class DataPengirimanController extends Controller
         $path = public_path('storage/bukti_pembayaran/' . $foto->hashName());
 
         if($foto != ''){
-            Storage::delete('public/bukti_pembayaran/'.$getImage->foto);
+            Storage::delete('public/bukti_pembayaran/'.$getImage->bukti_pembayaran);
             $foto->storeAs('public/bukti_pembayaran', $foto->hashName());
 
             Gdrive::delete('data-pengiriman/'.$getImage->bukti_pembayaran);

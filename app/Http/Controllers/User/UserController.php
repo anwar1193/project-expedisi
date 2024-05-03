@@ -37,10 +37,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validateData = $request->validate([
-            'kode_satker' => 'required',
-            'nama_satker' => 'required',
             'nama' => 'required',
-            'nip' => 'required',
             'username' => 'required',
             'email' => 'required',
             'nomor_telepon' => 'required',
@@ -65,7 +62,7 @@ class UserController extends Controller
 
         Helper::logActivity('Simpan data pengguna dengan username : '.$request->username);
 
-        return redirect('/master/users')->with('success', 'Data Berhasil Disimpan');
+        return redirect('/users')->with('success', 'Data Berhasil Disimpan');
 
     }
 
@@ -83,10 +80,7 @@ class UserController extends Controller
     public function update(Request $request)
     {
         $validateData = $request->validate([
-            'kode_satker' => 'required',
-            'nama_satker' => 'required',
             'nama' => 'required',
-            'nip' => 'required',
             'username' => 'required',
             'email' => 'required',
             'nomor_telepon' => 'required',
@@ -107,10 +101,7 @@ class UserController extends Controller
         $validateData['foto'] = ($foto != '' ? $foto->hashName() : '');
 
         User::where('id', '=', $request->id)->update([
-            'kode_satker' => $request->kode_satker,
-            'nama_satker' => $request->nama_satker,
             'nama' => $request->nama,
-            'nip' => $request->nip,
             'username' => $request->username,
             'email' => $request->email,
             'nomor_telepon' => $request->nomor_telepon,
@@ -122,7 +113,7 @@ class UserController extends Controller
 
         Helper::logActivity('Update data pengguna dengan username : '.$request->username);
 
-        return redirect('/master/users')->with('success', 'Data Berhasil Diupdate');
+        return redirect('/users')->with('success', 'Data Berhasil Diupdate');
     }
 
     public function delete($id)

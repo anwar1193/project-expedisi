@@ -27,12 +27,12 @@
 					@endif
 
 					<a href="{{ route('users.export-pdf') }}" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Export PDF">
-						<i class="fa fa-file-pdf-o"></i> Export PDF
+						<i class="fa fa-file-pdf-o"></i> Download PDF
 					</a>
 
-					<a href="{{ route('users.export-excel') }}" class="btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Export Excel">
+					{{-- <a href="{{ route('users.export-excel') }}" class="btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Export Excel">
 						<i class="fa fa-file-excel-o"></i> Export Excel
-					</a>
+					</a> --}}
             </div>
         </ol>
     </nav>
@@ -78,7 +78,6 @@
 	                                    <th>No</th>
 										<th></th>
 	                                    <th>Nama Lengkap</th>
-	                                    <th>NIP</th>
 	                                    <th>Username</th>
 	                                    <th>Level</th>
 	                                    <th>Status</th>
@@ -90,14 +89,15 @@
 										<tr>
 											<td>{{ $loop->iteration; }}</td>
 											<td>
+												<center>
 												<img 
 													class="rounded-circle d-none d-sm-none d-sm-block d-lg-block pe-1 "
 												 	src="{{ $data->foto ? asset('storage/foto_profil/'.$data->foto) : asset('assets/images/avtar/users.png')}}" 
 													alt="" 
 													style="width: 40px;" /> 
+												</center>
 											</td>
 											<td>{{ $data->nama }}</td>
-											<td>{{ $data->nip }}</td>
 											<td>{{ $data->username }}</td>
 											<td>{{ $data->level_user }}</td>
 											<td>{{ $data->status == 1 ? 'Aktif' : 'Non Aktif'; }}</td>

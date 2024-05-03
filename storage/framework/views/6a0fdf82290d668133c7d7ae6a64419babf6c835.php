@@ -12,7 +12,6 @@
       <div class="dark-logo-wrapper">
         <a href="<?php echo e(route('index')); ?>">
           
-          
           <img src="/assets/lionparcel.png" width="200px" alt="">
         </a>
       </div>

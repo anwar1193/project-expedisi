@@ -136,7 +136,7 @@
                             <div class="row">
 								<div class="col">
 									<div class="mb-3">
-										<label class="form-label" for="">Berat Barang</label>
+										<label class="form-label" for="">Berat Barang (Dalam Kg)</label>
 										<input class="form-control @error('berat_barang') is-invalid @enderror" type="text" name="berat_barang" autocomplete="off" value="{{ old('berat_barang', $datas->berat_barang) }}"/>
 
 										@error('berat_barang')

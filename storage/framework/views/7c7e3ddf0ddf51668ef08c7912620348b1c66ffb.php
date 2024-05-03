@@ -13,7 +13,7 @@
 			<h3>Data Pengiriman</h3>
 		<?php $__env->endSlot(); ?>
 		<li class="breadcrumb-item active"><a href="<?php echo e(route('users')); ?>">Data Pengiriman</a></li>
-        <li class="breadcrumb-item active">Tambah</li>
+        <li class="breadcrumb-item active">Edit</li>
 	<?php echo $__env->renderComponent(); ?>
 	
 	<div class="container-fluid">
@@ -240,7 +240,7 @@ unset($__errorArgs, $__bag); ?>
                             <div class="row">
 								<div class="col">
 									<div class="mb-3">
-										<label class="form-label" for="">Berat Barang</label>
+										<label class="form-label" for="">Berat Barang (Dalam Kg)</label>
 										<input class="form-control <?php $__errorArgs = ['berat_barang'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
