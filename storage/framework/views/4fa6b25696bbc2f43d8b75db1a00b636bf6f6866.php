@@ -26,36 +26,6 @@
 					<form class="form theme-form" method="POST" action="<?php echo e(route('daftar-pengeluaran.store')); ?>" enctype="multipart/form-data">
                         <?php echo csrf_field(); ?>
 						<div class="card-body">
-							
-							<div class="row">
-								<div class="col">
-									<div class="mb-3">
-										<label class="form-label" for="">Tanggal Pengeluaran</label>
-										<input class="form-control <?php $__errorArgs = ['tgl_pengeluaran'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>" type="date" name="tgl_pengeluaran" autocomplete="off" value="<?php echo e(old('tgl_pengeluaran')); ?>"/>
-
-										<?php $__errorArgs = ['tgl_pengeluaran'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-										<div class="text-danger">
-											<?php echo e($message); ?>
-
-										</div>
-										<?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-									</div>
-								</div>
-							</div>
 
 							<div class="row">
 								<div class="col">
