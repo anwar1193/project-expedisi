@@ -64,7 +64,7 @@
                     @endif
 
                     <li>
-                        <a class="nav-link menu-title link-nav {{prefixActive('/supplier')}}" href="{{route('supplier')}}"><i data-feather="shoping-bag"></i><span>Supplier</span></a>
+                        <a class="nav-link menu-title link-nav {{prefixActive('/supplier')}}" href="{{route('supplier')}}"><i data-feather="shopping-bag"></i><span>Supplier</span></a>
                     </li>
                     
                     <li>
