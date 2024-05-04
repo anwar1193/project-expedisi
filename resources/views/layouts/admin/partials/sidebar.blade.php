@@ -55,7 +55,11 @@
                         </li>
 
                         <li>
-                            <a class="nav-link menu-title link-nav {{prefixActive('/daftar-pengeluaran')}}" href="{{route('daftar-pengeluaran')}}"><i data-feather="list"></i><span>Daftar Pengeluaran</span></a>
+                            <a class="nav-link menu-title link-nav {{prefixActive('/data-pemasukan')}}" href="{{route('data-pemasukan')}}"><i data-feather="trending-up"></i><span>Data Pemasukan</span></a>
+                        </li>
+
+                        <li>
+                            <a class="nav-link menu-title link-nav {{prefixActive('/daftar-pengeluaran')}}" href="{{route('daftar-pengeluaran')}}"><i data-feather="trending-down"></i><span>Daftar Pengeluaran</span></a>
                         </li>
                     @endif
                     

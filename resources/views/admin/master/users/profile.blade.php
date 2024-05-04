@@ -49,7 +49,7 @@
                                 <div class="media">
                                     <img class="img-90" alt="" src="{{ asset('storage/foto_profil/'.$user->foto) }}" />
                                     <div class="media-body" style="margin-left:15px">
-                                        <h3 class="mb-1 f-20 txt-primary">{{ $user->nama }}</h3>
+                                        <h3 class="mb-1 f-20 txt-danger">{{ $user->nama }}</h3>
                                         <p class="f-12">{{ $user->nama_level }}</p>
                                     </div>
                                 </div>
@@ -64,7 +64,7 @@
                                 <div class="row mb-3">
                                     <input class="form-control" type="file" width="48" height="48" name="foto" />
                                 </div>
-                                <button class="btn btn-primary" type="submit">Simpan</button>
+                                <button class="btn btn-danger" type="submit">Simpan</button>
                             </form>
                             {{-- <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target=".bd-example-modal-lg">Ganti Foto</button>                             --}}
                         </div>
@@ -91,39 +91,20 @@
                                     <input class="form-control" type="text" name="nama" value="{{ $user->nama }}" />
                                 </div>
                             </div>
-                            <div class="col-sm-6 col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">NIP</label>
-                                    <input class="form-control" type="text" name="nip" value="{{ $user->nip }}" />
-                                </div>
-                            </div>
 
                             <div class="col-sm-6 col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Kode Satker</label>
-                                    <input class="form-control" type="text" name="kode_satker" value="{{ $user->kode_satker }}" />
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Nama Satker</label>
-                                    <input class="form-control" type="text" name="nama_satker" value="{{ $user->nama_satker }}" />
-                                </div>
-                            </div>
-
-                            <div class="col-sm-6 col-md-4">
                                 <div class="mb-3">
                                     <label class="form-label">Username</label>
                                     <input class="form-control" type="text" name="username" value="{{ $user->username }}" />
                                 </div>
                             </div>
-                            <div class="col-sm-6 col-md-4">
+                            <div class="col-sm-6 col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label">Email</label>
                                     <input class="form-control" type="text" name="email" value="{{ $user->email }}" />
                                 </div>
                             </div>
-                            <div class="col-sm-6 col-md-4">
+                            <div class="col-sm-6 col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label">Level</label>
                                     <input class="form-control" type="text" name="user_level" value="{{ $user->nama_level }}" readonly/>
@@ -134,7 +115,7 @@
                         </div>
                     </div>
                     <div class="card-footer text-end">
-                        <button class="btn btn-primary" type="submit">Update Profile</button>
+                        <button class="btn btn-danger" type="submit">Update Profile</button>
                     </div>
                 </form>
             </div>

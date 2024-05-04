@@ -45,7 +45,11 @@
                         </li>
 
                         <li>
-                            <a class="nav-link menu-title link-nav <?php echo e(prefixActive('/daftar-pengeluaran')); ?>" href="<?php echo e(route('daftar-pengeluaran')); ?>"><i data-feather="list"></i><span>Daftar Pengeluaran</span></a>
+                            <a class="nav-link menu-title link-nav <?php echo e(prefixActive('/data-pemasukan')); ?>" href="<?php echo e(route('data-pemasukan')); ?>"><i data-feather="trending-up"></i><span>Data Pemasukan</span></a>
+                        </li>
+
+                        <li>
+                            <a class="nav-link menu-title link-nav <?php echo e(prefixActive('/daftar-pengeluaran')); ?>" href="<?php echo e(route('daftar-pengeluaran')); ?>"><i data-feather="trending-down"></i><span>Daftar Pengeluaran</span></a>
                         </li>
                     <?php endif; ?>
                     

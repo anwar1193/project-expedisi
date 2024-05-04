@@ -199,10 +199,7 @@ class UserController extends Controller
     public function update_profile(Request $request)
     {
         User::where('id', '=', $request->id)->update([
-            'kode_satker' => $request->kode_satker,
-            'nama_satker' => $request->nama_satker,
             'nama' => $request->nama,
-            'nip' => $request->nip,
             'username' => $request->username,
             'email' => $request->email
         ]);

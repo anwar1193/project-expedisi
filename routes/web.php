@@ -1,23 +1,24 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\CameraController;
-use App\Http\Controllers\DaftarPengeluaranController;
-use App\Http\Controllers\SurveilanceCarController;
-use App\Http\Controllers\User\UserController;
-use App\Http\Controllers\LogActivityController;
-use App\Http\Controllers\JenisPerangkatController;
-use App\Http\Controllers\PerangkatController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\DataPengirimanController;
-use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\ObdController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ThemeController;
+use App\Http\Controllers\CameraController;
+use App\Http\Controllers\TestingController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LastLoginController;
+use App\Http\Controllers\PerangkatController;
+use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\ObdTrackerController;
 use App\Http\Controllers\PemantauanController;
+use App\Http\Controllers\LogActivityController;
 use App\Http\Controllers\RiwayatArmadaController;
-use App\Http\Controllers\TestingController;
+use App\Http\Controllers\DataPengirimanController;
+use App\Http\Controllers\JenisPerangkatController;
+use App\Http\Controllers\SurveilanceCarController;
+use App\Http\Controllers\PemasukanLainnyaController;
+use App\Http\Controllers\DaftarPengeluaranController;
 
 /*
 |--------------------------------------------------------------------------
@@ -176,6 +177,15 @@ Route::middleware("auth")->group(function() {
         Route::post('/', [DaftarPengeluaranController::class, 'store'])->name('daftar-pengeluaran.store');
         Route::post('/update/{id}', [DaftarPengeluaranController::class, 'update'])->name('daftar-pengeluaran.update');
         Route::get('/delete/{id}', [DaftarPengeluaranController::class, 'delete'])->name('daftar-pengeluaran.delete');
+    });
+
+    Route::prefix('data-pemasukan')->group(function () {
+        Route::get('/', [PemasukanLainnyaController::class, 'index'])->name('data-pemasukan');
+        Route::get('/create', [PemasukanLainnyaController::class, 'create'])->name('data-pemasukan.create');
+        Route::get('/edit/{id}', [PemasukanLainnyaController::class, 'edit'])->name('data-pemasukan.edit');
+        Route::post('/', [PemasukanLainnyaController::class, 'store'])->name('data-pemasukan.store');
+        Route::post('/update/{id}', [PemasukanLainnyaController::class, 'update'])->name('data-pemasukan.update');
+        Route::get('/delete/{id}', [PemasukanLainnyaController::class, 'delete'])->name('data-pemasukan.delete');
     });
 
     Route::get('user-level', [UserController::class, 'listLevel'])->name('level');

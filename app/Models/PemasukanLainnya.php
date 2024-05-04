@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class PemasukanLainnya extends Model
 {
     use HasFactory;
+    protected $table = 'pemasukan_lainnyas';
+    protected $primaryKey = 'id';
+    protected $guarded = ['id'];
 }
