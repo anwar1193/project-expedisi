@@ -2,7 +2,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Daftar Armada</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Import Data Pengiriman</h5>
                 <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form class="form theme-form" enctype="multipart/form-data" method="POST" action="<?php echo e(route('data-pengiriman.import_excel')); ?>">
@@ -33,8 +33,10 @@ unset($__errorArgs, $__bag); ?>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary text-white" type="submit">Simpan</button>
                     <button class="btn btn-light  text-white" type="button" data-bs-dismiss="modal">Kembali</button>
+                    
+                    <a href="excel_format/DataPengiriman.xlsx" class="btn btn-warning">Download Format</a>
+                    <button class="btn btn-primary text-white" type="submit">Simpan</button>
                 </div>
             </form>
         </div>

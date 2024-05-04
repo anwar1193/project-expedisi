@@ -62,6 +62,10 @@
                             <a class="nav-link menu-title link-nav {{prefixActive('/daftar-pengeluaran')}}" href="{{route('daftar-pengeluaran')}}"><i data-feather="trending-down"></i><span>Daftar Pengeluaran</span></a>
                         </li>
                     @endif
+
+                    <li>
+                        <a class="nav-link menu-title link-nav {{prefixActive('/supplier')}}" href="{{route('supplier')}}"><i data-feather="shoping-bag"></i><span>Supplier</span></a>
+                    </li>
                     
                     <li>
                         <a class="nav-link menu-title link-nav {{routeActive('log-activity')}}" href="{{ route('log-activity') }}"><i data-feather="clock"></i><span>Log Aktifitas</span></a>

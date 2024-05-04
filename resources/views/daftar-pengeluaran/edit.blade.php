@@ -27,21 +27,6 @@
 					<form class="form theme-form" method="POST" action="{{ route('daftar-pengeluaran.update', $datas->id) }}" enctype="multipart/form-data">
                         @csrf
 						<div class="card-body">
-
-							<div class="row">
-								<div class="col">
-									<div class="mb-3">
-										<label class="form-label" for="">Tanggal Pengeluaran</label>
-										<input class="form-control @error('tgl_pengeluaran') is-invalid @enderror" type="date" name="tgl_pengeluaran" autocomplete="off" value="{{ old('tgl_pengeluaran', $datas->tgl_pengeluaran) }}"/>
-
-										@error('tgl_pengeluaran')
-										<div class="text-danger">
-											{{ $message }}
-										</div>
-										@enderror
-									</div>
-								</div>
-							</div>
 							
                             <div class="row">
 								<div class="col">

@@ -28,7 +28,6 @@ class DaftarPengeluaranController extends Controller
     public function store(Request $request)
     {
         $validateData = $request->validate([
-            'tgl_pengeluaran' => 'required',
             'keterangan' => 'required',
             'jumlah_pembayaran' => 'required',
             'pengguna_terkait' => 'required',
@@ -48,6 +47,7 @@ class DaftarPengeluaranController extends Controller
             Storage::disk('google')->put($namafile, File::get($path));
         }
 
+        $validateData['tgl_pengeluaran'] = date('Y-m-d');
         $validateData['bukti_pembayaran'] = ($foto != '' ? $foto->hashName() : '');
 
         DaftarPengeluaran::create($validateData);
@@ -69,7 +69,6 @@ class DaftarPengeluaranController extends Controller
     public function update($id, Request $request)
     {
         $validateData = $request->validate([
-            'tgl_pengeluaran' => 'required',
             'keterangan' => 'required',
             'jumlah_pembayaran' => 'required',
             'pengguna_terkait' => 'required',
@@ -82,12 +81,12 @@ class DaftarPengeluaranController extends Controller
 
         $getImage = DaftarPengeluaran::find($id);
 
-        $namafile = 'daftar-pengeluaran/'.$foto->hashName();
-        $path = public_path('storage/daftar-pengeluaran/' . $foto->hashName());
-
         if($foto != ''){
             Storage::delete('public/daftar-pengeluaran/'.$getImage->foto);
             $foto->storeAs('public/daftar-pengeluaran', $foto->hashName());
+
+            $namafile = 'daftar-pengeluaran/'.$foto->hashName();
+            $path = public_path('storage/daftar-pengeluaran/' . $foto->hashName());
             
             Gdrive::delete('daftar-pengeluaran/'.$getImage->bukti_pembayaran);
             Storage::disk('google')->put($namafile, File::get($path));
@@ -96,7 +95,6 @@ class DaftarPengeluaranController extends Controller
         $validateData['bukti_pembayaran'] = ($foto != '' ? $foto->hashName() : '');
 
         DaftarPengeluaran::where('id', '=', $id)->update([
-            'tgl_pengeluaran' => $request->tgl_pengeluaran,
             'keterangan' => $request->keterangan,
             'jumlah_pembayaran' => $request->jumlah_pembayaran,
             'pengguna_terkait' => $request->pengguna_terkait,
