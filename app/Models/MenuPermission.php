@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PemasukanLainnya extends Model
+class MenuPermission extends Model
 {
     use HasFactory;
-    protected $table = 'pemasukan_lainnyas';
+    protected $table = 'menu_permissions';
     protected $primaryKey = 'id';
     protected $guarded = ['id'];
 }

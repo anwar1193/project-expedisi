@@ -1,39 +1,35 @@
-@extends('layouts.admin.master')
+<?php $__env->startSection('title'); ?>Profile Pengguna
+ <?php echo e($title); ?>
 
-@section('title')Profile Pengguna
- {{ $title }}
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('css')
-<link rel="stylesheet" type="text/css" href="{{asset('assets/css/dropzone.css')}}">
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/select2.css') }}">
-@endpush
+<?php $__env->startPush('css'); ?>
+<link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/dropzone.css')); ?>">
+<link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/select2.css')); ?>">
+<?php $__env->stopPush(); ?>
 
-@section('content')
-	{{-- @component('components.breadcrumb')
-		@slot('breadcrumb_title')
-			<h3>Profile Pengguna</h3>
-		@endslot
-        <li class="breadcrumb-item active">Profile Pengguna</li>
-	@endcomponent --}}
+<?php $__env->startSection('content'); ?>
+	
 	
 	<div class="container-fluid">
 		<div class="row">
-            @if (session()->has('success'))
+            <?php if(session()->has('success')): ?>
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     <strong>Berhasil <i class="fa fa-info-circle"></i></strong> 
-                    {{ session('success') }}
+                    <?php echo e(session('success')); ?>
+
                     <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
-            @endif
+            <?php endif; ?>
 
-            @if (session()->has('error'))
+            <?php if(session()->has('error')): ?>
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     <strong>Berhasil <i class="fa fa-info-circle"></i></strong> 
-                    {{ session('error') }}
+                    <?php echo e(session('error')); ?>
+
                     <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
-            @endif
+            <?php endif; ?>
 
 			<div class="col-xl-4">
                 <div class="card">
@@ -47,34 +43,34 @@
                         <div class="row mb-2">
                             <div class="profile-title">
                                 <div class="media">
-                                    <img class="img-90" alt="" src="{{ asset('storage/foto_profil/'.$user->foto) }}" />
+                                    <img class="img-90" alt="" src="<?php echo e(asset('storage/foto_profil/'.$user->foto)); ?>" />
                                     <div class="media-body" style="margin-left:15px">
-                                        <h3 class="mb-1 f-20 txt-danger">{{ $user->nama }}</h3>
-                                        <p class="f-12">{{ $user->nama_level }}</p>
+                                        <h3 class="mb-1 f-20 txt-danger"><?php echo e($user->nama); ?></h3>
+                                        <p class="f-12"><?php echo e($user->nama_level); ?></p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="card-footer text-end mb-2">
-                            <form class="form theme-form" method="POST" action="{{ route('ganti-foto') }}" enctype="multipart/form-data">
-                                @csrf
+                            <form class="form theme-form" method="POST" action="<?php echo e(route('ganti-foto')); ?>" enctype="multipart/form-data">
+                                <?php echo csrf_field(); ?>
                                 <div class="row mb-2">
-                                    <input type="text" name="id" value="{{ $user->id }}" hidden>
+                                    <input type="text" name="id" value="<?php echo e($user->id); ?>" hidden>
                                 </div>
                                 <div class="row mb-3">
                                     <input class="form-control" type="file" width="48" height="48" name="foto" />
                                 </div>
                                 <button class="btn btn-danger" type="submit">Simpan</button>
                             </form>
-                            {{-- <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target=".bd-example-modal-lg">Ganti Foto</button>                             --}}
+                            
                         </div>
                     </div>
                 </div>
             </div>
             
             <div class="col-xl-8">
-                <form method="post" action="{{ route('profile.update') }}" class="card">
-                    @csrf
+                <form method="post" action="<?php echo e(route('profile.update')); ?>" class="card">
+                    <?php echo csrf_field(); ?>
                     <div class="card-header pb-0">
                         <h4 class="card-title mb-0">Edit Profile</h4>
                         <div class="card-options">
@@ -83,31 +79,31 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <input type="text" name="id" value="{{ $user->id }}" hidden>
+                            <input type="text" name="id" value="<?php echo e($user->id); ?>" hidden>
 
                             <div class="col-sm-6 col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label">Nama</label>
-                                    <input class="form-control" type="text" name="nama" value="{{ $user->nama }}" />
+                                    <input class="form-control" type="text" name="nama" value="<?php echo e($user->nama); ?>" />
                                 </div>
                             </div>
 
                             <div class="col-sm-6 col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label">Username</label>
-                                    <input class="form-control" type="text" name="username" value="{{ $user->username }}" />
+                                    <input class="form-control" type="text" name="username" value="<?php echo e($user->username); ?>" />
                                 </div>
                             </div>
                             <div class="col-sm-6 col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label">Email</label>
-                                    <input class="form-control" type="text" name="email" value="{{ $user->email }}" />
+                                    <input class="form-control" type="text" name="email" value="<?php echo e($user->email); ?>" />
                                 </div>
                             </div>
                             <div class="col-sm-6 col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label">Level</label>
-                                    <input class="form-control" type="text" name="user_level" value="{{ $user->nama_level }}" readonly/>
+                                    <input class="form-control" type="text" name="user_level" value="<?php echo e($user->nama_level); ?>" readonly/>
                                 </div>
                             </div>
 
@@ -143,15 +139,14 @@
     </div>
 	
 	
-@push('scripts')
-    <script src="{{asset('assets/js/dropzone/dropzone.js')}}"></script>
-    <script src="{{asset('assets/js/dropzone/dropzone-script.js')}}"></script>
-    <script src="{{ asset('assets/js/select2/select2.full.min.js') }}"></script>
-    <script src="{{ asset('assets/js/select2/select2-custom.js') }}"></script>
-@endpush
+<?php $__env->startPush('scripts'); ?>
+    <script src="<?php echo e(asset('assets/js/dropzone/dropzone.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/js/dropzone/dropzone-script.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/js/select2/select2.full.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/js/select2/select2-custom.js')); ?>"></script>
+<?php $__env->stopPush(); ?>
 
-@endsection
+<?php $__env->stopSection(); ?>
 
-{{-- <div class="card-footer text-end">
-    <a href="{{ route('users') }}" class="btn btn-light">Kembali</a>
-</div> --}}
+
+<?php echo $__env->make('layouts.admin.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/munawarahmad/Documents/Applications/projectku/frontend/resources/views/admin/master/users/profile.blade.php ENDPATH**/ ?>
