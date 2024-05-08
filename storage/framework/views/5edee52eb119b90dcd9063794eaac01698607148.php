@@ -19,7 +19,7 @@
 
 						<div class="logo mb-3" style="text-align: center">
 							
-							
+							<img src="/assets/lionparcel.png" width="250px" alt="">
 						</div>
 
 	                    <p class="mb-3">AGEN EXPEDISI</p>
