@@ -8,13 +8,7 @@ use App\Http\Controllers\CameraController;
 use App\Http\Controllers\TestingController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\DashboardController;
-<<<<<<< HEAD
-use App\Http\Controllers\DataPengirimanController;
 use App\Http\Controllers\GoogleAuthController;
-use App\Http\Controllers\ThemeController;
-use App\Http\Controllers\ObdController;
-=======
->>>>>>> a259248b15f4418b6e632336439c42776ab26c29
 use App\Http\Controllers\LastLoginController;
 use App\Http\Controllers\PerangkatController;
 use App\Http\Controllers\User\UserController;
