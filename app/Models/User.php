@@ -24,13 +24,15 @@ class User extends Authenticatable
         'nama',
         'username',
         'email',
+        'google_id',
         'nomor_telepon',
         'password',
         'email_verified_at',
         'foto',
         'user_level',
         'status',
-        'tgl_kadaluarsa'
+        'tgl_kadaluarsa',
+        'last_login'
     ];
 
     /**
