@@ -19,7 +19,7 @@
 
 						<div class="logo mb-3" style="text-align: center">
 							
-							<img src="/assets/lionparcel.png" width="250px" alt="">
+							
 						</div>
 
 	                    <p class="mb-3">AGEN EXPEDISI</p>
@@ -67,6 +67,15 @@
 
 	                    <div class="form-group">
 	                        <button class="btn btn-danger btn-block" type="submit">Masuk</button>
+	                    </div>
+
+						<hr class="my-4">
+	                    <div class="form-group my-4">
+							<div class="d-flex justify-content-center my-4">
+								<div>
+									<a href="<?php echo e(route('google-login')); ?>" class="btn btn-primary"><i class="fa fa-google me-2"></i> Lanjutkan Dengan Google</a>
+								</div>
+							</div>
 	                    </div>
 	                </form>
 	            </div>

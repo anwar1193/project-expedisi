@@ -26,12 +26,10 @@
 					<?php endif; ?>
 
 					<a href="<?php echo e(route('users.export-pdf')); ?>" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Export PDF">
-						<i class="fa fa-file-pdf-o"></i> Export PDF
+						<i class="fa fa-file-pdf-o"></i> Download PDF
 					</a>
 
-					<a href="<?php echo e(route('users.export-excel')); ?>" class="btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Export Excel">
-						<i class="fa fa-file-excel-o"></i> Export Excel
-					</a>
+					
             </div>
         </ol>
     </nav>
@@ -80,7 +78,6 @@
 	                                    <th>No</th>
 										<th></th>
 	                                    <th>Nama Lengkap</th>
-	                                    <th>NIP</th>
 	                                    <th>Username</th>
 	                                    <th>Level</th>
 	                                    <th>Status</th>
@@ -92,14 +89,15 @@
 										<tr>
 											<td><?php echo e($loop->iteration); ?></td>
 											<td>
+												<center>
 												<img 
 													class="rounded-circle d-none d-sm-none d-sm-block d-lg-block pe-1 "
 												 	src="<?php echo e($data->foto ? asset('storage/foto_profil/'.$data->foto) : asset('assets/images/avtar/users.png')); ?>" 
 													alt="" 
 													style="width: 40px;" /> 
+												</center>
 											</td>
 											<td><?php echo e($data->nama); ?></td>
-											<td><?php echo e($data->nip); ?></td>
 											<td><?php echo e($data->username); ?></td>
 											<td><?php echo e($data->level_user); ?></td>
 											<td><?php echo e($data->status == 1 ? 'Aktif' : 'Non Aktif'); ?></td>

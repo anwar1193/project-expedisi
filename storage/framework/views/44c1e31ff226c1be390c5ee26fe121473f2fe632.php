@@ -26,63 +26,45 @@
                         </div>
                     </li>
 
-                    
-                    <li>
-                        <a class="nav-link menu-title link-nav <?php echo e(prefixActive('/')); ?>" href="<?php echo e(route('index')); ?>"><i data-feather="home"></i><span>Dashboard</span></a>
-                    </li>
+                    <?php
+                        // Ini Dari Helper.php, HApp di daftarkan dulu di app.php
+                        $menu = HApp::getModule();
+                    ?>
 
-                    
+                    <?php $__currentLoopData = $menu; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $val): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <?php $__currentLoopData = $val; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 
-                    <li>
-                        <a class="nav-link menu-title link-nav <?php echo e(prefixActive('/users')); ?>" href="<?php echo e(route('users')); ?>"><i data-feather="user"></i><span>User Management</span></a>
-                    </li>
-
-                    
-                    
-                    <?php if(isAdmin()): ?>
-                        <li>
-                            <a class="nav-link menu-title link-nav <?php echo e(prefixActive('/data-pengiriman')); ?>" href="<?php echo e(route('data-pengiriman')); ?>"><i data-feather="list"></i><span>Data Pengiriman</span></a>
-                        </li>
-
-                        <li>
-                            <a class="nav-link menu-title link-nav <?php echo e(prefixActive('/daftar-pengeluaran')); ?>" href="<?php echo e(route('daftar-pengeluaran')); ?>"><i data-feather="list"></i><span>Daftar Pengeluaran</span></a>
-                        </li>
-                    <?php endif; ?>
-
-                    <li>
-                        <a class="nav-link menu-title link-nav <?php echo e(prefixActive('/supplier')); ?>" href="<?php echo e(route('supplier')); ?>"><i data-feather="shoping-bag"></i><span>Supplier</span></a>
-                    </li>
-                    
-                    <li>
-                        <a class="nav-link menu-title link-nav <?php echo e(routeActive('log-activity')); ?>" href="<?php echo e(route('log-activity')); ?>"><i data-feather="clock"></i><span>Log Aktifitas</span></a>
-                    </li>
-
-                    <li>
-                        <a class="nav-link menu-title link-nav <?php echo e(routeActive('last-login')); ?>" href="<?php echo e(route('last-login')); ?>"><i data-feather="activity"></i><span>Log Akses</span></a>
-                    </li>
-
-                    <li class="dropdown">
-                        <a class="nav-link menu-title"><i data-feather="file-text"></i><span>Laporan</span></a>
-                        <ul class="nav-submenu menu-content">
                             
+                            <?php if($data->is_dropdown == 0): ?>
+                                <li>
+                                    <a class="nav-link menu-title link-nav <?php echo e(prefixActive($data->url)); ?>" href="<?php echo e($data->url); ?>">
+                                        <i data-feather="<?php echo e($data->icon); ?>"></i>
+                                        <span><?php echo e($data->menu); ?></span>
+                                    </a>
+                                </li>
+                            <?php endif; ?>
 
-                            <li><a href="#" class="" data-bs-toggle="modal" data-bs-target="#">Laba Rugi</a></li>
-                            <li><a href="#" class="" data-bs-toggle="modal" data-bs-target="#">Laporan Harian</a></li>
-                        </ul>
-                    </li>
+                            
+                            <?php if($data->is_dropdown == 1): ?>
+                                <?php
+                                    // Ini Dari Helper.php, HApp di daftarkan dulu di app.php
+                                    $submenu = HApp::getSubModule($data->id);
+                                ?>
+                                <li class="dropdown">
+                                    <a class="nav-link menu-title <?php echo e(prefixActive($data->url)); ?>" href="javascript:void(0)"><i data-feather="<?php echo e($data->icon); ?>"></i><span><?php echo e($data->menu); ?></span></a>
+                                    <ul class="nav-submenu menu-content"  style="display: <?php echo e(prefixBlock($data->url)); ?>;">
 
-                    <li class="dropdown">
-                        <a class="nav-link menu-title <?php echo e(prefixActive('/pengaturan')); ?>" href="javascript:void(0)"><i data-feather="settings"></i><span>Pengaturan</span></a>
-                        <ul class="nav-submenu menu-content"  style="display: <?php echo e(prefixBlock('/pengaturan')); ?>;">
-                            <li><a href="<?php echo e(route('profile')); ?>" class="<?php echo e(routeActive('profile')); ?>">Profile</a></li>
-                            <li><a href="<?php echo e(route('ganti-password')); ?>" class="<?php echo e(routeActive('ganti-password')); ?>">Ganti Password</a></li>
-                            <li><a href="<?php echo e(route('hak-akses')); ?>" class="">Hak Akses Pengguna</a></li>
-                        </ul>
-                    </li>
+                                        <?php $__currentLoopData = $submenu; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <?php $__currentLoopData = $item; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $datasub): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <li><a href="<?php echo e($datasub->url); ?>" class=""><?php echo e($datasub->menu); ?></a></li>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    </ul>
+                                </li>
+                            <?php endif; ?>
 
-                    
-                    
-                    
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
                 </ul>
             </div>
