@@ -3,10 +3,65 @@
 namespace App\Helpers;
 
 use App\Models\LogActivity;
+use App\Models\MasterMenu;
+use App\Models\MenuPermission;
 use Illuminate\Support\Facades\Session;
 
 class Helper
 {
+
+    public static function getModule()
+    {
+      $user_level = Session::get('user_level');
+      $module = [
+        // 'menu' => MasterMenu::where('parent_id', 0)
+        //     ->where('status', 1)
+        //     ->orderBy('position', 'ASC')
+        //     ->get(),
+
+        'menu' => MenuPermission::select('menu_permissions.*', 'master_menus.menu', 'master_menus.url','master_menus.icon','master_menus.is_dropdown','master_menus.id')
+            ->join('master_menus', 'master_menus.id', '=', 'menu_permissions.menu_id')
+            ->where('menu_permissions.level_id', '=', $user_level)
+            ->where('master_menus.parent_id', 0)
+            ->where('master_menus.status', 1)
+            ->orderBy('master_menus.position', 'ASC')
+            ->get(),
+      ];
+
+      return $module;
+    }
+
+    public static function getSubModule($parent_id)
+    {
+      $user_level = Session::get('user_level');
+      $sub_module = [
+        // 'sub_menu' => MasterMenu::where('parent_id', $parent_id)
+        //     ->where('status', 1)
+        //     ->orderBy('position', 'ASC')
+        //     ->get(),
+        'sub_menu' => MenuPermission::select('menu_permissions.*', 'master_menus.menu', 'master_menus.url','master_menus.icon','master_menus.is_dropdown')
+            ->join('master_menus', 'master_menus.id', '=', 'menu_permissions.menu_id')
+            ->where('menu_permissions.level_id', '=', $user_level)
+            ->where('master_menus.parent_id', $parent_id)
+            ->where('master_menus.status', 1)
+            ->orderBy('master_menus.position', 'ASC')
+            ->get(),
+
+      ];
+
+      return $sub_module;
+    }
+
+    public static function cekModule($menu_id, $level_id)
+    {
+      // $user_level = Session::get('user_level');
+      $cek = MenuPermission::where('level_id', '=', $level_id)
+              ->where('menu_id', '=', $menu_id)
+              ->count();
+            
+      return $cek;
+    }
+
     public static function logActivity($activity) 
     {
         // Date Time Setting ....................................

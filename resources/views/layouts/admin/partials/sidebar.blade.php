@@ -26,87 +26,45 @@
                         </div>
                     </li>
 
-                    {{-- Test Push Github --}}
-                    <li>
-                        <a class="nav-link menu-title link-nav {{prefixActive('/')}}" href="{{ route('index') }}"><i data-feather="home"></i><span>Dashboard</span></a>
-                    </li>
+                    @php
+                        // Ini Dari Helper.php, HApp di daftarkan dulu di app.php
+                        $menu = HApp::getModule();
+                    @endphp
 
-                    {{-- <li class="dropdown">
-                        <a class="nav-link menu-title {{ prefixActive('/master') }}" href="javascript:void(0)"><i data-feather="file-text"></i><span>Master</span></a>
-                        <ul class="nav-submenu menu-content"  style="display: {{ prefixBlock('/master') }};">
-                            <li><a href="{{ route('surveilance-car') }}" class="{{routeActive('surveilance-car')}}">Surveilance Car</a></li>
-                            <li><a href="{{ route('jenis-perangkat') }}" class="{{routeActive('jenis-perangkat')}}">Jenis Perangkat</a></li>
-                            <li><a href="{{ route('perangkat') }}" class="{{ routeActive('perangkat') }}">Data Perangkat</a></li>
-                            <li><a href="{{ route('obd') }}" class="{{ routeActive('obd') }}">OBD</a></li>
-                        </ul>
-                    </li> --}}
+                    @foreach ($menu as $val)
+                        @foreach ($val as $data)
 
-                    <li>
-                        <a class="nav-link menu-title link-nav {{prefixActive('/users')}}" href="{{route('users')}}"><i data-feather="user"></i><span>User Management</span></a>
-                    </li>
+                            {{-- Jika Menu Tanpa Dropdown --}}
+                            @if ($data->is_dropdown == 0)
+                                <li>
+                                    <a class="nav-link menu-title link-nav {{prefixActive($data->url)}}" href="{{ $data->url }}">
+                                        <i data-feather="{{ $data->icon }}"></i>
+                                        <span>{{ $data->menu }}</span>
+                                    </a>
+                                </li>
+                            @endif
 
-                    {{-- <li>
-                        <a class="nav-link menu-title link-nav {{prefixActive('/data-pengiriman')}}" href="{{route('data-pengiriman')}}"><i data-feather="list"></i><span>Data Pengiriman</span></a>
-                    </li> --}}
-                    
-                    @if (isAdmin())
-                        <li>
-                            <a class="nav-link menu-title link-nav {{prefixActive('/data-pengiriman')}}" href="{{route('data-pengiriman')}}"><i data-feather="list"></i><span>Data Pengiriman</span></a>
-                        </li>
+                            {{-- Jika Menu Dengan Dropdown --}}
+                            @if ($data->is_dropdown == 1)
+                                @php
+                                    // Ini Dari Helper.php, HApp di daftarkan dulu di app.php
+                                    $submenu = HApp::getSubModule($data->id);
+                                @endphp
+                                <li class="dropdown">
+                                    <a class="nav-link menu-title {{ prefixActive($data->url) }}" href="javascript:void(0)"><i data-feather="{{ $data->icon }}"></i><span>{{ $data->menu }}</span></a>
+                                    <ul class="nav-submenu menu-content"  style="display: {{ prefixBlock($data->url) }};">
 
-                        <li>
-                            <a class="nav-link menu-title link-nav {{prefixActive('/data-pemasukan')}}" href="{{route('data-pemasukan')}}"><i data-feather="trending-up"></i><span>Data Pemasukan</span></a>
-                        </li>
+                                        @foreach ($submenu as $item)
+                                            @foreach ($item as $datasub)
+                                                <li><a href="{{ $datasub->url }}" class="">{{ $datasub->menu }}</a></li>
+                                            @endforeach
+                                        @endforeach
+                                    </ul>
+                                </li>
+                            @endif
 
-                        <li>
-                            <a class="nav-link menu-title link-nav {{prefixActive('/daftar-pengeluaran')}}" href="{{route('daftar-pengeluaran')}}"><i data-feather="trending-down"></i><span>Daftar Pengeluaran</span></a>
-                        </li>
-                    @endif
-
-                    <li>
-                        <a class="nav-link menu-title link-nav {{prefixActive('/supplier')}}" href="{{route('supplier')}}"><i data-feather="shopping-bag"></i><span>Supplier</span></a>
-                    </li>
-                    
-                    <li>
-                        <a class="nav-link menu-title link-nav {{routeActive('log-activity')}}" href="{{ route('log-activity') }}"><i data-feather="clock"></i><span>Log Aktifitas</span></a>
-                    </li>
-
-                    <li>
-                        <a class="nav-link menu-title link-nav {{routeActive('last-login')}}" href="{{ route('last-login') }}"><i data-feather="activity"></i><span>Log Akses</span></a>
-                    </li>
-
-                    <li class="dropdown">
-                        <a class="nav-link menu-title"><i data-feather="file-text"></i><span>Laporan</span></a>
-                        <ul class="nav-submenu menu-content">
-                            {{-- <li><a href="#" class="" data-bs-toggle="modal" data-bs-target="#modalReportUser">Report Data User</a></li>
-                            <li><a href="#" class="" data-bs-toggle="modal" data-bs-target="#modalReportSurveilance">Report Surveilance Car</a></li>
-                            <li><a href="#" class="" data-bs-toggle="modal" data-bs-target="#modalReportPerangkat">Report Data Perangkat</a></li> --}}
-
-                            <li><a href="#" class="" data-bs-toggle="modal" data-bs-target="#">Laba Rugi</a></li>
-                            <li><a href="#" class="" data-bs-toggle="modal" data-bs-target="#">Laporan Harian</a></li>
-                        </ul>
-                    </li>
-
-                    <li class="dropdown">
-                        <a class="nav-link menu-title {{ prefixActive('/pengaturan') }}" href="javascript:void(0)"><i data-feather="settings"></i><span>Pengaturan</span></a>
-                        <ul class="nav-submenu menu-content"  style="display: {{ prefixBlock('/pengaturan') }};">
-                            <li><a href="{{ route('profile') }}" class="{{routeActive('profile')}}">Profile</a></li>
-                            <li><a href="{{ route('ganti-password') }}" class="{{routeActive('ganti-password')}}">Ganti Password</a></li>
-                            <li><a href="{{ route('hak-akses') }}" class="">Hak Akses Pengguna</a></li>
-                        </ul>
-                    </li>
-
-                    {{-- <li>
-                        <a class="nav-link menu-title link-nav {{routeActive('pencadangan-data')}}" href="#"><i data-feather="server"></i><span>Pencadangan Data</span></a>
-                    </li>    --}}
-                    
-                    {{-- <li class="dropdown">
-                        <a class="nav-link menu-title {{ prefixActive('/bantuan') }}" href="javascript:void(0)"><i data-feather="alert-circle"></i><span>Bantuan</span></a>
-                        <ul class="nav-submenu menu-content"  style="display: {{ prefixBlock('/bantuan') }};">
-                            <li><a href="#" class="">Panduan Aplikasi</a></li>
-                            <li><a href="#" class="">FAQ</a></li>
-                        </ul>
-                    </li> --}}
+                        @endforeach
+                    @endforeach
 
                 </ul>
             </div>

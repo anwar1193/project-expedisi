@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\CameraController;
 use App\Http\Controllers\TestingController;
+use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LastLoginController;
 use App\Http\Controllers\PerangkatController;
@@ -13,15 +14,15 @@ use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\ObdTrackerController;
 use App\Http\Controllers\PemantauanController;
 use App\Http\Controllers\LogActivityController;
-use App\Http\Controllers\RiwayatArmadaController;
 
+use App\Http\Controllers\RiwayatArmadaController;
 use App\Http\Controllers\DataPengirimanController;
 use App\Http\Controllers\JenisPerangkatController;
+use App\Http\Controllers\RoleManagementController;
 use App\Http\Controllers\SurveilanceCarController;
+
 use App\Http\Controllers\PemasukanLainnyaController;
 use App\Http\Controllers\DaftarPengeluaranController;
-
-use App\Http\Controllers\SupplierController;
 
 /*
 |--------------------------------------------------------------------------
@@ -136,6 +137,10 @@ Route::middleware("auth")->group(function() {
         Route::post('profile/update', [UserController::class, 'update_profile'])->name('profile.update');
         Route::get('hak-akses', [UserController::class, 'hak_akses'])->name('hak-akses');
         Route::post('hak-akses/update', [UserController::class, 'updateHakAkses'])->name('hak-akses.update');
+        
+        Route::get('role-management', [RoleManagementController::class, 'index'])->name('role-management');
+        Route::get('change-permission/{id}', [RoleManagementController::class, 'changePermission'])->name('role.change-permission');
+        Route::post('add-permission', [RoleManagementController::class, 'addPermission'])->name('role.add-permission');
     });
 
     Route::get('pemantauan-gps',[PemantauanController::class, 'index'])->name('pemantauan-gps');

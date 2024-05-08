@@ -18,7 +18,7 @@ class UserController extends Controller
 {
     public function index(Request $request) {
         $users = User::select('users.*', 'levels.level AS level_user')
-                    ->join('levels', 'levels.kode_level', '=', 'users.user_level')
+                    ->join('levels', 'levels.id', '=', 'users.user_level')
                     ->orderBy('users.id', 'ASC')
                     ->get();
 
@@ -173,7 +173,7 @@ class UserController extends Controller
     public function detail($id)
     {
         $user = User::select('users.*', 'levels.level AS nama_level')
-            ->join('levels', 'levels.kode_level', '=', 'users.user_level')
+            ->join('levels', 'levels.id', '=', 'users.user_level')
             ->where('users.id', '=', $id)
             ->first();
             
@@ -187,7 +187,7 @@ class UserController extends Controller
         $id = Session::get('id');
 
         $user = User::select('users.*', 'levels.level AS nama_level')
-            ->join('levels', 'levels.kode_level', '=', 'users.user_level')
+            ->join('levels', 'levels.id', '=', 'users.user_level')
             ->where('users.id', '=', $id)
             ->first();
 
@@ -241,7 +241,7 @@ class UserController extends Controller
     public function hak_akses() 
     {
         $user = User::select('users.*', 'levels.level AS nama_level')
-            ->join('levels', 'levels.kode_level', '=', 'users.user_level')
+            ->join('levels', 'levels.id', '=', 'users.user_level')
             ->orderBy('users.id', 'ASC')
             ->get();
 
@@ -274,7 +274,7 @@ class UserController extends Controller
     {
         date_default_timezone_set("Asia/Jakarta");
         $users = User::select('users.*', 'levels.level AS level_user')
-                    ->join('levels', 'levels.kode_level', '=', 'users.user_level')
+                    ->join('levels', 'levels.id', '=', 'users.user_level')
                     ->orderBy('users.id', 'ASC')
                     ->get();
 

@@ -10,7 +10,7 @@ class LastLoginController extends Controller
     public function index()
     {
         $users = User::select('users.*', 'levels.level AS level_user')
-                    ->join('levels', 'levels.kode_level', '=', 'users.user_level')
+                    ->join('levels', 'levels.id', '=', 'users.user_level')
                     ->orderBy('users.last_login', 'DESC')
                     ->get();
 
