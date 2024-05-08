@@ -11,6 +11,7 @@ use App\Http\Controllers\JenisPerangkatController;
 use App\Http\Controllers\PerangkatController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataPengirimanController;
+use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\ObdController;
 use App\Http\Controllers\LastLoginController;
@@ -42,6 +43,9 @@ Route::middleware("guest")->group(function() {
     Route::get('login', [AuthController::class, 'index'])->name('login');
     Route::post('login', [AuthController::class, 'login'])->name('signin');
 
+    // Google Auth
+    Route::get('google-login', [GoogleAuthController::class, 'redirect'])->name('google-login');
+    Route::get('auth/google/redirect', [GoogleAuthController::class, 'callback'])->name('google-login.callback');
 });
 
 Route::middleware("auth")->group(function() {
