@@ -71,7 +71,7 @@
 										<th>Tanggal Pengeluaran</th>
 										<th>Keterangan</th>
 	                                    <th>Jumlah Pembayaran</th>
-	                                    <th>Pengguna Terkait</th>
+	                                    <th>Yang Menerima Pembayaran</th>
 	                                    <th>Status Pengeluaran</th>
 	                                    <th>Jenis Pengeluaran</th>
 										<th width="35%" class="text-center">Action</th>
@@ -84,7 +84,7 @@
 											<td>{{ $data->tgl_pengeluaran }}</td>
 											<td>{{ $data->keterangan }}</td>
 											<td>{{ $data->jumlah_pembayaran }}</td>
-											<td>{{ $data->pengguna_terkait }}</td>
+											<td>{{ $data->yang_menerima }}</td>
 											<td>{{ $data->status_pengeluaran == 1 ? 'Disetujui' : 'Pending'; }}</td>
 											<td>{{ $data->jenis_pengeluaran }}</td>
 											<td class="text-center">

@@ -61,10 +61,10 @@
                             <div class="row">
 								<div class="col">
 									<div class="mb-3">
-										<label class="form-label" for="">Pengguna Terkait</label>
-										<input class="form-control @error('pengguna_terkait') is-invalid @enderror" type="text" name="pengguna_terkait" autocomplete="off" value="{{ old('pengguna_terkait', $datas->pengguna_terkait) }}"/>
+										<label class="form-label" for="">Yang Menerima</label>
+										<input class="form-control @error('yang_menerima') is-invalid @enderror" type="text" name="yang_menerima" autocomplete="off" value="{{ old('yang_menerima', $datas->yang_menerima) }}"/>
 
-										@error('pengguna_terkait')
+										@error('yang_menerima')
 										<div class="text-danger">
 											{{ $message }}
 										</div>
@@ -96,34 +96,15 @@
 									<div class="mb-3">
                                         <div class="mb-3">
                                             <label class="form-label" for="">Bukti Pembayaran</label>
-                                            <input class="form-control @error('bukti_pembayaran') is-invalid @enderror" type="file" width="48" height="48" name="bukti_pembayaran" />
-    
+											<textarea class="form-control @error('bukti_pembayaran') is-invalid @enderror" cols="100" rows="5" name="bukti_pembayaran">{{ old('bukti_pembayaran', $datas->bukti_pembayaran) }}</textarea>
+											
                                             @error('bukti_pembayaran')
                                             <div class="text-danger">
                                                 {{ $message }}
                                             </div>
                                             @enderror
     
-                                            <img src="{{ asset('storage/daftar-pengeluaran/'.$datas->bukti_pembayaran) }}" alt="" width="200px" class="img-fluid mt-2">
                                         </div>
-									</div>
-								</div>
-							</div>
-
-							<div class="row">
-								<div class="col">
-									<div class="mb-3">
-										<label class="form-label" for="">Status Pengeluaran</label>
-										<select name="status_pengeluaran" id="status_pengeluaran" class="form-control @error('status_pengeluaran') is-invalid @enderror">
-											<option value="1" {{ $datas->status_pembayaran == 1 ? 'selected' : NULL }}>Lunas</option>
-											<option value="2" {{ $datas->status_pembayaran == 2 ? 'selected' : NULL }}>Pending</option>
-										</select>
-
-										@error('status_pembayaran')
-										<div class="text-danger">
-											{{ $message }}
-										</div>
-										@enderror
 									</div>
 								</div>
 							</div>
@@ -133,8 +114,9 @@
 									<div class="mb-3">
 										<label class="form-label" for="">Jenis Pengeluaran</label>
                                         <select name="jenis_pengeluaran" id="jenis_pengeluaran" class="form-control @error('jenis_pengeluaran') is-invalid @enderror">
-											<option value="operasional" {{ $datas->jenis_pengeluaran == 'operasional' ? 'selected' : NULL }}>Operasional</option>
-											<option value="pengeluaran lain" {{ $datas->jenis_pengeluaran == 'pengeluaran lain' ? 'selected' : NULL }}>Pengeluaran Lain</option>
+											@foreach ($jenis_pengeluaran as $jenis_pengeluaran)
+												<option value="{{ $jenis_pengeluaran->id }}" {{ $datas->jenis_pengeluaran == $jenis_pengeluaran->id ? 'selected' : NULL }}>{{ $jenis_pengeluaran->jenis_pengeluaran }}</option>
+											@endforeach
 										</select>
 
 										@error('jenis_pengeluaran')

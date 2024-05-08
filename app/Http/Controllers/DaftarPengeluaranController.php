@@ -4,16 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Helper;
 use App\Models\DaftarPengeluaran;
+use App\Models\JenisPengeluaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Session;
 use Yaza\LaravelGoogleDriveStorage\Gdrive;
 
 class DaftarPengeluaranController extends Controller
 {
     public  function index()
     {
-        $datas = DaftarPengeluaran::orderBy('id', 'DESC')->get();
+        $datas = DaftarPengeluaran::select('daftar_pengeluarans.id', 'daftar_pengeluarans.tgl_pengeluaran', 'daftar_pengeluarans.keterangan', 'daftar_pengeluarans.jumlah_pembayaran', 'daftar_pengeluarans.yang_membayar', 'daftar_pengeluarans.yang_menerima', 'daftar_pengeluarans.metode_pembayaran', 'daftar_pengeluarans.bukti_pembayaran', 'daftar_pengeluarans.status_pengeluaran', 'jenis_pengeluarans.jenis_pengeluaran')
+                ->leftJoin('jenis_pengeluarans', 'jenis_pengeluarans.id', '=', 'daftar_pengeluarans.jenis_pengeluaran')
+                ->orderBy('daftar_pengeluarans.id', 'DESC')->get();
 
         $data['datas'] = $datas;
 
@@ -22,33 +26,29 @@ class DaftarPengeluaranController extends Controller
 
     public function create()
     {
-        return view('daftar-pengeluaran.create');
+        $jenis_pengeluaran = JenisPengeluaran::all();
+        $data['jenis_pengeluaran'] = $jenis_pengeluaran;
+        return view('daftar-pengeluaran.create', $data);
     }
 
     public function store(Request $request)
     {
+
         $validateData = $request->validate([
             'keterangan' => 'required',
             'jumlah_pembayaran' => 'required',
-            'pengguna_terkait' => 'required',
+            'yang_menerima' => 'required',
             'metode_pembayaran' => 'required',
             'bukti_pembayaran' => 'required',
-            'status_pengeluaran' => 'required',
             'jenis_pengeluaran' => 'required'
         ]);
 
-        $foto = $request->file('bukti_pembayaran');
+        // $jenis_pengeluaran = JenisPengeluaran::find($request->jenis_pengeluaran);
 
-        $namafile = 'daftar-pengeluaran/'.$foto->hashName();
-        $path = public_path('storage/daftar-pengeluaran/' . $foto->hashName());
-
-        if($foto != ''){
-            $foto->storeAs('public/daftar-pengeluaran', $foto->hashName());
-            Storage::disk('google')->put($namafile, File::get($path));
-        }
-
+        // $validateData['keterangan'] = $jenis_pengeluaran->keterangan;
+        $validateData['yang_membayar'] = Session::get('nama');
         $validateData['tgl_pengeluaran'] = date('Y-m-d');
-        $validateData['bukti_pembayaran'] = ($foto != '' ? $foto->hashName() : '');
+        $validateData['status_pengeluaran'] = 2;
 
         DaftarPengeluaran::create($validateData);
 
@@ -61,7 +61,9 @@ class DaftarPengeluaranController extends Controller
     public function edit($id)
     {
         $datas = DaftarPengeluaran::find($id);
+        $jenis_pengeluaran = JenisPengeluaran::all();
         $data['datas'] = $datas;
+        $data['jenis_pengeluaran'] = $jenis_pengeluaran;
 
         return view('daftar-pengeluaran.edit', $data);
     }
@@ -71,37 +73,20 @@ class DaftarPengeluaranController extends Controller
         $validateData = $request->validate([
             'keterangan' => 'required',
             'jumlah_pembayaran' => 'required',
-            'pengguna_terkait' => 'required',
+            'yang_menerima' => 'required',
             'metode_pembayaran' => 'required',
-            'status_pengeluaran' => 'required',
             'jenis_pengeluaran' => 'required'
         ]);
 
-        $foto = $request->file('bukti_pembayaran');
-
         $getImage = DaftarPengeluaran::find($id);
-
-        if($foto != ''){
-            Storage::delete('public/daftar-pengeluaran/'.$getImage->foto);
-            $foto->storeAs('public/daftar-pengeluaran', $foto->hashName());
-
-            $namafile = 'daftar-pengeluaran/'.$foto->hashName();
-            $path = public_path('storage/daftar-pengeluaran/' . $foto->hashName());
-            
-            Gdrive::delete('daftar-pengeluaran/'.$getImage->bukti_pembayaran);
-            Storage::disk('google')->put($namafile, File::get($path));
-        }
-
-        $validateData['bukti_pembayaran'] = ($foto != '' ? $foto->hashName() : '');
 
         DaftarPengeluaran::where('id', '=', $id)->update([
             'keterangan' => $request->keterangan,
             'jumlah_pembayaran' => $request->jumlah_pembayaran,
-            'pengguna_terkait' => $request->pengguna_terkait,
+            'yang_menerima' => $request->yang_menerima,
             'metode_pembayaran' => $request->metode_pembayaran,
-            'status_pengeluaran' => $request->status_pengeluaran,
             'jenis_pengeluaran' => $request->jenis_pengeluaran,
-            'bukti_pembayaran' => ($foto != '' ? $foto->hashName() : $getImage->bukti_pembayaran)
+            'bukti_pembayaran' => $request->bukti_pembayaran
         ]);
 
         Helper::logActivity('Update daftar pengeluaran dengan id: '.$id);
@@ -112,12 +97,6 @@ class DaftarPengeluaranController extends Controller
     public function delete($id)
     {
         $getImage = DaftarPengeluaran::find($id);
-
-        if(Storage::exists('public/daftar-pengeluaran/'. $getImage->bukti_pembayaran)){
-            Storage::delete('public/daftar-pengeluaran/'. $getImage->bukti_pembayaran);
-        }
-
-        Gdrive::delete('daftar-pengeluaran/'.$getImage->bukti_pembayaran);
 
         Helper::logActivity('Hapus daftar pengeluaran dengan id : '.$getImage->id);
 
