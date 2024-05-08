@@ -24,6 +24,8 @@ use App\Http\Controllers\SurveilanceCarController;
 
 use App\Http\Controllers\PemasukanLainnyaController;
 use App\Http\Controllers\DaftarPengeluaranController;
+use App\Http\Controllers\JenisPengeluaranController;
+use App\Models\JenisPengeluaran;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,7 +72,7 @@ Route::middleware("auth")->group(function() {
     Route::view('compact-layout', 'multiple.compact-layout')->name('compact-layout');
     Route::view('modern-layout', 'multiple.modern-layout')->name('modern-layout');
 
-    Route::prefix('master')->group(function () {
+    Route::prefix('master-data')->group(function () {
 
         Route::get('surveilance-car', [SurveilanceCarController::class, 'index'])->name('surveilance-car');
         Route::get('surveilance-car/create', [SurveilanceCarController::class, 'create'])->name('surveilance-car.create');
@@ -82,12 +84,12 @@ Route::middleware("auth")->group(function() {
         Route::get('surveilance-car/export-pdf', [SurveilanceCarController::class, 'export_pdf'])->name('surveilance-car.export-pdf');
         Route::get('surveilance-car/export-excel', [SurveilanceCarController::class, 'export_excel'])->name('surveilance-car.export-excel');
 
-        Route::get('jenis-perangkat', [JenisPerangkatController::class, 'index'])->name('jenis-perangkat');
-        Route::get('jenis-perangkat/create', [JenisPerangkatController::class, 'create'])->name('jenis-perangkat.create');
-        Route::post('jenis-perangkat/store', [JenisPerangkatController::class, 'store'])->name('jenis-perangkat.store');
-        Route::get('jenis-perangkat/edit/{id}', [JenisPerangkatController::class, 'edit'])->name('jenis-perangkat.edit');
-        Route::post('jenis-perangkat/update', [JenisPerangkatController::class, 'update'])->name('jenis-perangkat.update');
-        Route::get('jenis-perangkat/delete/{id}', [JenisPerangkatController::class, 'delete'])->name('jenis-perangkat.delete');
+        Route::get('jenis-pengeluaran', [JenisPengeluaranController::class, 'index'])->name('jenis-pengeluaran');
+        Route::get('jenis-pengeluaran/create', [JenisPengeluaranController::class, 'create'])->name('jenis-pengeluaran.create');
+        Route::post('jenis-pengeluaran/store', [JenisPengeluaranController::class, 'store'])->name('jenis-pengeluaran.store');
+        Route::get('jenis-pengeluaran/edit/{id}', [JenisPengeluaranController::class, 'edit'])->name('jenis-pengeluaran.edit');
+        Route::post('jenis-pengeluaran/update', [JenisPengeluaranController::class, 'update'])->name('jenis-pengeluaran.update');
+        Route::get('jenis-pengeluaran/delete/{id}', [JenisPengeluaranController::class, 'delete'])->name('jenis-pengeluaran.delete');
 
         Route::get('perangkat', [PerangkatController::class, 'index'])->name('perangkat');
         Route::get('perangkat/create', [PerangkatController::class, 'create'])->name('perangkat.create');
