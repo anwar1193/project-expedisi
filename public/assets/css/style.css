@@ -5310,7 +5310,7 @@ table tbody .border-bottom-warning td {
         .page-wrapper.compact-wrapper .page-body-wrapper header.main-nav .main-navbar .nav-menu > li span {
           font-weight: 600; }
         .page-wrapper.compact-wrapper .page-body-wrapper header.main-nav .main-navbar .nav-menu > li a {
-          padding: 10px 15px;
+          padding: 10px 15px 10px 7px;
           position: relative;
           color: #222222; }
           .page-wrapper.compact-wrapper .page-body-wrapper header.main-nav .main-navbar .nav-menu > li a svg {
