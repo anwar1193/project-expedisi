@@ -22,6 +22,14 @@
 			<div class="col-sm-12">
 				<div class="card">
 					<div class="card-header pb-0">
+						@if (session()->has('error'))
+							<div class="alert alert-danger alert-dismissible fade show" role="alert">
+								<strong>Gagal <i class="fa fa-info-circle"></i></strong> 
+								{{ session('error') }}
+								<button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+							</div>
+						@endif
+						
 						<h5>Form Supplier</h5>
 					</div>
 					<form class="form theme-form" method="POST" action="{{ route('supplier.store') }}">
