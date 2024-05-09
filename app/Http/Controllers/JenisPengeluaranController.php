@@ -36,8 +36,8 @@ class JenisPengeluaranController extends Controller
 
     public function edit($id)
     {
-        $jenis_pengeluarans = JenisPengeluaran::find($id);
-        $data['jenis_pengeluarans'] = $jenis_pengeluarans;
+        $jenis_pengeluaran = JenisPengeluaran::find($id);
+        $data['jenis_pengeluaran'] = $jenis_pengeluaran;
         return isAdmin() ? view('jenis-pengeluaran.edit', $data) : back()->with('error', 'Anda Tidak Memiliki Akses');
     }
 
