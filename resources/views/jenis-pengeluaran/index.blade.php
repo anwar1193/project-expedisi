@@ -90,7 +90,7 @@
 														<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
 															<a class="dropdown-item" href="{{ route('jenis-pengeluaran.edit', $data->id) }}"><span><i class="pt-2 pe-2" data-feather="edit"></i> Edit</span></a>
 
-															<a class="dropdown-item" href="{{ route('jenis-pengeluaran.delete', $data->id) }}"><span><i class="pt-2 pe-2" data-feather="delete"></i> Delete</span></a>
+															<a class="dropdown-item" href="{{ route('jenis-pengeluaran.delete', $data->id) }}" onclick="return confirm('Apakah Anda Yakin?')"><span><i class="pt-2 pe-2" data-feather="delete"></i> Delete</span></a>
 														</div>
 													</div>
 												</div>
