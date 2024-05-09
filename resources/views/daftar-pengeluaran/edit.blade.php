@@ -112,6 +112,24 @@
 							<div class="row">
 								<div class="col">
 									<div class="mb-3">
+										<label class="form-label" for="">Status Pengeluaran</label>
+										<select name="status_pengeluaran" id="status_pengeluaran" class="form-control @error('status_pengeluaran') is-invalid @enderror">
+											<option value="1" {{ $datas->status_pembayaran == 1 ? 'selected' : NULL }}>Disetujui</option>
+											<option value="2" {{ $datas->status_pembayaran == 2 ? 'selected' : NULL }}>Pending</option>
+										</select>
+
+										@error('status_pembayaran')
+										<div class="text-danger">
+											{{ $message }}
+										</div>
+										@enderror
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col">
+									<div class="mb-3">
 										<label class="form-label" for="">Jenis Pengeluaran</label>
                                         <select name="jenis_pengeluaran" id="jenis_pengeluaran" class="form-control @error('jenis_pengeluaran') is-invalid @enderror">
 											@foreach ($jenis_pengeluaran as $jenis_pengeluaran)

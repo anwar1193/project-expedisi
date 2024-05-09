@@ -28,6 +28,9 @@ class DaftarPengeluaranController extends Controller
     {
         $jenis_pengeluaran = JenisPengeluaran::all();
         $data['jenis_pengeluaran'] = $jenis_pengeluaran;
+        if ($jenis_pengeluaran->count() == 0) {
+            return redirect()->route('jenis-pengeluaran.create')->with('error', 'Silahkan tambahkan jenis pengeluaran terlebih dahulu');
+        }
         return view('daftar-pengeluaran.create', $data);
     }
 
@@ -75,6 +78,7 @@ class DaftarPengeluaranController extends Controller
             'jumlah_pembayaran' => 'required',
             'yang_menerima' => 'required',
             'metode_pembayaran' => 'required',
+            'status_pengeluaran' => 'required',
             'jenis_pengeluaran' => 'required'
         ]);
 
@@ -86,6 +90,7 @@ class DaftarPengeluaranController extends Controller
             'yang_menerima' => $request->yang_menerima,
             'metode_pembayaran' => $request->metode_pembayaran,
             'jenis_pengeluaran' => $request->jenis_pengeluaran,
+            'status_pengeluaran' => $request->status_pengeluaran,
             'bukti_pembayaran' => $request->bukti_pembayaran
         ]);
 
