@@ -1,4 +1,4 @@
-<?php $__env->startSection('title'); ?>Jenis Pengeluaran
+<?php $__env->startSection('title'); ?>Perlengkapan
  <?php echo e($title); ?>
 
 <?php $__env->stopSection(); ?>
@@ -10,9 +10,9 @@
 <?php $__env->startSection('content'); ?>
 	<?php $__env->startComponent('components.breadcrumb'); ?>
 		<?php $__env->slot('breadcrumb_title'); ?>
-			<h3>Data Jenis Pengeluaran</h3>
+			<h3>Data Perlengkapan</h3>
 		<?php $__env->endSlot(); ?>
-		<li class="breadcrumb-item active"><a href="<?php echo e(route('jenis-pengeluaran')); ?>">Jenis Pengeluaran</a></li>
+		<li class="breadcrumb-item active"><a href="<?php echo e(route('perlengkapan')); ?>">Perlengkapan</a></li>
 		<li class="breadcrumb-item active">Table</li>
 	<?php echo $__env->renderComponent(); ?>
 
@@ -20,7 +20,7 @@
     <nav class="page-breadcrumb">
         <ol class="breadcrumb align-items-center">
             <div class="d-grid gap-2 d-md-block mx-2">
-                    <a href="<?php echo e(route('jenis-pengeluaran.create')); ?>" class="btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Tambah Data">
+                    <a href="<?php echo e(route('perlengkapan.create')); ?>" class="btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Tambah Data">
                         <i class="fa fa-plus"></i> Tambah
                     </a>
             </div>
@@ -70,7 +70,7 @@
 	                            <thead>
 	                                <tr>
 	                                    <th width="5%">No</th>
-	                                    <th>Jenis Pengeluaran</th>
+	                                    <th>Nama Perlengkapan</th>
 										<th>Keterangan</th>
 										<?php if(isAdmin()): ?>
 										<th width="20%">Action</th>
@@ -78,10 +78,10 @@
 	                                </tr>
 	                            </thead>
 	                            <tbody>
-	                                <?php $__currentLoopData = $jenis_pengeluarans; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+	                                <?php $__currentLoopData = $perlengkapans; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 										<tr>
 											<td><?php echo e($loop->iteration); ?></td>
-											<td><?php echo e($data->jenis_pengeluaran); ?></td>
+											<td><?php echo e($data->nama_perlengkapan); ?></td>
 											<td><?php echo e($data->keterangan); ?></td>
 											<?php if(isAdmin()): ?>
 											<td class="text-center">
@@ -90,9 +90,9 @@
 													<div class="btn-group" role="group">
 														<button class="btn btn-secondary btn-sm dropdown-toggle" id="btnGroupDrop1" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
 														<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-															<a class="dropdown-item" href="<?php echo e(route('jenis-pengeluaran.edit', $data->id)); ?>"><span><i class="pt-2 pe-2" data-feather="edit"></i> Edit</span></a>
+															<a class="dropdown-item" href="<?php echo e(route('perlengkapan.edit', $data->id)); ?>"><span><i class="pt-2 pe-2" data-feather="edit"></i> Edit</span></a>
 
-															<a class="dropdown-item" href="<?php echo e(route('jenis-pengeluaran.delete', $data->id)); ?>" onclick="return confirm('Apakah Anda Yakin?')"><span><i class="pt-2 pe-2" data-feather="delete"></i> Delete</span></a>
+															<a class="dropdown-item" href="<?php echo e(route('perlengkapan.delete', $data->id)); ?>" onclick="return confirm('Apakah Anda Yakin?')"><span><i class="pt-2 pe-2" data-feather="delete"></i> Delete</span></a>
 														</div>
 													</div>
 												</div>
@@ -118,4 +118,4 @@
 	<?php $__env->stopPush(); ?>
 
 <?php $__env->stopSection(); ?>
-<?php echo $__env->make('layouts.admin.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Applications/MAMP/htdocs/project-expedisi/resources/views/jenis-pengeluaran/index.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.admin.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Applications/MAMP/htdocs/project-expedisi/resources/views/perlengkapan/index.blade.php ENDPATH**/ ?>

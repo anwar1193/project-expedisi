@@ -1,4 +1,4 @@
-<?php $__env->startSection('title'); ?>Tambah Jenis Pengeluaran
+<?php $__env->startSection('title'); ?>Edit Jenis Pengeluaran
  <?php echo e($title); ?>
 
 <?php $__env->stopSection(); ?>
@@ -10,10 +10,10 @@
 <?php $__env->startSection('content'); ?>
 	<?php $__env->startComponent('components.breadcrumb'); ?>
 		<?php $__env->slot('breadcrumb_title'); ?>
-			<h3>Jenis Perangkat</h3>
+			<h3>Jenis Pengeluaran</h3>
 		<?php $__env->endSlot(); ?>
         <li class="breadcrumb-item active"><a href="<?php echo e(route('jenis-pengeluaran')); ?>">Jenis Pengeluaran</a></li>
-        <li class="breadcrumb-item active">Tambah</li>
+        <li class="breadcrumb-item active">Edit</li>
 	<?php echo $__env->renderComponent(); ?>
 	
 	<div class="container-fluid">
@@ -21,20 +21,13 @@
 			<div class="col-sm-12">
 				<div class="card">
 					<div class="card-header pb-0">
-						<?php if(session()->has('error')): ?>
-							<div class="alert alert-danger alert-dismissible fade show" role="alert">
-								<strong>Gagal <i class="fa fa-info-circle"></i></strong> 
-								<?php echo e(session('error')); ?>
-
-								<button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
-							</div>
-						<?php endif; ?>
-						
-						<h5>Form Tambah Jenis Pengeluaran</h5>
+						<h5>Form Edit Jenis Pengeluaran</h5>
 					</div>
-					<form class="form theme-form" method="POST" action="<?php echo e(route('jenis-pengeluaran.store')); ?>" enctype="multipart/form-data">
+					<form class="form theme-form" method="POST" action="<?php echo e(route('jenis-pengeluaran.update')); ?>" enctype="multipart/form-data">
                         <?php echo csrf_field(); ?>
 						<div class="card-body">
+
+                            <input type="text" name="id" value="<?php echo e($jenis_pengeluaran->id); ?>" hidden>
 							
 							<div class="row">
 								<div class="col">
@@ -47,7 +40,7 @@ if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>" type="text" name="jenis_pengeluaran" autocomplete="off" value="<?php echo e(old('jenis_pengeluaran')); ?>"/>
+unset($__errorArgs, $__bag); ?>" type="text" name="jenis_pengeluaran" autocomplete="off" value="<?php echo e(old('jenis_pengeluaran', $jenis_pengeluaran->jenis_pengeluaran)); ?>"/>
 
 										<?php $__errorArgs = ['jenis_pengeluaran'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -77,7 +70,7 @@ if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>" type="text" name="keterangan" autocomplete="off" value="<?php echo e(old('keterangan')); ?>"/>
+unset($__errorArgs, $__bag); ?>" type="text" name="keterangan" autocomplete="off" value="<?php echo e(old('keterangan', $jenis_pengeluaran->keterangan)); ?>"/>
 
 										<?php $__errorArgs = ['keterangan'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -116,4 +109,4 @@ unset($__errorArgs, $__bag); ?>
 	<?php $__env->stopPush(); ?>
 
 <?php $__env->stopSection(); ?>
-<?php echo $__env->make('layouts.admin.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Applications/MAMP/htdocs/project-expedisi/resources/views/jenis-pengeluaran/create.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.admin.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Applications/MAMP/htdocs/project-expedisi/resources/views/jenis-pengeluaran/edit.blade.php ENDPATH**/ ?>

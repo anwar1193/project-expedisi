@@ -25,6 +25,8 @@ use App\Http\Controllers\SurveilanceCarController;
 use App\Http\Controllers\PemasukanLainnyaController;
 use App\Http\Controllers\DaftarPengeluaranController;
 use App\Http\Controllers\JenisPengeluaranController;
+use App\Http\Controllers\PembelianPerlengkapanController;
+use App\Http\Controllers\PerlengkapanController;
 use App\Models\JenisPengeluaran;
 
 /*
@@ -90,6 +92,13 @@ Route::middleware("auth")->group(function() {
         Route::get('jenis-pengeluaran/edit/{id}', [JenisPengeluaranController::class, 'edit'])->name('jenis-pengeluaran.edit');
         Route::post('jenis-pengeluaran/update', [JenisPengeluaranController::class, 'update'])->name('jenis-pengeluaran.update');
         Route::get('jenis-pengeluaran/delete/{id}', [JenisPengeluaranController::class, 'delete'])->name('jenis-pengeluaran.delete');
+       
+        Route::get('perlengkapan', [PerlengkapanController::class, 'index'])->name('perlengkapan');
+        Route::get('perlengkapan/create', [PerlengkapanController::class, 'create'])->name('perlengkapan.create');
+        Route::post('perlengkapan/store', [PerlengkapanController::class, 'store'])->name('perlengkapan.store');
+        Route::get('perlengkapan/edit/{id}', [PerlengkapanController::class, 'edit'])->name('perlengkapan.edit');
+        Route::post('perlengkapan/update', [PerlengkapanController::class, 'update'])->name('perlengkapan.update');
+        Route::get('perlengkapan/delete/{id}', [PerlengkapanController::class, 'delete'])->name('perlengkapan.delete');
 
         Route::get('perangkat', [PerangkatController::class, 'index'])->name('perangkat');
         Route::get('perangkat/create', [PerangkatController::class, 'create'])->name('perangkat.create');
@@ -209,6 +218,15 @@ Route::middleware("auth")->group(function() {
         Route::post('/', [PemasukanLainnyaController::class, 'store'])->name('data-pemasukan.store');
         Route::post('/update/{id}', [PemasukanLainnyaController::class, 'update'])->name('data-pemasukan.update');
         Route::get('/delete/{id}', [PemasukanLainnyaController::class, 'delete'])->name('data-pemasukan.delete');
+    });
+    
+    Route::prefix('pembelian-perlengkapan')->group(function () {
+        Route::get('/', [PembelianPerlengkapanController::class, 'index'])->name('pembelian-perlengkapan');
+        Route::get('/create', [PembelianPerlengkapanController::class, 'create'])->name('pembelian-perlengkapan.create');
+        Route::get('/edit/{id}', [PembelianPerlengkapanController::class, 'edit'])->name('pembelian-perlengkapan.edit');
+        Route::post('/', [PembelianPerlengkapanController::class, 'store'])->name('pembelian-perlengkapan.store');
+        Route::post('/update/{id}', [PembelianPerlengkapanController::class, 'update'])->name('pembelian-perlengkapan.update');
+        Route::get('/delete/{id}', [PembelianPerlengkapanController::class, 'delete'])->name('pembelian-perlengkapan.delete');
     });
 
     Route::get('user-level', [UserController::class, 'listLevel'])->name('level');
