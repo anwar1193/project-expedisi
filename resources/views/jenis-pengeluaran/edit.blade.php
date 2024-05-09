@@ -1,6 +1,6 @@
 @extends('layouts.admin.master')
 
-@section('title')Edit Jenis Perangkat
+@section('title')Edit Jenis Pengeluaran
  {{ $title }}
 @endsection
 
@@ -11,9 +11,9 @@
 @section('content')
 	@component('components.breadcrumb')
 		@slot('breadcrumb_title')
-			<h3>Jenis Perangkat</h3>
+			<h3>Jenis Pengeluaran</h3>
 		@endslot
-        <li class="breadcrumb-item active"><a href="{{ route('jenis-perangkat') }}">Jenis Perangkat</a></li>
+        <li class="breadcrumb-item active"><a href="{{ route('jenis-pengeluaran') }}">Jenis Pengeluaran</a></li>
         <li class="breadcrumb-item active">Edit</li>
 	@endcomponent
 	
@@ -22,21 +22,21 @@
 			<div class="col-sm-12">
 				<div class="card">
 					<div class="card-header pb-0">
-						<h5>Form Edit Jenis Perangkat</h5>
+						<h5>Form Edit Jenis Pengeluaran</h5>
 					</div>
-					<form class="form theme-form" method="POST" action="{{ route('jenis-perangkat.update') }}" enctype="multipart/form-data">
+					<form class="form theme-form" method="POST" action="{{ route('jenis-pengeluaran.update') }}" enctype="multipart/form-data">
                         @csrf
 						<div class="card-body">
 
-                            <input type="text" name="id" value="{{ $jenis_perangkat->id }}" hidden>
+                            <input type="text" name="id" value="{{ $jenis_pengeluaran->id }}" hidden>
 							
 							<div class="row">
 								<div class="col">
 									<div class="mb-3">
-										<label class="form-label" for="">Kode Jenis</label>
-										<input class="form-control @error('kode_jenis') is-invalid @enderror" type="text" name="kode_jenis" autocomplete="off" value="{{ old('kode_jenis', $jenis_perangkat->kode_jenis) }}"/>
+										<label class="form-label" for="">Jenis Pengeluaran</label>
+										<input class="form-control @error('jenis_pengeluaran') is-invalid @enderror" type="text" name="jenis_pengeluaran" autocomplete="off" value="{{ old('jenis_pengeluaran', $jenis_pengeluaran->jenis_pengeluaran) }}"/>
 
-										@error('kode_jenis')
+										@error('jenis_pengeluaran')
 										<div class="text-danger">
 											{{ $message }}
 										</div>
@@ -48,10 +48,10 @@
                             <div class="row">
 								<div class="col">
 									<div class="mb-3">
-										<label class="form-label" for="">Jenis</label>
-										<input class="form-control @error('jenis') is-invalid @enderror" type="text" name="jenis" autocomplete="off" value="{{ old('jenis', $jenis_perangkat->jenis) }}"/>
+										<label class="form-label" for="">Keterangan</label>
+										<input class="form-control @error('keterangan') is-invalid @enderror" type="text" name="keterangan" autocomplete="off" value="{{ old('keterangan', $jenis_pengeluaran->keterangan) }}"/>
 
-										@error('jenis')
+										@error('keterangan')
 										<div class="text-danger">
 											{{ $message }}
 										</div>
@@ -63,8 +63,8 @@
 						</div>
 						<div class="card-footer text-end">
 							<button class="btn btn-primary" type="submit">Simpan Data</button>
-							{{-- <button class="btn btn-light" href="{{ route('jenis-perangkat') }}" type="button">Kembali</button> --}}
-							<a href="{{ route('jenis-perangkat') }}" class="btn btn-light">Kembali</a>
+							{{-- <button class="btn btn-light" href="{{ route('jenis-pengeluaran') }}" type="button">Kembali</button> --}}
+							<a href="{{ route('jenis-pengeluaran') }}" class="btn btn-light">Kembali</a>
 							{{-- <input class="btn btn-light" type="button" value="Cancel" /> --}}
 						</div>
 					</form>
