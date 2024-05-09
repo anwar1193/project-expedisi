@@ -13,7 +13,7 @@
 		@slot('breadcrumb_title')
 			<h3>Data Pengiriman</h3>
 		@endslot
-		<li class="breadcrumb-item active"><a href="{{ route('users') }}">Data Pengiriman</a></li>
+		<li class="breadcrumb-item active"><a href="{{ route('data-pengiriman') }}">Data Pengiriman</a></li>
         <li class="breadcrumb-item active">Tambah</li>
 	@endcomponent
 	
