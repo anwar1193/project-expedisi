@@ -11,7 +11,7 @@
 @section('content')
 	@component('components.breadcrumb')
 		@slot('breadcrumb_title')
-			<h3>Jenis Perangkat</h3>
+			<h3>Jenis Pengeluaran</h3>
 		@endslot
         <li class="breadcrumb-item active"><a href="{{ route('jenis-pengeluaran') }}">Jenis Pengeluaran</a></li>
         <li class="breadcrumb-item active">Tambah</li>
@@ -22,6 +22,14 @@
 			<div class="col-sm-12">
 				<div class="card">
 					<div class="card-header pb-0">
+						@if (session()->has('error'))
+							<div class="alert alert-danger alert-dismissible fade show" role="alert">
+								<strong>Gagal <i class="fa fa-info-circle"></i></strong> 
+								{{ session('error') }}
+								<button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+							</div>
+						@endif
+
 						<h5>Form Tambah Jenis Pengeluaran</h5>
 					</div>
 					<form class="form theme-form" method="POST" action="{{ route('jenis-pengeluaran.store') }}" enctype="multipart/form-data">
