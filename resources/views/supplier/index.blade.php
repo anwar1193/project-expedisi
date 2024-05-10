@@ -11,7 +11,7 @@
 @section('content')
 	@component('components.breadcrumb')
 		@slot('breadcrumb_title')
-			<h3>Suuplier</h3>
+			<h3>Supplier</h3>
 		@endslot
 		<li class="breadcrumb-item active"><a href="{{ route('daftar-pengeluaran') }}">Daftar Pengeluaran</a></li>
 		<li class="breadcrumb-item active">Table</li>

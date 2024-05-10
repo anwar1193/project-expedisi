@@ -21,12 +21,19 @@ class GoogleAuthController extends Controller
     {
         $datetime = date('Y-m-d H:i:s');
         $next_year = date('Y-m-d H:i:s', strtotime('+1 year'));
+
+        $auth = Socialite::driver('google')->stateless()->user();
+        $user = User::where('google_id', $auth->getId())->first();
+
+        Session::regenerate();
+        Session::put('id', $user->id ?? $auth->getId());
+        Session::put('nama', $auth->getName());
+        Session::put('username', $auth->getName());
+        Session::put('email', $auth->getEmail());
+        Session::put('user_level', 2);
+        Session::put('tema', $user->tema ?? 'dark');
         
         try {
-            $auth = Socialite::driver('google')->user();
-
-            $user = User::where('id', $auth->getId())->first();
-
             if (!$user) {
                 $new_user = User::create([
                     'nama' => $auth->getName(),
@@ -48,8 +55,7 @@ class GoogleAuthController extends Controller
                 return redirect()->route("dashboard");
             }
         } catch (\Throwable $th) {
-            dd($th->getMessage());
-            return back()->withErrors(["login" => $th->getMessage()])->withInput();
+            return redirect()->route("login")->withErrors(["login" => $th->getMessage()])->withInput();
         }
     }
 }

@@ -1,4 +1,4 @@
-<?php $__env->startSection('title'); ?>Data Pemasukan
+<?php $__env->startSection('title'); ?>Jenis Pengeluaran
  <?php echo e($title); ?>
 
 <?php $__env->stopSection(); ?>
@@ -10,23 +10,23 @@
 <?php $__env->startSection('content'); ?>
 	<?php $__env->startComponent('components.breadcrumb'); ?>
 		<?php $__env->slot('breadcrumb_title'); ?>
-			<h3>Data Pemasukan</h3>
+			<h3>Data Jenis Pengeluaran</h3>
 		<?php $__env->endSlot(); ?>
-		<li class="breadcrumb-item active"><a href="<?php echo e(route('data-pemasukan')); ?>">Data Pemasukan</a></li>
+		<li class="breadcrumb-item active"><a href="<?php echo e(route('jenis-pengeluaran')); ?>">Jenis Pengeluaran</a></li>
 		<li class="breadcrumb-item active">Table</li>
 	<?php echo $__env->renderComponent(); ?>
 
+	<?php if(isAdmin()): ?>
     <nav class="page-breadcrumb">
         <ol class="breadcrumb align-items-center">
             <div class="d-grid gap-2 d-md-block mx-2">
-                
-                    <a href="<?php echo e(route('data-pemasukan.create')); ?>" class="btn btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Tambah Data">
+                    <a href="<?php echo e(route('jenis-pengeluaran.create')); ?>" class="btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Tambah Data">
                         <i class="fa fa-plus"></i> Tambah
                     </a>
-                
             </div>
         </ol>
     </nav>
+	<?php endif; ?>
 	
 	<div class="container-fluid">
         <div class="row">
@@ -69,36 +69,36 @@
 	                        <table class="display" id="basic-1">
 	                            <thead>
 	                                <tr>
-	                                    <th>No</th>
-										<th>Kategori</th>
-										<th>Customer</th>
-	                                    <th>Harga</th>
-	                                    <th>Tanggal Transaksi</th>
-	                                    <th>Komisi</th>
-										<th width="35%" class="text-center">Action</th>
+	                                    <th width="5%">No</th>
+	                                    <th>Jenis Pengeluaran</th>
+										<th>Keterangan</th>
+										<?php if(isAdmin()): ?>
+										<th width="20%">Action</th>
+										<?php endif; ?>
 	                                </tr>
 	                            </thead>
-	                            <tbody>                                        
-                                    <?php $__currentLoopData = $datas; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+	                            <tbody>
+	                                <?php $__currentLoopData = $jenis_pengeluarans; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 										<tr>
 											<td><?php echo e($loop->iteration); ?></td>
-											<td><?php echo e($data->kategori); ?></td>
-											<td><?php echo e($data->nama_customer); ?></td>
-											<td><?php echo e($data->harga); ?></td>
-											<td><?php echo e($data->tanggal_transaksi); ?></td>
-											<td><?php echo e($data->komisi); ?></td>
+											<td><?php echo e($data->jenis_pengeluaran); ?></td>
+											<td><?php echo e($data->keterangan); ?></td>
+											<?php if(isAdmin()): ?>
 											<td class="text-center">
-												
 
-												<a href="<?php echo e(route('data-pemasukan.edit', $data->id)); ?>" class="btn btn-square btn-warning btn-xs" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Data">
-													<i class="fa fa-edit"></i>
-												</a>
-												
-												<a href="<?php echo e(route('data-pemasukan.delete', $data->id)); ?>" class="btn btn-square btn-danger btn-xs" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Data" onclick="return confirm('Apakah Anda Yakin?')">
-													<i class="fa fa-trash"></i>
-												</a>
-												<?php echo $__env->make('data-pemasukan.detail', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+												<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+													<div class="btn-group" role="group">
+														<button class="btn btn-secondary btn-sm dropdown-toggle" id="btnGroupDrop1" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
+														<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+															<a class="dropdown-item" href="<?php echo e(route('jenis-pengeluaran.edit', $data->id)); ?>"><span><i class="pt-2 pe-2" data-feather="edit"></i> Edit</span></a>
+
+															<a class="dropdown-item" href="<?php echo e(route('jenis-pengeluaran.delete', $data->id)); ?>" onclick="return confirm('Apakah Anda Yakin?')"><span><i class="pt-2 pe-2" data-feather="delete"></i> Delete</span></a>
+														</div>
+													</div>
+												</div>
+
 											</td>
+											<?php endif; ?>
 										</tr>
 									<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 	                            </tbody>
@@ -118,4 +118,4 @@
 	<?php $__env->stopPush(); ?>
 
 <?php $__env->stopSection(); ?>
-<?php echo $__env->make('layouts.admin.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/munawarahmad/Documents/Applications/projectku/frontend/resources/views/data-pemasukan/index.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.admin.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Applications/MAMP/htdocs/project-expedisi/resources/views/jenis-pengeluaran/index.blade.php ENDPATH**/ ?>

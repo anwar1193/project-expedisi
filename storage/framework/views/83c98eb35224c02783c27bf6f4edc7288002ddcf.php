@@ -73,7 +73,7 @@
 										<th>Tanggal Pengeluaran</th>
 										<th>Keterangan</th>
 	                                    <th>Jumlah Pembayaran</th>
-	                                    <th>Pengguna Terkait</th>
+	                                    <th>Yang Menerima Pembayaran</th>
 	                                    <th>Status Pengeluaran</th>
 	                                    <th>Jenis Pengeluaran</th>
 										<th width="35%" class="text-center">Action</th>
@@ -86,7 +86,7 @@
 											<td><?php echo e($data->tgl_pengeluaran); ?></td>
 											<td><?php echo e($data->keterangan); ?></td>
 											<td><?php echo e($data->jumlah_pembayaran); ?></td>
-											<td><?php echo e($data->pengguna_terkait); ?></td>
+											<td><?php echo e($data->yang_menerima); ?></td>
 											<td><?php echo e($data->status_pengeluaran == 1 ? 'Disetujui' : 'Pending'); ?></td>
 											<td><?php echo e($data->jenis_pengeluaran); ?></td>
 											<td class="text-center">

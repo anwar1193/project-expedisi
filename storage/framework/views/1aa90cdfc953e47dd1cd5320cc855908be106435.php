@@ -10,7 +10,7 @@
 <?php $__env->startSection('content'); ?>
 	<?php $__env->startComponent('components.breadcrumb'); ?>
 		<?php $__env->slot('breadcrumb_title'); ?>
-			<h3>Suuplier</h3>
+			<h3>Supplier</h3>
 		<?php $__env->endSlot(); ?>
 		<li class="breadcrumb-item active"><a href="<?php echo e(route('daftar-pengeluaran')); ?>">Daftar Pengeluaran</a></li>
 		<li class="breadcrumb-item active">Table</li>

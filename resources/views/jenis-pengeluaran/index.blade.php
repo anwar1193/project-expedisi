@@ -1,6 +1,6 @@
 @extends('layouts.admin.master')
 
-@section('title')Daftar Pengeluaran
+@section('title')Jenis Pengeluaran
  {{ $title }}
 @endsection
 
@@ -11,23 +11,23 @@
 @section('content')
 	@component('components.breadcrumb')
 		@slot('breadcrumb_title')
-			<h3>Daftar Pengeluaran</h3>
+			<h3>Data Jenis Pengeluaran</h3>
 		@endslot
-		<li class="breadcrumb-item active"><a href="{{ route('daftar-pengeluaran') }}">Daftar Pengeluaran</a></li>
+		<li class="breadcrumb-item active"><a href="{{ route('jenis-pengeluaran') }}">Jenis Pengeluaran</a></li>
 		<li class="breadcrumb-item active">Table</li>
 	@endcomponent
 
+	@if (isAdmin())
     <nav class="page-breadcrumb">
         <ol class="breadcrumb align-items-center">
             <div class="d-grid gap-2 d-md-block mx-2">
-                {{-- @if (isAdmin()) --}}
-                    <a href="{{ route('daftar-pengeluaran.create') }}" class="btn btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Tambah Data">
+                    <a href="{{ route('jenis-pengeluaran.create') }}" class="btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Tambah Data">
                         <i class="fa fa-plus"></i> Tambah
                     </a>
-                {{-- @endif --}}
             </div>
         </ol>
     </nav>
+	@endif
 	
 	<div class="container-fluid">
         <div class="row">
@@ -67,40 +67,36 @@
 	                        <table class="display" id="basic-1">
 	                            <thead>
 	                                <tr>
-	                                    <th>No</th>
-										<th>Tanggal Pengeluaran</th>
-										<th>Keterangan</th>
-	                                    <th>Jumlah Pembayaran</th>
-	                                    <th>Yang Menerima Pembayaran</th>
-	                                    <th>Status Pengeluaran</th>
+	                                    <th width="5%">No</th>
 	                                    <th>Jenis Pengeluaran</th>
-										<th width="35%" class="text-center">Action</th>
+										<th>Keterangan</th>
+										@if (isAdmin())
+										<th width="20%">Action</th>
+										@endif
 	                                </tr>
 	                            </thead>
-	                            <tbody>                                        
-                                    @foreach ($datas as $data)
+	                            <tbody>
+	                                @foreach ($jenis_pengeluarans as $data)
 										<tr>
 											<td>{{ $loop->iteration; }}</td>
-											<td>{{ $data->tgl_pengeluaran }}</td>
-											<td>{{ $data->keterangan }}</td>
-											<td>{{ $data->jumlah_pembayaran }}</td>
-											<td>{{ $data->yang_menerima }}</td>
-											<td>{{ $data->status_pengeluaran == 1 ? 'Disetujui' : 'Pending'; }}</td>
 											<td>{{ $data->jenis_pengeluaran }}</td>
+											<td>{{ $data->keterangan }}</td>
+											@if (isAdmin())
 											<td class="text-center">
-												<a class="btn btn-square btn-info btn-xs" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalDataPengiriman{{ $data->id }}"title="Detail Data">
-													<i class="fa fa-eye"></i>
-												</a>
 
-												<a href="{{ route('daftar-pengeluaran.edit', $data->id) }}" class="btn btn-square btn-warning btn-xs" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Data">
-													<i class="fa fa-edit"></i>
-												</a>
-												
-												<a href="{{ route('daftar-pengeluaran.delete', $data->id) }}" class="btn btn-square btn-danger btn-xs" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Data" onclick="return confirm('Apakah Anda Yakin?')">
-													<i class="fa fa-trash"></i>
-												</a>
-												@include('daftar-pengeluaran.detail')
+												<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+													<div class="btn-group" role="group">
+														<button class="btn btn-secondary btn-sm dropdown-toggle" id="btnGroupDrop1" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
+														<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+															<a class="dropdown-item" href="{{ route('jenis-pengeluaran.edit', $data->id) }}"><span><i class="pt-2 pe-2" data-feather="edit"></i> Edit</span></a>
+
+															<a class="dropdown-item" href="{{ route('jenis-pengeluaran.delete', $data->id) }}" onclick="return confirm('Apakah Anda Yakin?')"><span><i class="pt-2 pe-2" data-feather="delete"></i> Delete</span></a>
+														</div>
+													</div>
+												</div>
+
 											</td>
+											@endif
 										</tr>
 									@endforeach
 	                            </tbody>

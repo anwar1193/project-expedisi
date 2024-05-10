@@ -1,4 +1,4 @@
-<?php $__env->startSection('title'); ?>Edit Data Pemasukan
+<?php $__env->startSection('title'); ?>Tambah Supplier
  <?php echo e($title); ?>
 
 <?php $__env->stopSection(); ?>
@@ -10,10 +10,10 @@
 <?php $__env->startSection('content'); ?>
 	<?php $__env->startComponent('components.breadcrumb'); ?>
 		<?php $__env->slot('breadcrumb_title'); ?>
-			<h3>Data Pemasukan</h3>
+			<h3>Supplier</h3>
 		<?php $__env->endSlot(); ?>
-		<li class="breadcrumb-item active"><a href="<?php echo e(route('data-pemasukan')); ?>">Data Pemasukan</a></li>
-        <li class="breadcrumb-item active">Edit</li>
+		<li class="breadcrumb-item active"><a href="<?php echo e(route('supplier')); ?>">Supplier</a></li>
+        <li class="breadcrumb-item active">Tambah</li>
 	<?php echo $__env->renderComponent(); ?>
 	
 	<div class="container-fluid">
@@ -21,26 +21,35 @@
 			<div class="col-sm-12">
 				<div class="card">
 					<div class="card-header pb-0">
-						<h5>Form Edit Data Pemasukan</h5>
+						<?php if(session()->has('error')): ?>
+							<div class="alert alert-danger alert-dismissible fade show" role="alert">
+								<strong>Gagal <i class="fa fa-info-circle"></i></strong> 
+								<?php echo e(session('error')); ?>
+
+								<button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+							</div>
+						<?php endif; ?>
+						
+						<h5>Form Supplier</h5>
 					</div>
-					<form class="form theme-form" method="POST" action="<?php echo e(route('data-pemasukan.update', $datas->id)); ?>" enctype="multipart/form-data">
+					<form class="form theme-form" method="POST" action="<?php echo e(route('supplier.store')); ?>">
                         <?php echo csrf_field(); ?>
 						<div class="card-body">
-
+							
 							<div class="row">
 								<div class="col">
 									<div class="mb-3">
-										<label class="form-label" for="">Kategori</label>
-										<input class="form-control <?php $__errorArgs = ['kategori'];
+										<label class="form-label" for="">Nama Supplier</label>
+										<input class="form-control <?php $__errorArgs = ['nama_supplier'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>" type="text" name="kategori" autocomplete="off" value="<?php echo e(old('kategori', $datas->kategori)); ?>"/>
+unset($__errorArgs, $__bag); ?>" type="text" name="nama_supplier" autocomplete="off" value="<?php echo e(old('nama_supplier')); ?>"/>
 
-										<?php $__errorArgs = ['kategori'];
+										<?php $__errorArgs = ['nama_supplier'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -60,17 +69,17 @@ unset($__errorArgs, $__bag); ?>
 							<div class="row">
 								<div class="col">
 									<div class="mb-3">
-										<label class="form-label" for="">Nama Customer</label>
-										<input class="form-control <?php $__errorArgs = ['nama_customer'];
+										<label class="form-label" for="">Keterangan Barang</label>
+										<input class="form-control <?php $__errorArgs = ['keterangan_barang'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>" type="text" name="nama_customer" autocomplete="off" value="<?php echo e(old('nama_customer', $datas->nama_customer)); ?>"/>
+unset($__errorArgs, $__bag); ?>" type="text" name="keterangan_barang" autocomplete="off" value="<?php echo e(old('keterangan_barang')); ?>"/>
 
-										<?php $__errorArgs = ['nama_customer'];
+										<?php $__errorArgs = ['keterangan_barang'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -98,39 +107,9 @@ if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>" type="number" name="harga" autocomplete="off" value="<?php echo e(old('harga', $datas->harga)); ?>"/>
+unset($__errorArgs, $__bag); ?>" type="number" name="harga" autocomplete="off" value="<?php echo e(old('harga')); ?>"/>
 
 										<?php $__errorArgs = ['harga'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-										<div class="text-danger">
-											<?php echo e($message); ?>
-
-										</div>
-										<?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-									</div>
-								</div>
-							</div>
-
-							<div class="row">
-								<div class="col">
-									<div class="mb-3">
-										<label class="form-label" for="">Tanggal Transaksi</label>
-										<input class="form-control <?php $__errorArgs = ['tanggal_transaksi'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>" type="text" name="tanggal_transaksi" autocomplete="off" value="<?php echo e($datas->tanggal_transaksi); ?>" readonly/>
-
-										<?php $__errorArgs = ['tanggal_transaksi'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -150,17 +129,17 @@ unset($__errorArgs, $__bag); ?>
                             <div class="row">
 								<div class="col">
 									<div class="mb-3">
-										<label class="form-label" for="">Komisi</label>
-										<input class="form-control <?php $__errorArgs = ['komisi'];
+										<label class="form-label" for="">Jumlah Barang</label>
+										<input class="form-control <?php $__errorArgs = ['jumlah_barang'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>" type="number" name="komisi" autocomplete="off" value="<?php echo e(old('komisi', $datas->komisi)); ?>"/>
+unset($__errorArgs, $__bag); ?>" type="number" name="jumlah_barang" autocomplete="off" value="<?php echo e(old('jumlah_barang')); ?>"/>
 
-										<?php $__errorArgs = ['komisi'];
+										<?php $__errorArgs = ['jumlah_barang'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -177,10 +156,39 @@ unset($__errorArgs, $__bag); ?>
 								</div>
 							</div>
 
+							<div class="row">
+								<div class="col">
+									<div class="mb-3">
+										<label class="form-label" for="">Nomor Hp</label>
+										<input class="form-control <?php $__errorArgs = ['nomor_hp'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" type="text" name="nomor_hp" autocomplete="off" value="<?php echo e(old('nomor_hp')); ?>"/>
+
+										<?php $__errorArgs = ['nomor_hp'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+										<div class="text-danger">
+											<?php echo e($message); ?>
+
+										</div>
+										<?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+									</div>
+								</div>
+							</div>
 						</div>
 						<div class="card-footer text-end">
 							<button class="btn btn-primary" type="submit">Simpan Data</button>
-							<a href="<?php echo e(route('data-pemasukan')); ?>" class="btn btn-light">Kembali</a>
+							<a href="<?php echo e(route('data-pengiriman')); ?>" class="btn btn-light">Kembali</a>
 						</div>
 					</form>
 				</div>
@@ -195,4 +203,4 @@ unset($__errorArgs, $__bag); ?>
 	<?php $__env->stopPush(); ?>
 
 <?php $__env->stopSection(); ?>
-<?php echo $__env->make('layouts.admin.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/munawarahmad/Documents/Applications/projectku/frontend/resources/views/data-pemasukan/edit.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.admin.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Applications/MAMP/htdocs/project-expedisi/resources/views/supplier/create.blade.php ENDPATH**/ ?>
