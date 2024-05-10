@@ -30,7 +30,7 @@ class GoogleAuthController extends Controller
         Session::put('nama', $auth->getName());
         Session::put('username', $auth->getName());
         Session::put('email', $auth->getEmail());
-        Session::put('user_level', 2);
+        Session::put('user_level', 3);
         Session::put('tema', $user->tema ?? 'dark');
         
         try {
@@ -40,7 +40,7 @@ class GoogleAuthController extends Controller
                     'username' => $auth->getName(),
                     'email' => $auth->getEmail(),
                     'google_id' => $auth->getId(),
-                    'user_level' => 2,
+                    'user_level' => 3,
                     'password' => Hash::make('password'),
                     'tgl_kadaluarsa' => $next_year,
                     'last_login' => $datetime,
