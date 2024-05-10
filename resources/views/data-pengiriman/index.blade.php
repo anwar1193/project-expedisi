@@ -28,6 +28,10 @@
 					<a class="btn btn-success" type="button" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalImport" title="Import Excel">
 						<i class="fa fa-file-excel-o"></i> Import Excel
 					</a>
+
+					<a href="{{ route('data-pengiriman.truncate') }}" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Truncate Data">
+                        <i class="fa fa-trash"></i> Truncate
+                    </a>
 					@include('data-pengiriman.modal-import')
                 {{-- @endif --}}
             </div>
@@ -66,6 +70,17 @@
 								<button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
 							</div>
 						@endif
+
+						@if ($errors->any())
+							<div class="alert alert-danger alert-dismissible fade show" role="alert">
+								@foreach ($errors->all() as $error)
+									<strong>Failed <i class="fa fa-info-circle"></i></strong> 
+									{{ $error }}
+									<button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+									<br>
+								@endforeach
+							</div>
+						@endif
 	                    
 						{{-- Table --}}
 						<div class="table-responsive">
@@ -74,42 +89,64 @@
 	                                <tr>
 	                                    <th>No</th>
 										<th>No Resi</th>
-										<th>Nama Penrima</th>
+										<th>Nama Penerima</th>
 	                                    <th>No HP Penerima</th>
 	                                    <th>Kota Tujuan</th>
-	                                    <th>Berat Barang</th>
-	                                    <th>Ongkir</th>
 	                                    <th>Status Pembayaran</th>
+	                                    <th>Metode Pembayaran</th>
 										<th width="35%" class="text-center">Action</th>
 	                                </tr>
 	                            </thead>
 	                            <tbody>                                        
                                     @foreach ($datas as $data)
+										@php
+											$bukti_pembayaran = $data->bukti_pembayaran;
+
+											if($bukti_pembayaran != ''){
+												$explode = explode("/", $bukti_pembayaran);
+												$bukti_pembayaran_view = 'https://'.$explode[2].'/thumbnail?id='.$explode[5];
+											}else{
+												$bukti_pembayaran_view = '#';
+											}
+										@endphp
 										<tr>
 											<td>{{ $loop->iteration; }}</td>
 											<td>{{ $data->no_resi }}</td>
 											<td>{{ $data->nama_penerima }}</td>
 											<td>{{ $data->no_hp_penerima }}</td>
 											<td>{{ $data->kota_tujuan }}</td>
-											<td>{{ $data->berat_barang }}</td>
-											<td>{{ $data->ongkir }}</td>
 											<td>{{ $data->status_pembayaran == 1 ? 'Lunas' : 'Pending'; }}</td>
+											{{-- <td>{{ $bukti_pembayaran_view }}</td> --}}
+											<td onmouseover="showBukti({{ $data->id }})" onmouseout="hideBukti({{ $data->id }})">
+												@if ($bukti_pembayaran != '')
+													<div id="view-bukti{{ $data->id }}" class="mb-3">
+														<img src="{{ $bukti_pembayaran_view }}" alt="test" class="mb-2">
+														<a class="btn btn-primary" href="{{ $bukti_pembayaran }}" target="_blank">View Full Image</a>
+													</div>
+												@endif
+
+												{{ $data->metode_pembayaran }} <i class="{{ $data->metode_pembayaran == 'Transfer' ? 'fa fa-eye' : '' }}"></i>
+											</td>
 											<td class="text-center">
-												<a class="btn btn-square btn-info btn-xs" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalDataPengiriman{{ $data->id }}"title="Detail Data">
-													<i class="fa fa-eye"></i>
-												</a>
 
-												<a href="{{ route('data-pengiriman.edit', $data->id) }}" class="btn btn-square btn-warning btn-xs" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Data">
-													<i class="fa fa-edit"></i>
-												</a>
-												
-												<a href="{{ route('data-pengiriman.delete', $data->id) }}" class="btn btn-square btn-danger btn-xs" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Data" onclick="return confirm('Apakah Anda Yakin?')">
-													<i class="fa fa-trash"></i>
-												</a>
-
-												<a class="btn btn-square btn-warning btn-xs" type="button" data-bs-toggle="modal" data-original-title="test" data-bs-target="#statusPembayaran{{ $data->id }}" title="Edit Status Pembayaran">
+												{{-- <a class="btn btn-square btn-warning btn-xs" type="button" data-bs-toggle="modal" data-original-title="test" data-bs-target="#statusPembayaran{{ $data->id }}" title="Edit Status Pembayaran">
 													<i class="fa fa-credit-card"></i>
-												</a>
+												</a> --}}
+
+												<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+													<div class="btn-group" role="group">
+														<button class="btn btn-secondary btn-sm dropdown-toggle" id="btnGroupDrop1" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
+														<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+															
+															<a class="dropdown-item" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalDataPengiriman{{ $data->id }}" title="Detail Data"><span><i data-feather="eye"></i> Detail</span></a>
+
+															<a class="dropdown-item" href="{{ route('data-pengiriman.edit', $data->id) }}"><span><i data-feather="edit"></i> Edit</span></a>
+
+															<a class="dropdown-item" href="{{ route('data-pengiriman.delete', $data->id) }}" onclick="return confirm('Apakah Anda Yakin?')"><span><i data-feather="delete"></i> Delete</span></a>
+															
+														</div>
+													</div>
+												</div>
 												@include('data-pengiriman.detail')
 												@include('data-pengiriman.status-pembayaran')
 											</td>
@@ -151,6 +188,23 @@
 			});
 		})
 	</script>
+	
+	@foreach ($datas as $data)
+		<script>
+			$('#view-bukti'+{{ $data->id }}).hide();
+		</script>
+	@endforeach
+
+	<script>
+		function showBukti(id) {
+			$('#view-bukti'+id).show();
+		}
+
+		function hideBukti(id) {
+			$('#view-bukti'+id).hide();
+		}
+	</script>
+	
 	@endpush
 
 @endsection

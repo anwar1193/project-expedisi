@@ -145,6 +145,11 @@ Route::middleware("auth")->group(function() {
         Route::get('role-management', [RoleManagementController::class, 'index'])->name('role-management');
         Route::get('change-permission/{id}', [RoleManagementController::class, 'changePermission'])->name('role.change-permission');
         Route::post('add-permission', [RoleManagementController::class, 'addPermission'])->name('role.add-permission');
+        Route::get('role-management-create', [RoleManagementController::class, 'create'])->name('role.create');
+        Route::post('role-management-store', [RoleManagementController::class, 'store'])->name('role.store');
+        Route::get('role-management-edit/{id}', [RoleManagementController::class, 'edit'])->name('role.edit');
+        Route::post('role-management-update', [RoleManagementController::class, 'update'])->name('role.update');
+        Route::get('role-management-delete/{id}', [RoleManagementController::class, 'delete'])->name('role.delete');
     });
 
     Route::get('pemantauan-gps',[PemantauanController::class, 'index'])->name('pemantauan-gps');
@@ -178,6 +183,7 @@ Route::middleware("auth")->group(function() {
         Route::post('/', [DataPengirimanController::class, 'store'])->name('data-pengiriman.store');
         Route::post('/update/{id}', [DataPengirimanController::class, 'update'])->name('data-pengiriman.update');
         Route::get('/delete/{id}', [DataPengirimanController::class, 'delete'])->name('data-pengiriman.delete');
+        Route::get('/truncate', [DataPengirimanController::class, 'truncate'])->name('data-pengiriman.truncate');
         Route::post('/status-pembayaran', [DataPengirimanController::class, 'ubah_status_pembayaran'])->name('data-pengiriman.status');
         Route::post('/import-excel', [DataPengirimanController::class, 'import_excel'])->name('data-pengiriman.import_excel');
     });

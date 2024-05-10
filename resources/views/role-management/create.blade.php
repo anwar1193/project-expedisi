@@ -1,6 +1,6 @@
 @extends('layouts.admin.master')
 
-@section('title')Tambah Supplier
+@section('title')Tambah Role
  {{ $title }}
 @endsection
 
@@ -11,9 +11,9 @@
 @section('content')
 	@component('components.breadcrumb')
 		@slot('breadcrumb_title')
-			<h3>Supplier</h3>
+			<h3>Role</h3>
 		@endslot
-		<li class="breadcrumb-item active"><a href="{{ route('supplier') }}">Supplier</a></li>
+		<li class="breadcrumb-item active"><a href="{{ route('role-management') }}">Role</a></li>
         <li class="breadcrumb-item active">Tambah</li>
 	@endcomponent
 	
@@ -22,19 +22,19 @@
 			<div class="col-sm-12">
 				<div class="card">
 					<div class="card-header pb-0">
-						<h5>Form Supplier</h5>
+						<h5>Form Role</h5>
 					</div>
-					<form class="form theme-form" method="POST" action="{{ route('supplier.store') }}">
+					<form class="form theme-form" method="POST" action="{{ route('role.store') }}">
                         @csrf
 						<div class="card-body">
 							
 							<div class="row">
 								<div class="col">
 									<div class="mb-3">
-										<label class="form-label" for="">Nama Supplier</label>
-										<input class="form-control @error('nama_supplier') is-invalid @enderror" type="text" name="nama_supplier" autocomplete="off" value="{{ old('nama_supplier') }}"/>
+										<label class="form-label" for="">Level</label>
+										<input class="form-control @error('level') is-invalid @enderror" type="text" name="level" autocomplete="off" value="{{ old('level') }}" autofocus/>
 
-										@error('nama_supplier')
+										@error('level')
 										<div class="text-danger">
 											{{ $message }}
 										</div>
@@ -46,66 +46,23 @@
 							<div class="row">
 								<div class="col">
 									<div class="mb-3">
-										<label class="form-label" for="">Keterangan Barang</label>
-										<input class="form-control @error('keterangan_barang') is-invalid @enderror" type="text" name="keterangan_barang" autocomplete="off" value="{{ old('keterangan_barang') }}"/>
+										<label class="form-label" for="">Deskripsi</label>
+										{{-- <input class="form-control @error('level') is-invalid @enderror" type="text" name="level" autocomplete="off" value="{{ old('level') }}" autofocus/> --}}
 
-										@error('keterangan_barang')
-										<div class="text-danger">
-											{{ $message }}
-										</div>
-										@enderror
+										<textarea name="deskripsi" class="form-control">{{ old('deskripsi') }}</textarea>
 									</div>
 								</div>
 							</div>
 
-							<div class="row">
-								<div class="col">
-									<div class="mb-3">
-										<label class="form-label" for="">Harga</label>
-										<input class="form-control @error('harga') is-invalid @enderror" type="number" name="harga" autocomplete="off" value="{{ old('harga') }}"/>
-
-										@error('harga')
-										<div class="text-danger">
-											{{ $message }}
-										</div>
-										@enderror
-									</div>
-								</div>
-							</div>
-							
-                            <div class="row">
-								<div class="col">
-									<div class="mb-3">
-										<label class="form-label" for="">Jumlah Barang</label>
-										<input class="form-control @error('jumlah_barang') is-invalid @enderror" type="number" name="jumlah_barang" autocomplete="off" value="{{ old('jumlah_barang') }}"/>
-
-										@error('jumlah_barang')
-										<div class="text-danger">
-											{{ $message }}
-										</div>
-										@enderror
-									</div>
-								</div>
-							</div>
-
-							<div class="row">
-								<div class="col">
-									<div class="mb-3">
-										<label class="form-label" for="">Nomor Hp</label>
-										<input class="form-control @error('nomor_hp') is-invalid @enderror" type="text" name="nomor_hp" autocomplete="off" value="{{ old('nomor_hp') }}"/>
-
-										@error('nomor_hp')
-										<div class="text-danger">
-											{{ $message }}
-										</div>
-										@enderror
-									</div>
-								</div>
-							</div>
 						</div>
 						<div class="card-footer text-end">
-							<button class="btn btn-primary" type="submit">Simpan Data</button>
-							<a href="{{ route('data-pengiriman') }}" class="btn btn-light">Kembali</a>
+							<a href="{{ route('role-management') }}" class="btn btn-light">
+								<i class="fa fa-backward"></i> Back
+							</a>
+
+							<button class="btn btn-primary" type="submit">
+								<i class="fa fa-save"></i> Save Data
+							</button>
 						</div>
 					</form>
 				</div>

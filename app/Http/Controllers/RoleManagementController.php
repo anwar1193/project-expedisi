@@ -43,4 +43,48 @@ class RoleManagementController extends Controller
 
         return redirect()->route('role-management')->with('success', 'Permission Has Changed');
     }
+
+    public function create(Request $request)
+    {
+        return view('role-management.create');
+    }
+
+    public function store(Request $request)
+    {
+        $validateData = $request->validate([
+            'level' => ['required'],
+        ]);
+
+        $validateData['deskripsi'] = $request->deskripsi;
+
+        Level::create($validateData);
+        return redirect()->route('role-management')->with('success', 'Role added successfully');
+    }
+
+    public function edit($id)
+    {
+        $level = Level::where('id', $id)->first();
+        $data['level'] = $level;
+
+        return view('role-management.edit', $data);
+    }
+
+    public function update(Request $request)
+    {
+        $validateData = $request->validate([
+            'level' => ['required'],
+        ]);
+
+        $validateData['deskripsi'] = $request->deskripsi;
+
+        Level::find($request->id)->update($validateData);
+
+        return redirect()->route('role-management')->with('success', 'Role updated successfully');
+    }
+
+    public function delete($id)
+    {
+        Level::find($id)->delete();
+        return redirect()->route('role-management')->with('success', 'Role deleted successfully');
+    }
 }

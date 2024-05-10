@@ -9,14 +9,6 @@ class Level extends Model
 {
     use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var string[]
-     */
-    protected $fillable = [
-        'kode_level',
-        'level'
-    ];
+    protected $guarded = ['id'];
 
 }

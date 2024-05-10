@@ -92,6 +92,10 @@
                             </div>
 
                             <div class="text-end mt-4">
+                                <a href="{{ route('role-management') }}" class="btn btn-light">
+                                    <i class="fa fa-backward"></i> Back
+                                </a>
+
                                 <button class="btn btn-primary" type="submit">
                                     <i class="fa fa-save"></i> Save Change
                                 </button>

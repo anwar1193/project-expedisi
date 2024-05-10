@@ -167,8 +167,16 @@ class DataPengirimanController extends Controller
 
         $path = $data->storeAs('public/excel/data_pengiriman', $namafile);
 
-        Excel::import(new DataPengirimanImport, public_path('storage/excel/data_pengiriman/' . $namafile));
+        $import = Excel::import(new DataPengirimanImport, public_path('storage/excel/data_pengiriman/' . $namafile));
 
         return back()->with('success', 'Data berhasil diimport');
     }
+
+    public function truncate()
+    {
+        DataPengiriman::truncate();
+        return back()->with('success', 'Truncate Success');
+    }
 }
+
+// 13:34
