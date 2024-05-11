@@ -41,31 +41,34 @@
             <div class="col-sm-12 col-xl-12">
                 <div class="card">
                     <div class="card-header pb-0">
-                        Periode: {{ \Carbon\Carbon::parse($start)->translatedFormat('d F Y') }} s/d {{ \Carbon\Carbon::parse($end)->translatedFormat('d F Y') }}                    </div>
+                        Periode: {{ \Carbon\Carbon::parse($start)->translatedFormat('d F Y') }} s/d {{ \Carbon\Carbon::parse($end_date)->translatedFormat('d F Y') }}                    
+                    </div>
                     <div class="card-body">
                         <div class="list-group">
                             <a class="list-group-item list-group-item-action flex-column align-items-start" href="javascript:void(0)">
                                 <div class="d-flex w-100 justify-content-between">
                                     <h5 class="mb-1">Jumlah Pengiriman</h5>
                                 </div>
-                                <p class="mb-1">Rp. {{ $jumlah_pengiriman->totalPengiriman ?? 0 }} ,-</p>
+                                <p class="mb-1">Rp. {{ number_format($jumlah_pengiriman->totalPengiriman, 0, ',', '.') ?? 0 }} ,-</p>
                             </a>
                             <a class="list-group-item list-group-item-action flex-column align-items-start" href="javascript:void(0)">
                                 <div class="d-flex w-100 justify-content-between">
                                     <h5 class="mb-1">Jumlah Pemasukkan</h5>
                                 </div>
-                                <p class="mb-1">Rp. {{ $jumlah_pemasukkan->totalPemasukan ?? 0 }} ,-</p>
+                                <p class="mb-1">Rp. {{ number_format($jumlah_pemasukkan->totalPemasukan, 0, ',', '.') ?? 0 }} ,-</p>
                             </a>
                             <a class="list-group-item list-group-item-action flex-column align-items-start" href="javascript:void(0)">
                                 <div class="d-flex w-100 justify-content-between">
                                     <h5 class="mb-1">Jumlah Pengeluaran</h5>
                                 </div>
-                                <p class="mb-1">Rp. {{ $jumlah_pengeluaran->totalPengeluaran ?? 0 }} ,-</p>
+                                <p class="mb-1">Rp. {{ number_format($jumlah_pengeluaran->totalPengeluaran, 0, ',', '.') ?? 0 }} ,-</p>
                             </a>
                         </div>
                     </div>
                     <div class="card-footer text-end">
-                        <button class="btn btn-primary">Cetak PDF</button>
+                        <a href="{{ route('laporan.laba-rugi.export-pdf', ['start' => request('start'), 'end' => request('end')]) }}" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Cetak PDF">
+                            <i class="fa fa-file-pdf-o"></i> Cetak PDF
+                        </a>
                     </div>
                 </div>
             </div>

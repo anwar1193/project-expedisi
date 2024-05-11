@@ -44,6 +44,9 @@
                 <div class="card">
                     <div class="tabbed-card">
                         <div class="card-header pb-0">
+							<div class="p-2">
+								Periode: {{ \Carbon\Carbon::parse($start)->translatedFormat('d F Y') }} s/d {{ \Carbon\Carbon::parse($end_date)->translatedFormat('d F Y') }}
+							</div>
                             @include('laporan.nav.nav-tabs', ['activeTab' => 'home'])
                         </div>
 

@@ -43,6 +43,10 @@
                 <div class="card">
                     <div class="tabbed-card">
                         <div class="card-header pb-0">
+							<div class="p-2">
+								Periode: <?php echo e(\Carbon\Carbon::parse($start)->translatedFormat('d F Y')); ?> s/d <?php echo e(\Carbon\Carbon::parse($end_date)->translatedFormat('d F Y')); ?>
+
+							</div>
                             <?php echo $__env->make('laporan.nav.nav-tabs', ['activeTab' => 'home'], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                         </div>
 
