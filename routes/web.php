@@ -25,6 +25,7 @@ use App\Http\Controllers\SurveilanceCarController;
 use App\Http\Controllers\PemasukanLainnyaController;
 use App\Http\Controllers\DaftarPengeluaranController;
 use App\Http\Controllers\JenisPengeluaranController;
+use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PembelianPerlengkapanController;
 use App\Http\Controllers\PerlengkapanController;
 use App\Models\JenisPengeluaran;
@@ -235,6 +236,15 @@ Route::middleware("auth")->group(function() {
         Route::post('/', [PembelianPerlengkapanController::class, 'store'])->name('pembelian-perlengkapan.store');
         Route::post('/update/{id}', [PembelianPerlengkapanController::class, 'update'])->name('pembelian-perlengkapan.update');
         Route::get('/delete/{id}', [PembelianPerlengkapanController::class, 'delete'])->name('pembelian-perlengkapan.delete');
+    });
+    
+    Route::prefix('laporan')->group(function () {
+        Route::get('/laba-rugi', [LaporanController::class, 'laba_rugi'])->name('laporan.laba-rugi');
+        Route::get('/transaksi-harian', [LaporanController::class, 'transaksi_harian'])->name('laporan.transaksi-harian');
+        Route::get('laba-rugi/export-pdf', [LaporanController::class, 'laba_rugi_pdf'])->name('laporan.laba-rugi.export-pdf');
+        Route::get('laporan-pengiriman/export-pdf', [LaporanController::class, 'data_pengiriman_pdf'])->name('laporan.pengiriman.export-pdf');
+        Route::get('laporan-pemasukkan/export-pdf', [LaporanController::class, 'data_pemasukkan_pdf'])->name('laporan.pemasukkan.export-pdf');
+        Route::get('laporan-pengeluaran/export-pdf', [LaporanController::class, 'data_pengeluaran_pdf'])->name('laporan.pengeluaran.export-pdf');
     });
 
     Route::get('user-level', [UserController::class, 'listLevel'])->name('level');
