@@ -177,6 +177,32 @@ class DataPengirimanController extends Controller
         DataPengiriman::truncate();
         return back()->with('success', 'Truncate Success');
     }
+
+    public function approve($id)
+    {
+        $proses = DataPengiriman::find($id)->update([
+            'status_pembayaran' => 1
+        ]);
+
+        return back()->with('success', 'Data Pengiriman Telah Di Approve');
+    }
+
+    public function approveSelected(Request $request)
+    {
+        $id_pengiriman = $request->id_pengiriman;
+
+        if($id_pengiriman == NULL){
+            return back()->with('error', 'Belum Ada Data Dipilih');
+        }
+
+        for($i=0; $i<sizeof($id_pengiriman); $i++){
+            DataPengiriman::find($id_pengiriman[$i])->update([
+                'status_pembayaran' => 1
+            ]);
+        }
+
+        return back()->with('success', 'Data Pengiriman Telah Di Approve');
+    }
 }
 
 // 13:34

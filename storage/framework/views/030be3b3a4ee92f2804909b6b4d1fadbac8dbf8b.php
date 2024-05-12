@@ -12,7 +12,7 @@
 		<?php $__env->slot('breadcrumb_title'); ?>
 			<h3>Data Pengiriman</h3>
 		<?php $__env->endSlot(); ?>
-		<li class="breadcrumb-item active"><a href="<?php echo e(route('users')); ?>">Data Pengiriman</a></li>
+		<li class="breadcrumb-item active"><a href="<?php echo e(route('data-pengiriman')); ?>">Data Pengiriman</a></li>
         <li class="breadcrumb-item active">Tambah</li>
 	<?php echo $__env->renderComponent(); ?>
 	

@@ -10,7 +10,7 @@
         <?php endif; ?>
         
         <a href="<?php echo e(route('profile')); ?>"> <h6 class="mt-3 f-14 f-w-600 text-danger"><?php echo e(Session::get('nama')); ?></h6></a>
-        <p class="mb-0 font-roboto"><?php echo e(Session::get('nama_satker')); ?></p>
+        <p class="mb-0 font-roboto"><?php echo e(HApp::level(Session::get('user_level'))); ?></p>
     </div>
     <nav>
         <div class="main-navbar">

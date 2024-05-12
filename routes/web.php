@@ -197,6 +197,8 @@ Route::middleware("auth")->group(function() {
         Route::get('/truncate', [DataPengirimanController::class, 'truncate'])->name('data-pengiriman.truncate');
         Route::post('/status-pembayaran', [DataPengirimanController::class, 'ubah_status_pembayaran'])->name('data-pengiriman.status');
         Route::post('/import-excel', [DataPengirimanController::class, 'import_excel'])->name('data-pengiriman.import_excel');
+        Route::get('/approve/{id}', [DataPengirimanController::class, 'approve'])->name('data-pengiriman.approve');
+        Route::post('/approve-selected', [DataPengirimanController::class, 'approveSelected'])->name('data-pengiriman.approve-selected');
     });
     
     Route::prefix('daftar-pengeluaran')->group(function () {

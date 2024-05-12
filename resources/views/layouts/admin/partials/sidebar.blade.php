@@ -10,7 +10,7 @@
         @endif
         
         <a href="{{ route('profile') }}"> <h6 class="mt-3 f-14 f-w-600 text-danger">{{ Session::get('nama') }}</h6></a>
-        <p class="mb-0 font-roboto">{{ Session::get('nama_satker') }}</p>
+        <p class="mb-0 font-roboto">{{ HApp::level(Session::get('user_level')) }}</p>
     </div>
     <nav>
         <div class="main-navbar">

@@ -5,6 +5,7 @@ namespace App\Helpers;
 use App\Models\LogActivity;
 use App\Models\MasterMenu;
 use App\Models\MenuPermission;
+use App\Models\Level;
 use Illuminate\Support\Facades\Session;
 
 class Helper
@@ -134,5 +135,11 @@ class Helper
         $data->ip_address = $ipaddress;
         $data->browser = $bname . ' on ' . $platform; 
         $data->save();
+    }
+
+    public static function level($id_level)
+    {
+      $data = Level::find($id_level);
+      return $data->level;
     }
 }

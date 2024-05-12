@@ -20,20 +20,30 @@
     <nav class="page-breadcrumb">
         <ol class="breadcrumb align-items-center">
             <div class="d-grid gap-2 d-md-block mx-2">
-                {{-- @if (isAdmin()) --}}
-                    <a href="{{ route('data-pengiriman.create') }}" class="btn btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Tambah Data">
-                        <i class="fa fa-plus"></i> Tambah
-                    </a>
+				
+				{{-- <a href="{{ route('data-pengiriman.create') }}" class="btn btn-info btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Tambah Data">
+					<i class="fa fa-plus"></i> Tambah
+				</a> --}}
 
-					<a class="btn btn-success" type="button" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalImport" title="Import Excel">
-						<i class="fa fa-file-excel-o"></i> Import Excel
-					</a>
+				<a class="btn btn-primary btn-sm" type="button" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalImport" title="Import Excel">
+					<i class="fa fa-file-excel-o"></i> Import Excel
+				</a>
 
-					<a href="{{ route('data-pengiriman.truncate') }}" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Truncate Data">
-                        <i class="fa fa-trash"></i> Truncate
-                    </a>
-					@include('data-pengiriman.modal-import')
-                {{-- @endif --}}
+				<a href="{{ route('data-pengiriman.truncate') }}" class="btn btn-danger btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Truncate Data">
+					<i class="fa fa-trash"></i> Truncate
+				</a>
+				@include('data-pengiriman.modal-import')
+
+				@if (Session::get('user_level') == 2)
+					<form action="{{ route('data-pengiriman.approve-selected') }}" method="post" style="display: inline-block">
+						@csrf
+						<div class="inner"></div>
+						<button type="submit" class="btn btn-success btn-sm" style="display: inline" onclick="return confirm('Approve semua data terpilih?')">
+							<i class="fa fa-check-square"></i> Approve Selected
+						</button>
+					</form>
+				@endif
+
             </div>
         </ol>
     </nav>
@@ -90,14 +100,19 @@
 	                                    <th>No</th>
 										<th>No Resi</th>
 										<th>Nama Penerima</th>
-	                                    <th>No HP Penerima</th>
 	                                    <th>Kota Tujuan</th>
-	                                    <th>Status Pembayaran</th>
 	                                    <th>Metode Pembayaran</th>
+	                                    <th>Status Pembayaran</th>
+										
+										@if (Session::get('user_level') == 2)
+											<th>Pilih</th>
+										@endif
+										
 										<th width="35%" class="text-center">Action</th>
 	                                </tr>
 	                            </thead>
-	                            <tbody>                                        
+	                            <tbody>
+									
                                     @foreach ($datas as $data)
 										@php
 											$bukti_pembayaran = $data->bukti_pembayaran;
@@ -111,12 +126,16 @@
 										@endphp
 										<tr>
 											<td>{{ $loop->iteration; }}</td>
-											<td>{{ $data->no_resi }}</td>
+
+											<td>
+												<span class="badge badge-danger">
+													{{ $data->no_resi }}
+												</span>
+											</td>
+
 											<td>{{ $data->nama_penerima }}</td>
-											<td>{{ $data->no_hp_penerima }}</td>
 											<td>{{ $data->kota_tujuan }}</td>
-											<td>{{ $data->status_pembayaran == 1 ? 'Lunas' : 'Pending'; }}</td>
-											{{-- <td>{{ $bukti_pembayaran_view }}</td> --}}
+											
 											<td onmouseover="showBukti({{ $data->id }})" onmouseout="hideBukti({{ $data->id }})">
 												@if ($bukti_pembayaran != '')
 													<div id="view-bukti{{ $data->id }}" class="mb-3">
@@ -127,6 +146,22 @@
 
 												{{ $data->metode_pembayaran }} <i class="{{ $data->metode_pembayaran == 'Transfer' ? 'fa fa-eye' : '' }}"></i>
 											</td>
+
+											<td class="text-center">
+												<span class="badge {{ $data->status_pembayaran == 1 ? 'badge-primary' : 'badge-warning' }}">
+													<i class="fa {{ $data->status_pembayaran == 1 ? 'fa-check' : 'fa-warning' }}"></i>
+													{{ $data->status_pembayaran == 1 ? 'Lunas' : 'Pending'; }}
+												</span>
+											</td>
+
+											@if (Session::get('user_level') == 2)
+												{{-- Select/Pilih --}}
+												<td class="text-center">
+													<input type="checkbox" value="5" name="id_pengiriman[]" id="flexCheckDefault" onclick="ceklis({{ $data->id }})">
+												</td>
+											@endif
+											
+
 											<td class="text-center">
 
 												{{-- <a class="btn btn-square btn-warning btn-xs" type="button" data-bs-toggle="modal" data-original-title="test" data-bs-target="#statusPembayaran{{ $data->id }}" title="Edit Status Pembayaran">
@@ -137,6 +172,10 @@
 													<div class="btn-group" role="group">
 														<button class="btn btn-secondary btn-sm dropdown-toggle" id="btnGroupDrop1" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
 														<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+
+															@if ($data->metode_pembayaran == 'Transfer' && $data->status_pembayaran != 1 && Session::get('user_level') == 2)
+																<a class="dropdown-item" href="{{ route('data-pengiriman.approve', $data->id) }}" onclick="return confirm('Approve Data Pengiriman Ini?')"><span><i data-feather="check-square"></i> Approve</span></a>
+															@endif
 															
 															<a class="dropdown-item" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalDataPengiriman{{ $data->id }}" title="Detail Data"><span><i data-feather="eye"></i> Detail</span></a>
 
@@ -152,8 +191,10 @@
 											</td>
 										</tr>
 									@endforeach
+									
 	                            </tbody>
 	                        </table>
+							
 	                    </div>
 
 	                </div>
@@ -202,6 +243,10 @@
 
 		function hideBukti(id) {
 			$('#view-bukti'+id).hide();
+		}
+
+		function ceklis(id){
+			$('.inner').append("<input type='hidden' value='"+id+"' name='id_pengiriman[]'>");
 		}
 	</script>
 	
