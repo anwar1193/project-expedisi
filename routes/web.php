@@ -5,6 +5,7 @@ use App\Http\Controllers\ObdController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\CameraController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\TestingController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\DashboardController;
@@ -245,6 +246,15 @@ Route::middleware("auth")->group(function() {
         Route::get('laporan-pengiriman/export-pdf', [LaporanController::class, 'data_pengiriman_pdf'])->name('laporan.pengiriman.export-pdf');
         Route::get('laporan-pemasukkan/export-pdf', [LaporanController::class, 'data_pemasukkan_pdf'])->name('laporan.pemasukkan.export-pdf');
         Route::get('laporan-pengeluaran/export-pdf', [LaporanController::class, 'data_pengeluaran_pdf'])->name('laporan.pengeluaran.export-pdf');
+    });
+
+    Route::prefix('customer')->group(function () {
+        Route::get('/', [CustomerController::class, 'index'])->name('customers.index');
+        Route::get('/create', [CustomerController::class, 'create'])->name('customers.create');
+        Route::get('/edit/{id}', [CustomerController::class, 'edit'])->name('customers.edit');
+        Route::post('/', [CustomerController::class, 'store'])->name('customers.store');
+        Route::post('/update/{id}', [CustomerController::class, 'update'])->name('customers.update');
+        Route::get('/delete/{id}', [CustomerController::class, 'delete'])->name('customers.delete');
     });
 
     Route::get('user-level', [UserController::class, 'listLevel'])->name('level');
