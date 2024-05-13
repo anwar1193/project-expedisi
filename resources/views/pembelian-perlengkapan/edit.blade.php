@@ -14,7 +14,7 @@
 			<h3>Pembelian Perlengkapan</h3>
 		@endslot
 		<li class="breadcrumb-item active"><a href="{{ route('pembelian-perlengkapan') }}">Pembelian Perlengkapan</a></li>
-        <li class="breadcrumb-item active">Tambah</li>
+        <li class="breadcrumb-item active">Edit</li>
 	@endcomponent
 	
 	<div class="container-fluid">
