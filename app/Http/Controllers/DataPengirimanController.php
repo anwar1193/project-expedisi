@@ -83,26 +83,25 @@ class DataPengirimanController extends Controller
             'berat_barang' => 'required',
             'ongkir' => 'required',
             'komisi' => 'required',
-            'status_pembayaran' => 'required',
             'metode_pembayaran' => 'required'
         ]);
 
-        $foto = $request->file('bukti_pembayaran');
+        // $foto = $request->file('bukti_pembayaran');
 
-        $getImage = DataPengiriman::find($id);
+        // $getImage = DataPengiriman::find($id);
 
-        if($foto != ''){
-            Storage::delete('public/bukti_pembayaran/'.$getImage->bukti_pembayaran);
-            $foto->storeAs('public/bukti_pembayaran', $foto->hashName());
+        // if($foto != ''){
+        //     Storage::delete('public/bukti_pembayaran/'.$getImage->bukti_pembayaran);
+        //     $foto->storeAs('public/bukti_pembayaran', $foto->hashName());
 
-            $namafile = 'data-pengiriman/'.$foto->hashName();
-            $path = public_path('storage/bukti_pembayaran/' . $foto->hashName());
+        //     $namafile = 'data-pengiriman/'.$foto->hashName();
+        //     $path = public_path('storage/bukti_pembayaran/' . $foto->hashName());
 
-            Gdrive::delete('data-pengiriman/'.$getImage->bukti_pembayaran);
-            Storage::disk('google')->put($namafile, File::get($path));
-        }
+        //     Gdrive::delete('data-pengiriman/'.$getImage->bukti_pembayaran);
+        //     Storage::disk('google')->put($namafile, File::get($path));
+        // }
 
-        $validateData['bukti_pembayaran'] = ($foto != '' ? $foto->hashName() : '');
+        // $validateData['bukti_pembayaran'] = ($foto != '' ? $foto->hashName() : '');
 
         DataPengiriman::where('id', '=', $id)->update([
             'no_resi' => $request->no_resi,
@@ -115,9 +114,9 @@ class DataPengirimanController extends Controller
             'berat_barang' => $request->berat_barang,
             'ongkir' => $request->ongkir,
             'komisi' => $request->komisi,
-            'status_pembayaran' => $request->status_pembayaran,
             'metode_pembayaran' => $request->metode_pembayaran,
-            'bukti_pembayaran' => ($foto != '' ? $foto->hashName() : $getImage->bukti_pembayaran)
+            'bukti_pembayaran' => $request->bukti_pembayaran
+            // 'bukti_pembayaran' => ($foto != '' ? $foto->hashName() : $getImage->bukti_pembayaran)
         ]);
 
         Helper::logActivity('Update data pengiriman dengan no resi : '.$request->no_resi);
@@ -129,11 +128,11 @@ class DataPengirimanController extends Controller
     {
         $getImage = DataPengiriman::find($id);
 
-        if(Storage::exists('public/bukti_pembayaran/'. $getImage->bukti_pembayaran)){
-            Storage::delete('public/bukti_pembayaran/'. $getImage->bukti_pembayaran);
-        }
+        // if(Storage::exists('public/bukti_pembayaran/'. $getImage->bukti_pembayaran)){
+        //     Storage::delete('public/bukti_pembayaran/'. $getImage->bukti_pembayaran);
+        // }
 
-        Gdrive::delete('data-pengiriman/'.$getImage->bukti_pembayaran);
+        // Gdrive::delete('data-pengiriman/'.$getImage->bukti_pembayaran);
 
         Helper::logActivity('Hapus data pengiriman dengan no resi : '.$getImage->no_resi);
 

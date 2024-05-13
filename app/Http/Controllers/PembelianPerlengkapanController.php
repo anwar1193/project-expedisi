@@ -23,7 +23,7 @@ class PembelianPerlengkapanController extends Controller
                 'pembelian_perlengkapans.jumlah', 
                 'pembelian_perlengkapans.keterangan', 
                 'pembelian_perlengkapans.nota')
-            ->orderBy('id', 'DESC')->get();
+            ->orderBy('pembelian_perlengkapans.id', 'DESC')->get();
         return view('pembelian-perlengkapan.index', compact('pembelians'));
     }
 

@@ -78,7 +78,6 @@ class DaftarPengeluaranController extends Controller
             'jumlah_pembayaran' => 'required',
             'yang_menerima' => 'required',
             'metode_pembayaran' => 'required',
-            'status_pengeluaran' => 'required',
             'jenis_pengeluaran' => 'required'
         ]);
 
@@ -90,7 +89,6 @@ class DaftarPengeluaranController extends Controller
             'yang_menerima' => $request->yang_menerima,
             'metode_pembayaran' => $request->metode_pembayaran,
             'jenis_pengeluaran' => $request->jenis_pengeluaran,
-            'status_pengeluaran' => $request->status_pengeluaran,
             'bukti_pembayaran' => $request->bukti_pembayaran
         ]);
 
@@ -108,5 +106,14 @@ class DaftarPengeluaranController extends Controller
         DaftarPengeluaran::where('id', $id)->delete();
 
         return redirect()->route('daftar-pengeluaran')->with('delete', 'Daftar pengeluaran berhasil dihapus');
+    }
+
+    public function approve($id)
+    {
+        $proses = DaftarPengeluaran::find($id)->update([
+            'status_pengeluaran' => 1
+        ]);
+
+        return back()->with('success', 'Data Pengeluaran Telah Di Approve');
     }
 }

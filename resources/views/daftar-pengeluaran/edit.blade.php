@@ -109,7 +109,7 @@
 								</div>
 							</div>
 
-							<div class="row">
+							{{-- <div class="row">
 								<div class="col">
 									<div class="mb-3">
 										<label class="form-label" for="">Status Pengeluaran</label>
@@ -125,7 +125,7 @@
 										@enderror
 									</div>
 								</div>
-							</div>
+							</div> --}}
 
 							<div class="row">
 								<div class="col">
@@ -149,7 +149,7 @@
 						</div>
 						<div class="card-footer text-end">
 							<button class="btn btn-primary" type="submit">Simpan Data</button>
-							<a href="{{ route('data-pengiriman') }}" class="btn btn-light">Kembali</a>
+							<a href="{{ route('daftar-pengeluaran') }}" class="btn btn-light">Kembali</a>
 						</div>
 					</form>
 				</div>

@@ -98,7 +98,7 @@
 										<select name="user_level" id="user_level" class="form-control @error('user_level') is-invalid @enderror">
 											<option value="">- Pilih Level -</option>
 											@foreach ($levels as $item)
-												<option value="{{ $item->kode_level }}" {{ $user->user_level == $item->kode_level ? 'selected' : NULL }}>
+												<option value="{{ $item->id }}" {{ $user->user_level == $item->id ? 'selected' : NULL }}>
 													{{ $item->level }}
 												</option>
 											@endforeach

@@ -1,4 +1,4 @@
-<div class="modal fade modal-bookmark" id="modalDataPengiriman{{ $data->id }}" tabindex="-1" role="dialog"
+<div class="modal fade modal-bookmark" id="modalDataPengiriman<?php echo e($data->id); ?>" tabindex="-1" role="dialog"
     aria-labelledby="modalDataPengirimanLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content justify-content-start">
@@ -16,13 +16,13 @@
                                     <div class="row d-flex py-1 text-start justify-content-start">
                                         <div class="col-6">Keterangan</div>
                                         <div class="col-2">:</div>
-                                        <div class="col-4">{{ $data->keterangan }}</div>
+                                        <div class="col-4"><?php echo e($data->keterangan); ?></div>
                                     </div>
                                     <div class="row d-flex py-1 text-start justify-content-start">
                                         <div class="col-6">Bukti Pembayaran</div>
                                         <div class="col-2">:</div>
                                         <div class="col-4">
-                                            <a href="{{ $data->bukti_pembayaran }}" target="_blank">
+                                            <a href="<?php echo e($data->bukti_pembayaran); ?>" target="_blank">
                                                 <i data-feather="link"></i> Link
                                             </a>
                                         </div>
@@ -31,41 +31,42 @@
                                         <div class="col-6">Status Pengeluaran</div>
                                         <div class="col-2">:</div>
                                         <div class="col-4">
-                                            <span class="badge {{ $data->status_pengeluaran == 1 ? 'badge-primary' : 'badge-warning' }}">
-                                                <i class="fa {{ $data->status_pengeluaran == 1 ? 'fa-check' : 'fa-warning' }}"></i>
-                                                {{ $data->status_pengeluaran == 1 ? 'Disetujui' : 'Pending'; }}
+                                            <span class="badge <?php echo e($data->status_pengeluaran == 1 ? 'badge-primary' : 'badge-warning'); ?>">
+                                                <i class="fa <?php echo e($data->status_pengeluaran == 1 ? 'fa-check' : 'fa-warning'); ?>"></i>
+                                                <?php echo e($data->status_pengeluaran == 1 ? 'Disetujui' : 'Pending'); ?>
+
                                             </span>
                                         </div>
                                     </div>
                                     <div class="row d-flex py-1 text-start justify-content-start">
                                         <div class="col-6">Yang Melakukan Pembayaran</div>
                                         <div class="col-2">:</div>
-                                        <div class="col-4 text-capitalize">{{ $data->yang_membayar }}</div>
+                                        <div class="col-4 text-capitalize"><?php echo e($data->yang_membayar); ?></div>
                                     </div>
                                     <div class="row d-flex py-1 text-start justify-content-start">
                                         <div class="col-6">Metode Pembayaran</div>
                                         <div class="col-2">:</div>
-                                        <div class="col-4 text-capitalize">{{ $data->metode_pembayaran }}</div>
+                                        <div class="col-4 text-capitalize"><?php echo e($data->metode_pembayaran); ?></div>
                                     </div>
                                     <div class="row text-start d-flex justify-content-start">
                                         <div class="col-6">Tanggal Pengeluaran</div>
                                         <div class="col-2">:</div>
-                                        <div class="col-4">{{ $data->tgl_pengeluaran }}</div>
+                                        <div class="col-4"><?php echo e($data->tgl_pengeluaran); ?></div>
                                     </div>
                                     <div class="row d-flex py-1 text-start justify-content-start">
                                         <div class="col-6">Jumlah Pembayaran</div>
                                         <div class="col-2">:</div>
-                                        <div class="col-4">{{ number_format($data->jumlah_pembayaran, 0, '.', ',') }}</div>
+                                        <div class="col-4"><?php echo e(number_format($data->jumlah_pembayaran, 0, '.', ',')); ?></div>
                                     </div>
                                     <div class="row d-flex py-1 text-start justify-content-start">
                                         <div class="col-6">Yang Menerima Pembayaran</div>
                                         <div class="col-2">:</div>
-                                        <div class="col-4">{{ $data->yang_menerima }}</div>
+                                        <div class="col-4"><?php echo e($data->yang_menerima); ?></div>
                                     </div>
                                     <div class="row d-flex py-1 text-start justify-content-start">
                                         <div class="col-6">Jenis Pengeluaran</div>
                                         <div class="col-2">:</div>
-                                        <div class="col-4">{{ $data->jenis_pengeluaran }}</div>
+                                        <div class="col-4"><?php echo e($data->jenis_pengeluaran); ?></div>
                                     </div>
                                 </div>
                             </div>
@@ -75,4 +76,4 @@
             </div>
         </div>
     </div>
-</div>
+</div><?php /**PATH /Users/munawarahmad/Documents/Applications/projectku/frontend/resources/views/daftar-pengeluaran/detail.blade.php ENDPATH**/ ?>

@@ -34,12 +34,12 @@
     </div>
     @endif
 
-    <div class="tombol-export mb-3">
+    {{-- <div class="tombol-export mb-3">
         <a href="{{ route('laporan.pemasukkan.export-pdf', ['start' => request('start'), 'end' => request('end')]) }}" class="btn btn-danger" data-bs-toggle="tooltip"
             data-bs-placement="top" title="Cetak PDF">
             <i class="fa fa-file-pdf-o"></i> Cetak PDF
         </a>
-    </div>
+    </div> --}}
 
     <div class="table-responsive">
         <table class="display" id="{{ $tableId }}">

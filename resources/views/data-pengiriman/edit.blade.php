@@ -181,28 +181,10 @@
 							<div class="row">
 								<div class="col">
 									<div class="mb-3">
-										<label class="form-label" for="">Status Pembayaran</label>
-										<select name="status_pembayaran" id="status_pembayaran" class="form-control @error('status_pembayaran') is-invalid @enderror">
-											<option value="1" {{ $datas->status_pembayaran == 1 ? 'selected' : NULL }}>Lunas</option>
-											<option value="2" {{ $datas->status_pembayaran == 2 ? 'selected' : NULL }}>Pending</option>
-										</select>
-
-										@error('status_pembayaran')
-										<div class="text-danger">
-											{{ $message }}
-										</div>
-										@enderror
-									</div>
-								</div>
-							</div>
-
-							<div class="row">
-								<div class="col">
-									<div class="mb-3">
 										<label class="form-label" for="">Metode Pembayaran</label>
                                         <select name="metode_pembayaran" id="metode_pembayaran" class="form-control @error('metode_pembayaran') is-invalid @enderror">
-											<option value="tunai" {{ $datas->metode_pembayaran == 'tunai' ? 'selected' : NULL }}>Tunai</option>
-											<option value="transfer" {{ $datas->metode_pembayaran == 'transfer' ? 'selected' : NULL }}>Transfer</option>
+											<option value="Tunai" {{ $datas->metode_pembayaran == 'Tunai' ? 'selected' : NULL }}>Tunai</option>
+											<option value="Transfer" {{ $datas->metode_pembayaran == 'Transfer' ? 'selected' : NULL }}>Transfer</option>
 										</select>
 
 										@error('metode_pembayaran')
@@ -218,8 +200,9 @@
 								<div class="col">
 									<div class="mb-3">
                                         <div class="mb-3">
-                                            <label class="form-label" for="">Bukti Pembayaran</label>
-                                            <input class="form-control @error('bukti_pembayaran') is-invalid @enderror" type="file" width="48" height="48" name="bukti_pembayaran" />
+                                            <label class="form-label" for="">Bukti Pembayaran (Link Google Drive)</label>
+											<textarea name="bukti_pembayaran" id="bukti_pembayaran" class="form-control">{{ $datas->bukti_pembayaran }}</textarea>
+                                            {{-- <input class="form-control @error('bukti_pembayaran') is-invalid @enderror" type="file" width="48" height="48" name="bukti_pembayaran" />
     
                                             @error('bukti_pembayaran')
                                             <div class="text-danger">
@@ -227,7 +210,7 @@
                                             </div>
                                             @enderror
     
-                                            <img src="{{ asset('storage/bukti_pembayaran/'.$datas->bukti_pembayaran) }}" alt="" width="200px" class="img-fluid mt-2">
+                                            <img src="{{ asset('storage/bukti_pembayaran/'.$datas->bukti_pembayaran) }}" alt="" width="200px" class="img-fluid mt-2"> --}}
                                         </div>
 									</div>
 								</div>

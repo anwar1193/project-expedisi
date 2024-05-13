@@ -130,7 +130,7 @@
 						</div>
 						<div class="card-footer text-end">
 							<button class="btn btn-primary" type="submit">Simpan Data</button>
-							<a href="{{ route('data-pengiriman') }}" class="btn btn-light">Kembali</a>
+							<a href="{{ route('daftar-pengeluaran') }}" class="btn btn-light">Kembali</a>
 						</div>
 					</form>
 				</div>

@@ -63,12 +63,27 @@
                                 </div>
                                 <p class="mb-1">Rp. {{ number_format($jumlah_pengeluaran->totalPengeluaran, 0, ',', '.') ?? 0 }} ,-</p>
                             </a>
+
+                            @php
+                                $laba_rugi = $jumlah_pengiriman->totalPengiriman + $jumlah_pemasukkan->totalPemasukan - $jumlah_pengeluaran->totalPengeluaran;
+                            @endphp
+
+                            <a class="list-group-item list-group-item-action flex-column align-items-start" href="javascript:void(0)">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">Laba / Rugi</h5>
+                                </div>
+                                <p class="mb-1">
+                                    <span class="badge {{ $laba_rugi >= 0 ? 'badge-primary' : 'badge-danger' }}" style="font-size: 15px">
+                                        Rp. {{ number_format($laba_rugi, 0, ',', '.') ?? 0 }} ,-
+                                    </span>
+                                </p>
+                            </a>
                         </div>
                     </div>
                     <div class="card-footer text-end">
-                        <a href="{{ route('laporan.laba-rugi.export-pdf', ['start' => request('start'), 'end' => request('end')]) }}" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Cetak PDF">
+                        {{-- <a href="{{ route('laporan.laba-rugi.export-pdf', ['start' => request('start'), 'end' => request('end')]) }}" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Cetak PDF">
                             <i class="fa fa-file-pdf-o"></i> Cetak PDF
-                        </a>
+                        </a> --}}
                     </div>
                 </div>
             </div>

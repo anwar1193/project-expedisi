@@ -38,12 +38,7 @@
     </div>
     <?php endif; ?>
 
-    <div class="tombol-export mb-3">
-        <a href="<?php echo e(route('laporan.pengeluaran.export-pdf', ['start' => request('start'), 'end' => request('end')])); ?>" class="btn btn-danger" data-bs-toggle="tooltip"
-            data-bs-placement="top" title="Cetak PDF">
-            <i class="fa fa-file-pdf-o"></i> Cetak PDF
-        </a>
-    </div>
+    
 
     <div class="table-responsive">
         <table class="display" id="<?php echo e($tableId); ?>">

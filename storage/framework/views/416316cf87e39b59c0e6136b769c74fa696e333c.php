@@ -1,4 +1,4 @@
-<?php $__env->startSection('title'); ?>Daftar Pengeluaran
+<?php $__env->startSection('title'); ?>Perlengkapan
  <?php echo e($title); ?>
 
 <?php $__env->stopSection(); ?>
@@ -10,23 +10,23 @@
 <?php $__env->startSection('content'); ?>
 	<?php $__env->startComponent('components.breadcrumb'); ?>
 		<?php $__env->slot('breadcrumb_title'); ?>
-			<h3>Daftar Pengeluaran</h3>
+			<h3>Data Perlengkapan</h3>
 		<?php $__env->endSlot(); ?>
-		<li class="breadcrumb-item active"><a href="<?php echo e(route('daftar-pengeluaran')); ?>">Daftar Pengeluaran</a></li>
+		<li class="breadcrumb-item active"><a href="<?php echo e(route('perlengkapan')); ?>">Perlengkapan</a></li>
 		<li class="breadcrumb-item active">Table</li>
 	<?php echo $__env->renderComponent(); ?>
 
+	<?php if(isAdmin()): ?>
     <nav class="page-breadcrumb">
         <ol class="breadcrumb align-items-center">
             <div class="d-grid gap-2 d-md-block mx-2">
-                
-                    <a href="<?php echo e(route('daftar-pengeluaran.create')); ?>" class="btn btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Tambah Data">
+                    <a href="<?php echo e(route('perlengkapan.create')); ?>" class="btn btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Tambah Data">
                         <i class="fa fa-plus"></i> Tambah
                     </a>
-                
             </div>
         </ol>
     </nav>
+	<?php endif; ?>
 	
 	<div class="container-fluid">
         <div class="row">
@@ -69,56 +69,36 @@
 	                        <table class="display" id="basic-1">
 	                            <thead>
 	                                <tr>
-	                                    <th>No</th>
-										<th>Tanggal Pengeluaran</th>
+	                                    <th width="5%">No</th>
+	                                    <th>Nama Perlengkapan</th>
 										<th>Keterangan</th>
-	                                    <th>Jumlah Pembayaran</th>
-	                                    <th>Yang Menerima Pembayaran</th>
-	                                    <th>Status Pengeluaran</th>
-	                                    <th>Jenis Pengeluaran</th>
-										<th width="35%" class="text-center">Action</th>
+										<?php if(isAdmin()): ?>
+										<th width="20%">Action</th>
+										<?php endif; ?>
 	                                </tr>
 	                            </thead>
-	                            <tbody>                                        
-                                    <?php $__currentLoopData = $datas; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+	                            <tbody>
+	                                <?php $__currentLoopData = $perlengkapans; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 										<tr>
 											<td><?php echo e($loop->iteration); ?></td>
-											<td><?php echo e($data->tgl_pengeluaran); ?></td>
+											<td><?php echo e($data->nama_perlengkapan); ?></td>
 											<td><?php echo e($data->keterangan); ?></td>
-											<td><?php echo e(number_format($data->jumlah_pembayaran, 0, '.', ',')); ?></td>
-											<td><?php echo e($data->yang_menerima); ?></td>
-											<td>
-												<span class="badge <?php echo e($data->status_pengeluaran == 1 ? 'badge-primary' : 'badge-warning'); ?>">
-													<i class="fa <?php echo e($data->status_pengeluaran == 1 ? 'fa-check' : 'fa-warning'); ?>"></i>
-													<?php echo e($data->status_pengeluaran == 1 ? 'Disetujui' : 'Pending'); ?>
-
-												</span>
-											</td>
-											<td><?php echo e($data->jenis_pengeluaran); ?></td>
+											<?php if(isAdmin()): ?>
 											<td class="text-center">
 
 												<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
 													<div class="btn-group" role="group">
 														<button class="btn btn-secondary btn-sm dropdown-toggle" id="btnGroupDrop1" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
 														<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+															<a class="dropdown-item" href="<?php echo e(route('perlengkapan.edit', $data->id)); ?>"><span><i class="pt-2 pe-2" data-feather="edit"></i> Edit</span></a>
 
-															<?php if($data->status_pengeluaran != 1 && Session::get('user_level') == 2): ?>
-																<a class="dropdown-item" href="<?php echo e(route('daftar-pengeluaran.approve', $data->id)); ?>" onclick="return confirm('Approve Data Pengeluaran Ini?')"><span><i data-feather="check-square"></i> Approve</span></a>
-															<?php endif; ?>
-
-															<a class="dropdown-item" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalDataPengiriman<?php echo e($data->id); ?>" title="Detail Data"><span><i data-feather="eye"></i> Detail</span></a>
-
-															<a class="dropdown-item" href="<?php echo e(route('daftar-pengeluaran.edit', $data->id)); ?>"><span><i data-feather="edit"></i> Edit</span></a>
-
-															<?php if(Session::get('user_level') == 1): ?>
-																<a class="dropdown-item" href="<?php echo e(route('daftar-pengeluaran.delete', $data->id)); ?>" onclick="return confirm('Apakah Anda Yakin?')"><span><i data-feather="delete"></i> Delete</span></a>
-															<?php endif; ?>
-															
+															<a class="dropdown-item" href="<?php echo e(route('perlengkapan.delete', $data->id)); ?>" onclick="return confirm('Apakah Anda Yakin?')"><span><i class="pt-2 pe-2" data-feather="delete"></i> Delete</span></a>
 														</div>
 													</div>
 												</div>
-												<?php echo $__env->make('daftar-pengeluaran.detail', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
 											</td>
+											<?php endif; ?>
 										</tr>
 									<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 	                            </tbody>
@@ -138,4 +118,4 @@
 	<?php $__env->stopPush(); ?>
 
 <?php $__env->stopSection(); ?>
-<?php echo $__env->make('layouts.admin.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/munawarahmad/Documents/Applications/projectku/frontend/resources/views/daftar-pengeluaran/index.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.admin.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/munawarahmad/Documents/Applications/projectku/frontend/resources/views/perlengkapan/index.blade.php ENDPATH**/ ?>

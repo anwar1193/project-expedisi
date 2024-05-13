@@ -83,22 +83,37 @@
 											<td>{{ $loop->iteration; }}</td>
 											<td>{{ $data->tgl_pengeluaran }}</td>
 											<td>{{ $data->keterangan }}</td>
-											<td>{{ $data->jumlah_pembayaran }}</td>
+											<td>{{ number_format($data->jumlah_pembayaran, 0, '.', ',') }}</td>
 											<td>{{ $data->yang_menerima }}</td>
-											<td>{{ $data->status_pengeluaran == 1 ? 'Disetujui' : 'Pending'; }}</td>
+											<td>
+												<span class="badge {{ $data->status_pengeluaran == 1 ? 'badge-primary' : 'badge-warning' }}">
+													<i class="fa {{ $data->status_pengeluaran == 1 ? 'fa-check' : 'fa-warning' }}"></i>
+													{{ $data->status_pengeluaran == 1 ? 'Disetujui' : 'Pending'; }}
+												</span>
+											</td>
 											<td>{{ $data->jenis_pengeluaran }}</td>
 											<td class="text-center">
-												<a class="btn btn-square btn-info btn-xs" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalDataPengiriman{{ $data->id }}"title="Detail Data">
-													<i class="fa fa-eye"></i>
-												</a>
 
-												<a href="{{ route('daftar-pengeluaran.edit', $data->id) }}" class="btn btn-square btn-warning btn-xs" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Data">
-													<i class="fa fa-edit"></i>
-												</a>
-												
-												<a href="{{ route('daftar-pengeluaran.delete', $data->id) }}" class="btn btn-square btn-danger btn-xs" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Data" onclick="return confirm('Apakah Anda Yakin?')">
-													<i class="fa fa-trash"></i>
-												</a>
+												<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+													<div class="btn-group" role="group">
+														<button class="btn btn-secondary btn-sm dropdown-toggle" id="btnGroupDrop1" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
+														<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+
+															@if ($data->status_pengeluaran != 1 && Session::get('user_level') == 2)
+																<a class="dropdown-item" href="{{ route('daftar-pengeluaran.approve', $data->id) }}" onclick="return confirm('Approve Data Pengeluaran Ini?')"><span><i data-feather="check-square"></i> Approve</span></a>
+															@endif
+
+															<a class="dropdown-item" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalDataPengiriman{{ $data->id }}" title="Detail Data"><span><i data-feather="eye"></i> Detail</span></a>
+
+															<a class="dropdown-item" href="{{ route('daftar-pengeluaran.edit', $data->id) }}"><span><i data-feather="edit"></i> Edit</span></a>
+
+															@if (Session::get('user_level') == 1)
+																<a class="dropdown-item" href="{{ route('daftar-pengeluaran.delete', $data->id) }}" onclick="return confirm('Apakah Anda Yakin?')"><span><i data-feather="delete"></i> Delete</span></a>
+															@endif
+															
+														</div>
+													</div>
+												</div>
 												@include('daftar-pengeluaran.detail')
 											</td>
 										</tr>

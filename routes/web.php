@@ -209,6 +209,7 @@ Route::middleware("auth")->group(function() {
         Route::post('/', [DaftarPengeluaranController::class, 'store'])->name('daftar-pengeluaran.store');
         Route::post('/update/{id}', [DaftarPengeluaranController::class, 'update'])->name('daftar-pengeluaran.update');
         Route::get('/delete/{id}', [DaftarPengeluaranController::class, 'delete'])->name('daftar-pengeluaran.delete');
+        Route::get('/approve/{id}', [DaftarPengeluaranController::class, 'approve'])->name('daftar-pengeluaran.approve');
     });
     
     Route::prefix('supplier')->group(function () {

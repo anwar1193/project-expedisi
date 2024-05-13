@@ -71,10 +71,10 @@
                             <div class="row">
 								<div class="col">
 									<div class="mb-3">
-										<label class="form-label" for="">Harga</label>
-										<input class="form-control @error('harga') is-invalid @enderror" type="number" name="harga" autocomplete="off" value="{{ old('harga', $pembelian->harga) }}"/>
+										<label class="form-label" for="">Jumlah</label>
+										<input class="form-control @error('jumlah') is-invalid @enderror" type="number" name="jumlah" autocomplete="off" value="{{ old('jumlah', $pembelian->jumlah) }}"/>
 
-										@error('harga')
+										@error('jumlah')
 										<div class="text-danger">
 											{{ $message }}
 										</div>
@@ -82,14 +82,14 @@
 									</div>
 								</div>
 							</div>
-                            
-                            <div class="row">
+
+							<div class="row">
 								<div class="col">
 									<div class="mb-3">
-										<label class="form-label" for="">Jumlah</label>
-										<input class="form-control @error('jumlah') is-invalid @enderror" type="number" name="jumlah" autocomplete="off" value="{{ old('jumlah', $pembelian->jumlah) }}"/>
+										<label class="form-label" for="">Harga Total</label>
+										<input class="form-control @error('harga') is-invalid @enderror" type="number" name="harga" autocomplete="off" value="{{ old('harga', $pembelian->harga) }}"/>
 
-										@error('jumlah')
+										@error('harga')
 										<div class="text-danger">
 											{{ $message }}
 										</div>

@@ -83,7 +83,7 @@
 											<td>{{ $data->tanggal_pembelian }}</td>
 											<td>{{ $data->nama_perlengkapan }}</td>
 											<td>{{ $data->nama_supplier }}</td>
-											<td>Rp. {{ $data->harga }}</td>
+											<td>{{ number_format($data->harga, 0, '.', ',') }}</td>
 											<td>{{ $data->jumlah }}</td>								
 											<td class="text-center">
 
@@ -93,12 +93,12 @@
 														<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
 
 															<a class="dropdown-item" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#pembelianPerlengkapan{{ $data->id }}">
-																<span><i class="pt-2 pe-2" data-feather="eye"></i> Detail</span>
+																<span><i data-feather="eye"></i> Detail</span>
 															</a>
 															
-															<a class="dropdown-item" href="{{ route('pembelian-perlengkapan.edit', $data->id) }}"><span><i class="pt-2 pe-2" data-feather="edit"></i> Edit</span></a>
+															<a class="dropdown-item" href="{{ route('pembelian-perlengkapan.edit', $data->id) }}"><span><i data-feather="edit"></i> Edit</span></a>
 
-															<a class="dropdown-item" href="{{ route('pembelian-perlengkapan.delete', $data->id) }}" onclick="return confirm('Apakah Anda Yakin?')"><span><i class="pt-2 pe-2" data-feather="delete"></i> Delete</span></a>
+															<a class="dropdown-item" href="{{ route('pembelian-perlengkapan.delete', $data->id) }}" onclick="return confirm('Apakah Anda Yakin?')"><span><i data-feather="delete"></i> Delete</span></a>
 															
 														</div>
 														@include('pembelian-perlengkapan.detail')

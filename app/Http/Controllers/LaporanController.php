@@ -21,14 +21,17 @@ class LaporanController extends Controller
         }
 
         $jumlah_pengiriman = DataPengiriman::selectRaw('SUM(ongkir + komisi) AS totalPengiriman')
-            ->whereBetween('created_at', [$start, $end])
+            ->where('status_pembayaran', 1)
+            ->whereBetween('tgl_transaksi', [$start, $end])
             ->first();
 
         $jumlah_pemasukkan = PemasukanLainnya::selectRaw('SUM(harga + komisi) AS totalPemasukan')
-            ->whereBetween('created_at', [$start, $end])
+            ->whereBetween('tanggal_transaksi', [$start, $end])
             ->first();
 
-        $jumlah_pengeluaran = DaftarPengeluaran::selectRaw('SUM(jumlah_pembayaran) AS totalPengeluaran')->where('jenis_pengeluaran', '=', 1)
+        $jumlah_pengeluaran = DaftarPengeluaran::selectRaw('SUM(jumlah_pembayaran) AS totalPengeluaran')
+            ->where('jenis_pengeluaran', '=', 1)
+            ->where('status_pengeluaran', '=', 1)
             ->whereBetween('created_at', [$start, $end])
             ->first();
 
@@ -70,9 +73,18 @@ class LaporanController extends Controller
             $end = date('Y-m-d', strtotime('+1 day'));
         }
 
-        $pengiriman = DataPengiriman::orderBy('id', 'desc')->whereBetween('created_at', [$start, $end])->get();
-        $pemasukkan = PemasukanLainnya::orderBy('id', 'desc')->whereBetween('created_at', [$start, $end])->get();
-        $pengeluaran = DaftarPengeluaran::join('jenis_pengeluarans', 'jenis_pengeluarans.id', '=', 'daftar_pengeluarans.jenis_pengeluaran')->orderBy('daftar_pengeluarans.id', 'desc')->whereBetween('daftar_pengeluarans.created_at', [$start, $end])->get();
+        $pengiriman = DataPengiriman::orderBy('id', 'desc')
+            ->whereBetween('tgl_transaksi', [$start, $end])
+            ->get();
+
+        $pemasukkan = PemasukanLainnya::orderBy('id', 'desc')
+            ->whereBetween('tanggal_transaksi', [$start, $end])
+            ->get();
+
+        $pengeluaran = DaftarPengeluaran::join('jenis_pengeluarans', 'jenis_pengeluarans.id', '=', 'daftar_pengeluarans.jenis_pengeluaran')
+            ->orderBy('daftar_pengeluarans.id', 'desc')
+            ->whereBetween('daftar_pengeluarans.created_at', [$start, $end])
+            ->get();
 
         return view('laporan.transaksi-harian', compact('pengiriman', 'pemasukkan', 'pengeluaran', 'start', 'end_date'));
     }
