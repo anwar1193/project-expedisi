@@ -97,4 +97,22 @@ class CustomerController extends Controller
         Helper::logActivity('Data Customer ' . $customer->nama . ' berhasil dihapus');
         return redirect()->route('customers.index')->with('success', 'Data Customer berhasil dihapus');
     }
+
+    public function addCredit(Request $request)
+    {
+        $id = $request->id;
+        $tambahan_kredit = $request->nominal_kredit;
+
+        $data_existing = Customer::find($id);
+        
+        $kredit_sebelumnya = $data_existing->limit_credit;
+        $kredit_update = $kredit_sebelumnya + $tambahan_kredit;
+
+        $data_existing->update([
+            'limit_credit' => $kredit_update
+        ]);
+
+        return redirect()->route('customers.index')->with('success', 'Limit Kredit Berhasil Ditambahkan');
+    }
+    
 }

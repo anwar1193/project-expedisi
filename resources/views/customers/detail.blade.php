@@ -43,7 +43,7 @@
                                         <div class="col-1">:</div>
                                         <div class="col-6">
                                             <span class="badge badge-primary">
-                                                Rp. {{ $data->limit_credit }}
+                                                Rp. {{ number_format($data->limit_credit, 0, '.', ',') }}
                                             </span>
                                         </div>
                                     </div>
