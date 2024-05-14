@@ -16,12 +16,18 @@
                                     <div class="row d-flex py-1 text-start justify-content-start">
                                         <div class="col-6">Status Pembayaran</div>
                                         <div class="col-2">:</div>
-                                        <div class="col-4"><?php echo e($data->status_pembayaran == 1 ? 'Lunas' : 'Pending'); ?></div>
+                                        <div class="col-4">
+                                            <span class="badge <?php echo e($data->status_pembayaran == 1 ? 'badge-primary' : 'badge-warning'); ?>">
+                                                <i class="fa <?php echo e($data->status_pembayaran == 1 ? 'fa-check' : 'fa-warning'); ?>"></i>
+                                                <?php echo e($data->status_pembayaran == 1 ? 'Lunas' : 'Pending'); ?>
+
+                                            </span>
+                                        </div>
                                     </div>
                                     <div class="row d-flex py-1 text-start justify-content-start">
                                         <div class="col-6">Metode Pembayaran</div>
                                         <div class="col-2">:</div>
-                                        <div class="col-4 text-capitalize"><?php echo e($data->metode_pembayaran); ?></div>
+                                        <div class="col-4 text-capitalize"><?php echo e($data->metode_pembayaran); ?> <?php echo e($data->bank); ?></div>
                                     </div>
                                     <div class="row d-flex py-1 text-start justify-content-start">
                                         <div class="col-6">No Resi</div>
@@ -66,23 +72,27 @@
                                     <div class="row d-flex py-1 text-start justify-content-start">
                                         <div class="col-6">Ongkir</div>
                                         <div class="col-2">:</div>
-                                        <div class="col-4"><?php echo e($data->ongkir); ?></div>
+                                        <div class="col-4"><?php echo e(number_format($data->ongkir, 0, '.', ',')); ?></div>
                                     </div>
                                     <div class="row d-flex py-1 text-start justify-content-start">
                                         <div class="col-6">Komisi</div>
                                         <div class="col-2">:</div>
-                                        <div class="col-4"><?php echo e($data->komisi); ?></div>
+                                        <div class="col-4"><?php echo e(number_format($data->komisi, 0, '.', ',')); ?></div>
                                     </div>
-
-                                    <hr>
-
-                                    <div class="row d-flex  justify-content-center">
-                                        <div class="">Bukti Pembayaran</div>
+                                    <div class="row d-flex py-1 text-start justify-content-start">
+                                        <div class="col-6">Jenis Pengiriman</div>
+                                        <div class="col-2">:</div>
+                                        <div class="col-4"><?php echo e($data->jenis_pengiriman); ?></div>
                                     </div>
-                                    <div class="media d-flex pb-2 justify-content-center">
-                                        <img class="img-fluid rounded update_img_0"
-                                            src="<?php echo e(asset('storage/bukti_pembayaran/'.$data->bukti_pembayaran)); ?>"
-                                            alt="<?php echo e($data->bukti_pembayaran); ?>" width="200px"/>
+                                    <div class="row d-flex py-1 text-start justify-content-start">
+                                        <div class="col-6">Bawa Sendiri</div>
+                                        <div class="col-2">:</div>
+                                        <div class="col-4"><?php echo e($data->bawa_sendiri); ?></div>
+                                    </div>
+                                    <div class="row d-flex py-1 text-start justify-content-start">
+                                        <div class="col-6">Status Pengiriman</div>
+                                        <div class="col-2">:</div>
+                                        <div class="col-4"><?php echo e($data->status_pengiriman); ?></div>
                                     </div>
                                 </div>
                             </div>

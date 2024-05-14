@@ -32,7 +32,14 @@
 				<a href="{{ route('data-pengiriman.truncate') }}" class="btn btn-danger btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Truncate Data">
 					<i class="fa fa-trash"></i> Truncate
 				</a>
+
+				<a class="btn btn-primary btn-sm" type="button" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalUpdateStatus" title="Update Status Pengiriman">
+					<i class="fa fa-file-excel-o"></i> Update Status Pengiriman
+				</a>
+
 				@include('data-pengiriman.modal-import')
+				@include('data-pengiriman.status-pengiriman', ['status' => $status])
+				@include('data-pengiriman.modal-status-pengiriman')
 
 				@if (Session::get('user_level') == 2)
 					<form action="{{ route('data-pengiriman.approve-selected') }}" method="post" style="display: inline-block">
@@ -89,6 +96,19 @@
 									<button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
 									<br>
 								@endforeach
+							</div>
+						@endif
+						
+						@if (session()->has('errorStatus'))
+							<div class="alert alert-danger alert-dismissible fade show" role="alert">
+								<strong>Gagal <i class="fa fa-info-circle"></i></strong>
+								@foreach(session('errorStatus') as $error)
+									<div>{{ $error }}</div>
+								@endforeach
+								Silahkan  <a class="text-white text-decoration-underline" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalStatusPengiriman" title="Status Pengiriman">
+									<i class="fa fa-eye"></i>lihat di sini.
+								</a>
+								<button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
 							</div>
 						@endif
 	                    
