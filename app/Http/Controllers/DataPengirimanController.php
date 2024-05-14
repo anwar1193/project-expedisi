@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Helper;
 use App\Imports\DataPengirimanImport;
+use App\Imports\StatusPengirimanImport;
 use App\Models\DataPengiriman;
+use App\Models\StatusPengiriman;
 use Dflydev\DotAccessData\Data;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -17,8 +19,10 @@ class DataPengirimanController extends Controller
     public  function index()
     {
         $datas = DataPengiriman::orderBy('id', 'DESC')->get();
+        $status = StatusPengiriman::orderBy('id', 'ASC')->get();
 
         $data['datas'] = $datas;
+        $data['status'] = $status;
 
         return view('data-pengiriman.index', $data);
     }
@@ -201,6 +205,29 @@ class DataPengirimanController extends Controller
         }
 
         return back()->with('success', 'Data Pengiriman Telah Di Approve');
+    }
+
+    public function import_status_pengiriman(Request $request)
+    {
+        $validateData = $request->validate([
+            'file' => 'required|mimes:csv,xls,xlsx'
+        ]);
+
+        $data = $request->file('file');
+
+        $namafile = $data->getClientOriginalName();
+
+        $path = $data->storeAs('public/excel/status_pengiriman', $namafile);
+
+        $import = new StatusPengirimanImport();
+        Excel::import($import, public_path('storage/excel/status_pengiriman/' . $namafile));
+
+        $errors = $import->getErrors();
+        if (!empty($errors)) {
+            return redirect()->back()->with('errorStatus', $errors);
+        }
+
+        return back()->with('success', 'Data berhasil diimport');
     }
 }
 
