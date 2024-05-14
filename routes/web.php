@@ -201,6 +201,7 @@ Route::middleware("auth")->group(function() {
         Route::post('/import-excel', [DataPengirimanController::class, 'import_excel'])->name('data-pengiriman.import_excel');
         Route::get('/approve/{id}', [DataPengirimanController::class, 'approve'])->name('data-pengiriman.approve');
         Route::post('/approve-selected', [DataPengirimanController::class, 'approveSelected'])->name('data-pengiriman.approve-selected');
+        Route::post('/status-pengiriman/import-excel', [DataPengirimanController::class, 'import_status_pengiriman'])->name('status-pengiriman.import_excel');
     });
     
     Route::prefix('daftar-pengeluaran')->group(function () {

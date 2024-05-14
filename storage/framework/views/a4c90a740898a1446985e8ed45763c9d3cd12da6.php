@@ -19,20 +19,35 @@
     <nav class="page-breadcrumb">
         <ol class="breadcrumb align-items-center">
             <div class="d-grid gap-2 d-md-block mx-2">
-                
-                    <a href="<?php echo e(route('data-pengiriman.create')); ?>" class="btn btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Tambah Data">
-                        <i class="fa fa-plus"></i> Tambah
-                    </a>
+				
+				
 
-					<a class="btn btn-success" type="button" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalImport" title="Import Excel">
-						<i class="fa fa-file-excel-o"></i> Import Excel
-					</a>
+				<a class="btn btn-primary btn-sm" type="button" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalImport" title="Import Excel">
+					<i class="fa fa-file-excel-o"></i> Import Excel
+				</a>
 
-					<a href="<?php echo e(route('data-pengiriman.truncate')); ?>" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Truncate Data">
-                        <i class="fa fa-trash"></i> Truncate
-                    </a>
-					<?php echo $__env->make('data-pengiriman.modal-import', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-                
+				<a href="<?php echo e(route('data-pengiriman.truncate')); ?>" class="btn btn-danger btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Truncate Data">
+					<i class="fa fa-trash"></i> Truncate
+				</a>
+
+				<a class="btn btn-primary btn-sm" type="button" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalUpdateStatus" title="Update Status Pengiriman">
+					<i class="fa fa-file-excel-o"></i> Update Status Pengiriman
+				</a>
+
+				<?php echo $__env->make('data-pengiriman.modal-import', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+				<?php echo $__env->make('data-pengiriman.status-pengiriman', ['status' => $status], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+				<?php echo $__env->make('data-pengiriman.modal-status-pengiriman', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
+				<?php if(Session::get('user_level') == 2): ?>
+					<form action="<?php echo e(route('data-pengiriman.approve-selected')); ?>" method="post" style="display: inline-block">
+						<?php echo csrf_field(); ?>
+						<div class="inner"></div>
+						<button type="submit" class="btn btn-success btn-sm" style="display: inline" onclick="return confirm('Approve semua data terpilih?')">
+							<i class="fa fa-check-square"></i> Approve Selected
+						</button>
+					</form>
+				<?php endif; ?>
+
             </div>
         </ol>
     </nav>
@@ -84,6 +99,19 @@
 								<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 							</div>
 						<?php endif; ?>
+						
+						<?php if(session()->has('errorStatus')): ?>
+							<div class="alert alert-danger alert-dismissible fade show" role="alert">
+								<strong>Gagal <i class="fa fa-info-circle"></i></strong>
+								<?php $__currentLoopData = session('errorStatus'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+									<div><?php echo e($error); ?></div>
+								<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+								Silahkan  <a class="text-white text-decoration-underline" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalStatusPengiriman" title="Status Pengiriman">
+									<i class="fa fa-eye"></i>lihat di sini.
+								</a>
+								<button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+							</div>
+						<?php endif; ?>
 	                    
 						
 						<div class="table-responsive">
@@ -93,14 +121,19 @@
 	                                    <th>No</th>
 										<th>No Resi</th>
 										<th>Nama Penerima</th>
-	                                    <th>No HP Penerima</th>
 	                                    <th>Kota Tujuan</th>
-	                                    <th>Status Pembayaran</th>
 	                                    <th>Metode Pembayaran</th>
+	                                    <th>Status Pembayaran</th>
+										
+										<?php if(Session::get('user_level') == 2): ?>
+											<th>Pilih</th>
+										<?php endif; ?>
+										
 										<th width="35%" class="text-center">Action</th>
 	                                </tr>
 	                            </thead>
-	                            <tbody>                                        
+	                            <tbody>
+									
                                     <?php $__currentLoopData = $datas; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 										<?php
 											$bukti_pembayaran = $data->bukti_pembayaran;
@@ -114,11 +147,16 @@
 										?>
 										<tr>
 											<td><?php echo e($loop->iteration); ?></td>
-											<td><?php echo e($data->no_resi); ?></td>
+
+											<td>
+												<span class="badge badge-danger">
+													<?php echo e($data->no_resi); ?>
+
+												</span>
+											</td>
+
 											<td><?php echo e($data->nama_penerima); ?></td>
-											<td><?php echo e($data->no_hp_penerima); ?></td>
 											<td><?php echo e($data->kota_tujuan); ?></td>
-											<td><?php echo e($data->status_pembayaran == 1 ? 'Lunas' : 'Pending'); ?></td>
 											
 											<td onmouseover="showBukti(<?php echo e($data->id); ?>)" onmouseout="hideBukti(<?php echo e($data->id); ?>)">
 												<?php if($bukti_pembayaran != ''): ?>
@@ -130,6 +168,23 @@
 
 												<?php echo e($data->metode_pembayaran); ?> <i class="<?php echo e($data->metode_pembayaran == 'Transfer' ? 'fa fa-eye' : ''); ?>"></i>
 											</td>
+
+											<td class="text-center">
+												<span class="badge <?php echo e($data->status_pembayaran == 1 ? 'badge-primary' : 'badge-warning'); ?>">
+													<i class="fa <?php echo e($data->status_pembayaran == 1 ? 'fa-check' : 'fa-warning'); ?>"></i>
+													<?php echo e($data->status_pembayaran == 1 ? 'Lunas' : 'Pending'); ?>
+
+												</span>
+											</td>
+
+											<?php if(Session::get('user_level') == 2): ?>
+												
+												<td class="text-center">
+													<input type="checkbox" value="5" name="id_pengiriman[]" id="flexCheckDefault" onclick="ceklis(<?php echo e($data->id); ?>)">
+												</td>
+											<?php endif; ?>
+											
+
 											<td class="text-center">
 
 												
@@ -138,6 +193,10 @@
 													<div class="btn-group" role="group">
 														<button class="btn btn-secondary btn-sm dropdown-toggle" id="btnGroupDrop1" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
 														<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+
+															<?php if($data->metode_pembayaran == 'Transfer' && $data->status_pembayaran != 1 && Session::get('user_level') == 2): ?>
+																<a class="dropdown-item" href="<?php echo e(route('data-pengiriman.approve', $data->id)); ?>" onclick="return confirm('Approve Data Pengiriman Ini?')"><span><i data-feather="check-square"></i> Approve</span></a>
+															<?php endif; ?>
 															
 															<a class="dropdown-item" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalDataPengiriman<?php echo e($data->id); ?>" title="Detail Data"><span><i data-feather="eye"></i> Detail</span></a>
 
@@ -153,8 +212,10 @@
 											</td>
 										</tr>
 									<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+									
 	                            </tbody>
 	                        </table>
+							
 	                    </div>
 
 	                </div>
@@ -203,6 +264,10 @@
 
 		function hideBukti(id) {
 			$('#view-bukti'+id).hide();
+		}
+
+		function ceklis(id){
+			$('.inner').append("<input type='hidden' value='"+id+"' name='id_pengiriman[]'>");
 		}
 	</script>
 	
