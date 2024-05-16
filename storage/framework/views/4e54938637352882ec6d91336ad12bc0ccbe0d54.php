@@ -29,9 +29,9 @@
                                         <div class="col-6"><?php echo e($data->email); ?></div>
                                     </div>
                                     <div class="row text-start d-flex justify-content-start">
-                                        <div class="col-4">Email</div>
+                                        <div class="col-4">Alamat</div>
                                         <div class="col-1">:</div>
-                                        <div class="col-6">Rp. <?php echo e($data->email); ?></div>
+                                        <div class="col-6"><?php echo e($data->alamat); ?></div>
                                     </div>
                                     <div class="row d-flex py-1 text-start justify-content-start">
                                         <div class="col-4">Username</div>
@@ -41,12 +41,22 @@
                                     <div class="row d-flex py-1 text-start justify-content-start">
                                         <div class="col-4">Limit Kredit</div>
                                         <div class="col-1">:</div>
-                                        <div class="col-6">Rp. <?php echo e($data->limit_credit); ?></div>
+                                        <div class="col-6">
+                                            <span class="badge badge-primary">
+                                                Rp. <?php echo e($data->limit_credit); ?>
+
+                                            </span>
+                                        </div>
                                     </div>
                                     <div class="row d-flex py-1 text-start justify-content-start">
                                         <div class="col-4">Point</div>
                                         <div class="col-1">:</div>
-                                        <div class="col-6"><?php echo e($data->point); ?></div>
+                                        <div class="col-6">
+                                            <span class="badge badge-primary">
+                                                <?php echo e($data->point); ?>
+
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

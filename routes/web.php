@@ -26,6 +26,7 @@ use App\Http\Controllers\SurveilanceCarController;
 use App\Http\Controllers\PemasukanLainnyaController;
 use App\Http\Controllers\DaftarPengeluaranController;
 use App\Http\Controllers\JenisPengeluaranController;
+use App\Http\Controllers\KonversiPointController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PembelianPerlengkapanController;
 use App\Http\Controllers\PerlengkapanController;
@@ -163,6 +164,9 @@ Route::middleware("auth")->group(function() {
         Route::get('role-management-edit/{id}', [RoleManagementController::class, 'edit'])->name('role.edit');
         Route::post('role-management-update', [RoleManagementController::class, 'update'])->name('role.update');
         Route::get('role-management-delete/{id}', [RoleManagementController::class, 'delete'])->name('role.delete');
+
+        Route::get('konversi-point', [KonversiPointController::class, 'index'])->name('konversi-point');
+        Route::post('konversi-point', [KonversiPointController::class, 'update'])->name('konversi-point.update');
     });
 
     Route::get('pemantauan-gps',[PemantauanController::class, 'index'])->name('pemantauan-gps');
