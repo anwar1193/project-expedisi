@@ -28,13 +28,13 @@ class CustomerController extends Controller
         $this->validate($request, [
             'nama' => 'required',
             'email' => 'required|email',
-            'no_wa' => 'required|regex:/^\+?[0-9]+$/|max:13',
+            'no_wa' => 'required|regex:/^\+?[0-9]+$/',
             'alamat' => 'required',
         ]);
 
         Customer::create($request->all());
 
-        if ($request->username) {
+        if (($request->username) && ($request->addUser == 'on')) {
             User::create([
                 'nama' => $request->nama,
                 'username' => $request->username,
@@ -68,7 +68,7 @@ class CustomerController extends Controller
         $this->validate($request, [
             'nama' => 'required',
             'email' => 'required|email',
-            'no_wa' => 'required|regex:/^\+?[0-9]+$/|max:13',
+            'no_wa' => 'required|regex:/^\+?[0-9]+$/',
             'alamat' => 'required',
         ]);
 
@@ -92,6 +92,10 @@ class CustomerController extends Controller
     public function delete($id)
     {
         $customer = Customer::findOrFail($id);
+        if ($customer->username) {
+            $user = User::where('username', $customer->username)->first();
+            $user->delete();
+        }
         $customer->delete();
 
         Helper::logActivity('Data Customer ' . $customer->nama . ' berhasil dihapus');
