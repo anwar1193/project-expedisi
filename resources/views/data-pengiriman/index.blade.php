@@ -123,6 +123,7 @@
 	                                    <th>Kota Tujuan</th>
 	                                    <th>Metode Pembayaran</th>
 	                                    <th>Status Pembayaran</th>
+	                                    <th>Status Pengiriman</th>
 										
 										@if (Session::get('user_level') == 2)
 											<th>Pilih</th>
@@ -173,6 +174,8 @@
 													{{ $data->status_pembayaran == 1 ? 'Lunas' : 'Pending'; }}
 												</span>
 											</td>
+
+											<td>{{ $data->status_pengiriman }}</td>
 
 											@if (Session::get('user_level') == 2)
 												{{-- Select/Pilih --}}
