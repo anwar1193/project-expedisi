@@ -25,6 +25,7 @@ use App\Http\Controllers\SurveilanceCarController;
 
 use App\Http\Controllers\PemasukanLainnyaController;
 use App\Http\Controllers\DaftarPengeluaranController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\JenisPengeluaranController;
 use App\Http\Controllers\KonversiPointController;
 use App\Http\Controllers\LaporanController;
@@ -261,6 +262,11 @@ Route::middleware("auth")->group(function() {
         Route::post('/', [CustomerController::class, 'store'])->name('customers.store');
         Route::post('/update/{id}', [CustomerController::class, 'update'])->name('customers.update');
         Route::get('/delete/{id}', [CustomerController::class, 'delete'])->name('customers.delete');
+    });
+   
+    Route::prefix('invoice')->group(function () {
+        Route::get('/', [InvoiceController::class, 'index'])->name('invoice.index');
+        Route::get('/export-pdf', [InvoiceController::class, 'export_pdf'])->name('invoice.export-pdf');
     });
 
     Route::get('user-level', [UserController::class, 'listLevel'])->name('level');
