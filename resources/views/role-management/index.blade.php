@@ -78,7 +78,14 @@
 										<tr>
 											<td>{{ $loop->iteration; }}</td>
 											<td>{{ $data->level }}</td>
-											<td>{{ $data->deskripsi != NULL ? $data->deskripsi : '-' }}</td>
+											<td class="text-center">
+												@foreach ($data->menu as $menu)
+													<span class="badge badge-primary">
+														<i class="fa fa-circle"></i>
+														{{ $menu->menu }}
+													</span>
+												@endforeach
+											</td>
 											<td class="text-center">
 
 												<div class="btn-group" role="group" aria-label="Button group with nested dropdown">

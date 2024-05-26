@@ -13,6 +13,12 @@ class RoleManagementController extends Controller
     public  function index()
     {
         $datas = Level::orderBy('id', 'ASC')->get();
+        foreach ($datas as $item) {
+            $menu = MasterMenu::join('menu_permissions', 'menu_permissions.menu_id', '=', 'master_menus.id')
+                    ->where('level_id', $item->id)
+                    ->orderBy('master_menus.id', 'ASC')->get();
+            $item->menu = $menu;
+        }
         $data['datas'] = $datas;
         return view('role-management.index', $data);
     }
