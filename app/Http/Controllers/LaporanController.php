@@ -12,9 +12,10 @@ class LaporanController extends Controller
 {
     public function laba_rugi(Request $request)
     {
-        $start = $request->start ?? date('Y-m-d');
+        $start = $request->periode ?? $request->start ?? date('Y-m-d');
         $end_date = $request->end ?? date('Y-m-d');
         $end = $request->end ?? date('Y-m-d', strtotime('+1 day'));
+        $periode = $request->periode ?? null;
 
         if ($request->end == date('Y-m-d')) {
             $end = date('Y-m-d', strtotime('+1 day'));
@@ -35,7 +36,7 @@ class LaporanController extends Controller
             ->whereBetween('created_at', [$start, $end])
             ->first();
 
-        return view('laporan.laba-rugi', compact('jumlah_pengiriman', 'jumlah_pemasukkan', 'jumlah_pengeluaran', 'start', 'end_date'));
+        return view('laporan.laba-rugi', compact('jumlah_pengiriman', 'jumlah_pemasukkan', 'jumlah_pengeluaran', 'start', 'end_date', 'periode'));
     }
 
     public function laba_rugi_pdf(Request $request)
@@ -65,9 +66,10 @@ class LaporanController extends Controller
 
     public function transaksi_harian(Request $request)
     {
-        $start = $request->start ?? date('Y-m-d');
+        $start = $request->periode ?? $request->start ?? date('Y-m-d');
         $end_date = $request->end ?? date('Y-m-d');
         $end = $request->end ?? date('Y-m-d', strtotime('+1 day'));
+        $periode = $request->periode ?? null;
 
         if ($request->end == date('Y-m-d')) {
             $end = date('Y-m-d', strtotime('+1 day'));
@@ -86,7 +88,7 @@ class LaporanController extends Controller
             ->whereBetween('daftar_pengeluarans.created_at', [$start, $end])
             ->get();
 
-        return view('laporan.transaksi-harian', compact('pengiriman', 'pemasukkan', 'pengeluaran', 'start', 'end_date'));
+        return view('laporan.transaksi-harian', compact('pengiriman', 'pemasukkan', 'pengeluaran', 'start', 'end_date', 'periode'));
     }
 
     public function data_pengiriman_pdf(Request $request)
