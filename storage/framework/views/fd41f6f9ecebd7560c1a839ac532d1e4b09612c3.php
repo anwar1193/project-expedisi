@@ -16,14 +16,22 @@
 	<div class="container-fluid">
         <form class="d-flex flex-column col-12" role="search" action="" method="GET">
 			<div class="d-flex justify-content-end">
+                <div class="px-2">
+                    <select name="periode" id="periode" class="form-control">
+                        <option value="">- Pilih Periode -</option>
+                        <?php $__currentLoopData = getPastDates(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $date): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <option value="<?php echo e($date['value']); ?>" <?php echo e($periode == $date['value'] ? 'selected' : ''); ?>><?php echo e($date['name']); ?></option>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    </select>
+                </div>
 				<div>
-					<input class="form-control" type="date" name="start" value="<?php echo e(request('start') ? request('start') : date('Y-m-d')); ?>" />
+					<input class="form-control" type="date" name="start" value="<?php echo e($start); ?>" <?php echo e($periode ? 'disabled' : ''); ?> />
 				</div>
 				<div class="px-2">
 					<p class="fs-5">s/d</p>
 				</div>
 				<div>
-					<input class="form-control" type="date" name="end" value="<?php echo e(request('end') ? request('end') : date('Y-m-d')); ?>" />
+					<input class="form-control" type="date" name="end" value="<?php echo e(request('end') ? request('end') : date('Y-m-d')); ?>" <?php echo e($periode ? 'disabled' : ''); ?> />
 				</div>
 				<div class="px-1">
 					<button type="submit" class="btn btn-primary" title="Cari"><i class="fa fa-search"></i> Cari</button>
@@ -62,12 +70,25 @@
                                 </div>
                                 <p class="mb-1">Rp. <?php echo e(number_format($jumlah_pengeluaran->totalPengeluaran, 0, ',', '.') ?? 0); ?> ,-</p>
                             </a>
+
+                            <?php
+                                $laba_rugi = $jumlah_pengiriman->totalPengiriman + $jumlah_pemasukkan->totalPemasukan - $jumlah_pengeluaran->totalPengeluaran;
+                            ?>
+
+                            <a class="list-group-item list-group-item-action flex-column align-items-start" href="javascript:void(0)">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">Laba / Rugi</h5>
+                                </div>
+                                <p class="mb-1">
+                                    <span class="badge <?php echo e($laba_rugi >= 0 ? 'badge-primary' : 'badge-danger'); ?>" style="font-size: 15px">
+                                        Rp. <?php echo e(number_format($laba_rugi, 0, ',', '.') ?? 0); ?> ,-
+                                    </span>
+                                </p>
+                            </a>
                         </div>
                     </div>
                     <div class="card-footer text-end">
-                        <a href="<?php echo e(route('laporan.laba-rugi.export-pdf', ['start' => request('start'), 'end' => request('end')])); ?>" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Cetak PDF">
-                            <i class="fa fa-file-pdf-o"></i> Cetak PDF
-                        </a>
+                        
                     </div>
                 </div>
             </div>
