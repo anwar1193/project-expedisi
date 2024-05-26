@@ -20,7 +20,7 @@ class GoogleAuthController extends Controller
     public function callback()
     {
         $datetime = date('Y-m-d H:i:s');
-        $next_year = date('Y-m-d H:i:s', strtotime('+1 year'));
+        // $next_year = date('Y-m-d H:i:s', strtotime('+1 year'));
 
         $auth = Socialite::driver('google')->stateless()->user();
         $user = User::where('google_id', $auth->getId())->first();
@@ -42,7 +42,6 @@ class GoogleAuthController extends Controller
                     'google_id' => $auth->getId(),
                     'user_level' => 3,
                     'password' => Hash::make('password'),
-                    'tgl_kadaluarsa' => $next_year,
                     'last_login' => $datetime,
                     'status' => 1
                 ]);
