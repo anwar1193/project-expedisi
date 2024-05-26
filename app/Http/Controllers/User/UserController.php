@@ -45,7 +45,6 @@ class UserController extends Controller
             'password' => 'required|confirmed',
             // 'password_confirmation' => 'required',
             'status' => 'required',
-            'tgl_kadaluarsa' => 'required',
             'foto' => 'required'
         ]);
 
@@ -86,7 +85,6 @@ class UserController extends Controller
             'nomor_telepon' => 'required',
             'user_level' => 'required',
             'status' => 'required',
-            'kadaluarsa' => 'required'
         ]);
 
         $foto = $request->file('foto');
@@ -107,7 +105,6 @@ class UserController extends Controller
             'nomor_telepon' => $request->nomor_telepon,
             'user_level' => $request->user_level,
             'status' => $request->status,
-            'tgl_kadaluarsa' => $request->kadaluarsa,
             'foto' => ($foto != '' ? $foto->hashName() : $request->old_foto)
         ]);
 
