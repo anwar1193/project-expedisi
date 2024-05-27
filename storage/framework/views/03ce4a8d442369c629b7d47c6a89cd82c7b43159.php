@@ -84,19 +84,25 @@
 											<td><?php echo e($loop->iteration); ?></td>
 											<td><?php echo e($data->kategori); ?></td>
 											<td><?php echo e($data->nama_customer); ?></td>
-											<td><?php echo e($data->harga); ?></td>
+											<td><?php echo e(number_format($data->harga, 0, '.', ',')); ?></td>
 											<td><?php echo e($data->tanggal_transaksi); ?></td>
-											<td><?php echo e($data->komisi); ?></td>
+											<td><?php echo e(number_format($data->komisi, 0, '.', ',')); ?></td>
 											<td class="text-center">
 												
 
-												<a href="<?php echo e(route('data-pemasukan.edit', $data->id)); ?>" class="btn btn-square btn-warning btn-xs" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Data">
-													<i class="fa fa-edit"></i>
-												</a>
-												
-												<a href="<?php echo e(route('data-pemasukan.delete', $data->id)); ?>" class="btn btn-square btn-danger btn-xs" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Data" onclick="return confirm('Apakah Anda Yakin?')">
-													<i class="fa fa-trash"></i>
-												</a>
+												<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+													<div class="btn-group" role="group">
+														<button class="btn btn-secondary btn-sm dropdown-toggle" id="btnGroupDrop1" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
+														<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+
+															<a class="dropdown-item" href="<?php echo e(route('data-pemasukan.edit', $data->id)); ?>"><span><i data-feather="edit"></i> Edit</span></a>
+
+															<a class="dropdown-item" href="<?php echo e(route('data-pemasukan.delete', $data->id)); ?>" onclick="return confirm('Apakah Anda Yakin?')"><span><i data-feather="delete"></i> Delete</span></a>
+															
+														</div>
+													</div>
+												</div>
+
 												<?php echo $__env->make('data-pemasukan.detail', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 											</td>
 										</tr>

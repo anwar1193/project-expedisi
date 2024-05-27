@@ -95,15 +95,9 @@
 										<select name="user_level" id="user_level" class="form-control @error('user_level') is-invalid @enderror">
 											<option value="">- Pilih Level -</option>
 											@foreach ($levels as $item)
-												@if (Request::old('user_level') == $item->kode_level)
-													<option value="{{ $item->kode_level }}" selected>
-														{{ $item->level }}
-													</option>
-												@else
-													<option value="{{ $item->kode_level }}">
-														{{ $item->level }}
-													</option>
-												@endif
+												<option value="{{ $item->id }}" {{ old('user_level') == $item->id ? 'selected' : '' }}>
+													{{ $item->level }}
+												</option>
 											@endforeach
 										</select>
 
@@ -156,21 +150,6 @@
 										</select>
 
 										@error('status')
-										<div class="text-danger">
-											{{ $message }}
-										</div>
-										@enderror
-									</div>
-								</div>
-							</div>
-
-							<div class="row">
-								<div class="col-4">
-									<div class="mb-3">
-										<label class="form-label" for="">Tanggal Kadaluarsa</label>
-										<input type="date" class="form-control @error('tgl_kadaluarsa	') is-invalid @enderror"" name="tgl_kadaluarsa">
-
-										@error('tgl_kadaluarsa')
 										<div class="text-danger">
 											{{ $message }}
 										</div>

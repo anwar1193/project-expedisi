@@ -132,21 +132,6 @@
 							</div>
 
 							<div class="row">
-								<div class="col-4">
-									<div class="mb-3">
-										<label class="form-label" for="">Tanggal Kadaluarsa</label>
-										<input type="date" class="form-control @error('kadaluarsa') is-invalid @enderror"" name="kadaluarsa" value="{{ old('kadaluarsa', $user->tgl_kadaluarsa) }}">
-
-										@error('kadaluarsa')
-										<div class="text-danger">
-											{{ $message }}
-										</div>
-										@enderror
-									</div>
-								</div>
-							</div>
-
-							<div class="row">
 								<div class="col">
 									<div class="mb-3">
 										<label class="form-label" for="">Foto</label>

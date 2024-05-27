@@ -13,6 +13,18 @@ use Yaza\LaravelGoogleDriveStorage\Gdrive;
 
 class DaftarPengeluaranController extends Controller
 {
+    private function saveBase64Image($image)
+    {
+        $folderPath = "public/daftar-pengeluaran/";
+        $image_parts = explode(";base64,", $image);
+        $image_type_aux = explode("image/", $image_parts[0]);
+        $image_type = $image_type_aux[1];
+        $image_base64 = base64_decode($image_parts[1]);
+        $fileName = uniqid() . '.png';
+        $file = $folderPath . $fileName;
+
+        return ['file' => $file, 'fileName' => $fileName, 'image_base64' => $image_base64];
+    }
     public  function index()
     {
         $datas = DaftarPengeluaran::select('daftar_pengeluarans.id', 'daftar_pengeluarans.tgl_pengeluaran', 'daftar_pengeluarans.keterangan', 'daftar_pengeluarans.jumlah_pembayaran', 'daftar_pengeluarans.yang_membayar', 'daftar_pengeluarans.yang_menerima', 'daftar_pengeluarans.metode_pembayaran', 'daftar_pengeluarans.bukti_pembayaran', 'daftar_pengeluarans.status_pengeluaran', 'jenis_pengeluarans.jenis_pengeluaran')
@@ -36,22 +48,54 @@ class DaftarPengeluaranController extends Controller
 
     public function store(Request $request)
     {
-
+        $today = date('Y-m-d');
         $validateData = $request->validate([
             'keterangan' => 'required',
             'jumlah_pembayaran' => 'required',
             'yang_menerima' => 'required',
             'metode_pembayaran' => 'required',
-            'bukti_pembayaran' => 'required',
+            'bukti_pembayaran' => 'required_without:image',
+            'image' => 'required_without:bukti_pembayaran', 
             'jenis_pengeluaran' => 'required'
         ]);
 
-        // $jenis_pengeluaran = JenisPengeluaran::find($request->jenis_pengeluaran);
+        $foto = $request->file('bukti_pembayaran');
+        $img = $request->image;      
 
-        // $validateData['keterangan'] = $jenis_pengeluaran->keterangan;
+        if($foto != ''){
+            // Set Up Untuk Penyimopnan Image ke GDrive
+            $namafile = 'daftar-pengeluaran/'.$foto->hashName();
+            $path = public_path('storage/daftar-pengeluaran/' . $foto->hashName());
+
+            // Proses Simoan Storage
+            $foto->storeAs('public/daftar-pengeluaran', $foto->hashName());
+
+            // Proses Simpan GDrive
+            Storage::disk('google')->put($namafile, File::get($path));
+
+            $validateData['bukti_pembayaran'] = $foto->hashName();
+        } elseif (($img != '') && ($request->takeImage == 'on')) {
+            // Proses Image Base64
+            $imageData = $this->saveBase64Image($img);
+            $file = $imageData['file'];
+            $fileName = $imageData['fileName'];
+            $fileNamePath = 'daftar-pengeluaran/'.$imageData['fileName'];
+            $image_base64 = $imageData['image_base64'];
+            $path = public_path('storage/daftar-pengeluaran/' . $fileName);
+
+            // Proses Simpan Storage
+            Storage::disk('local')->put($file, $image_base64);
+
+            // Proses Simpan GDrive
+            Storage::disk('google')->put($fileNamePath, File::get($path));
+
+            $validateData['bukti_pembayaran'] = $fileName;
+        }
+
         $validateData['yang_membayar'] = Session::get('nama');
-        $validateData['tgl_pengeluaran'] = date('Y-m-d');
-        $validateData['status_pengeluaran'] = 2;
+        $validateData['tgl_pengeluaran'] = $today;
+        $validateData['status_pengeluaran'] = DaftarPengeluaran::STATUS_PENDING;
+        $validateData['keterangan_tambahan'] = $request->keterangan_tambahan;
 
         DaftarPengeluaran::create($validateData);
 
@@ -68,7 +112,7 @@ class DaftarPengeluaranController extends Controller
         $data['datas'] = $datas;
         $data['jenis_pengeluaran'] = $jenis_pengeluaran;
 
-        return view('daftar-pengeluaran.edit', $data);
+        return $datas->status_pengeluaran == 1 ?  back()->with('error', 'Data Yang Telah Di Approve Tidak Bisa Diedit Kembali') : view('daftar-pengeluaran.edit', $data);
     }
 
     public function update($id, Request $request)
@@ -81,7 +125,45 @@ class DaftarPengeluaranController extends Controller
             'jenis_pengeluaran' => 'required'
         ]);
 
+        $foto = $request->file('bukti_pembayaran');
+        $img = $request->image;
+
         $getImage = DaftarPengeluaran::find($id);
+
+        if($foto != ''){
+            // Proses Simoan Storage
+            Storage::delete('public/daftar-pengeluaran/'.$getImage->foto);
+            $foto->storeAs('public/daftar-pengeluaran', $foto->hashName());
+
+            // Set Up Untuk Penyimopnan Image ke GDrive
+            $namafile = 'daftar-pengeluaran/'.$foto->hashName();
+            $path = public_path('storage/daftar-pengeluaran/' . $foto->hashName());
+
+            // Proses Simoan GDrive
+            Gdrive::delete('daftar-pengeluaran/'.$getImage->bukti_pembayaran);
+            Storage::disk('google')->put($namafile, File::get($path));
+            $buktiPembayaran = $foto->hashName();
+        } elseif (($img != '') && ($request->takeImage == 'on')) {
+            // Proses Image Base64
+            $imageData = $this->saveBase64Image($img);
+            $file = $imageData['file'];
+            $fileName = $imageData['fileName'];
+            $image_base64 = $imageData['image_base64'];
+
+            // Proses Simoan Storage
+            Storage::delete('public/daftar-pengeluaran/'.$getImage->foto);
+            Storage::disk('local')->put($file, $image_base64);
+
+            // Set Up Untuk Penyimopnan Image ke GDrive
+            $namafile = 'daftar-pengeluaran/'.$fileName;
+            $path = public_path('storage/daftar-pengeluaran/' . $fileName);
+
+            // Proses Simoan Storage
+            Gdrive::delete('daftar-pengeluaran/'.$getImage->bukti_pembayaran);
+            Storage::disk('google')->put($namafile, File::get($path));
+
+            $buktiPembayaran = $fileName;
+        }
 
         DaftarPengeluaran::where('id', '=', $id)->update([
             'keterangan' => $request->keterangan,
@@ -89,7 +171,8 @@ class DaftarPengeluaranController extends Controller
             'yang_menerima' => $request->yang_menerima,
             'metode_pembayaran' => $request->metode_pembayaran,
             'jenis_pengeluaran' => $request->jenis_pengeluaran,
-            'bukti_pembayaran' => $request->bukti_pembayaran
+            'bukti_pembayaran' => ($foto || $img ? $buktiPembayaran : $getImage->bukti_pembayaran),
+            'keterangan_tambahan' => $request->keterangan_tambahan
         ]);
 
         Helper::logActivity('Update daftar pengeluaran dengan id: '.$id);
@@ -100,6 +183,12 @@ class DaftarPengeluaranController extends Controller
     public function delete($id)
     {
         $getImage = DaftarPengeluaran::find($id);
+
+        if(Storage::exists('public/daftar-pengeluaran/'. $getImage->bukti_pembayaran)){
+            Storage::delete('public/daftar-pengeluaran/'. $getImage->bukti_pembayaran);
+        }
+
+        Gdrive::delete('daftar-pengeluaran/'.$getImage->bukti_pembayaran);
 
         Helper::logActivity('Hapus daftar pengeluaran dengan id : '.$getImage->id);
 
@@ -113,6 +202,23 @@ class DaftarPengeluaranController extends Controller
         $proses = DaftarPengeluaran::find($id)->update([
             'status_pengeluaran' => 1
         ]);
+
+        return back()->with('success', 'Data Pengeluaran Telah Di Approve');
+    }
+
+    public function approveSelected(Request $request)
+    {
+        $id_pengeluaran = $request->id_pengeluaran;
+
+        if($id_pengeluaran == NULL){
+            return back()->with('error', 'Belum Ada Data Dipilih');
+        }
+
+        for($i=0; $i<sizeof($id_pengeluaran); $i++){
+            DaftarPengeluaran::find($id_pengeluaran[$i])->update([
+                'status_pengeluaran' => 1
+            ]);
+        }
 
         return back()->with('success', 'Data Pengeluaran Telah Di Approve');
     }

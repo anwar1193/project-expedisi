@@ -42,10 +42,6 @@ class AuthController extends Controller
             return back()->withErrors(["login" => "Password salah"])->withInput();
         }
 
-        if (date('Y-m-d') > $user->tgl_kadaluarsa) {
-            return back()->withErrors(["login" => "Akun Pengguna Telah Kadaluarsa"])->withInput();
-        }
-
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             Session::put('id', $user->id);

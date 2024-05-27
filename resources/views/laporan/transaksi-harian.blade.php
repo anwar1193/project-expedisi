@@ -19,14 +19,22 @@
 	<div class="container-fluid">
         <form class="d-flex flex-column col-12" role="search" action="" method="GET">
 			<div class="d-flex justify-content-end">
+				<div class="px-2">
+                    <select name="periode" id="periode" class="form-control">
+                        <option value="">- Pilih Periode -</option>
+                        @foreach(getPastDates() as $date)
+                            <option value="{{ $date['value'] }}" {{ $periode == $date['value'] ? 'selected' : '' }}>{{ $date['name'] }}</option>
+                        @endforeach
+                    </select>
+                </div>
 				<div>
-					<input class="form-control" type="date" name="start" value="{{ request('start') ? request('start') : date('Y-m-d') }}" />
+					<input class="form-control" type="date" name="start" value="{{ $start }}" {{ $periode ? 'disabled' : '' }} />
 				</div>
 				<div class="px-2">
 					<p class="fs-5">s/d</p>
 				</div>
 				<div>
-					<input class="form-control" type="date" name="end" value="{{ request('end') ? request('end') : date('Y-m-d') }}" />
+					<input class="form-control" type="date" name="end" value="{{ request('end') ? request('end') : date('Y-m-d') }}" {{ $periode ? 'disabled' : '' }} />
 				</div>
 				<div class="px-1">
 					<button type="submit" class="btn btn-primary" title="Cari"><i class="fa fa-search"></i> Cari</button>
