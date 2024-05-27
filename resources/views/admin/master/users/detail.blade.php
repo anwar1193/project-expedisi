@@ -60,12 +60,6 @@
                         </tr>
 
                         <tr>
-                            <th>Tanggal Kadaluarsa</th>
-                            <th class="text-center">:</th>
-                            <td>{{ date("d-m-Y", strtotime($user->tgl_kadaluarsa)) }}</td>
-                        </tr>
-
-                        <tr>
                             <th>Foto</th>
                             <th class="text-center">:</th>
                             <td>
