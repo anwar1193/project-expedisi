@@ -7,9 +7,23 @@ use App\Models\PemasukanLainnya;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Session;
+use Yaza\LaravelGoogleDriveStorage\Gdrive;
 
 class PemasukanLainnyaController extends Controller
 {
+    private function saveBase64Image($image)
+    {
+        $folderPath = "public/data-pemasukkan/";
+        $image_parts = explode(";base64,", $image);
+        $image_type_aux = explode("image/", $image_parts[0]);
+        $image_type = $image_type_aux[1];
+        $image_base64 = base64_decode($image_parts[1]);
+        $fileName = uniqid() . '.png';
+        $file = $folderPath . $fileName;
+
+        return ['file' => $file, 'fileName' => $fileName, 'image_base64' => $image_base64];
+    }
     public  function index()
     {
         $datas = PemasukanLainnya::orderBy('id', 'DESC')->get();
@@ -26,13 +40,53 @@ class PemasukanLainnyaController extends Controller
 
     public function store(Request $request)
     {
+        $today = date('Y-m-d');
         $validateData = $request->validate([
-            'kategori' => 'required',
-            'nama_customer' => 'required',
-            'harga' => 'required',
-            'tanggal_transaksi' => 'required',
-            'komisi' => 'required',
+            'keterangan' => 'required',
+            'jumlah_pemasukkan' => 'required',
+            'sumber_pemasukkan' => 'required',
+            'metode_pembayaran' => 'required',
+            'bukti_pembayaran' => 'required_without:image',
+            'image' => 'required_without:bukti_pembayaran', 
+            'keterangan_tambahan' => 'required',
         ]);
+
+        $foto = $request->file('bukti_pembayaran');
+        $img = $request->image;      
+
+        if($foto != ''){
+            // Set Up Untuk Penyimopnan Image ke GDrive
+            $namafile = 'data-pemasukkan/'.$foto->hashName();
+            $path = public_path('storage/data-pemasukkan/' . $foto->hashName());
+
+            // Proses Simoan Storage
+            $foto->storeAs('public/data-pemasukkan', $foto->hashName());
+
+            // Proses Simpan GDrive
+            Storage::disk('google')->put($namafile, File::get($path));
+
+            $validateData['bukti_pembayaran'] = $foto->hashName();
+        } elseif (($img != '') && ($request->takeImage == 'on')) {
+            // Proses Image Base64
+            $imageData = $this->saveBase64Image($img);
+            $file = $imageData['file'];
+            $fileName = $imageData['fileName'];
+            $fileNamePath = 'data-pemasukkan/'.$imageData['fileName'];
+            $image_base64 = $imageData['image_base64'];
+            $path = public_path('storage/data-pemasukkan/' . $fileName);
+
+            // Proses Simpan Storage
+            Storage::disk('local')->put($file, $image_base64);
+
+            // Proses Simpan GDrive
+            Storage::disk('google')->put($fileNamePath, File::get($path));
+
+            $validateData['bukti_pembayaran'] = $fileName;
+        }
+
+        $validateData['diterima_oleh'] = Session::get('nama');
+        $validateData['tgl_pemasukkan'] = $today;
+        $validateData['keterangan_tambahan'] = $request->keterangan_tambahan;
 
         PemasukanLainnya::create($validateData);
 
@@ -53,19 +107,60 @@ class PemasukanLainnyaController extends Controller
     public function update($id, Request $request)
     {
         $validateData = $request->validate([
-            'kategori' => 'required',
-            'nama_customer' => 'required',
-            'harga' => 'required',
-            'tanggal_transaksi' => 'required',
-            'komisi' => 'required',
+            'keterangan' => 'required',
+            'jumlah_pemasukkan' => 'required',
+            'sumber_pemasukkan' => 'required',
+            'metode_pembayaran' => 'required',
+            'keterangan_tambahan' => 'required',
         ]);
 
+        $foto = $request->file('bukti_pembayaran');
+        $img = $request->image;
+
+        $getImage = PemasukanLainnya::find($id);
+
+        if($foto != ''){
+            // Proses Simoan Storage
+            Storage::delete('public/data-pemasukkan/'.$getImage->foto);
+            $foto->storeAs('public/data-pemasukkan', $foto->hashName());
+
+            // Set Up Untuk Penyimopnan Image ke GDrive
+            $namafile = 'data-pemasukkan/'.$foto->hashName();
+            $path = public_path('storage/data-pemasukkan/' . $foto->hashName());
+
+            // Proses Simoan GDrive
+            Gdrive::delete('data-pemasukkan/'.$getImage->bukti_pembayaran);
+            Storage::disk('google')->put($namafile, File::get($path));
+            $buktiPembayaran = $foto->hashName();
+        } elseif (($img != '') && ($request->takeImage == 'on')) {
+            // Proses Image Base64
+            $imageData = $this->saveBase64Image($img);
+            $file = $imageData['file'];
+            $fileName = $imageData['fileName'];
+            $image_base64 = $imageData['image_base64'];
+
+            // Proses Simoan Storage
+            Storage::delete('public/data-pemasukkan/'.$getImage->foto);
+            Storage::disk('local')->put($file, $image_base64);
+
+            // Set Up Untuk Penyimopnan Image ke GDrive
+            $namafile = 'data-pemasukkan/'.$fileName;
+            $path = public_path('storage/data-pemasukkan/' . $fileName);
+
+            // Proses Simoan Storage
+            Gdrive::delete('data-pemasukkan/'.$getImage->bukti_pembayaran);
+            Storage::disk('google')->put($namafile, File::get($path));
+
+            $buktiPembayaran = $fileName;
+        }
+
         PemasukanLainnya::where('id', '=', $id)->update([
-            'kategori' => $request->kategori,
-            'nama_customer' => $request->nama_customer,
-            'harga' => $request->harga,
-            'tanggal_transaksi' => $request->tanggal_transaksi,
-            'komisi' => $request->komisi,
+            'keterangan' => $request->keterangan,
+            'jumlah_pemasukkan' => $request->jumlah_pemasukkan,
+            'sumber_pemasukkan' => $request->sumber_pemasukkan,
+            'metode_pembayaran' => $request->metode_pembayaran,
+            'bukti_pembayaran' => ($foto || $img ? $buktiPembayaran : $getImage->bukti_pembayaran),
+            'keterangan_tambahan' => $request->keterangan_tambahan,
         ]);
 
         Helper::logActivity('Update data pemasukan dengan id: '.$id);
@@ -75,9 +170,15 @@ class PemasukanLainnyaController extends Controller
     
     public function delete($id)
     {
-        Helper::logActivity('Hapus data pemasukan dengan id : '.$id);
+        $getImage = PemasukanLainnya::find($id);
 
+        if(Storage::exists('public/data-pemasukkan/'. $getImage->bukti_pembayaran)){
+            Storage::delete('public/data-pemasukkan/'. $getImage->bukti_pembayaran);
+        }
+
+        Gdrive::delete('data-pemasukkan/'.$getImage->bukti_pembayaran);
         PemasukanLainnya::where('id', $id)->delete();
+        Helper::logActivity('Hapus data pemasukan dengan id : '.$id);
 
         return redirect()->route('data-pemasukan')->with('delete', 'Data pemasukan berhasil dihapus');
     }
