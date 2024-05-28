@@ -26,141 +26,21 @@
 					<form class="form theme-form" method="POST" action="<?php echo e(route('data-pemasukan.update', $datas->id)); ?>" enctype="multipart/form-data">
                         <?php echo csrf_field(); ?>
 						<div class="card-body">
-
-							<div class="row">
-								<div class="col">
-									<div class="mb-3">
-										<label class="form-label" for="">Kategori</label>
-										<input class="form-control <?php $__errorArgs = ['kategori'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>" type="text" name="kategori" autocomplete="off" value="<?php echo e(old('kategori', $datas->kategori)); ?>"/>
-
-										<?php $__errorArgs = ['kategori'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-										<div class="text-danger">
-											<?php echo e($message); ?>
-
-										</div>
-										<?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-									</div>
-								</div>
-							</div>
-
-							<div class="row">
-								<div class="col">
-									<div class="mb-3">
-										<label class="form-label" for="">Nama Customer</label>
-										<input class="form-control <?php $__errorArgs = ['nama_customer'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>" type="text" name="nama_customer" autocomplete="off" value="<?php echo e(old('nama_customer', $datas->nama_customer)); ?>"/>
-
-										<?php $__errorArgs = ['nama_customer'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-										<div class="text-danger">
-											<?php echo e($message); ?>
-
-										</div>
-										<?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-									</div>
-								</div>
-							</div>
-
-							<div class="row">
-								<div class="col">
-									<div class="mb-3">
-										<label class="form-label" for="">Harga</label>
-										<input class="form-control <?php $__errorArgs = ['harga'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>" type="number" name="harga" autocomplete="off" value="<?php echo e(old('harga', $datas->harga)); ?>"/>
-
-										<?php $__errorArgs = ['harga'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-										<div class="text-danger">
-											<?php echo e($message); ?>
-
-										</div>
-										<?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-									</div>
-								</div>
-							</div>
-
-							<div class="row">
-								<div class="col">
-									<div class="mb-3">
-										<label class="form-label" for="">Tanggal Transaksi</label>
-										<input class="form-control <?php $__errorArgs = ['tanggal_transaksi'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>" type="text" name="tanggal_transaksi" autocomplete="off" value="<?php echo e($datas->tanggal_transaksi); ?>" readonly/>
-
-										<?php $__errorArgs = ['tanggal_transaksi'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-										<div class="text-danger">
-											<?php echo e($message); ?>
-
-										</div>
-										<?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-									</div>
-								</div>
-							</div>
 							
                             <div class="row">
 								<div class="col">
 									<div class="mb-3">
-										<label class="form-label" for="">Komisi</label>
-										<input class="form-control <?php $__errorArgs = ['komisi'];
+										<label class="form-label" for="">Keterangan</label>
+										<input class="form-control <?php $__errorArgs = ['keterangan'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>" type="number" name="komisi" autocomplete="off" value="<?php echo e(old('komisi', $datas->komisi)); ?>"/>
+unset($__errorArgs, $__bag); ?>" type="text" name="keterangan" autocomplete="off" value="<?php echo e(old('keterangan', $datas->keterangan)); ?>"/>
 
-										<?php $__errorArgs = ['komisi'];
+										<?php $__errorArgs = ['keterangan'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -173,6 +53,194 @@ $message = $__bag->first($__errorArgs[0]); ?>
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
+									</div>
+								</div>
+							</div>
+                            
+                            <div class="row">
+								<div class="col">
+									<div class="mb-3">
+										<label class="form-label" for="">Jumlah Pemasukan</label>
+										<input class="form-control <?php $__errorArgs = ['jumlah_pemasukkan'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" type="number" name="jumlah_pemasukkan" autocomplete="off" value="<?php echo e(old('jumlah_pemasukkan', $datas->jumlah_pemasukkan)); ?>"/>
+
+										<?php $__errorArgs = ['jumlah_pemasukkan'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+										<div class="text-danger">
+											<?php echo e($message); ?>
+
+										</div>
+										<?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+									</div>
+								</div>
+							</div>
+                            
+                            <div class="row">
+								<div class="col">
+									<div class="mb-3">
+										<label class="form-label" for="">Sumber Pemasukan</label>
+										<input class="form-control <?php $__errorArgs = ['sumber_pemasukkan'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" type="text" name="sumber_pemasukkan" autocomplete="off" value="<?php echo e(old('sumber_pemasukkan', $datas->sumber_pemasukkan)); ?>"/>
+
+										<?php $__errorArgs = ['sumber_pemasukkan'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+										<div class="text-danger">
+											<?php echo e($message); ?>
+
+										</div>
+										<?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col">
+									<div class="mb-3">
+										<label class="form-label" for="">Metode Pembayaran</label>
+                                        <select name="metode_pembayaran" id="metode_pembayaran" class="form-control <?php $__errorArgs = ['metode_pembayaran'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>">
+											<option value="tunai" <?php echo e($datas->metode_pembayaran == 'tunai' ? 'selected' : NULL); ?>>Tunai</option>
+											<option value="transfer" <?php echo e($datas->metode_pembayaran == 'transfer' ? 'selected' : NULL); ?>>Transfer</option>
+										</select>
+
+										<?php $__errorArgs = ['metode_pembayaran'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+										<div class="text-danger">
+											<?php echo e($message); ?>
+
+										</div>
+										<?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col">
+									<div class="mb-3">
+										<label class="form-label" for="">Keterangan Tambahan</label>
+										<input class="form-control <?php $__errorArgs = ['keterangan_tambahan'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" type="text" name="keterangan_tambahan" autocomplete="off" value="<?php echo e(old('keterangan_tambahan', $datas->keterangan_tambahan)); ?>" maxlength="255"/>
+
+										<?php $__errorArgs = ['keterangan_tambahan'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+										<div class="text-danger">
+											<?php echo e($message); ?>
+
+										</div>
+										<?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col">
+									<div class="mb-1">
+                                        <div class="mb-3">
+                                            <label class="form-label" for="">Bukti Pembayaran</label>
+											<input class="form-control <?php $__errorArgs = ['bukti_pembayaran'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" id="buktiBayar" type="file" width="48" height="48" name="bukti_pembayaran" />
+
+                                            <?php $__errorArgs = ['bukti_pembayaran'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                            <div class="text-danger">
+                                                <?php echo e($message); ?>
+
+                                            </div>
+                                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?> 
+																						
+                                        </div>
+										<div>										
+											<input class="form-check-input" id="takeImage" type="checkbox" name="takeImage" />
+											<label class="form-check-label" for="takeImage">Ambil Gambar</label>
+	
+											<div>
+												<img src="<?php echo e(asset('storage/data-pemasukkan/'.$datas->bukti_pembayaran)); ?>" alt="" width="200px" class="img-fluid mt-2">
+											</div>
+
+
+											<div id="image" style="display:none">
+												<div>
+													<input type="hidden" id="bukti_pembayaran" name="image">
+													<video width="250" height="200" autoplay="true" id="videoElement">
+													</video>
+													<canvas width="250" height="200" id="canvas"></canvas>
+												</div>
+											</div>
+	
+											<?php $__errorArgs = ['bukti_pembayaran'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+											<div class="text-danger">
+												<?php echo e($message); ?>
+
+											</div>
+											<?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -183,6 +251,15 @@ unset($__errorArgs, $__bag); ?>
 							<a href="<?php echo e(route('data-pemasukan')); ?>" class="btn btn-light">Kembali</a>
 						</div>
 					</form>
+
+					<div class="d-flex ps-3 pb-3 mb-3">
+						<div>
+							<button class="btn btn-success" id="captureButton">Capture Image</button>
+						</div>
+						<div>
+							<button class="btn btn-warning" id="cancelButton" onclick="cancelCapture()">Cancel Capture</button>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -192,6 +269,89 @@ unset($__errorArgs, $__bag); ?>
 	<?php $__env->startPush('scripts'); ?>
     <script src="<?php echo e(asset('assets/js/select2/select2.full.min.js')); ?>"></script>
     <script src="<?php echo e(asset('assets/js/select2/select2-custom.js')); ?>"></script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			const jumlahPembayaranInput = document.querySelector('input[name="jumlah_pemasukkan"]');
+			const displayElement = document.createElement('div');
+			displayElement.innerHTML = 'Number Format: <strong>RP. ' + new Intl.NumberFormat('id-ID').format(jumlahPembayaranInput.value) + '</strong>';
+			jumlahPembayaranInput.parentNode.appendChild(displayElement);
+
+			jumlahPembayaranInput.addEventListener('input', function() {
+				const typedValue = jumlahPembayaranInput.value;
+				displayElement.innerHTML = 'Number Format: <strong>RP. ' + new Intl.NumberFormat('id-ID').format(typedValue) + '</strong>';
+			});
+		});
+	</script>
+
+	<script>
+		function toggleUserFields() {
+			var takeImageCheckbox = document.getElementById('takeImage');
+			var image = document.getElementById('image');
+			var buktiBayar = document.getElementById('buktiBayar');
+			const video = document.querySelector(`#videoElement`);
+			const canvas = document.getElementById('canvas');
+			const captureButton = document.getElementById('captureButton');
+			const cancelButton = document.getElementById('cancelButton');
+			const imageInput = document.getElementById('bukti_pembayaran');
+		
+			if (video && takeImageCheckbox.checked) {
+				if (navigator.mediaDevices.getUserMedia) {
+					navigator.mediaDevices.getUserMedia({ video: true })
+						.then(function (stream) {
+							video.srcObject = stream;
+						})
+						.catch(function (error) {
+							console.log("Something went wrong!", error);
+						});
+
+					captureButton.addEventListener('click', function() {
+						const context = canvas.getContext('2d');
+						context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+						const imgData = canvas.toDataURL('image/png');
+						imageInput.value = imgData;
+					});
+				} else {
+					console.log("getUserMedia not supported on your browser!");
+				}
+			} else {
+				console.log(`Video element not found!`);
+			}
+
+			if (takeImageCheckbox.checked) {
+				image.style.display = 'block';
+				captureButton.style.display = 'block';
+				cancelButton.style.display = 'block';
+				buktiBayar.style.display = 'none';
+			} else {
+				image.style.display = 'none';
+				captureButton.style.display = 'none';
+				cancelButton.style.display = 'none';
+				buktiBayar.style.display = 'block';
+			}
+		}
+
+		function cancelCapture() {
+			const video = document.querySelector(`#videoElement`);
+			const imageInput = document.getElementById('bukti_pembayaran');
+			const image = document.getElementById('image');
+			const captureButton = document.getElementById('captureButton');
+			const buktiBayar = document.getElementById('buktiBayar');
+			
+			video.srcObject = null;
+			imageInput.value = '';
+			image.style.display = 'none';
+			captureButton.style.display = 'none';
+			buktiBayar.style.display = 'block';
+
+			const context = canvas.getContext('2d');
+    		context.clearRect(0, 0, canvas.width, canvas.height);
+		}
+
+		document.getElementById('takeImage').addEventListener('change', toggleUserFields);
+
+		document.addEventListener('DOMContentLoaded', toggleUserFields);
+	</script>
 	<?php $__env->stopPush(); ?>
 
 <?php $__env->stopSection(); ?>
