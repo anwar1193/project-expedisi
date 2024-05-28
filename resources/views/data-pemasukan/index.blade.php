@@ -68,44 +68,55 @@
 	                            <thead>
 	                                <tr>
 	                                    <th>No</th>
-										<th>Kategori</th>
-										<th>Customer</th>
-	                                    <th>Harga</th>
-	                                    <th>Tanggal Transaksi</th>
-	                                    <th>Komisi</th>
+										<th>Tanggal Pemasukan</th>
+										<th>Keterangan</th>
+	                                    <th>Jumlah Pemasukan</th>
+	                                    <th>Sumber Pemasukan</th>
+	                                    <th>Bukti Pembayaran</th>
 										<th width="35%" class="text-center">Action</th>
 	                                </tr>
 	                            </thead>
 	                            <tbody>                                        
                                     @foreach ($datas as $data)
-										<tr>
-											<td>{{ $loop->iteration; }}</td>
-											<td>{{ $data->kategori }}</td>
-											<td>{{ $data->nama_customer }}</td>
-											<td>{{ number_format($data->harga, 0, '.', ',') }}</td>
-											<td>{{ $data->tanggal_transaksi }}</td>
-											<td>{{ number_format($data->komisi, 0, '.', ',') }}</td>
-											<td class="text-center">
-												{{-- <a class="btn btn-square btn-info btn-xs" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalDataPemasukan{{ $data->id }}"title="Detail Data">
-													<i class="fa fa-eye"></i>
-												</a> --}}
+									<tr>
+										<td>{{ $loop->iteration; }}</td>
+										<td>{{ $data->tgl_pemasukkan }}</td>
+										<td>{{ $data->keterangan }}</td>
+										<td>{{ number_format($data->jumlah_pemasukkan, 0, '.', ',') }}</td>
+										<td>{{ $data->sumber_pemasukkan }}</td>
+										<td onmouseover="showBukti({{ $data->id }})" onmouseout="hideBukti({{ $data->id }})">
+											@if ($data->bukti_pembayaran != '')
+												<div id="view-bukti{{ $data->id }}" class="mb-3">
+													<img src="{{ asset('storage/data-pemasukkan/'.$data->bukti_pembayaran) }}" alt="" width="200px" class="img-fluid mt-2">
+													<a class="btn btn-primary" href="{{ asset('storage/data-pemasukkan/'.$data->bukti_pembayaran)}}" target="_blank">View Image</a>
+												</div>
+											@endif
+											<div id="icon-view{{ $data->id }}">
+												<i data-feather="link"></i> Gambar
+											</div>
+											
+										</td>
+										<td class="text-center">
 
-												<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-													<div class="btn-group" role="group">
-														<button class="btn btn-secondary btn-sm dropdown-toggle" id="btnGroupDrop1" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
-														<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+											<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+												<div class="btn-group" role="group">
+													<button class="btn btn-secondary btn-sm dropdown-toggle" id="btnGroupDrop1" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
+													<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
 
-															<a class="dropdown-item" href="{{ route('data-pemasukan.edit', $data->id) }}"><span><i data-feather="edit"></i> Edit</span></a>
+														<a class="dropdown-item" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalDataPemasukkan{{ $data->id }}" title="Detail Data"><span><i data-feather="eye"></i> Detail</span></a>
 
+														<a class="dropdown-item" href="{{ route('data-pemasukan.edit', $data->id) }}" ><span><i data-feather="edit"></i> Edit</span></a>
+
+														@if (Session::get('user_level') == 1)
 															<a class="dropdown-item" href="{{ route('data-pemasukan.delete', $data->id) }}" onclick="return confirm('Apakah Anda Yakin?')"><span><i data-feather="delete"></i> Delete</span></a>
-															
-														</div>
+														@endif
+														
 													</div>
 												</div>
-
-												@include('data-pemasukan.detail')
-											</td>
-										</tr>
+											</div>
+											@include('data-pemasukan.detail')
+										</td>
+									</tr>
 									@endforeach
 	                            </tbody>
 	                        </table>
@@ -121,6 +132,23 @@
 	@push('scripts')
 	<script src="{{ asset('assets/js/datatable/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('assets/js/datatable/datatables/datatable.custom.js') }}"></script>
+	@foreach ($datas as $data)
+		<script>
+			$('#view-bukti'+{{ $data->id }}).hide();
+			$('#icon-view'+{{ $data->id }}).show();
+		</script>
+	@endforeach
+	<script>
+		function showBukti(id) {
+			$('#view-bukti'+id).show();
+			$('#icon-view'+id).hide();
+		}
+
+		function hideBukti(id) {
+			$('#view-bukti'+id).hide();
+			$('#icon-view'+id).show();
+		}
+	</script>
 	@endpush
 
 @endsection

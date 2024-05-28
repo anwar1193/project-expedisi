@@ -12,10 +12,14 @@ class LaporanController extends Controller
 {
     public function laba_rugi(Request $request)
     {
-        $start = $request->periode ?? $request->start ?? date('Y-m-d');
+        $filter = $request->filter;
+        $periode = $request->periode;
+        if ($filter == 'range') {
+            $periode = null;
+        } 
+        $start = $periode ?? $request->start ?? date('Y-m-d');
         $end_date = $request->end ?? date('Y-m-d');
         $end = $request->end ?? date('Y-m-d', strtotime('+1 day'));
-        $periode = $request->periode ?? null;
 
         if ($request->end == date('Y-m-d')) {
             $end = date('Y-m-d', strtotime('+1 day'));
@@ -26,9 +30,9 @@ class LaporanController extends Controller
             ->whereBetween('tgl_transaksi', [$start, $end])
             ->first();
 
-        $jumlah_pemasukkan = PemasukanLainnya::selectRaw('SUM(harga + komisi) AS totalPemasukan')
-            ->whereBetween('tanggal_transaksi', [$start, $end])
-            ->first();
+        // $jumlah_pemasukkan = PemasukanLainnya::selectRaw('SUM(harga + komisi) AS totalPemasukan')
+        //     ->whereBetween('tanggal_transaksi', [$start, $end])
+        //     ->first();
 
         $jumlah_pengeluaran = DaftarPengeluaran::selectRaw('SUM(jumlah_pembayaran) AS totalPengeluaran')
             ->where('jenis_pengeluaran', '=', 1)
@@ -36,7 +40,7 @@ class LaporanController extends Controller
             ->whereBetween('created_at', [$start, $end])
             ->first();
 
-        return view('laporan.laba-rugi', compact('jumlah_pengiriman', 'jumlah_pemasukkan', 'jumlah_pengeluaran', 'start', 'end_date', 'periode'));
+        return view('laporan.laba-rugi', compact('jumlah_pengiriman', 'jumlah_pengeluaran', 'start', 'end_date', 'periode', 'filter'));
     }
 
     public function laba_rugi_pdf(Request $request)
@@ -66,7 +70,12 @@ class LaporanController extends Controller
 
     public function transaksi_harian(Request $request)
     {
-        $start = $request->periode ?? $request->start ?? date('Y-m-d');
+        $filter = $request->filter;
+        $periode = $request->periode;
+        if ($filter == 'range') {
+            $periode = null;
+        } 
+        $start = $periode ?? $request->start ?? date('Y-m-d');
         $end_date = $request->end ?? date('Y-m-d');
         $end = $request->end ?? date('Y-m-d', strtotime('+1 day'));
         $periode = $request->periode ?? null;
@@ -79,16 +88,16 @@ class LaporanController extends Controller
             ->whereBetween('tgl_transaksi', [$start, $end])
             ->get();
 
-        $pemasukkan = PemasukanLainnya::orderBy('id', 'desc')
-            ->whereBetween('tanggal_transaksi', [$start, $end])
-            ->get();
+        // $pemasukkan = PemasukanLainnya::orderBy('id', 'desc')
+        //     ->whereBetween('tanggal_transaksi', [$start, $end])
+        //     ->get();
 
         $pengeluaran = DaftarPengeluaran::join('jenis_pengeluarans', 'jenis_pengeluarans.id', '=', 'daftar_pengeluarans.jenis_pengeluaran')
             ->orderBy('daftar_pengeluarans.id', 'desc')
             ->whereBetween('daftar_pengeluarans.created_at', [$start, $end])
             ->get();
 
-        return view('laporan.transaksi-harian', compact('pengiriman', 'pemasukkan', 'pengeluaran', 'start', 'end_date', 'periode'));
+        return view('laporan.transaksi-harian', compact('pengiriman', 'pengeluaran', 'start', 'end_date', 'periode', 'filter'));
     }
 
     public function data_pengiriman_pdf(Request $request)

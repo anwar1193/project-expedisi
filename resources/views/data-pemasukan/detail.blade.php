@@ -1,4 +1,4 @@
-<div class="modal fade modal-bookmark" id="modalDataPengiriman{{ $data->id }}" tabindex="-1" role="dialog"
+<div class="modal fade modal-bookmark" id="modalDataPemasukkan{{ $data->id }}" tabindex="-1" role="dialog"
     aria-labelledby="modalDataPengirimanLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content justify-content-start">
@@ -13,28 +13,10 @@
                             role="tabpanel" aria-labelledby="v-pills-user-tab">
                             <div class="profile-mail">
                                 <div class="email-general mb-2">
-                                    <div class="row d-flex  justify-content-center">
-                                        <div class="">Bukti Pembayaran</div>
-                                    </div>
-                                    <div class="media d-flex my-2 pb-2 justify-content-center">
-                                        <img class="img-fluid rounded update_img_0"
-                                            src="{{ asset('storage/daftar-pengeluaran/'.$data->bukti_pembayaran) }}"
-                                            alt="{{$data->bukti_pembayaran}}" width="200px"/>
-                                    </div>
                                     <div class="row d-flex py-1 text-start justify-content-start">
-                                        <div class="col-6">Status Pengeluaran</div>
+                                        <div class="col-6">Tanggal Pemasukkan</div>
                                         <div class="col-2">:</div>
-                                        <div class="col-4">{{ $data->status_pengeluaran == 1 ? 'Disetujui' : 'Pending'; }}</div>
-                                    </div>
-                                    <div class="row d-flex py-1 text-start justify-content-start">
-                                        <div class="col-6">Metode Pembayaran</div>
-                                        <div class="col-2">:</div>
-                                        <div class="col-4 text-capitalize">{{ $data->metode_pembayaran }}</div>
-                                    </div>
-                                    <div class="row text-start d-flex justify-content-start">
-                                        <div class="col-6">Tanggal Pengeluaran</div>
-                                        <div class="col-2">:</div>
-                                        <div class="col-4">{{ $data->tgl_pengeluaran }}</div>
+                                        <div class="col-4">{{ $data->tgl_pemasukkan }}</div>
                                     </div>
                                     <div class="row d-flex py-1 text-start justify-content-start">
                                         <div class="col-6">Keterangan</div>
@@ -42,19 +24,36 @@
                                         <div class="col-4">{{ $data->keterangan }}</div>
                                     </div>
                                     <div class="row d-flex py-1 text-start justify-content-start">
-                                        <div class="col-6">Jumlah Pembayaran</div>
+                                        <div class="col-6">Bukti Pembayaran</div>
                                         <div class="col-2">:</div>
-                                        <div class="col-4">{{ $data->jumlah_pembayaran }}</div>
+                                        <div class="col-4">
+                                            <img src="{{ asset('storage/daftar-pengeluaran/'.$data->bukti_pembayaran) }}" alt="" width="200px" class="img-fluid mt-2">
+                                        </div>
                                     </div>
                                     <div class="row d-flex py-1 text-start justify-content-start">
-                                        <div class="col-6">Pengguna Terkait</div>
+                                        <div class="col-6">Sumber Pembayaran</div>
                                         <div class="col-2">:</div>
-                                        <div class="col-4">{{ $data->pengguna_terkait }}</div>
+                                        <div class="col-4 text-capitalize">{{ $data->sumber_pembayaran }}</div>
                                     </div>
                                     <div class="row d-flex py-1 text-start justify-content-start">
-                                        <div class="col-6">Jenis Pengeluaran</div>
+                                        <div class="col-6">Metode Pembayaran</div>
                                         <div class="col-2">:</div>
-                                        <div class="col-4">{{ $data->jenis_pengeluaran == "operasional" ? "Operasional" : "Pengeluaran Lain" }}</div>
+                                        <div class="col-4 text-capitalize">{{ $data->metode_pembayaran }}</div>
+                                    </div>
+                                    <div class="row d-flex py-1 text-start justify-content-start">
+                                        <div class="col-6">Jumlah Pemasukan</div>
+                                        <div class="col-2">:</div>
+                                        <div class="col-4">{{ number_format($data->jumlah_pemasukkan, 0, '.', ',') }}</div>
+                                    </div>
+                                    <div class="row d-flex py-1 text-start justify-content-start">
+                                        <div class="col-6">Diterima Oleh</div>
+                                        <div class="col-2">:</div>
+                                        <div class="col-4">{{ $data->diterima_oleh }}</div>
+                                    </div>
+                                    <div class="row d-flex py-1 text-start justify-content-start">
+                                        <div class="col-6">Keterangan Tambahan</div>
+                                        <div class="col-2">:</div>
+                                        <div class="col-4">{{ $data->keterangan_tambahan }}</div>
                                     </div>
                                 </div>
                             </div>
