@@ -71,7 +71,8 @@
 										<th>Nama</th>
 										<th>No Whatsapp</th>
 	                                    <th>Email</th>
-	                                    <th>Alamat</th>
+	                                    <th>Limit Kredit</th>
+	                                    <th>Point</th>
 										<th width="20%" class="text-center">Action</th>
 	                                </tr>
 	                            </thead>
@@ -82,13 +83,31 @@
 											<td>{{ $data->nama }}</td>
 											<td>{{ $data->no_wa }}</td>
 											<td>{{ $data->email }}</td>
-											<td>{{ $data->alamat }}</td>
+
+											<td class="text-center">
+												<span class="badge badge-primary">
+													{{ 'Rp '.number_format($data->limit_credit, 0, '.', ',') }}
+												</span>
+											</td>
+
+											<td class="text-center">
+												<span class="badge badge-primary">
+													{{ $data->point }}
+												</span>
+											</td>
+
 											<td class="text-center">
 
 												<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
 													<div class="btn-group" role="group">
 														<button class="btn btn-secondary btn-sm dropdown-toggle" id="btnGroupDrop1" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
 														<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+
+															@if (Session::get('user_level') == 2)
+																<a class="dropdown-item" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#customerLimitKredit{{ $data->id }}">
+																	<span><i class="pt-2 pe-2" data-feather="tag"></i> Limit Kredit</span>
+																</a>
+															@endif
 
 															<a class="dropdown-item" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#customer{{ $data->id }}">
 																<span><i class="pt-2 pe-2" data-feather="eye"></i> Detail</span>
@@ -100,6 +119,7 @@
 															
 														</div>
 														@include('customers.detail')
+														@include('customers.limit_kredit')
 													</div>
 												</div>
 											</td>

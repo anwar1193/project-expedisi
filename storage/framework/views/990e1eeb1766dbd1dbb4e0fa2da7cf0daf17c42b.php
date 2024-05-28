@@ -29,7 +29,14 @@
 				<a href="<?php echo e(route('data-pengiriman.truncate')); ?>" class="btn btn-danger btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Truncate Data">
 					<i class="fa fa-trash"></i> Truncate
 				</a>
+
+				<a class="btn btn-primary btn-sm" type="button" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalUpdateStatus" title="Update Status Pengiriman">
+					<i class="fa fa-file-excel-o"></i> Update Status Pengiriman
+				</a>
+
 				<?php echo $__env->make('data-pengiriman.modal-import', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+				<?php echo $__env->make('data-pengiriman.status-pengiriman', ['status' => $status], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+				<?php echo $__env->make('data-pengiriman.modal-status-pengiriman', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
 				<?php if(Session::get('user_level') == 2): ?>
 					<form action="<?php echo e(route('data-pengiriman.approve-selected')); ?>" method="post" style="display: inline-block">
@@ -92,6 +99,19 @@
 								<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 							</div>
 						<?php endif; ?>
+						
+						<?php if(session()->has('errorStatus')): ?>
+							<div class="alert alert-danger alert-dismissible fade show" role="alert">
+								<strong>Gagal <i class="fa fa-info-circle"></i></strong>
+								<?php $__currentLoopData = session('errorStatus'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+									<div><?php echo e($error); ?></div>
+								<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+								Silahkan  <a class="text-white text-decoration-underline" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalStatusPengiriman" title="Status Pengiriman">
+									<i class="fa fa-eye"></i>lihat di sini.
+								</a>
+								<button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+							</div>
+						<?php endif; ?>
 	                    
 						
 						<div class="table-responsive">
@@ -104,6 +124,7 @@
 	                                    <th>Kota Tujuan</th>
 	                                    <th>Metode Pembayaran</th>
 	                                    <th>Status Pembayaran</th>
+	                                    <th>Status Pengiriman</th>
 										
 										<?php if(Session::get('user_level') == 2): ?>
 											<th>Pilih</th>
@@ -156,6 +177,8 @@
 
 												</span>
 											</td>
+
+											<td><?php echo e($data->status_pengiriman); ?></td>
 
 											<?php if(Session::get('user_level') == 2): ?>
 												

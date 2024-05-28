@@ -80,7 +80,15 @@
 										<tr>
 											<td><?php echo e($loop->iteration); ?></td>
 											<td><?php echo e($data->level); ?></td>
-											<td><?php echo e($data->deskripsi != NULL ? $data->deskripsi : '-'); ?></td>
+											<td class="text-center">
+												<?php $__currentLoopData = $data->menu; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $menu): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+													<span class="badge badge-primary">
+														<i class="fa fa-circle"></i>
+														<?php echo e($menu->menu); ?>
+
+													</span>
+												<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+											</td>
 											<td class="text-center">
 
 												<div class="btn-group" role="group" aria-label="Button group with nested dropdown">

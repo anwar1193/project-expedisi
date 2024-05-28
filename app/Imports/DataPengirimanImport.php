@@ -68,8 +68,10 @@ class DataPengirimanImport implements ToModel, WithValidation, WithHeadingRow //
             'komisi' => 'required',
 
             'metode_pembayaran' => function($attribute, $value, $onFailure) {
-                if ($value !== 'Transfer' && $value !== 'Tunai') {
-                     $onFailure('Metode Pembayaran Harus Transfer atau Tunai (Huruf awal Kapital)');
+                if($value !== NULL){
+                    if ($value !== 'Transfer' && $value !== 'Tunai' && $value !== 'Kredit') {
+                        $onFailure('Metode Pembayaran Harus Transfer, Tunai, Kredit, atau Dikosongkan');
+                   }
                 }
             },
 

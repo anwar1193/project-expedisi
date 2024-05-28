@@ -16,13 +16,28 @@
 	<div class="container-fluid">
         <form class="d-flex flex-column col-12" role="search" action="" method="GET">
 			<div class="d-flex justify-content-end">
-				<div>
-					<input class="form-control" type="date" name="start" value="<?php echo e(request('start') ? request('start') : date('Y-m-d')); ?>" />
+                <div class="px-2">
+                    <select name="filter" class="form-control" onchange="toggleDateInputs(this)">
+                        <option value="">-- Filter By --</option>
+                        <option value="periode" <?php echo e($filter == 'periode' ? 'selected' : ''); ?>>Periode</option>
+                        <option value="range" <?php echo e($filter == 'range' ? 'selected' : ''); ?>>Range Tanggal</option>
+                    </select>
+                </div>
+                <div id="periode" class="px-2" style="display: <?php echo e($filter == 'periode' ? 'block' : 'none'); ?>">
+                    <select name="periode" class="form-control">
+                        <option value="">- Pilih Periode -</option>
+                        <?php $__currentLoopData = getPastDates(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $date): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <option value="<?php echo e($date['value']); ?>" <?php echo e($periode == $date['value'] ? 'selected' : ''); ?>><?php echo e($date['name']); ?></option>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    </select>
+                </div>
+				<div id="start" style="display: <?php echo e($filter == 'range' ? 'block' : 'none'); ?>">
+					<input class="form-control" type="date" name="start" value="<?php echo e($start); ?>" />
 				</div>
-				<div class="px-2">
+				<div id="sampaiDengan" class="px-2" style="display: <?php echo e($filter == 'range' ? 'block' : 'none'); ?>">
 					<p class="fs-5">s/d</p>
 				</div>
-				<div>
+				<div id="end" style="display: <?php echo e($filter == 'range' ? 'block' : 'none'); ?>">
 					<input class="form-control" type="date" name="end" value="<?php echo e(request('end') ? request('end') : date('Y-m-d')); ?>" />
 				</div>
 				<div class="px-1">
@@ -50,12 +65,7 @@
                                 </div>
                                 <p class="mb-1">Rp. <?php echo e(number_format($jumlah_pengiriman->totalPengiriman, 0, ',', '.') ?? 0); ?> ,-</p>
                             </a>
-                            <a class="list-group-item list-group-item-action flex-column align-items-start" href="javascript:void(0)">
-                                <div class="d-flex w-100 justify-content-between">
-                                    <h5 class="mb-1">Jumlah Pemasukkan</h5>
-                                </div>
-                                <p class="mb-1">Rp. <?php echo e(number_format($jumlah_pemasukkan->totalPemasukan, 0, ',', '.') ?? 0); ?> ,-</p>
-                            </a>
+                            
                             <a class="list-group-item list-group-item-action flex-column align-items-start" href="javascript:void(0)">
                                 <div class="d-flex w-100 justify-content-between">
                                     <h5 class="mb-1">Jumlah Pengeluaran</h5>
@@ -63,20 +73,7 @@
                                 <p class="mb-1">Rp. <?php echo e(number_format($jumlah_pengeluaran->totalPengeluaran, 0, ',', '.') ?? 0); ?> ,-</p>
                             </a>
 
-                            <?php
-                                $laba_rugi = $jumlah_pengiriman->totalPengiriman + $jumlah_pemasukkan->totalPemasukan - $jumlah_pengeluaran->totalPengeluaran;
-                            ?>
-
-                            <a class="list-group-item list-group-item-action flex-column align-items-start" href="javascript:void(0)">
-                                <div class="d-flex w-100 justify-content-between">
-                                    <h5 class="mb-1">Laba / Rugi</h5>
-                                </div>
-                                <p class="mb-1">
-                                    <span class="badge <?php echo e($laba_rugi >= 0 ? 'badge-primary' : 'badge-danger'); ?>" style="font-size: 15px">
-                                        Rp. <?php echo e(number_format($laba_rugi, 0, ',', '.') ?? 0); ?> ,-
-                                    </span>
-                                </p>
-                            </a>
+                            
                         </div>
                     </div>
                     <div class="card-footer text-end">
@@ -89,6 +86,26 @@
 	</div>
 	
 	<?php $__env->startPush('scripts'); ?>
+    <script>
+        function toggleDateInputs(select) {
+			var start = document.getElementById('start');
+			var sampaiDengan = document.getElementById('sampaiDengan');
+			var end = document.getElementById('end');
+			var periode = document.getElementById('periode');
+			if (select.value == 'periode') {
+				periode.style.display = 'block';
+				start.style.display = 'none';
+				sampaiDengan.style.display = 'none';
+				end.style.display = 'none';
+			} else if (select.value == 'range') {
+                periode.value = null;
+				periode.style.display = 'none';
+				start.style.display = 'block';
+				sampaiDengan.style.display = 'block';
+				end.style.display = 'block';
+			}
+		}
+    </script>
 	<?php $__env->stopPush(); ?>
 
 <?php $__env->stopSection(); ?>

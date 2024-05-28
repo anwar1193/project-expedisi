@@ -263,6 +263,7 @@ Route::middleware("auth")->group(function() {
         Route::post('/', [CustomerController::class, 'store'])->name('customers.store');
         Route::post('/update/{id}', [CustomerController::class, 'update'])->name('customers.update');
         Route::get('/delete/{id}', [CustomerController::class, 'delete'])->name('customers.delete');
+        Route::post('/add-credit', [CustomerController::class, 'addCredit'])->name('customers.addCredit');
     });
    
     Route::prefix('invoice')->group(function () {

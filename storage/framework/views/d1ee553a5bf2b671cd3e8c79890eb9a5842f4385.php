@@ -73,7 +73,8 @@
 										<th>Nama</th>
 										<th>No Whatsapp</th>
 	                                    <th>Email</th>
-	                                    <th>Alamat</th>
+	                                    <th>Limit Kredit</th>
+	                                    <th>Point</th>
 										<th width="20%" class="text-center">Action</th>
 	                                </tr>
 	                            </thead>
@@ -84,13 +85,33 @@
 											<td><?php echo e($data->nama); ?></td>
 											<td><?php echo e($data->no_wa); ?></td>
 											<td><?php echo e($data->email); ?></td>
-											<td><?php echo e($data->alamat); ?></td>
+
+											<td class="text-center">
+												<span class="badge badge-primary">
+													<?php echo e('Rp '.number_format($data->limit_credit, 0, '.', ',')); ?>
+
+												</span>
+											</td>
+
+											<td class="text-center">
+												<span class="badge badge-primary">
+													<?php echo e($data->point); ?>
+
+												</span>
+											</td>
+
 											<td class="text-center">
 
 												<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
 													<div class="btn-group" role="group">
 														<button class="btn btn-secondary btn-sm dropdown-toggle" id="btnGroupDrop1" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
 														<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+
+															<?php if(Session::get('user_level') == 2): ?>
+																<a class="dropdown-item" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#customerLimitKredit<?php echo e($data->id); ?>">
+																	<span><i class="pt-2 pe-2" data-feather="tag"></i> Limit Kredit</span>
+																</a>
+															<?php endif; ?>
 
 															<a class="dropdown-item" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#customer<?php echo e($data->id); ?>">
 																<span><i class="pt-2 pe-2" data-feather="eye"></i> Detail</span>
@@ -102,6 +123,7 @@
 															
 														</div>
 														<?php echo $__env->make('customers.detail', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+														<?php echo $__env->make('customers.limit_kredit', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 													</div>
 												</div>
 											</td>

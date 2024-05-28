@@ -18,13 +18,28 @@
 	<div class="container-fluid">
         <form class="d-flex flex-column col-12" role="search" action="" method="GET">
 			<div class="d-flex justify-content-end">
-				<div>
-					<input class="form-control" type="date" name="start" value="<?php echo e(request('start') ? request('start') : date('Y-m-d')); ?>" />
-				</div>
 				<div class="px-2">
+                    <select name="filter" class="form-control" onchange="toggleDateInputs(this)">
+                        <option value="">-- Filter By --</option>
+                        <option value="periode" <?php echo e($filter == 'periode' ? 'selected' : ''); ?>>Periode</option>
+                        <option value="range" <?php echo e($filter == 'range' ? 'selected' : ''); ?>>Range Tanggal</option>
+                    </select>
+                </div>
+                <div id="periode" class="px-2" style="display: <?php echo e($filter == 'periode' ? 'block' : 'none'); ?>">
+                    <select name="periode" class="form-control">
+                        <option value="">- Pilih Periode -</option>
+                        <?php $__currentLoopData = getPastDates(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $date): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <option value="<?php echo e($date['value']); ?>" <?php echo e($periode == $date['value'] ? 'selected' : ''); ?>><?php echo e($date['name']); ?></option>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    </select>
+                </div>
+				<div id="start" style="display: <?php echo e($filter == 'range' ? 'block' : 'none'); ?>">
+					<input class="form-control" type="date" name="start" value="<?php echo e($start); ?>" />
+				</div>
+				<div id="sampaiDengan" class="px-2" style="display: <?php echo e($filter == 'range' ? 'block' : 'none'); ?>">
 					<p class="fs-5">s/d</p>
 				</div>
-				<div>
+				<div id="end" style="display: <?php echo e($filter == 'range' ? 'block' : 'none'); ?>">
 					<input class="form-control" type="date" name="end" value="<?php echo e(request('end') ? request('end') : date('Y-m-d')); ?>" />
 				</div>
 				<div class="px-1">
@@ -55,9 +70,7 @@
                                 <?php echo $__env->make('laporan.table.data-pengiriman', ['data' => $pengiriman, 'tableId' => 'basic-1'], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                             </div>
 
-                            <div class="tab-pane fade" id="top-profilesecondary" role="tabpanel" aria-labelledby="profile-top-tab">
-                                <?php echo $__env->make('laporan.table.data-pemasukkan', ['data' => $pemasukkan, 'tableId' => 'basic-2'], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-                            </div>
+                            
 
                             <div class="tab-pane fade" id="top-contactsecondary" role="tabpanel" aria-labelledby="contact-top-tab">
                                 <?php echo $__env->make('laporan.table.data-pengeluaran', ['data' => $pengeluaran, 'tableId' => 'basic-3'], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
@@ -148,6 +161,26 @@
 
 		function hideBukti(id) {
 			$('#view-bukti'+id).hide();
+		}
+	</script>
+
+	<script>
+		function toggleDateInputs(select) {
+			var start = document.getElementById('start');
+			var sampaiDengan = document.getElementById('sampaiDengan');
+			var end = document.getElementById('end');
+			var periode = document.getElementById('periode');
+			if (select.value == 'periode') {
+				periode.style.display = 'block';
+				start.style.display = 'none';
+				sampaiDengan.style.display = 'none';
+				end.style.display = 'none';
+			} else if (select.value == 'range') {
+				periode.style.display = 'none';
+				start.style.display = 'block';
+				sampaiDengan.style.display = 'block';
+				end.style.display = 'block';
+			}
 		}
 	</script>
 	
