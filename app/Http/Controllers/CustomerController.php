@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Helpers\Helper;
 use App\Models\Customer;
-use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class CustomerController extends Controller
@@ -25,12 +26,28 @@ class CustomerController extends Controller
     {
         $next_year = date('Y-m-d H:i:s', strtotime('+1 year'));
 
+        // Kode Customer Otomatis ----------
+        $kode_query = DB::select('select MAX(MID(kode_customer, 4, 3)) AS kodee from customers');
+
+        if($kode_query[0]->kodee == NULL){
+            $no = '001';
+        }else{
+            $kodee = $kode_query[0]->kodee;
+            $n = ((int)$kodee + 1);
+            $no = sprintf("%'.03d", $n);
+        }
+
+        $kode_customer = 'LP-'.$no;
+        // END Kode Customer Otomatis -------
+
         $this->validate($request, [
             'nama' => 'required',
             'email' => 'required|email',
             'no_wa' => 'required|regex:/^\+?[0-9]+$/',
             'alamat' => 'required',
         ]);
+
+        $request['kode_customer'] = $kode_customer;
 
         Customer::create($request->all());
 
@@ -42,7 +59,6 @@ class CustomerController extends Controller
                 'nomor_telepon' => $request->no_wa,
                 'user_level' => 3,
                 'password' => Hash::make($request->password),
-                'tgl_kadaluarsa' => $next_year,
                 'status' => 1
             ]);
         }

@@ -161,17 +161,10 @@ endif;
 unset($__errorArgs, $__bag); ?>">
 											<option value="">- Pilih Level -</option>
 											<?php $__currentLoopData = $levels; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-												<?php if(Request::old('user_level') == $item->kode_level): ?>
-													<option value="<?php echo e($item->kode_level); ?>" selected>
-														<?php echo e($item->level); ?>
+												<option value="<?php echo e($item->id); ?>" <?php echo e(old('user_level') == $item->id ? 'selected' : ''); ?>>
+													<?php echo e($item->level); ?>
 
-													</option>
-												<?php else: ?>
-													<option value="<?php echo e($item->kode_level); ?>">
-														<?php echo e($item->level); ?>
-
-													</option>
-												<?php endif; ?>
+												</option>
 											<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 										</select>
 
@@ -269,36 +262,6 @@ unset($__errorArgs, $__bag); ?>">
 										</select>
 
 										<?php $__errorArgs = ['status'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-										<div class="text-danger">
-											<?php echo e($message); ?>
-
-										</div>
-										<?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-									</div>
-								</div>
-							</div>
-
-							<div class="row">
-								<div class="col-4">
-									<div class="mb-3">
-										<label class="form-label" for="">Tanggal Kadaluarsa</label>
-										<input type="date" class="form-control <?php $__errorArgs = ['tgl_kadaluarsa	'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>"" name="tgl_kadaluarsa">
-
-										<?php $__errorArgs = ['tgl_kadaluarsa'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }

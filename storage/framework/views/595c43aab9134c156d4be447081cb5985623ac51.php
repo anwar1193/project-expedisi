@@ -22,9 +22,7 @@
                                         <div class="col-6">Bukti Pembayaran</div>
                                         <div class="col-2">:</div>
                                         <div class="col-4">
-                                            <a href="<?php echo e($data->bukti_pembayaran); ?>" target="_blank">
-                                                <i data-feather="link"></i> Link
-                                            </a>
+                                            <img src="<?php echo e(asset('storage/daftar-pengeluaran/'.$data->bukti_pembayaran)); ?>" alt="" width="200px" class="img-fluid mt-2">
                                         </div>
                                     </div>
                                     <div class="row d-flex py-1 text-start justify-content-start">

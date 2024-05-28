@@ -222,36 +222,6 @@ unset($__errorArgs, $__bag); ?>
 							</div>
 
 							<div class="row">
-								<div class="col-4">
-									<div class="mb-3">
-										<label class="form-label" for="">Tanggal Kadaluarsa</label>
-										<input type="date" class="form-control <?php $__errorArgs = ['kadaluarsa'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>"" name="kadaluarsa" value="<?php echo e(old('kadaluarsa', $user->tgl_kadaluarsa)); ?>">
-
-										<?php $__errorArgs = ['kadaluarsa'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-										<div class="text-danger">
-											<?php echo e($message); ?>
-
-										</div>
-										<?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-									</div>
-								</div>
-							</div>
-
-							<div class="row">
 								<div class="col">
 									<div class="mb-3">
 										<label class="form-label" for="">Foto</label>

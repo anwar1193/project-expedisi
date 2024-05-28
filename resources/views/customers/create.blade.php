@@ -31,7 +31,7 @@
 							<div class="row g-3 py-2">
 								<div class="col-md-6">
 									<label class="form-label" for="nama">Nama</label>
-									<input class="form-control @error('nama') is-invalid @enderror" id="nama" type="text" name="nama" value="{{ old('nama') }}" />
+									<input class="form-control @error('nama') is-invalid @enderror" id="nama" type="text" name="nama" value="{{ old('nama') }}" autocomplete="off"/>
 
 									@error('nama')
 										<div class="text-danger">
