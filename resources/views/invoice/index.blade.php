@@ -17,168 +17,104 @@
 	                    <div>
 	                        <div>
 	                            <div class="row invo-header">
-	                                <div class="col-sm-6">
+	                                <div class="col-sm-5">
 	                                    <div class="media">
 	                                        <div class="media-left">
-	                                            <a href="{{ route('index') }}"><img class="media-object img-60" src="{{asset('assets/lion.jpg')}}" alt="Lion Parcel" /></a>
-	                                        </div>
-	                                        <div class="media-body m-l-20">
-	                                            <h4 class="media-heading f-w-600">Lion Parcel</h4>
-	                                            <p>
-	                                                help@thelionparcel.com<br />
-	                                                <span class="digits">+62-21-80820072</span>
-	                                            </p>
-	                                        </div>
+												<img src="{{  asset('assets/lionparcel.png') }}" alt="Lion Parcel" style="width: 200px; height: 60px;" />
+												<h4 class="text-danger ps-2 fw-bold">D Angel Express</h4>	                                        </div>
 	                                    </div>
 	                                    <!-- End Info-->
 	                                </div>
-	                                <div class="col-sm-6">
+	                                <div class="col-sm-3 d-flex align-items-end">
 	                                    <div class="text-md-end text-xs-center">
-	                                        <h3>Invoice #<span class="digits counter">1069</span></h3>
-	                                        <p>
-	                                            Tanggal : 25 Mei 2024</span><br />
-	                                            Tanggal Jatuh Tempo : 25 Mei 2024</span>
-	                                        </p>
+	                                        <h3>Invoice</h3>
 	                                    </div>
-	                                    <!-- End Title                                 -->
+	                                </div>
+	                                <div class="col-sm-3 d-flex align-items-end">
+	                                    <div class="text-md-end text-xs-center">
+	                                        <p>Jakarta, 30 Mei 2024</p>
+	                                    </div>
 	                                </div>
 	                            </div>
 	                        </div>
 	                        <!-- End InvoiceTop-->
-	                        <div class="row invo-profile py-2 my-2">
+	                        <div class="row invo-profile py-2 my-2" style="border: 0.5px solid; width: 70%">
 	                            <div class="col-xl-8">
 	                                <div class="text-xl-start" id="project">
-	                                    <h6>Tagihan Kepada</h6>
-                                        <hr class="fw-bold">
                                         <div class="row d-flex py-1 text-start justify-content-start">
-                                            <div class="col-4 col-lg-3">Nama Customer</div>
+                                            <div class="col-4 col-lg-3">Invoice No</div>
                                             <div class="col-1 col-lg-2">:</div>
-                                            <div class="col-6 col-lg-4 text-capitalize">Adi Wijaya</div>
+                                            <div class="col-6 col-lg-4 text-capitalize">033/INV /LP/IV/2024</div>
                                         </div>
                                         <div class="row d-flex py-1 text-start justify-content-start">
-                                            <div class="col-4 col-lg-3">Alamat Customer</div>
+                                            <div class="col-4 col-lg-3">Customer Name</div>
                                             <div class="col-1 col-lg-2">:</div>
-                                            <div class="col-6 col-lg-4 text-capitalize">Samarinda</div>
+                                            <div class="col-6 col-lg-4 text-capitalize">PT. Dion Farma Abadi</div>
                                         </div>
                                         <div class="row d-flex py-1 text-start justify-content-start">
-                                            <div class="col-4 col-lg-3">No. Hp Customer</div>
+                                            <div class="col-4 col-lg-3">Address</div>
                                             <div class="col-1 col-lg-2">:</div>
-                                            <div class="col-6 col-lg-4 text-capitalize">085327654839</div>
+                                            <div class="col-6 col-lg-4 text-capitalize">Jl. Malengkeri Raya</div>
                                         </div>
-                                        <div class="row d-flex py-1 text-start justify-content-start">
-                                            <div class="col-4 col-lg-3">Email</div>
-                                            <div class="col-1 col-lg-2">:</div>
-                                            <div class="col-6 col-lg-4 text-capitalize">adi.wijaya@mail.com</div>
-                                        </div>
-	                                    {{-- <p>
-                                            Nama Customer : Adi Wijaya<br />
-                                            Alamat Customer: Samarinda<br />
-                                            No. Hp Customer: 085327654839<br />
-                                            Email: adi.wijaya@mail.com<br />
-	                                    </p> --}}
 	                                </div>
 	                            </div>
 	                        </div>
+							<div class="my-2 py-2">
+								<small>Biaya Pengiriman</small>  PT. Dion Farma Abadi
+							</div>
 	                        <!-- End Invoice Mid-->
-	                        <div class="my-3 py-3">
+	                        <div>
 	                            <div class="table-responsive invoice-table" id="table">
 	                                <table class="table table-bordered table-striped">
-	                                    <tbody>
-	                                        <tr>
-	                                            <td class="item">
-	                                                <h6 class="p-2 mb-0">Deskripsi</h6>
-	                                            </td>
-	                                            <td class="Hours">
-	                                                <h6 class="p-2 mb-0">Quantity</h6>
-	                                            </td>
-	                                            <td class="Rate">
-	                                                <h6 class="p-2 mb-0">Berat</h6>
-	                                            </td>
-	                                            <td class="subtotal">
-	                                                <h6 class="p-2 mb-0">Jumlah</h6>
-	                                            </td>
-	                                        </tr>
-	                                        <tr>
-	                                            <td>
-	                                                <label>Lorem Ipsum</label>
-	                                                <p class="m-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-	                                            </td>
-	                                            <td>
-	                                                <p class="itemtext digits"><span class="digits counter">5</span></p>
-	                                            </td>
-	                                            <td>
-	                                                <p class="itemtext digits"><span class="digits counter">3</span> Kg</p>
-	                                            </td>
-	                                            <td>
-	                                                <p class="itemtext digits">Rp. <span class="digits counter">30000</span></p>
-	                                            </td>
-	                                        </tr>
-	                                        <tr>
-	                                            <td>
-	                                                <label>Lorem Ipsum</label>
-	                                                <p class="m-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-	                                            </td>
-	                                            <td>
-	                                                <p class="itemtext digits"><span class="digits counter">3</span></p>
-	                                            </td>
-	                                            <td>
-	                                                <p class="itemtext digits"><span class="digits counter">2</span> Kg</p>
-	                                            </td>
-	                                            <td>
-	                                                <p class="itemtext digits">Rp. <span class="digits counter">22500</span></p>
-	                                            </td>
-	                                        </tr>
-	                                        <tr>
-	                                            <td>
-	                                                <label>Lorem Ipsum</label>
-	                                                <p class="m-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-	                                            </td>
-	                                            <td>
-	                                                <p class="itemtext digits"><span class="digits counter">10</span></p>
-	                                            </td>
-	                                            <td>
-	                                                <p class="itemtext digits"><span class="digits counter">1.5</span> Kg</p>
-	                                            </td>
-	                                            <td>
-	                                                <p class="itemtext digits">Rp. <span class="digits counter">20000</span></p>
-	                                            </td>
-	                                        </tr>
-	                                        <tr>
-	                                            <td>
-	                                                <label>Lorem Ipsum</label>
-	                                                <p class="m-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-	                                            </td>
-	                                            <td>
-	                                                <p class="itemtext digits"><span class="digits counter">10</span></p>
-	                                            </td>
-	                                            <td>
-	                                                <p class="itemtext digits"><span class="digits counter">1</span> Kg</p>
-	                                            </td>
-	                                            <td>
-	                                                <p class="itemtext digits">Rp. <span class="digits counter">25000</span></p>
-	                                            </td>
-	                                        </tr>
-	                                    </tbody>
+	                                    <thead class="text-center">
+											<tr>
+												<th style="border: 1px solid">No</th>
+												<th style="border: 1px solid">No STT</th>
+												<th style="border: 1px solid">Tanggal</th>
+												<th style="border: 1px solid">Pengirim</th>
+												<th style="border: 1px solid">Penerima</th>
+												<th style="border: 1px solid">Tujuan</th>
+												<th style="border: 1px solid">Jumlah Pembayaran</th>
+											</tr>
+										</thead>
+										<tbody style="font-size: 14px">
+											<tr>
+												<td style="border: 1px solid; padding: 5px; text-align: center">1</td>
+												<td style="border: 1px solid; padding: 5px; text-align: center">11LP1714021194290</td>
+												<td style="border: 1px solid; padding: 5px; text-align: center">2024-04-25 11:59:53 +0000 +0000</td>
+												<td style="border: 1px solid; padding: 5px; text-align: center">APOTIK MEDICASTORE/ DION FARMA ABADI</td>
+												<td style="border: 1px solid; padding: 5px; text-align: center">DR ROMMY WIJAYA</td>
+												<td style="border: 1px solid; padding: 5px; text-align: center">DULOMO SELATAN, KOTA UTARA, GORONTALO</td>
+												<td style="border: 1px solid; padding: 5px; text-align: center">62,000</td>
+											</tr>
+											<tr>
+												<td style="border: 1px solid; padding: 5px; text-align: center">2</td>
+												<td style="border: 1px solid; padding: 5px; text-align: center">11LP1714020999725</td>
+												<td style="border: 1px solid; padding: 5px; text-align: center">2024-04-25 11:58:24 +0000 +0000</td>
+												<td style="border: 1px solid; padding: 5px; text-align: center">APOTIK MEDICASTORE/ DION FARMA ABADI</td>
+												<td style="border: 1px solid; padding: 5px; text-align: center">DR ASRIANI</td>
+												<td style="border: 1px solid; padding: 5px; text-align: center">DR ASRIANI</td>
+												<td style="border: 1px solid; padding: 5px; text-align: center">39,000</td>
+											</tr>
+											<tr>
+												<td style="border: 1px solid; padding: 5px; text-align: center">3</td>
+												<td style="border: 1px solid; padding: 5px; text-align: center">11LP1714020999725</td>
+												<td style="border: 1px solid; padding: 5px; text-align: center">2024-04-25 11:59:53 +0000 +0000</td>
+												<td style="border: 1px solid; padding: 5px; text-align: center">APOTIK MEDICASTORE/ DION FARMA ABADI</td>
+												<td style="border: 1px solid; padding: 5px; text-align: center">dr shinta n barnas</td>
+												<td style="border: 1px solid; padding: 5px; text-align: center">POASIA, KENDARI</td>
+												<td style="border: 1px solid; padding: 5px; text-align: center">67,000</td>
+											</tr>
+										</tbody>
 	                                </table>
 	                            </div>
 	                            <!-- End Table-->
-	                            <div class="fs-6 float-end pt-3 mt-3">
-                                    <div class="row p-2">
-                                        <div class="col-4">Sub Total</div>
-                                        <div class="col-1">:</div>
-                                        <div class="col">Rp. 97500,00</div>
-                                    </div>
-                                    <div class="row p-2">
-                                        <div class="col-4">PPN</div>
-                                        <div class="col-1">:</div>
-                                        <div class="col">Rp. 9750,00</div>
-                                    </div>
-                                    <div class="row p-2">
-                                        <div class="col-4">Total</div>
-                                        <div class="col-1">:</div>
-                                        <div class="col">Rp. 117250,00</div>
-                                    </div>
-                                </div>
+	                            <div class="text-center mt-3">
+									<p>Lion parcel - D Angel Express</p>
+									<p>Jl. Onta Baru no 51, Kelurahan Mandala, Kecamatan Mamajang, Kota Makassar – 90135, Sulawesi Selatan</p>
+									<p>Telp : 0411 – 8918311 , 082110071565</p>
+									<p>Website : http://lionparcel.com</p>
+								</div>
 	                        </div>
 	                        <!-- End InvoiceBot-->
 	                    </div>
@@ -188,6 +124,7 @@
                     <div class="card-footer">
                         <div class="col-sm-12 text-center">
 	                        <a href="{{ route('invoice.export-pdf') }}" class="btn btn btn-primary me-2">Cetak Invoice</a>
+	                        <a href="{{ route('bukti-terima.export-pdf') }}" class="btn btn btn-primary me-2">Cetak Bukti Terima</a>
 	                    </div>
                     </div>
 	            </div>
