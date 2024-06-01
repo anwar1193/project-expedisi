@@ -124,6 +124,7 @@
 	                                    <th>Kota Tujuan</th>
 	                                    <th>Metode Pembayaran</th>
 	                                    <th>Status Pembayaran</th>
+	                                    <th>Status Pengiriman</th>
 										
 										<?php if(Session::get('user_level') == 2): ?>
 											<th>Pilih</th>
@@ -176,6 +177,8 @@
 
 												</span>
 											</td>
+
+											<td><?php echo e($data->status_pengiriman); ?></td>
 
 											<?php if(Session::get('user_level') == 2): ?>
 												
