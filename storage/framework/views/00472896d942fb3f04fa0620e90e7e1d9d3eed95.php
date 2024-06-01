@@ -16,7 +16,7 @@
                               text: "Lihat Data",
                               value: true,
                               visible: true,
-                              className: "",
+                              className: "bg-danger",
                               closeModal: true
                           },
                           cancel: {
