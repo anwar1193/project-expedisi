@@ -15,19 +15,16 @@ class InvoiceController extends Controller
 
     public function export_pdf()
     {
-        $options = new Options();
-        $options->set('defaultFont', 'Montserrat');
-        $options->set('fontDir', storage_path('fonts/'));
-        $options->set('fontCache', storage_path('fonts/'));
-
-        // Muat view dan render PDF
-        $picture = public_path('assets/lion.jpg');
-        $dompdf = new Dompdf($options);
-        $dompdf->loadHtml(view('invoice.pdf')->render());
-        $dompdf->setPaper('A4', 'portrait');
-        $dompdf->render();
-
-        // Output PDF yang dihasilkan ke browser
-        return $dompdf->stream('Invoice.pdf', ['Attachment' => false]);
+        $picture = public_path('assets/lionparcel.png');
+        $pdf = Pdf::loadView('invoice.pdf', compact('picture'));
+        return $pdf->stream('Invoice.pdf');
+    }
+    
+    public function bukti_terima_pdf()
+    {
+        $picture = public_path('assets/lionparcel.png');
+        $customPaper = array(0, 0, 350, 700);
+        $pdf = Pdf::loadView('invoice.bukti-terima-pdf', compact('picture'))->setPaper($customPaper, 'landscape');
+        return $pdf->stream('Bukti-Terima.pdf');
     }
 }

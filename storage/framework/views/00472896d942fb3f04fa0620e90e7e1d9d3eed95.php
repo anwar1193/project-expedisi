@@ -1,3 +1,43 @@
+<?php
+  $notificationData = getNotification();
+  $tema = Session::get("tema");
+?>
+
+<?php if($notificationData['jumlah'] != 0): ?>
+    <script src="<?php echo e(asset('assets/js/sweet-alert/sweetalert.min.js')); ?>"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            swal({
+                title: "You have notification!",
+                text: "<?php echo e($notificationData['text_notif'] ?? $notificationData['text_owner']); ?>",
+                icon: "info",
+                buttons: {
+                          confirm: {
+                              text: "Lihat Data",
+                              value: true,
+                              visible: true,
+                              className: "bg-danger",
+                              closeModal: true
+                          },
+                          cancel: {
+                              text: "Tutup",
+                              value: null,
+                              visible: true,
+                              className: "",
+                              closeModal: true,
+                          }
+                        }
+            }).then((value) => {
+                if (value) {
+                    window.location.href = "<?php echo e(route('data-pengiriman')); ?>";
+                }
+            });
+        });
+    </script>
+<?php endif; ?>
+
+
+
 <?php $__env->startSection('title', 'Home'); ?>
 
 <?php $__env->startPush('breadcrumb'); ?>

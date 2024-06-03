@@ -34,7 +34,8 @@
         "files": [
             "app/Helpers/route.php",
             "app/Helpers/user.php",
-            "app/Helpers/periode.php"
+            "app/Helpers/periode.php",
+            "app/Helpers/notification.php"
         ]
     },
     "autoload-dev": {

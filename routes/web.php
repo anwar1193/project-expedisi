@@ -269,6 +269,7 @@ Route::middleware("auth")->group(function() {
     Route::prefix('invoice')->group(function () {
         Route::get('/', [InvoiceController::class, 'index'])->name('invoice.index');
         Route::get('/export-pdf', [InvoiceController::class, 'export_pdf'])->name('invoice.export-pdf');
+        Route::get('/bukti-terima-pdf', [InvoiceController::class, 'bukti_terima_pdf'])->name('bukti-terima.export-pdf');
     });
 
     Route::get('user-level', [UserController::class, 'listLevel'])->name('level');

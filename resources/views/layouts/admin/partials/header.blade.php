@@ -52,50 +52,41 @@
             </ul>
           </div>
         </li> --}}
-        {{-- <li class="onhover-dropdown">
-          <div class="notification-box"><i data-feather="bell"></i><span class="dot-animated"></span></div>
-          <ul class="notification-dropdown onhover-show-div">
-            <li>
-              <p class="f-w-700 mb-0">You have 3 Notifications<span class="pull-right badge badge-primary badge-pill">4</span></p>
-            </li>
-            <li class="noti-primary">
-              <div class="media">
-                <span class="notification-bg bg-light-primary"><i data-feather="activity"> </i></span>
-                <div class="media-body">
-                  <p>Delivery processing </p>
-                  <span>10 minutes ago</span>
-                </div>
-              </div>
-            </li>
-            <li class="noti-secondary">
-              <div class="media">
-                <span class="notification-bg bg-light-secondary"><i data-feather="check-circle"> </i></span>
-                <div class="media-body">
-                  <p>Order Complete</p>
-                  <span>1 hour ago</span>
-                </div>
-              </div>
-            </li>
-            <li class="noti-success">
-              <div class="media">
-                <span class="notification-bg bg-light-success"><i data-feather="file-text"> </i></span>
-                <div class="media-body">
-                  <p>Tickets Generated</p>
-                  <span>3 hour ago</span>
-                </div>
-              </div>
-            </li>
-            <li class="noti-danger">
-              <div class="media">
-                <span class="notification-bg bg-light-danger"><i data-feather="user-check"> </i></span>
-                <div class="media-body">
-                  <p>Delivery Complete</p>
-                  <span>6 hour ago</span>
-                </div>
-              </div>
-            </li>
-          </ul>
-        </li> --}}
+        @php
+          $notificationData = getNotification();
+          $tema = Session::get("tema");
+        @endphp
+
+        <li class="onhover-dropdown">
+            <div class="notification-box">
+                <i data-feather="bell"></i>
+                @if ($notificationData['jumlah'] != 0)
+                    <span class="dot-animated"></span>
+                @endif
+            </div>
+            <ul class="notification-dropdown onhover-show-div">
+                @if ($notificationData['jumlah'] != 0)
+                    <li>
+                        <p class="f-w-700 mb-0">You have Notification</p>
+                    </li>
+                    <li class="noti-success">
+                        <div class="media">
+                            <span class="notification-bg bg-light-success"><i data-feather="file-text"></i></span>
+                            <div class="media-body">
+                                <a class="{{ $tema == 'dark' ? 'text-light' : 'text-black' }}" href="{{ route('data-pengiriman') }}">
+                                    {{ $notificationData['text_notif'] ?? $notificationData['text_owner'] }}
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                @else
+                    <li>
+                        <p class="f-w-700 mb-0">You Don't have Notification</p>
+                    </li>
+                @endif
+            </ul>
+        </li>
+
         <li>
           <div class="mode-theme">
             <a href="{{ route('tema') }}" id="themeLink">
