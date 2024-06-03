@@ -2,7 +2,10 @@
 
 namespace App\Imports;
 
+use DateTime;
 use Carbon\Carbon;
+use App\Models\Bank;
+use App\Models\Customer;
 use App\Models\DataPengiriman;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -34,6 +37,7 @@ class DataPengirimanImport implements ToModel, WithValidation, WithHeadingRow //
         return new DataPengiriman([
             'no_resi' => $row['no_resi'],
             'tgl_transaksi' => $tgl_transaksi,
+            'kode_customer' => $row['kode_customer'],
             'nama_pengirim' => $row['nama_pengirim'],
             'nama_penerima' => $row['nama_penerima'],
             'kota_tujuan' => $row['kota_tujuan'],
@@ -91,19 +95,49 @@ class DataPengirimanImport implements ToModel, WithValidation, WithHeadingRow //
                     $validator->errors()->add($key,'Bank Wajib Diisi Ketika Metode Pembayaran = Transfer');
                 }
 
-                // Jika Metode Pembayaran = Tunai, Bank Wajib Kosong
-                if($data['metode_pembayaran'] == 'Tunai' && $data['bank'] != ''){
-                    $validator->errors()->add($key,'Kolom Bank Harus Dikosongkan Ketika Metode Pembayaran = Tunai');
+                // Jika Metode Pembayaran != Transfer, Bank Wajib Kosong
+                if($data['metode_pembayaran'] != 'Transfer' && $data['bank'] != ''){
+                    $validator->errors()->add($key,'Kolom Bank Harus Dikosongkan Ketika Metode Pembayaran Bukan Transfer');
                 }
 
-                // Jika Metode Pembayaran = Transfer, Bukti Pembayaran Wajib Diisi
-                if($data['metode_pembayaran'] == 'Transfer' && $data['bukti_pembayaran'] == ''){
-                    $validator->errors()->add($key,'Bukti Pembayaran Wajib Diisi Ketika Metode Pembayaran = Transfer');
+                // Jika Metode Pembayaran = Transfer
+                if($data['metode_pembayaran'] == 'Transfer'){
+
+                    // Bukti pembayaran wajib diisi
+                    if($data['bukti_pembayaran'] == ''){
+                        $validator->errors()->add($key,'Bukti Pembayaran Wajib Diisi Ketika Metode Pembayaran = Transfer');
+                    }
+
+                    // Cek apakah bank tersedia di sistem
+                    $bankTerdaftar = Bank::where('bank', $data['bank'])->exists();
+                    if (!$bankTerdaftar) {
+                        $validator->errors()->add($key,'Bank yang anda input tidak tersedia di sistem!');
+                    }
                 }
 
-                // Jika Metode Pembayaran = Tunai, Bukti Pembayaran Wajib Kosong
-                if($data['metode_pembayaran'] == 'Tunai' && $data['bukti_pembayaran'] != ''){
-                    $validator->errors()->add($key,'Kolom Bukti Pembayaran Harus Dikosongkan Ketika Metode Pembayaran = Tunai');
+                // Jika Metode Pembayaran Bukan Transfer, Bukti Pembayaran Wajib Kosong
+                if($data['metode_pembayaran'] != 'Transfer' && $data['bukti_pembayaran'] != ''){
+                    $validator->errors()->add($key,'Kolom Bukti Pembayaran Harus Dikosongkan Ketika Metode Pembayaran Bukan Transfer');
+                }
+
+                // Jika Metode Pembayaran = Kredit, maka harus customer yang sudah terdaftar di sistem
+                if($data['metode_pembayaran'] == 'Kredit'){
+                    $customerTerdaftar = Customer::where('kode_customer', $data['kode_customer'])->exists();
+
+                    if (!$customerTerdaftar) {
+                        $validator->errors()->add($key,'Metode pembayaran kredit hanya berlaku untuk customer terdaftar!');
+                    }
+                }
+                
+                // Validasi Tanggal Tidak Boleh mundur lebih dari 7 Hari
+                $tanggalSekarang = '2024-05-28';
+                $tanggalTransaksi = Date::excelToDateTimeObject($data['tgl_transaksi'])->format('Y-m-d');
+
+                $diff = strtotime($tanggalSekarang) - strtotime($tanggalTransaksi);
+                $jarakHari = abs(round($diff / 86400));
+
+                if($jarakHari > 7){
+                    $validator->errors()->add($key, 'Tanggal transaksi tidak boleh mundur lebih dari 7 hari!');
                 }
     
             }

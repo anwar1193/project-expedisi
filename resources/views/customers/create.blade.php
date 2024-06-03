@@ -42,7 +42,7 @@
 
 								<div class="col-md-6">
 									<label class="form-label" for="no_wa">No Whatsapp</label>
-									<input class="form-control @error('no_wa') is-invalid @enderror" id="no_wa" type="text" name="no_wa" value="{{ old('no_wa') }}" />
+									<input class="form-control @error('no_wa') is-invalid @enderror" id="no_wa" type="text" name="no_wa" value="{{ old('no_wa') }}" autocomplete="off"/>
 
 									@error('no_wa')
 										<div class="text-danger">
@@ -55,7 +55,7 @@
 							<div class="row g-3 py-2">
 								<div class="col-md-6">
 									<label class="form-label" for="email">Email</label>
-									<input class="form-control @error('email') is-invalid @enderror" id="email" type="text" name="email" value="{{ old('email') }}" />
+									<input class="form-control @error('email') is-invalid @enderror" id="email" type="text" name="email" value="{{ old('email') }}" autocomplete="off"/>
 
 									@error('email')
 										<div class="text-danger">
@@ -66,7 +66,7 @@
 
 								<div class="col-md-6">
 									<label class="form-label" for="alamat">Alamat</label>
-									<input class="form-control @error('alamat') is-invalid @enderror" id="alamat" type="text" name="alamat" value="{{ old('alamat') }}" />
+									<input class="form-control @error('alamat') is-invalid @enderror" id="alamat" type="text" name="alamat" value="{{ old('alamat') }}" autocomplete="off"/>
 
 									@error('alamat')
 										<div class="text-danger">

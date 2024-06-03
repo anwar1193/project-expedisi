@@ -69,6 +69,7 @@
 	                                <tr>
 	                                    <th>No</th>
 										<th>Nama</th>
+										<th>Kode Customer</th>
 										<th>No Whatsapp</th>
 	                                    <th>Email</th>
 	                                    <th>Limit Kredit</th>
@@ -81,6 +82,7 @@
 										<tr>
 											<td>{{ $loop->iteration; }}</td>
 											<td>{{ $data->nama }}</td>
+											<td>{{ $data->kode_customer }}</td>
 											<td>{{ $data->no_wa }}</td>
 											<td>{{ $data->email }}</td>
 

@@ -63,7 +63,7 @@ if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>" id="no_wa" type="text" name="no_wa" value="<?php echo e(old('no_wa')); ?>" />
+unset($__errorArgs, $__bag); ?>" id="no_wa" type="text" name="no_wa" value="<?php echo e(old('no_wa')); ?>" autocomplete="off"/>
 
 									<?php $__errorArgs = ['no_wa'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -91,7 +91,7 @@ if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>" id="email" type="text" name="email" value="<?php echo e(old('email')); ?>" />
+unset($__errorArgs, $__bag); ?>" id="email" type="text" name="email" value="<?php echo e(old('email')); ?>" autocomplete="off"/>
 
 									<?php $__errorArgs = ['email'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -117,7 +117,7 @@ if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>" id="alamat" type="text" name="alamat" value="<?php echo e(old('alamat')); ?>" />
+unset($__errorArgs, $__bag); ?>" id="alamat" type="text" name="alamat" value="<?php echo e(old('alamat')); ?>" autocomplete="off"/>
 
 									<?php $__errorArgs = ['alamat'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');

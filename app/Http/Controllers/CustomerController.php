@@ -98,7 +98,7 @@ class CustomerController extends Controller
         }
 
         $customer->update($request->all());
-        $user->save();
+        // $user->save();
 
         Helper::logActivity('Data Customer ' . $request->nama . ' berhasil diupdate');
 

@@ -27,7 +27,7 @@
                                         <div class="col-6">Bukti Pembayaran</div>
                                         <div class="col-2">:</div>
                                         <div class="col-4">
-                                            <img src="<?php echo e(asset('storage/daftar-pengeluaran/'.$data->bukti_pembayaran)); ?>" alt="" width="200px" class="img-fluid mt-2">
+                                            <img src="<?php echo e(asset('storage/data-pemasukkan/'.$data->bukti_pembayaran)); ?>" alt="" width="200px" class="img-fluid mt-2">
                                         </div>
                                     </div>
                                     <div class="row d-flex py-1 text-start justify-content-start">

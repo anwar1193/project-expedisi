@@ -71,6 +71,7 @@
 	                                <tr>
 	                                    <th>No</th>
 										<th>Nama</th>
+										<th>Kode Customer</th>
 										<th>No Whatsapp</th>
 	                                    <th>Email</th>
 	                                    <th>Limit Kredit</th>
@@ -83,6 +84,7 @@
 										<tr>
 											<td><?php echo e($loop->iteration); ?></td>
 											<td><?php echo e($data->nama); ?></td>
+											<td><?php echo e($data->kode_customer); ?></td>
 											<td><?php echo e($data->no_wa); ?></td>
 											<td><?php echo e($data->email); ?></td>
 
