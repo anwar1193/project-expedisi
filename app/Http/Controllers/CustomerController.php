@@ -5,15 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Helpers\Helper;
 use App\Models\Customer;
+use App\Models\HistoryLimit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class CustomerController extends Controller
 {
     public function index()
     {
         $customers = Customer::orderBy('id', 'desc')->get();
+
         return view('customers.index', compact('customers'));
     }
 
@@ -26,45 +29,50 @@ class CustomerController extends Controller
     {
         $next_year = date('Y-m-d H:i:s', strtotime('+1 year'));
 
-        // Kode Customer Otomatis ----------
-        $kode_query = DB::select('select MAX(MID(kode_customer, 4, 3)) AS kodee from customers');
+        try {
+        
+            // Kode Customer Otomatis ----------
+            $kode_query = DB::select('select MAX(MID(kode_customer, 4, 3)) AS kodee from customers');
 
-        if($kode_query[0]->kodee == NULL){
-            $no = '001';
-        }else{
-            $kodee = $kode_query[0]->kodee;
-            $n = ((int)$kodee + 1);
-            $no = sprintf("%'.03d", $n);
-        }
+            if($kode_query[0]->kodee == NULL){
+                $no = '001';
+            }else{
+                $kodee = $kode_query[0]->kodee;
+                $n = ((int)$kodee + 1);
+                $no = sprintf("%'.03d", $n);
+            }
 
-        $kode_customer = 'LP-'.$no;
-        // END Kode Customer Otomatis -------
+            $kode_customer = 'LP-'.$no;
+            // END Kode Customer Otomatis -------
 
-        $this->validate($request, [
-            'nama' => 'required',
-            'email' => 'required|email',
-            'no_wa' => 'required|regex:/^\+?[0-9]+$/',
-            'alamat' => 'required',
-        ]);
-
-        $request['kode_customer'] = $kode_customer;
-
-        Customer::create($request->all());
-
-        if (($request->username) && ($request->addUser == 'on')) {
-            User::create([
-                'nama' => $request->nama,
-                'username' => $request->username,
-                'email' => $request->email,
-                'nomor_telepon' => $request->no_wa,
-                'user_level' => 3,
-                'password' => Hash::make($request->password),
-                'status' => 1
+            $this->validate($request, [
+                'nama' => 'required',
+                'email' => 'required|email|unique:customers,email|unique:users,email',
+                'no_wa' => 'required|regex:/^\+?[0-9]+$/|unique:customers,no_wa|unique:users,nomor_telepon',
+                'alamat' => 'required',
             ]);
-        }
 
-        Helper::logActivity('Data Customer ' . $request->nama . ' berhasil ditambahkan');
-        return redirect()->route('customers.index')->with('success', 'Data Customer berhasil ditambahkan');
+            $request['kode_customer'] = $kode_customer;
+
+            Customer::create($request->all());
+
+            if (($request->username) && ($request->addUser == 'on')) {
+                User::create([
+                    'nama' => $request->nama,
+                    'username' => $request->username,
+                    'email' => $request->email,
+                    'nomor_telepon' => $request->no_wa,
+                    'user_level' => 3,
+                    'password' => Hash::make($request->password),
+                    'status' => 1
+                ]);
+            }
+
+            Helper::logActivity('Data Customer ' . $request->nama . ' berhasil ditambahkan');
+            return redirect()->route('customers.index')->with('success', 'Data Customer berhasil ditambahkan');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', $th->getMessage());
+        }
     }
 
     public function edit($id)
@@ -78,31 +86,36 @@ class CustomerController extends Controller
 
     public function update(Request $request, $id)
     {
-        $customer = Customer::findOrFail($id);
-        $user = User::where('username', $customer->username)->first();
+        try {
+        
+            $customer = Customer::findOrFail($id);
+            $user = User::where('username', $customer->username)->first();
 
-        $this->validate($request, [
-            'nama' => 'required',
-            'email' => 'required|email',
-            'no_wa' => 'required|regex:/^\+?[0-9]+$/',
-            'alamat' => 'required',
-        ]);
+            $this->validate($request, [
+                'nama' => 'required',
+                'email' => 'required|email|unique:customers,email,' . $id.'|unique:users,email,' . $id,
+                'no_wa' => 'required|regex:/^\+?[0-9]+$/|unique:customers,no_wa,' . $id.'|unique:users,nomor_telepon,' . $id,
+                'alamat' => 'required',
+            ]);
 
-        $fieldsToUpdate = ['nama', 'username', 'email', 'no_wa'];
+            $fieldsToUpdate = ['nama', 'username', 'email', 'no_wa'];
 
-        foreach ($fieldsToUpdate as $field) {
-            $userField = $field === 'no_wa' ? 'nomor_telepon' : $field;
-            if ($request->$field != $customer->$field) {
-                $user->$userField = $request->$field;
+            foreach ($fieldsToUpdate as $field) {
+                $userField = $field === 'no_wa' ? 'nomor_telepon' : $field;
+                if ($request->$field != $customer->$field) {
+                    $user->$userField = $request->$field;
+                }
             }
+
+            $customer->update($request->all());
+            $user->save();
+
+            Helper::logActivity('Data Customer ' . $request->nama . ' berhasil diupdate');
+
+            return redirect()->route('customers.index')->with('success', 'Data Customer berhasil diupdate');
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
         }
-
-        $customer->update($request->all());
-        $user->save();
-
-        Helper::logActivity('Data Customer ' . $request->nama . ' berhasil diupdate');
-
-        return redirect()->route('customers.index')->with('success', 'Data Customer berhasil diupdate');
     }
 
     public function delete($id)
@@ -132,7 +145,20 @@ class CustomerController extends Controller
             'limit_credit' => $kredit_update
         ]);
 
+        HistoryLimit::create([
+            'customer_id' => $id,
+            'limit_kredit' => $tambahan_kredit
+        ]);
+
         return redirect()->route('customers.index')->with('success', 'Limit Kredit Berhasil Ditambahkan');
+    }
+
+    public function history_limit($id) 
+    {
+        $customer = Customer::find($id);
+        $data = HistoryLimit::where('customer_id', $id)->orderBy('history_limits.id', 'DESC')->get();
+
+        return view('customers.history-limit', compact('customer', 'data'));
     }
     
 }
