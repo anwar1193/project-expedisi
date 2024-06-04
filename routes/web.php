@@ -236,6 +236,7 @@ Route::middleware("auth")->group(function() {
         Route::post('/', [PemasukanLainnyaController::class, 'store'])->name('data-pemasukan.store');
         Route::post('/update/{id}', [PemasukanLainnyaController::class, 'update'])->name('data-pemasukan.update');
         Route::get('/delete/{id}', [PemasukanLainnyaController::class, 'delete'])->name('data-pemasukan.delete');
+        Route::get('/tanda-terima-pdf/{id}', [PemasukanLainnyaController::class, 'tanda_terima_pdf'])->name('tanda-terima.export-pdf');
     });
     
     Route::prefix('pembelian-perlengkapan')->group(function () {
