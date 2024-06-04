@@ -22,6 +22,24 @@
 			<div class="col-sm-12">
 				<div class="card">
 					<div class="card-header pb-0">
+						@if (session()->has('error'))
+							<div class="alert alert-danger alert-dismissible fade show" role="alert">
+								<strong>Gagal <i class="fa fa-info-circle"></i></strong> 
+								{{ session('error') }}
+								<button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+							</div>
+						@endif
+
+						@if ($errors->any())
+							<div class="alert alert-danger alert-dismissible fade show" role="alert">
+								@foreach ($errors->all() as $error)
+									<strong>Failed <i class="fa fa-info-circle"></i></strong> 
+									{{ $error }}
+									<button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+									<br>
+								@endforeach
+							</div>
+						@endif
 						<h5>Form Edit Data Customer</h5>
 					</div>
 					<form class="needs-validation" method="POST" action="{{ route('customers.update', $customer->id) }}">
