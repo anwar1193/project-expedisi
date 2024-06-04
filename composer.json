@@ -35,7 +35,8 @@
             "app/Helpers/route.php",
             "app/Helpers/user.php",
             "app/Helpers/periode.php",
-            "app/Helpers/notification.php"
+            "app/Helpers/notification.php",
+            "app/Helpers/angka.php"
         ]
     },
     "autoload-dev": {
