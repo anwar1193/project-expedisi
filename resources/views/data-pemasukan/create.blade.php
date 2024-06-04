@@ -62,9 +62,28 @@
 								<div class="col">
 									<div class="mb-3">
 										<label class="form-label" for="">Sumber Pemasukan</label>
-										<input class="form-control @error('sumber_pemasukkan') is-invalid @enderror" type="text" name="sumber_pemasukkan" autocomplete="off" value="{{ old('sumber_pemasukkan') }}"/>
+										<input class="form-control @error('sumber_pemasukkan') is-invalid @enderror" style="display: block" id="sumberPemasukkan" type="text" name="sumber_pemasukkan" autocomplete="off" value="{{ old('sumber_pemasukkan') }}"/>
 
 										@error('sumber_pemasukkan')
+										<div class="text-danger">
+											{{ $message }}
+										</div>
+										@enderror
+									</div>
+									<div class="mb-3">
+										<input class="form-check-input" id="dataCustomer" type="checkbox" name="dataCustomer" />
+										<label class="form-check-label" for="dataCustomer">Pilih Customer</label>
+
+										<select name="customer" id="customer" class="form-control @error('customer') is-invalid @enderror" style="display: none">
+											<option value="">- Pilih Customer -</option>
+											@foreach ($customer as $item)
+												<option value="{{ $item->nama }}" {{ old('nama') == $item->nama ? 'selected' : '' }}>
+													{{ $item->nama }}
+												</option>
+											@endforeach
+										</select>
+
+										@error('customer')
 										<div class="text-danger">
 											{{ $message }}
 										</div>
@@ -188,11 +207,22 @@
 			var takeImageCheckbox = document.getElementById('takeImage');
 			var image = document.getElementById('image');
 			var buktiBayar = document.getElementById('buktiBayar');
+			var dataCustomer = document.getElementById('dataCustomer');
+			var sumberPemasukkan = document.getElementById('sumberPemasukkan');
+			var customer = document.getElementById('customer');
 			const video = document.querySelector(`#videoElement`);
 			const canvas = document.getElementById('canvas');
             const captureButton = document.getElementById('captureButton');
             const cancelButton = document.getElementById('cancelButton');
             const imageInput = document.getElementById('bukti_pembayaran');
+
+			if (dataCustomer.checked) {
+				customer.style.display = 'block';
+				sumberPemasukkan.style.display = 'none';
+			} else {
+				sumberPemasukkan.style.display = 'block';
+				customer.style.display = 'none';
+			}
 		
 			if (video && takeImageCheckbox.checked) {
 				if (navigator.mediaDevices.getUserMedia) {
@@ -252,6 +282,31 @@
 		document.getElementById('takeImage').addEventListener('change', toggleUserFields);
 
 		document.addEventListener('DOMContentLoaded', toggleUserFields);
+	</script>
+
+	<script>
+		document.addEventListener("DOMContentLoaded", function() {
+        const dataCustomerCheckbox = document.getElementById('dataCustomer');
+        const customerSelect = document.getElementById('customer');
+		const sumberPemasukkan = document.getElementById('sumberPemasukkan');
+
+        // Fungsi untuk mengubah visibilitas elemen select
+        function toggleCustomerSelect() {
+            if (dataCustomerCheckbox.checked) {
+                customerSelect.style.display = 'block';
+				sumberPemasukkan.style.display = 'none';
+            } else {
+                customerSelect.style.display = 'none';
+				sumberPemasukkan.style.display = 'block';
+            }
+        }
+
+        // Tambahkan event listener ke checkbox
+        dataCustomerCheckbox.addEventListener('change', toggleCustomerSelect);
+
+        // Panggil fungsi saat halaman pertama kali dimuat
+        toggleCustomerSelect();
+    });
 	</script>
 	@endpush
 
