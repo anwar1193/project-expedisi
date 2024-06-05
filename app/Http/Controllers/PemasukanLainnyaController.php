@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Helper;
+use App\Models\Customer;
 use App\Models\PemasukanLainnya;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
@@ -35,7 +37,9 @@ class PemasukanLainnyaController extends Controller
 
     public function create()
     {
-        return view('data-pemasukan.create');
+        $customer = Customer::orderBy('id', 'DESC')->get();
+
+        return view('data-pemasukan.create', compact('customer'));
     }
 
     public function store(Request $request)
@@ -44,7 +48,8 @@ class PemasukanLainnyaController extends Controller
         $validateData = $request->validate([
             'keterangan' => 'required',
             'jumlah_pemasukkan' => 'required',
-            'sumber_pemasukkan' => 'required',
+            'sumber_pemasukkan' => 'required_without:customer',
+            'customer' => 'required_without:sumber_pemasukkan',
             'metode_pembayaran' => 'required',
             'bukti_pembayaran' => 'required_without:image',
             'image' => 'required_without:bukti_pembayaran', 
@@ -86,6 +91,7 @@ class PemasukanLainnyaController extends Controller
 
         $validateData['diterima_oleh'] = Session::get('nama');
         $validateData['tgl_pemasukkan'] = $today;
+        $validateData['sumber_pemasukkan'] = !$request->dataCustomer ? $request->sumber_pemasukkan : $request->customer;
         $validateData['keterangan_tambahan'] = $request->keterangan_tambahan;
 
         PemasukanLainnya::create($validateData);
@@ -99,6 +105,7 @@ class PemasukanLainnyaController extends Controller
     public function edit($id)
     {
         $datas = PemasukanLainnya::find($id);
+        $data['customer'] = Customer::orderBy('id', 'DESC')->get();
         $data['datas'] = $datas;
 
         return view('data-pemasukan.edit', $data);
@@ -109,7 +116,8 @@ class PemasukanLainnyaController extends Controller
         $validateData = $request->validate([
             'keterangan' => 'required',
             'jumlah_pemasukkan' => 'required',
-            'sumber_pemasukkan' => 'required',
+            'sumber_pemasukkan' => 'required_without:customer',
+            'customer' => 'required_without:sumber_pemasukkan',
             'metode_pembayaran' => 'required',
             'keterangan_tambahan' => 'required',
         ]);
@@ -154,10 +162,12 @@ class PemasukanLainnyaController extends Controller
             $buktiPembayaran = $fileName;
         }
 
+        $sumber_pemasukkan = !$request->dataCustomer ? $request->sumber_pemasukkan : $request->customer;
+
         PemasukanLainnya::where('id', '=', $id)->update([
             'keterangan' => $request->keterangan,
             'jumlah_pemasukkan' => $request->jumlah_pemasukkan,
-            'sumber_pemasukkan' => $request->sumber_pemasukkan,
+            'sumber_pemasukkan' => $sumber_pemasukkan,
             'metode_pembayaran' => $request->metode_pembayaran,
             'bukti_pembayaran' => ($foto || $img ? $buktiPembayaran : $getImage->bukti_pembayaran),
             'keterangan_tambahan' => $request->keterangan_tambahan,
@@ -181,5 +191,14 @@ class PemasukanLainnyaController extends Controller
         Helper::logActivity('Hapus data pemasukan dengan id : '.$id);
 
         return redirect()->route('data-pemasukan')->with('delete', 'Data pemasukan berhasil dihapus');
+    }
+
+    public function tanda_terima_pdf($id)
+    {
+        $picture = public_path('assets/lionparcel.png');
+        $data = $datas = PemasukanLainnya::where('id', $id)->first();
+        $customPaper = array(0, 0, 350, 700);
+        $pdf = Pdf::loadView('data-pemasukan.tanda-terima-pdf', compact('picture', 'data'))->setPaper($customPaper, 'landscape');
+        return $pdf->stream('Tanda-Terima.pdf');
     }
 }

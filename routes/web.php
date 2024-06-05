@@ -236,6 +236,7 @@ Route::middleware("auth")->group(function() {
         Route::post('/', [PemasukanLainnyaController::class, 'store'])->name('data-pemasukan.store');
         Route::post('/update/{id}', [PemasukanLainnyaController::class, 'update'])->name('data-pemasukan.update');
         Route::get('/delete/{id}', [PemasukanLainnyaController::class, 'delete'])->name('data-pemasukan.delete');
+        Route::get('/tanda-terima-pdf/{id}', [PemasukanLainnyaController::class, 'tanda_terima_pdf'])->name('tanda-terima.export-pdf');
     });
     
     Route::prefix('pembelian-perlengkapan')->group(function () {
@@ -264,6 +265,7 @@ Route::middleware("auth")->group(function() {
         Route::post('/update/{id}', [CustomerController::class, 'update'])->name('customers.update');
         Route::get('/delete/{id}', [CustomerController::class, 'delete'])->name('customers.delete');
         Route::post('/add-credit', [CustomerController::class, 'addCredit'])->name('customers.addCredit');
+        Route::get('/history-credit/{id}', [CustomerController::class, 'history_limit'])->name('customers.historyLimit');
     });
    
     Route::prefix('invoice')->group(function () {

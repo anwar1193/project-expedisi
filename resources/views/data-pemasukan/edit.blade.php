@@ -62,9 +62,27 @@
 								<div class="col">
 									<div class="mb-3">
 										<label class="form-label" for="">Sumber Pemasukan</label>
-										<input class="form-control @error('sumber_pemasukkan') is-invalid @enderror" type="text" name="sumber_pemasukkan" autocomplete="off" value="{{ old('sumber_pemasukkan', $datas->sumber_pemasukkan) }}"/>
+										<input class="form-control @error('sumber_pemasukkan') is-invalid @enderror" id="sumberPemasukkan" type="text" name="sumber_pemasukkan" autocomplete="off" value="{{ old('sumber_pemasukkan', $datas->sumber_pemasukkan) }}"/>
 
 										@error('sumber_pemasukkan')
+										<div class="text-danger">
+											{{ $message }}
+										</div>
+										@enderror
+									</div>
+									<div class="mb-3">
+										<input class="form-check-input" id="dataCustomer" type="checkbox" name="dataCustomer" />
+										<label class="form-check-label" for="dataCustomer">Pilih Customer</label>
+
+										<select name="customer" id="customer" class="form-control @error('customer') is-invalid @enderror" style="display: none">
+											@foreach ($customer as $item)
+												<option value="{{ $item->nama }}" {{ $datas->nama == $item->nama ? 'selected' : NULL }}>
+													{{ $item->nama }}
+												</option>
+											@endforeach
+										</select>
+
+										@error('customer')
 										<div class="text-danger">
 											{{ $message }}
 										</div>
@@ -254,6 +272,31 @@
 		document.getElementById('takeImage').addEventListener('change', toggleUserFields);
 
 		document.addEventListener('DOMContentLoaded', toggleUserFields);
+	</script>
+
+	<script>
+		document.addEventListener("DOMContentLoaded", function() {
+		const dataCustomerCheckbox = document.getElementById('dataCustomer');
+		const customerSelect = document.getElementById('customer');
+		const sumberPemasukkan = document.getElementById('sumberPemasukkan');
+
+		// Fungsi untuk mengubah visibilitas elemen select
+		function toggleCustomerSelect() {
+			if (dataCustomerCheckbox.checked) {
+				customerSelect.style.display = 'block';
+				sumberPemasukkan.style.display = 'none';
+			} else {
+				customerSelect.style.display = 'none';
+				sumberPemasukkan.style.display = 'block';
+			}
+		}
+
+		// Tambahkan event listener ke checkbox
+		dataCustomerCheckbox.addEventListener('change', toggleCustomerSelect);
+
+		// Panggil fungsi saat halaman pertama kali dimuat
+		toggleCustomerSelect();
+	});
 	</script>
 	@endpush
 

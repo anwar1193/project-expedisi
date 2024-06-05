@@ -98,9 +98,44 @@ if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>" type="text" name="sumber_pemasukkan" autocomplete="off" value="<?php echo e(old('sumber_pemasukkan')); ?>"/>
+unset($__errorArgs, $__bag); ?>" style="display: block" id="sumberPemasukkan" type="text" name="sumber_pemasukkan" autocomplete="off" value="<?php echo e(old('sumber_pemasukkan')); ?>"/>
 
 										<?php $__errorArgs = ['sumber_pemasukkan'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+										<div class="text-danger">
+											<?php echo e($message); ?>
+
+										</div>
+										<?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+									</div>
+									<div class="mb-3">
+										<input class="form-check-input" id="dataCustomer" type="checkbox" name="dataCustomer" />
+										<label class="form-check-label" for="dataCustomer">Pilih Customer</label>
+
+										<select name="customer" id="customer" class="form-control <?php $__errorArgs = ['customer'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" style="display: none">
+											<option value="">- Pilih Customer -</option>
+											<?php $__currentLoopData = $customer; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+												<option value="<?php echo e($item->nama); ?>" <?php echo e(old('nama') == $item->nama ? 'selected' : ''); ?>>
+													<?php echo e($item->nama); ?>
+
+												</option>
+											<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+										</select>
+
+										<?php $__errorArgs = ['customer'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -285,11 +320,22 @@ unset($__errorArgs, $__bag); ?>
 			var takeImageCheckbox = document.getElementById('takeImage');
 			var image = document.getElementById('image');
 			var buktiBayar = document.getElementById('buktiBayar');
+			var dataCustomer = document.getElementById('dataCustomer');
+			var sumberPemasukkan = document.getElementById('sumberPemasukkan');
+			var customer = document.getElementById('customer');
 			const video = document.querySelector(`#videoElement`);
 			const canvas = document.getElementById('canvas');
             const captureButton = document.getElementById('captureButton');
             const cancelButton = document.getElementById('cancelButton');
             const imageInput = document.getElementById('bukti_pembayaran');
+
+			if (dataCustomer.checked) {
+				customer.style.display = 'block';
+				sumberPemasukkan.style.display = 'none';
+			} else {
+				sumberPemasukkan.style.display = 'block';
+				customer.style.display = 'none';
+			}
 		
 			if (video && takeImageCheckbox.checked) {
 				if (navigator.mediaDevices.getUserMedia) {
@@ -349,6 +395,31 @@ unset($__errorArgs, $__bag); ?>
 		document.getElementById('takeImage').addEventListener('change', toggleUserFields);
 
 		document.addEventListener('DOMContentLoaded', toggleUserFields);
+	</script>
+
+	<script>
+		document.addEventListener("DOMContentLoaded", function() {
+        const dataCustomerCheckbox = document.getElementById('dataCustomer');
+        const customerSelect = document.getElementById('customer');
+		const sumberPemasukkan = document.getElementById('sumberPemasukkan');
+
+        // Fungsi untuk mengubah visibilitas elemen select
+        function toggleCustomerSelect() {
+            if (dataCustomerCheckbox.checked) {
+                customerSelect.style.display = 'block';
+				sumberPemasukkan.style.display = 'none';
+            } else {
+                customerSelect.style.display = 'none';
+				sumberPemasukkan.style.display = 'block';
+            }
+        }
+
+        // Tambahkan event listener ke checkbox
+        dataCustomerCheckbox.addEventListener('change', toggleCustomerSelect);
+
+        // Panggil fungsi saat halaman pertama kali dimuat
+        toggleCustomerSelect();
+    });
 	</script>
 	<?php $__env->stopPush(); ?>
 
