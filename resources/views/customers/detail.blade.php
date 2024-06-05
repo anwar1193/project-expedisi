@@ -51,7 +51,7 @@
                                         <div class="col-4">Point</div>
                                         <div class="col-1">:</div>
                                         <div class="col-6">
-                                            <span class="badge badge-primary">
+                                            <span class="badge" style="background-color: blue">
                                                 {{ $data->point }}
                                             </span>
                                         </div>

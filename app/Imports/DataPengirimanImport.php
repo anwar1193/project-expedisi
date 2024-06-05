@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use App\Models\Bank;
 use App\Models\Customer;
 use App\Models\DataPengiriman;
+use App\Models\KonversiPoint;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\SkipsFailures;
@@ -33,6 +34,12 @@ class DataPengirimanImport implements ToModel, WithValidation, WithHeadingRow //
         // }
 
         $tgl_transaksi = Date::excelToDateTimeObject($row['tgl_transaksi'])->format('Y-m-d');
+
+        $konversi_point = KonversiPoint::where('id', 1)->first();
+
+        Customer::where('kode_customer', $row['kode_customer'])->update([
+            'point' => $row['ongkir'] / $konversi_point->nominal
+        ]);
         
         return new DataPengiriman([
             'no_resi' => $row['no_resi'],

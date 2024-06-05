@@ -93,7 +93,7 @@
 											</td>
 
 											<td class="text-center">
-												<span class="badge badge-primary">
+												<span class="badge" style="background-color: blue">
 													{{ $data->point }}
 												</span>
 											</td>
