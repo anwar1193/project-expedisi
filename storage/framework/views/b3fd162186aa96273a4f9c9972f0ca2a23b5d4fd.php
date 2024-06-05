@@ -11,9 +11,8 @@
 
       <div class="dark-logo-wrapper">
         <a href="<?php echo e(route('index')); ?>">
-          <img class="img-fluid" src="<?php echo e(asset('assets/logo-kejaksaan.png')); ?>" alt="" width="40px">
-          <span class="text-white" style="font-size: 20px; font-weight:bold; letter-spacing:2px; margin-left:10px">SIPBIS</span>
           
+          <img src="/assets/lionparcel.png" width="200px" alt="">
         </a>
       </div>
       <div class="toggle-sidebar"><i class="status_toggle middle text-danger" data-feather="align-center" id="sidebar-toggle">    </i></div>
@@ -35,20 +34,22 @@
       <ul class="nav-menus">
         <li><a class="text-dark" href="#!" onclick="javascript:toggleFullScreen()"><i data-feather="maximize"></i></a></li>
         
-        <?php
-          $notificationData = getNotification();
-          $tema = Session::get("tema");
-        ?>
+        <?php if(Session::get('user_level') != 3): ?>
+            <?php
+                $notificationData = getNotification();
+                $tema = Session::get("tema");
+            ?>
+        <?php endif; ?>
 
         <li class="onhover-dropdown">
             <div class="notification-box">
                 <i data-feather="bell"></i>
-                <?php if($notificationData['jumlah'] != 0): ?>
+                <?php if(Session::get('user_level') != 3 && isset($notificationData) && $notificationData['jumlah'] != 0): ?>
                     <span class="dot-animated"></span>
                 <?php endif; ?>
             </div>
             <ul class="notification-dropdown onhover-show-div">
-                <?php if($notificationData['jumlah'] != 0): ?>
+              <?php if(Session::get('user_level') != 3 && isset($notificationData) && $notificationData['jumlah'] != 0): ?>
                     <li>
                         <p class="f-w-700 mb-0">You have Notification</p>
                     </li>
