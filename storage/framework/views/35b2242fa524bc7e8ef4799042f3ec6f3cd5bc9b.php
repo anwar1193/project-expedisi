@@ -27,7 +27,7 @@
                                             <div class="col-4">Nominal Kredit</div>
                                             <div class="col-1">:</div>
                                             <div class="col-6">
-                                                <input type="number" class="form-control" placeholder="0" value="" name="nominal_kredit">
+                                                <input type="number" class="form-control" value="0" name="nominal_kredit">
                                             </div>
                                         </div>
 

@@ -61,7 +61,15 @@
                             <div class="row">
 								<div class="col">
 									<div class="mb-3">
-										<label class="form-label" for="">Sumber Pemasukan</label>
+										<div class="row">
+											<div class="col-2">
+												<label class="form-label" for="">Sumber Pemasukan</label>
+											</div>
+											<div class="col">
+												<input class="form-check-input" id="dataCustomer" type="checkbox" name="dataCustomer" />
+												<label class="form-check-label" for="dataCustomer">Pilih Customer</label>
+											</div>
+										</div>
 										<input class="form-control @error('sumber_pemasukkan') is-invalid @enderror" id="sumberPemasukkan" type="text" name="sumber_pemasukkan" autocomplete="off" value="{{ old('sumber_pemasukkan', $datas->sumber_pemasukkan) }}"/>
 
 										@error('sumber_pemasukkan')
@@ -71,10 +79,8 @@
 										@enderror
 									</div>
 									<div class="mb-3">
-										<input class="form-check-input" id="dataCustomer" type="checkbox" name="dataCustomer" />
-										<label class="form-check-label" for="dataCustomer">Pilih Customer</label>
-
 										<select name="customer" id="customer" class="form-control @error('customer') is-invalid @enderror" style="display: none">
+											<option value="">- Pilih Customer -</option>
 											@foreach ($customer as $item)
 												<option value="{{ $item->nama }}" {{ $datas->nama == $item->nama ? 'selected' : NULL }}>
 													{{ $item->nama }}

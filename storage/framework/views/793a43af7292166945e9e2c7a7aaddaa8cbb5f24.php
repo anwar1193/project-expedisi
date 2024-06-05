@@ -90,7 +90,15 @@ unset($__errorArgs, $__bag); ?>
                             <div class="row">
 								<div class="col">
 									<div class="mb-3">
-										<label class="form-label" for="">Sumber Pemasukan</label>
+										<div class="row">
+											<div class="col-2">
+												<label class="form-label" for="">Sumber Pemasukan</label>
+											</div>
+											<div class="col">
+												<input class="form-check-input" id="dataCustomer" type="checkbox" name="dataCustomer" />
+												<label class="form-check-label" for="dataCustomer">Pilih Customer</label>
+											</div>
+										</div>
 										<input class="form-control <?php $__errorArgs = ['sumber_pemasukkan'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -115,9 +123,6 @@ endif;
 unset($__errorArgs, $__bag); ?>
 									</div>
 									<div class="mb-3">
-										<input class="form-check-input" id="dataCustomer" type="checkbox" name="dataCustomer" />
-										<label class="form-check-label" for="dataCustomer">Pilih Customer</label>
-
 										<select name="customer" id="customer" class="form-control <?php $__errorArgs = ['customer'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -126,6 +131,7 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>" style="display: none">
+											<option value="">- Pilih Customer -</option>
 											<?php $__currentLoopData = $customer; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 												<option value="<?php echo e($item->nama); ?>" <?php echo e($datas->nama == $item->nama ? 'selected' : NULL); ?>>
 													<?php echo e($item->nama); ?>
