@@ -202,7 +202,12 @@ class UserController extends Controller
         ]);
 
         Helper::logActivity('Ubah profile pengguna dengan username : '.$request->username);
+
+        $customer = Session::get('user_level') == 3;
         
+        if ($customer) {
+            return back()->with('success', 'Profile Berhasil Diupdate');
+        }
         return redirect()->route('profile')->with('success', 'Profile Berhasil Diupdate');
     }
 
