@@ -95,7 +95,7 @@
 
 											<td class="text-center">
 												<span class="badge badge-primary">
-													<?php echo e($data->point); ?>
+													<?php echo e($data->points); ?>
 
 												</span>
 											</td>
