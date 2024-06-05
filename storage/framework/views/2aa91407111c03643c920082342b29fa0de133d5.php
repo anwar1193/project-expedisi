@@ -91,7 +91,7 @@ unset($__errorArgs, $__bag); ?>
 								<div class="col">
 									<div class="mb-3">
 										<div class="row">
-											<div class="col-2">
+											<div class="col-3">
 												<label class="form-label" for="">Sumber Pemasukan</label>
 											</div>
 											<div class="col">
@@ -135,7 +135,7 @@ unset($__errorArgs, $__bag); ?>" style="display: none">
 											<option value="">- Pilih Customer -</option>
 											<?php $__currentLoopData = $customer; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 												<option value="<?php echo e($item->nama); ?>" <?php echo e(old('nama') == $item->nama ? 'selected' : ''); ?>>
-													<?php echo e($item->nama); ?>
+													<?php echo e($item->kode_customer); ?> - <?php echo e($item->nama); ?>
 
 												</option>
 											<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
