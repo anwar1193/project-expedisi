@@ -92,7 +92,7 @@
 
 											<td class="text-center">
 												<span class="badge badge-primary">
-													{{ $data->point }}
+													{{ $data->points }}
 												</span>
 											</td>
 
