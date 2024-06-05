@@ -12,9 +12,7 @@
                 <form id="search-form" class="form theme-form" method="GET" action="{{ route('dashboard.customer') }}">
                     <div class="d-flex justify-content-center">
                         <div class="px-2">
-                            <input class="col-12" type="text" name="no_resi" id="no_resi">
-                        </div>
-                        <div class="ps-2">
+                            <input class="col-12 mb-3" type="text" name="no_resi" id="no_resi">
                             <button class="btn btn-primary" type="submit">Search</button>
                         </div>
                     </div>
@@ -22,35 +20,41 @@
             </div>
             <div id="resi-result" class="card-footer px-5">
                 @if ($data)
-                    <div class="text-center mb-3">
+                    <div class="mb-3">
                         <h5>Hasil Pencarian</h5>
                     </div>
-                    <div class="row d-flex py-1 text-start justify-content-center">
-                        <div class="col-6">No Resi</div>
-                        <div class="col-2">:</div>
-                        <div class="col-4">{{ $data->no_resi }}</div>
-                    </div>
-                    <div class="row text-start d-flex justify-content-end">
-                        <div class="col-6">Tanggal Transaksi</div>
-                        <div class="col-2">:</div>
-                        <div class="col-4">{{ $data->tgl_transaksi }}</div>
-                    </div>
-                    <div class="row d-flex py-1 text-start justify-content-center">
-                        <div class="col-6">Nama Pengirim</div>
-                        <div class="col-2">:</div>
-                        <div class="col-4">{{ $data->nama_pengirim }}</div>
-                    </div>
-                    <div class="row d-flex py-1 text-start justify-content-center">
-                        <div class="col-6">Nama Penerima</div>
-                        <div class="col-2">:</div>
-                        <div class="col-4">{{ $data->nama_penerima }}</div>
-                    </div>
-                    <div class="row d-flex py-1 text-start justify-content-center">
-                        <div class="col-6">Status Pengiriman</div>
-                        <div class="col-2">:</div>
-                        <div class="col-4">{{ $data->status_pengiriman }} - {{ $data->keterangan_pengiriman }}</div>
-                    </div>
-                    <div class="text-center mb-3">
+                    <table class="table mb-3">
+                        <tr>
+                            <th>No Resi</th>
+                            <th class="text-center">:</th>
+                            <td>{{ $data->no_resi }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Tanggal Transaksi</th>
+                            <th class="text-center">:</th>
+                            <td>{{ formatTanggalIndonesia($data->tgl_transaksi) }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Pengirim</th>
+                            <th class="text-center">:</th>
+                            <td>{{ $data->nama_pengirim }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Penerima</th>
+                            <th class="text-center">:</th>
+                            <td>{{ $data->nama_penerima }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Status Pengiriman</th>
+                            <th class="text-center">:</th>
+                            <td>{{ $data->status_pengiriman }} - {{ $data->keterangan_pengiriman }}</td>
+                        </tr>
+                    </table>
+                    <div class="text-center my-3">
                         <a href="{{ route('dashboard.customer') }}" class="btn btn-md btn-secondary" title="Reset"><i class="fa fa-refresh"></i> Reset</a>
                     </div>
                 @endif
