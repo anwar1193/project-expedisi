@@ -37,7 +37,7 @@ class PemasukanLainnyaController extends Controller
 
     public function create()
     {
-        $customer = Customer::orderBy('id', 'DESC')->get();
+        $customer = Customer::orderBy('kode_customer', 'ASC')->get();
 
         return view('data-pemasukan.create', compact('customer'));
     }
@@ -105,7 +105,7 @@ class PemasukanLainnyaController extends Controller
     public function edit($id)
     {
         $datas = PemasukanLainnya::find($id);
-        $data['customer'] = Customer::orderBy('id', 'DESC')->get();
+        $data['customer'] = Customer::orderBy('kode_customer', 'ASC')->get();
         $data['datas'] = $datas;
 
         return view('data-pemasukan.edit', $data);

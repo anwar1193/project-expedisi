@@ -113,6 +113,9 @@
 																<a class="dropdown-item" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#customerLimitKredit<?php echo e($data->id); ?>">
 																	<span><i class="pt-2 pe-2" data-feather="tag"></i> Limit Kredit</span>
 																</a>
+																
+																<a class="dropdown-item" href="<?php echo e(route('customers.historyLimit', $data->id)); ?>"><span><i class="pt-2 pe-2" data-feather="list"></i> History Limit</span></a>
+
 															<?php endif; ?>
 
 															<a class="dropdown-item" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#customer<?php echo e($data->id); ?>">

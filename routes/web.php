@@ -274,6 +274,11 @@ Route::middleware("auth")->group(function() {
         Route::get('/bukti-terima-pdf', [InvoiceController::class, 'bukti_terima_pdf'])->name('bukti-terima.export-pdf');
     });
 
+    Route::prefix('invoices')->group(function () {
+        Route::get('/create', [InvoiceController::class, 'createInvoice'])->name('invoices.create');
+        Route::post('/generate', [InvoiceController::class, 'generateInvoice'])->name('invoices.generate');
+    });
+
     Route::get('user-level', [UserController::class, 'listLevel'])->name('level');
 
     Route::get('testing', [TestingController::class, 'index']);

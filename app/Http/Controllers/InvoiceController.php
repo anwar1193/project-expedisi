@@ -6,6 +6,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Illuminate\Http\Request;
+use App\Models\Customer;
 
 class InvoiceController extends Controller
 {
@@ -26,5 +27,16 @@ class InvoiceController extends Controller
         $customPaper = array(0, 0, 350, 700);
         $pdf = Pdf::loadView('invoice.bukti-terima-pdf', compact('picture'))->setPaper($customPaper, 'landscape');
         return $pdf->stream('Bukti-Terima.pdf');
+    }
+
+    public function createInvoice()
+    {
+        $data['customer'] = Customer::orderBy('id')->get();
+        return view('invoice.create', $data);
+    }
+
+    public function generateInvoice(Request $request)
+    {
+        echo $request->customer;
     }
 }

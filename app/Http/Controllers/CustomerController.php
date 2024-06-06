@@ -116,16 +116,6 @@ class CustomerController extends Controller
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
         }
-<<<<<<< HEAD
-
-        $customer->update($request->all());
-        // $user->save();
-
-        Helper::logActivity('Data Customer ' . $request->nama . ' berhasil diupdate');
-
-        return redirect()->route('customers.index')->with('success', 'Data Customer berhasil diupdate');
-=======
->>>>>>> a7f17e37c31c93545bae3b39e14c329e0465affd
     }
 
     public function delete($id)
