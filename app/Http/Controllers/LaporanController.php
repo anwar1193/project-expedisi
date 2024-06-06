@@ -25,14 +25,19 @@ class LaporanController extends Controller
             $end = date('Y-m-d', strtotime('+1 day'));
         }
 
-        $jumlah_pengiriman = DataPengiriman::selectRaw('SUM(ongkir + komisi) AS totalPengiriman')
-            ->where('status_pembayaran', 1)
+        $omset_pengiriman = DataPengiriman::selectRaw('SUM(ongkir) AS omsetPengiriman')
+            // ->where('status_pembayaran', 1)
             ->whereBetween('tgl_transaksi', [$start, $end])
             ->first();
 
-        // $jumlah_pemasukkan = PemasukanLainnya::selectRaw('SUM(harga + komisi) AS totalPemasukan')
-        //     ->whereBetween('tanggal_transaksi', [$start, $end])
-        //     ->first();
+        $jumlah_pengiriman = DataPengiriman::selectRaw('SUM(komisi) AS komisiPengiriman')
+            // ->where('status_pembayaran', 1)
+            ->whereBetween('tgl_transaksi', [$start, $end])
+            ->first();
+
+        $jumlah_pemasukkan = PemasukanLainnya::selectRaw('SUM(jumlah_pemasukkan) AS totalPemasukan')
+            ->whereBetween('tgl_pemasukkan', [$start, $end])
+            ->first();
 
         $jumlah_pengeluaran = DaftarPengeluaran::selectRaw('SUM(jumlah_pembayaran) AS totalPengeluaran')
             ->where('jenis_pengeluaran', '=', 1)
@@ -40,7 +45,7 @@ class LaporanController extends Controller
             ->whereBetween('created_at', [$start, $end])
             ->first();
 
-        return view('laporan.laba-rugi', compact('jumlah_pengiriman', 'jumlah_pengeluaran', 'start', 'end_date', 'periode', 'filter'));
+        return view('laporan.laba-rugi', compact('omset_pengiriman', 'jumlah_pengiriman', 'jumlah_pemasukkan', 'jumlah_pengeluaran', 'start', 'end_date', 'periode', 'filter'));
     }
 
     public function laba_rugi_pdf(Request $request)

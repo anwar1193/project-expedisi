@@ -60,39 +60,49 @@
                     </div>
                     <div class="card-body">
                         <div class="list-group">
+
                             <a class="list-group-item list-group-item-action flex-column align-items-start" href="javascript:void(0)">
                                 <div class="d-flex w-100 justify-content-between">
-                                    <h5 class="mb-1">Jumlah Pengiriman</h5>
+                                    <h5 class="mb-1">Omset Pengiriman (A)</h5>
                                 </div>
-                                <p class="mb-1">Rp. {{ number_format($jumlah_pengiriman->totalPengiriman, 0, ',', '.') ?? 0 }} ,-</p>
+                                <p class="mb-1">Rp. {{ number_format($omset_pengiriman->omsetPengiriman, 0, ',', '.') ?? 0 }} ,-</p>
                             </a>
-                            {{-- <a class="list-group-item list-group-item-action flex-column align-items-start" href="javascript:void(0)">
+
+                            <a class="list-group-item list-group-item-action flex-column align-items-start" href="javascript:void(0)">
                                 <div class="d-flex w-100 justify-content-between">
-                                    <h5 class="mb-1">Jumlah Pemasukkan</h5>
+                                    <h5 class="mb-1">Jumlah Pengiriman (B)</h5>
+                                </div>
+                                <p class="mb-1">Rp. {{ number_format($jumlah_pengiriman->komisiPengiriman, 0, ',', '.') ?? 0 }} ,-</p>
+                            </a>
+
+                            <a class="list-group-item list-group-item-action flex-column align-items-start" href="javascript:void(0)">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">Jumlah Pemasukkan (C)</h5>
                                 </div>
                                 <p class="mb-1">Rp. {{ number_format($jumlah_pemasukkan->totalPemasukan, 0, ',', '.') ?? 0 }} ,-</p>
-                            </a> --}}
+                            </a>
+
                             <a class="list-group-item list-group-item-action flex-column align-items-start" href="javascript:void(0)">
                                 <div class="d-flex w-100 justify-content-between">
-                                    <h5 class="mb-1">Jumlah Pengeluaran</h5>
+                                    <h5 class="mb-1">Jumlah Pengeluaran (D)</h5>
                                 </div>
                                 <p class="mb-1">Rp. {{ number_format($jumlah_pengeluaran->totalPengeluaran, 0, ',', '.') ?? 0 }} ,-</p>
                             </a>
 
-                            {{-- @php
-                                $laba_rugi = $jumlah_pengiriman->totalPengiriman + $jumlah_pemasukkan->totalPemasukan - $jumlah_pengeluaran->totalPengeluaran;
+                            @php
+                                $laba_rugi = $jumlah_pengiriman->komisiPengiriman + $jumlah_pemasukkan->totalPemasukan - $jumlah_pengeluaran->totalPengeluaran;
                             @endphp
 
                             <a class="list-group-item list-group-item-action flex-column align-items-start" href="javascript:void(0)">
                                 <div class="d-flex w-100 justify-content-between">
-                                    <h5 class="mb-1">Laba / Rugi</h5>
+                                    <h5 class="mb-1">Laba / Rugi (B + C - D)</h5>
                                 </div>
                                 <p class="mb-1">
                                     <span class="badge {{ $laba_rugi >= 0 ? 'badge-primary' : 'badge-danger' }}" style="font-size: 15px">
                                         Rp. {{ number_format($laba_rugi, 0, ',', '.') ?? 0 }} ,-
                                     </span>
                                 </p>
-                            </a> --}}
+                            </a>
                         </div>
                     </div>
                     <div class="card-footer text-end">

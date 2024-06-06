@@ -18,7 +18,7 @@ class DataPengirimanController extends Controller
 {
     public  function index()
     {
-        $datas = DataPengiriman::orderBy('id', 'DESC')->get();
+        $datas = DataPengiriman::orderBy('tgl_transaksi', 'DESC')->get();
         $status = StatusPengiriman::orderBy('id', 'ASC')->get();
 
         $data['datas'] = $datas;

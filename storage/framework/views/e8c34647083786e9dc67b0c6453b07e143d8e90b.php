@@ -71,6 +71,7 @@
 	                                <tr>
 	                                    <th>No</th>
 										<th>Nama</th>
+										<th>Kode Customer</th>
 										<th>No Whatsapp</th>
 	                                    <th>Email</th>
 	                                    <th>Limit Kredit</th>
@@ -83,6 +84,7 @@
 										<tr>
 											<td><?php echo e($loop->iteration); ?></td>
 											<td><?php echo e($data->nama); ?></td>
+											<td><?php echo e($data->kode_customer); ?></td>
 											<td><?php echo e($data->no_wa); ?></td>
 											<td><?php echo e($data->email); ?></td>
 
@@ -94,7 +96,7 @@
 											</td>
 
 											<td class="text-center">
-												<span class="badge badge-primary">
+												<span class="badge" style="background-color: blue">
 													<?php echo e($data->point); ?>
 
 												</span>
@@ -111,6 +113,9 @@
 																<a class="dropdown-item" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#customerLimitKredit<?php echo e($data->id); ?>">
 																	<span><i class="pt-2 pe-2" data-feather="tag"></i> Limit Kredit</span>
 																</a>
+																
+																<a class="dropdown-item" href="<?php echo e(route('customers.historyLimit', $data->id)); ?>"><span><i class="pt-2 pe-2" data-feather="list"></i> History Limit</span></a>
+
 															<?php endif; ?>
 
 															<a class="dropdown-item" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#customer<?php echo e($data->id); ?>">
@@ -143,6 +148,19 @@
 	<?php $__env->startPush('scripts'); ?>
 	<script src="<?php echo e(asset('assets/js/datatable/datatables/jquery.dataTables.min.js')); ?>"></script>
 	<script src="<?php echo e(asset('assets/js/datatable/datatables/datatable.custom.js')); ?>"></script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			const jumlahPembayaranInput = document.querySelector('input[name="nominal_kredit"]');
+			const displayElement = document.createElement('div');
+			displayElement.innerHTML = '<strong>RP. ' + new Intl.NumberFormat('id-ID').format(jumlahPembayaranInput.value) + '</strong>';
+			jumlahPembayaranInput.parentNode.appendChild(displayElement);
+
+			jumlahPembayaranInput.addEventListener('input', function() {
+				const typedValue = jumlahPembayaranInput.value;
+				displayElement.innerHTML = '<strong>RP. ' + new Intl.NumberFormat('id-ID').format(typedValue) + '</strong>';
+			});
+		});
+	</script>
 	<?php $__env->stopPush(); ?>
 
 <?php $__env->stopSection(); ?>

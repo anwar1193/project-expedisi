@@ -119,8 +119,8 @@
 	                                <tr>
 	                                    <th>No</th>
 										<th>No Resi</th>
-										<th>Nama Penerima</th>
-	                                    <th>Kota Tujuan</th>
+										<th>Tanggal Transaksi</th>
+	                                    <th>Customer</th>
 	                                    <th>Metode Pembayaran</th>
 	                                    <th>Status Pembayaran</th>
 	                                    <th>Status Pengiriman</th>
@@ -154,8 +154,8 @@
 												</span>
 											</td>
 
-											<td>{{ $data->nama_penerima }}</td>
-											<td>{{ $data->kota_tujuan }}</td>
+											<td>{{ date('d-m-Y', strtotime($data->tgl_transaksi)) }}</td>
+											<td>{{ $data->kode_customer }}</td>
 											
 											<td onmouseover="showBukti({{ $data->id }})" onmouseout="hideBukti({{ $data->id }})">
 												@if ($bukti_pembayaran != '')
@@ -202,7 +202,9 @@
 															
 															<a class="dropdown-item" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalDataPengiriman{{ $data->id }}" title="Detail Data"><span><i data-feather="eye"></i> Detail</span></a>
 
-															<a class="dropdown-item" href="{{ route('data-pengiriman.edit', $data->id) }}"><span><i data-feather="edit"></i> Edit</span></a>
+															@if ($data->status_pembayaran == 2 || Session::get('user_level') == 2)
+																<a class="dropdown-item" href="{{ route('data-pengiriman.edit', $data->id) }}"><span><i data-feather="edit"></i> Edit</span></a>
+															@endif
 
 															<a class="dropdown-item" href="{{ route('data-pengiriman.delete', $data->id) }}" onclick="return confirm('Apakah Anda Yakin?')"><span><i data-feather="delete"></i> Delete</span></a>
 															
@@ -276,3 +278,5 @@
 	@endpush
 
 @endsection
+
+

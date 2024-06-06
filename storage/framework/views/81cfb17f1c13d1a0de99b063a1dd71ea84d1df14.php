@@ -21,6 +21,26 @@
 			<div class="col-sm-12">
 				<div class="card">
 					<div class="card-header pb-0">
+						<?php if(session()->has('error')): ?>
+							<div class="alert alert-danger alert-dismissible fade show" role="alert">
+								<strong>Gagal <i class="fa fa-info-circle"></i></strong> 
+								<?php echo e(session('error')); ?>
+
+								<button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+							</div>
+						<?php endif; ?>
+
+						<?php if($errors->any()): ?>
+							<div class="alert alert-danger alert-dismissible fade show" role="alert">
+								<?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+									<strong>Failed <i class="fa fa-info-circle"></i></strong> 
+									<?php echo e($error); ?>
+
+									<button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+									<br>
+								<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+							</div>
+						<?php endif; ?>
 						<h5>Form Customer</h5>
 					</div>
 					<form class="needs-validation" method="POST" action="<?php echo e(route('customers.store')); ?>">
@@ -63,7 +83,7 @@ if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>" id="no_wa" type="text" name="no_wa" value="<?php echo e(old('no_wa')); ?>" />
+unset($__errorArgs, $__bag); ?>" id="no_wa" type="text" name="no_wa" value="<?php echo e(old('no_wa')); ?>" autocomplete="off"/>
 
 									<?php $__errorArgs = ['no_wa'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -91,7 +111,7 @@ if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>" id="email" type="text" name="email" value="<?php echo e(old('email')); ?>" />
+unset($__errorArgs, $__bag); ?>" id="email" type="text" name="email" value="<?php echo e(old('email')); ?>" autocomplete="off"/>
 
 									<?php $__errorArgs = ['email'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -117,7 +137,7 @@ if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>" id="alamat" type="text" name="alamat" value="<?php echo e(old('alamat')); ?>" />
+unset($__errorArgs, $__bag); ?>" id="alamat" type="text" name="alamat" value="<?php echo e(old('alamat')); ?>" autocomplete="off"/>
 
 									<?php $__errorArgs = ['alamat'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
