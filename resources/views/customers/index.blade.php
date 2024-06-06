@@ -144,6 +144,19 @@
 	@push('scripts')
 	<script src="{{ asset('assets/js/datatable/datatables/jquery.dataTables.min.js') }}"></script>
 	<script src="{{ asset('assets/js/datatable/datatables/datatable.custom.js') }}"></script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			const jumlahPembayaranInput = document.querySelector('input[name="nominal_kredit"]');
+			const displayElement = document.createElement('div');
+			displayElement.innerHTML = '<strong>RP. ' + new Intl.NumberFormat('id-ID').format(jumlahPembayaranInput.value) + '</strong>';
+			jumlahPembayaranInput.parentNode.appendChild(displayElement);
+
+			jumlahPembayaranInput.addEventListener('input', function() {
+				const typedValue = jumlahPembayaranInput.value;
+				displayElement.innerHTML = '<strong>RP. ' + new Intl.NumberFormat('id-ID').format(typedValue) + '</strong>';
+			});
+		});
+	</script>
 	@endpush
 
 @endsection

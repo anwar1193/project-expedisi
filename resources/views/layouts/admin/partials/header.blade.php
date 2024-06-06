@@ -52,20 +52,22 @@
             </ul>
           </div>
         </li> --}}
-        @php
-          $notificationData = getNotification();
-          $tema = Session::get("tema");
-        @endphp
+        @if (Session::get('user_level') != 3)
+            @php
+                $notificationData = getNotification();
+                $tema = Session::get("tema");
+            @endphp
+        @endif
 
         <li class="onhover-dropdown">
             <div class="notification-box">
                 <i data-feather="bell"></i>
-                @if ($notificationData['jumlah'] != 0)
+                @if (Session::get('user_level') != 3 && isset($notificationData) && $notificationData['jumlah'] != 0)
                     <span class="dot-animated"></span>
                 @endif
             </div>
             <ul class="notification-dropdown onhover-show-div">
-                @if ($notificationData['jumlah'] != 0)
+              @if (Session::get('user_level') != 3 && isset($notificationData) && $notificationData['jumlah'] != 0)
                     <li>
                         <p class="f-w-700 mb-0">You have Notification</p>
                     </li>

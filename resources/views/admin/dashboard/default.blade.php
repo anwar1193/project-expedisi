@@ -1,15 +1,17 @@
-@php
-  $notificationData = getNotification();
-  $tema = Session::get("tema");
-@endphp
+@if (Session::get('user_level') != 3)
+    @php
+        $notificationData = getNotification();
+        $tema = Session::get("tema");
+    @endphp
+@endif
 
-@if ($notificationData['jumlah'] != 0)
-    <script src="{{asset('assets/js/sweet-alert/sweetalert.min.js')}}"></script>
+@if (Session::get('user_level') != 3 && isset($notificationData) && $notificationData['jumlah'] != 0)
+    <script src="{{ asset('assets/js/sweet-alert/sweetalert.min.js') }}"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             swal({
                 title: "You have notification!",
-                text: "{{ $notificationData['text_notif'] ?? $notificationData['text_owner'] }}",
+                text: "{{ $notificationData['text_notif'] }}",
                 icon: "info",
                 buttons: {
                           confirm: {

@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Helpers\Helper;
 use App\Models\Customer;
 use App\Models\HistoryLimit;
+use App\Models\KonversiPoint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -16,6 +17,11 @@ class CustomerController extends Controller
     public function index()
     {
         $customers = Customer::orderBy('id', 'desc')->get();
+        foreach ($customers as $item) {
+            $point = KonversiPoint::orderBy('id', 'asc')->first();
+
+            $item->points = round($item->limit_credit / $point->nominal);
+        }
 
         return view('customers.index', compact('customers'));
     }

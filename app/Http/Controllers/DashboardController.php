@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DataPengiriman;
 use Illuminate\Http\Request;
 use App\Models\SurveilanceCar;
 use App\Models\Perangkat;
 use App\Models\LogActivity;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class DashboardController extends Controller
 {
@@ -53,5 +56,25 @@ class DashboardController extends Controller
                     ->first();
 
         return view("admin.dashboard.action.location", compact("item"));
+    }
+
+    public function dashboard_customer(Request $request) {
+        $id = Session::get('id');
+        $metode = 'Kredit';
+        // $no_resi = 'Enim libero fugiat';
+        $no_resi = $request->no_resi;
+
+        $user = User::select('users.*', 'levels.level AS nama_level')
+            ->join('levels', 'levels.id', '=', 'users.user_level')
+            ->where('users.id', '=', $id)
+            ->first();
+
+        $tagihan = DataPengiriman::where('metode_pembayaran', $metode)
+                    ->orderBy('id', 'DESC')->get();
+
+        $resi =  DataPengiriman::join('status_pengirimen AS status', 'status.status_pengiriman', '=', 'data_pengirimen.status_pengiriman')
+                ->where('no_resi', $no_resi)->first();
+
+        return view('customers.dashboard', compact('user', 'tagihan', 'resi'));
     }
 }
