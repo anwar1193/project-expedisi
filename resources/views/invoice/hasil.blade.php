@@ -22,8 +22,18 @@
 	<div class="container invoice">
 	    <div class="row">
 	        <div class="col-sm-12">
+				<form action="{{ route('invoice.handle-transactions', $customer->id) }}" method="POST">
+				@csrf
 	            <div class="card">
-	                <div class="card-body">
+	                <div class="card-body">						
+						@if (session()->has('error'))
+							<div class="alert alert-danger alert-dismissible fade show" role="alert">
+								<strong>Gagal <i class="fa fa-info-circle"></i></strong> 
+								{{ session('error') }}
+								<button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+							</div>
+						@endif
+						
 	                    <div>
 	                        <div>
 	                            <div class="row invo-header">
@@ -42,7 +52,7 @@
 	                                </div>
 	                                <div class="col-sm-3 d-flex align-items-end">
 	                                    <div class="text-md-end text-xs-center">
-	                                        <p>Makassar, {{ formatTanggalIndonesia($today) }}</p>
+	                                        <p>Makassar, {{ formatTanggalIndonesia($invoice->created_at) }}</p>
 	                                    </div>
 	                                </div>
 	                            </div>
@@ -54,7 +64,7 @@
                                         <div class="row d-flex py-1 text-start justify-content-start">
                                             <div class="col-4 col-lg-4">Invoice No</div>
                                             <div class="col-1 col-lg-2">:</div>
-                                            <div class="col-6 col-lg-6 text-capitalize">033/INV /LP/IV/2024</div>
+                                            <div class="col-6 col-lg-6 text-capitalize">{{ $invoice->invoice_no }}</div>
                                         </div>
                                         <div class="row d-flex py-1 text-start justify-content-start">
                                             <div class="col-4 col-lg-4">Customer Name</div>
@@ -78,13 +88,14 @@
 	                                <table class="display" id="basic-1">
 	                                    <thead class="text-center">
 											<tr>
-												<th style="border: 1px solid">No</th>
+												<th width="5%" style="border: 1px solid">No</th>
 												<th style="border: 1px solid">No STT</th>
-												<th style="border: 1px solid">Tanggal</th>
+												<th width="10%" style="border: 1px solid">Tanggal</th>
 												<th style="border: 1px solid">Pengirim</th>
 												<th style="border: 1px solid">Penerima</th>
 												<th style="border: 1px solid">Tujuan</th>
 												<th style="border: 1px solid">Jumlah Pembayaran</th>
+												<th style="border: 1px solid">Pilih</th>
 											</tr>
 										</thead>
 										<tbody style="font-size: 14px">
@@ -97,6 +108,9 @@
                                                     <td style="border: 1px solid; padding: 5px; text-align: center">{{ $data->nama_penerima }}</td>
                                                     <td style="border: 1px solid; padding: 5px; text-align: center">{{ $data->kota_tujuan }}</td>
                                                     <td style="border: 1px solid; padding: 5px; text-align: center">Rp {{ number_format($data->ongkir, 0, '.', '.') }}</td>
+                                                    <td style="border: 1px solid; padding: 5px; text-align: center">
+														<input type="checkbox" name="id_pengiriman[]" value="{{ $data->id }}" {{ $data->transaksi->isNotEmpty() ? 'checked' : '' }}>
+													</td>
                                                 </tr>
                                             @empty
                                                 <tr>
@@ -107,15 +121,33 @@
                                             @endforelse 
 										</tbody>
                                         <tfoot>
-                                            <tr>
+                                            {{-- <tr>
                                                 <td style="border: 1px solid; padding: 5px; text-align: center"></td>
-                                                <td colspan="5" style="border: 1px solid; padding: 5px; text-align: center">
-                                                    <p class="fw-semibold">Total</p>
+                                                <td colspan="6" style="border: 1px solid; padding: 5px; text-align: center">
+                                                    <p class="fw-semibold">Sub Total</p>
                                                 </td>
                                                 <td style="border: 1px solid; padding: 5px; text-align: center">
                                                     Rp {{ number_format($total->total, 0, '.', '.') }}
                                                 </td>
+                                            </tr> --}}
+                                            <tr>
+                                                <td style="border: 1px solid; padding: 5px; text-align: center"></td>
+                                                <td colspan="6" style="border: 1px solid; padding: 5px; text-align: center">
+                                                    <p class="fw-semibold">Diskon</p>
+                                                </td>
+                                                <td style="border: 1px solid; padding: 5px; text-align: center">
+                                                    <input class="text-center form-control" type="number" name="diskon" id="diskon" value="{{ old('diskon', $invoice->diskon) }}">
+                                                </td>
                                             </tr>
+                                            {{-- <tr>
+                                                <td style="border: 1px solid; padding: 5px; text-align: center"></td>
+                                                <td colspan="6" style="border: 1px solid; padding: 5px; text-align: center">
+                                                    <p class="fw-semibold">Total</p>
+                                                </td>
+                                                <td style="border: 1px solid; padding: 5px; text-align: center" id="totalDisplay">
+                                                    Rp {{ number_format($total->total - $invoice->diskon, 0, '.', '.') }}
+                                                </td>
+                                            </tr> --}}
                                         </tfoot>
 	                                </table>
 	                            </div>
@@ -134,7 +166,8 @@
 	                </div>
                     <div class="card-footer">
                         <div class="col-sm-12 text-center">
-                            <a href="{{ route('invoice.customer-pdf', $customer->id) }}" class="btn btn btn-primary me-2">Cetak Invoice</a>
+							<button type="submit" class="btn btn-primary">Cetak Invoice</button>
+                            {{-- <a href="{{ route('invoice.customer-pdf', $customer->id) }}" class="btn btn btn-primary me-2">Cetak Invoice</a> --}}
 	                    </div>
                     </div>
 	            </div>
@@ -149,6 +182,40 @@
     <script src="{{asset('assets/js/counter/jquery.counterup.min.js')}}"></script>
     <script src="{{asset('assets/js/counter/counter-custom.js')}}"></script>
     <script src="{{asset('assets/js/print.js')}}"></script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			const diskonInput = document.querySelector('input[name="diskon"]');
+			const totalDisplay = document.getElementById('totalDisplay');
+			const totalAwal = {{ $total->total ?? 0 }};
+			
+			function updateTotal() {
+				const diskon = parseInt(diskonInput.value) || 0;
+				const totalAkhir = totalAwal - diskon;
+				totalDisplay.innerHTML = 'Rp ' + new Intl.NumberFormat('id-ID').format(totalAkhir);
+			}
+
+			// Tampilkan total awal
+			updateTotal();
+
+			// Event listener untuk perubahan diskon
+			diskonInput.addEventListener('input', function() {
+				updateTotal();
+			});
+		});
+	</script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			const diskonInput = document.querySelector('input[name="diskon"]');
+			const displayElement = document.createElement('div');
+			displayElement.innerHTML = '<strong>RP. ' + new Intl.NumberFormat('id-ID').format(diskonInput.value) + '</strong>';
+			diskonInput.parentNode.appendChild(displayElement);
+
+			diskonInput.addEventListener('input', function() {
+				const typedValue = diskonInput.value;
+				displayElement.innerHTML = '<strong>RP. ' + new Intl.NumberFormat('id-ID').format(typedValue) + '</strong>';
+			});
+		});
+	</script>
 	@endpush
 
 @endsection
