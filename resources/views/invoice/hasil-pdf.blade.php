@@ -69,7 +69,7 @@
                                 <h3 style="color: red; padding-right: 10px; font-weight: bold">D Angel Express</h3>
                             </td>
                             <td style="text-align: center; font-weight: bold"><h2>Invoice</h2></td>
-                            <td style="display: flex; align-items: flex-end; padding-top: 45px; text-align: center;"><p>Makassar, {{ formatTanggalIndonesia($waktuCetak) }}</p></td>
+                            <td style="display: flex; align-items: flex-end; padding-top: 45px; text-align: center;"><p>Makassar, {{ formatTanggalIndonesia($customer->created_at) }}</p></td>
                         </tr>
                     </tbody>
                 </table>
@@ -80,7 +80,7 @@
                         <tr>
                             <td>Invoice No</td>
                             <td>:</td>
-                            <td>033/INV /LP/IV/2024</td>
+                            <td>{{ $customer->invoice_no }}</td>
                         </tr>
                         <tr>
                             <td>Customer Name</td>
@@ -136,10 +136,28 @@
                                 <tr>
                                     <td style="border: 1px solid; text-align: center"></td>
                                     <td colspan="5" style="border: 1px solid; text-align: center">
-                                        <p class="fw-semibold">Total</p>
+                                        <p class="fw-semibold">Sub Total</p>
                                     </td>
                                     <td style="border: 1px solid; text-align: center">
                                         Rp {{ number_format($total->total, 0, '.', '.') }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid; text-align: center"></td>
+                                    <td colspan="5" style="border: 1px solid; text-align: center">
+                                        <p class="fw-semibold">Diskon</p>
+                                    </td>
+                                    <td style="border: 1px solid; text-align: center">
+                                        Rp {{ number_format($customer->diskon, 0, '.', '.') }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid; text-align: center"></td>
+                                    <td colspan="5" style="border: 1px solid; text-align: center">
+                                        <p class="fw-semibold">Total</p>
+                                    </td>
+                                    <td style="border: 1px solid; text-align: center">
+                                        Rp {{ number_format($total->total - $customer->diskon, 0, '.', '.') }}
                                     </td>
                                 </tr>
                             </tfoot>
