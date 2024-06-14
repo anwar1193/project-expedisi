@@ -10,8 +10,6 @@ if (! function_exists('getNotification')) {
             $text = 'Terdapat '.$jumlah. ' Data Pengiriman Yang Belum Diapprove';
         } elseif (Session::get('user_level') == 1) {
             $text = 'Terdapat '.$jumlah. ' Data Pengiriman Yang Masih Berstatus Pending';
-        }else{
-            $text = '';
         }
         
         

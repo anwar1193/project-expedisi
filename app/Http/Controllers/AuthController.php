@@ -62,6 +62,9 @@ class AuthController extends Controller
                 'last_login' => $datetime
             ]);
 
+            if ($user->user_level == 3) {
+                return redirect()->route("dashboard.customer");
+            }
             return redirect()->route("dashboard");
         }
 

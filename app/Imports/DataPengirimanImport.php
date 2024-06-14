@@ -37,8 +37,16 @@ class DataPengirimanImport implements ToModel, WithValidation, WithHeadingRow //
 
         $konversi_point = KonversiPoint::where('id', 1)->first();
 
-        Customer::where('kode_customer', $row['kode_customer'])->update([
-            'point' => $row['ongkir'] / $konversi_point->nominal
+        $customer = Customer::where('kode_customer', $row['kode_customer']);
+        $rcustomer = $customer->first();
+
+        $pointOld = $rcustomer->point;
+        $kreditOld = $rcustomer->limit_credit;
+        
+        // Update Point & Credit
+        $customer->update([
+            'point' => $pointOld + ($row['ongkir'] / $konversi_point->nominal),
+            'limit_credit' => $kreditOld - $row['ongkir']
         ]);
         
         return new DataPengiriman([
@@ -137,7 +145,7 @@ class DataPengirimanImport implements ToModel, WithValidation, WithHeadingRow //
                 }
                 
                 // Validasi Tanggal Tidak Boleh mundur lebih dari 7 Hari
-                $tanggalSekarang = '2024-05-28';
+                $tanggalSekarang = date('Y-m-d');
                 $tanggalTransaksi = Date::excelToDateTimeObject($data['tgl_transaksi'])->format('Y-m-d');
 
                 $diff = strtotime($tanggalSekarang) - strtotime($tanggalTransaksi);
