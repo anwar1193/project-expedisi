@@ -86,17 +86,21 @@
 											<td>{{ $data->jumlah_barang }}</td>
 											<td>{{ $data->nomor_hp }}</td>
 											<td class="text-center">
-												<a class="btn btn-square btn-info btn-xs" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalSupplier{{ $data->id }}"title="Detail Data">
-													<i class="fa fa-eye"></i>
-												</a>
 
-												<a href="{{ route('supplier.edit', $data->id) }}" class="btn btn-square btn-warning btn-xs" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Data">
-													<i class="fa fa-edit"></i>
-												</a>
-												
-												<a href="{{ route('supplier.delete', $data->id) }}" class="btn btn-square btn-danger btn-xs" data-bs-toggle="tooltip" data-bs-placement="top" title="Hapus Data" onclick="return confirm('Apakah Anda Yakin?')">
-													<i class="fa fa-trash"></i>
-												</a>
+												<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+													<div class="btn-group" role="group">
+														<button class="btn btn-secondary btn-sm dropdown-toggle" id="btnGroupDrop1" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
+														<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+
+															<a class="dropdown-item" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalSupplier{{ $data->id }}" title="Detail Data"><span><i data-feather="eye"></i> Detail</span></a>
+
+															<a class="dropdown-item" href="{{ route('supplier.edit', $data->id) }}" ><span><i data-feather="edit"></i> Edit</span></a>
+
+															<a class="dropdown-item" href="{{ route('supplier.delete', $data->id) }}" onclick="return confirm('Apakah Anda Yakin?')"><span><i data-feather="delete"></i> Delete</span></a>
+															
+														</div>
+													</div>
+												</div>
 												@include('supplier.detail')
 											</td>
 										</tr>
