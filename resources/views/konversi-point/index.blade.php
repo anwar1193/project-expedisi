@@ -44,7 +44,7 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <label class="form-label" for="nominal">Nominal Untuk 1 Point</label>
-                                        <input class="form-control @error('nominal') is-invalid @enderror" id="nominal" type="text" name="nominal" value="{{ old('nominal', $konversiPoints->nominal) }}" />
+                                        <input class="form-control @error('nominal') is-invalid @enderror" type="text" name="nominal" id="dengan-rupiah" value="{{ old('nominal', $konversiPoints->nominal) }}" />
                                         <div id="nominal" class="form-text text-danger">*Default 1 Point = Rp. 1000</div>
 
                                         @error('nama')
@@ -68,6 +68,19 @@
 	
 	@push('scripts')
 	<script src="{{ asset('assets/js/height-equal.js') }}"></script>
+    <script>
+		document.addEventListener('DOMContentLoaded', function() {
+			const nominalInput = document.querySelector('input[name="nominal"]');
+			const displayElement = document.createElement('div');
+			displayElement.innerHTML = '<strong>RP. ' + new Intl.NumberFormat('id-ID').format(nominalInput.value) + '</strong>';
+			nominalInput.parentNode.appendChild(displayElement);
+
+			nominalInput.addEventListener('input', function() {
+				const typedValue = nominalInput.value;
+				displayElement.innerHTML = '<strong>RP. ' + new Intl.NumberFormat('id-ID').format(typedValue) + '</strong>';
+			});
+		});
+	</script>
 	@endpush
 
 @endsection
