@@ -140,8 +140,10 @@ class InvoiceController extends Controller
                     ->where('customers.id', $id)
                     ->first();
 
-        $data = DataPengiriman::where('kode_customer', $customer->kode_customer)
-                ->orderBy('id', 'DESC')->get();
+        $data = DataPengiriman::join('transaksi_invoices', 'transaksi_invoices.data_pengiriman_id', '=', 'data_pengirimen.id')
+                ->where('kode_customer', $customer->kode_customer)
+                ->orderBy('data_pengirimen.id', 'DESC')->get();
+                
         $total = DataPengiriman::selectRaw('SUM(ongkir) AS total')
                 ->join('transaksi_invoices', 'transaksi_invoices.data_pengiriman_id', '=', 'data_pengirimen.id')
                 ->where('kode_customer', $customer->kode_customer)->first();
