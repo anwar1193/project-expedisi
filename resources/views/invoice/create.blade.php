@@ -32,7 +32,7 @@
 
 						<h5>Create Invoice</h5>
 					</div>
-					<form class="form theme-form" method="POST" action="{{ route('invoices.generate') }}" enctype="multipart/form-data">
+					<form class="form theme-form" method="GET" action="{{ route('invoices.generate') }}">
                         @csrf
 						<div class="card-body">
 							

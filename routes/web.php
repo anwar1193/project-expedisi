@@ -276,8 +276,11 @@ Route::middleware("auth")->group(function() {
     });
 
     Route::prefix('invoices')->group(function () {
+        Route::get('/all', [InvoiceController::class, 'all_invoices'])->name('invoices.index');
         Route::get('/create', [InvoiceController::class, 'createInvoice'])->name('invoices.create');
-        Route::post('/generate', [InvoiceController::class, 'generateInvoice'])->name('invoices.generate');
+        Route::get('/generate', [InvoiceController::class, 'generateInvoice'])->name('invoices.generate');
+        Route::get('/invoice-pdf/{id}', [InvoiceController::class, 'generateInvoicePdf'])->name('invoice.customer-pdf');
+        Route::post('/invoice/handle-transactions/{id}', [InvoiceController::class, 'handleInvoiceTransactions'])->name('invoice.handle-transactions');
     });
 
     Route::get('user-level', [UserController::class, 'listLevel'])->name('level');

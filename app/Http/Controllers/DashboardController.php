@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
 use App\Models\DataPengiriman;
 use Illuminate\Http\Request;
 use App\Models\SurveilanceCar;
@@ -69,7 +70,10 @@ class DashboardController extends Controller
             ->where('users.id', '=', $id)
             ->first();
 
+        $customer = Customer::where('email', '=', $user->email)->first();
+
         $tagihan = DataPengiriman::where('metode_pembayaran', $metode)
+                    ->where('kode_customer', '=', $customer->kode_customer)
                     ->orderBy('id', 'DESC')->get();
 
         $resi =  DataPengiriman::join('status_pengirimen AS status', 'status.status_pengiriman', '=', 'data_pengirimen.status_pengiriman')
