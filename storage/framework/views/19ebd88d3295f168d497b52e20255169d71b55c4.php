@@ -11,7 +11,13 @@
     </li>
     <li class="nav-item">
         <a class="nav-link <?php echo e($activeTab == 'contact' ? 'active' : ''); ?>" id="contact-top-secondary" data-bs-toggle="tab" href="#top-contactsecondary" role="tab" aria-controls="top-contactsecondary" aria-selected="false">
-            <i class="pt-2 pe-2" data-feather="file-text"></i>Resi
+            <i class="pt-2 pe-2" data-feather="file-text"></i>Lacak Resi
+        </a>
+        <div class="material-border"></div>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link <?php echo e($activeTab == 'invoice' ? 'active' : ''); ?>" id="invoice-top-secondary" data-bs-toggle="tab" href="#top-invoicesecondary" role="tab" aria-controls="top-invoicesecondary" aria-selected="false">
+            <i class="pt-2 pe-2" data-feather="file-text"></i>Invoice
         </a>
         <div class="material-border"></div>
     </li>
