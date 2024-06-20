@@ -64,16 +64,17 @@ class DashboardController extends Controller
         $id = Session::get('id');
         $metode = 'Kredit';
         $no_resi = $request->no_resi;
-        $customer = Customer::join('users', 'users.username', '=', 'customers.username')
-                    ->where('users.id', $id)
-                    ->first();
 
         $user = User::select('users.*', 'levels.level AS nama_level')
             ->join('levels', 'levels.id', '=', 'users.user_level')
             ->where('users.id', '=', $id)
             ->first();
+            
+        $customer = Customer::join('users', 'users.username', '=', 'customers.username')
+                ->where('users.id', $id)
+                ->first();
 
-        $customer = Customer::where('email', '=', $user->email)->first();
+        // $customer = Customer::where('email', '=', $user->email)->first();
 
         $tagihan = DataPengiriman::where('metode_pembayaran', $metode)
                     ->where('kode_customer', '=', $customer->kode_customer)
