@@ -74,8 +74,6 @@ class DashboardController extends Controller
                 ->where('users.id', $id)
                 ->first();
 
-        // $customer = Customer::where('email', '=', $user->email)->first();
-
         $tagihan = DataPengiriman::where('metode_pembayaran', $metode)
                     ->where('kode_customer', '=', $customer->kode_customer)
                     ->orderBy('id', 'DESC')->get();
