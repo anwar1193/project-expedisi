@@ -29,7 +29,9 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\JenisPengeluaranController;
 use App\Http\Controllers\KonversiPointController;
 use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\MerchandiseController;
 use App\Http\Controllers\PembelianPerlengkapanController;
+use App\Http\Controllers\PenukaranPointController;
 use App\Http\Controllers\PerlengkapanController;
 use App\Models\JenisPengeluaran;
 
@@ -104,6 +106,13 @@ Route::middleware("auth")->group(function() {
         Route::get('perlengkapan/edit/{id}', [PerlengkapanController::class, 'edit'])->name('perlengkapan.edit');
         Route::post('perlengkapan/update', [PerlengkapanController::class, 'update'])->name('perlengkapan.update');
         Route::get('perlengkapan/delete/{id}', [PerlengkapanController::class, 'delete'])->name('perlengkapan.delete');
+        
+        Route::get('merchandise', [MerchandiseController::class, 'index'])->name('merchandise');
+        Route::get('merchandise/create', [MerchandiseController::class, 'create'])->name('merchandise.create');
+        Route::get('merchandise/edit/{id}', [MerchandiseController::class, 'edit'])->name('merchandise.edit');
+        Route::post('merchandise', [MerchandiseController::class, 'store'])->name('merchandise.store');
+        Route::post('merchandise/update/{id}', [MerchandiseController::class, 'update'])->name('merchandise.update');
+        Route::get('merchandise/delete/{id}', [MerchandiseController::class, 'delete'])->name('merchandise.delete');
 
         Route::get('perangkat', [PerangkatController::class, 'index'])->name('perangkat');
         Route::get('perangkat/create', [PerangkatController::class, 'create'])->name('perangkat.create');
@@ -281,6 +290,10 @@ Route::middleware("auth")->group(function() {
         Route::get('/generate', [InvoiceController::class, 'generateInvoice'])->name('invoices.generate');
         Route::get('/invoice-pdf/{id}', [InvoiceController::class, 'generateInvoicePdf'])->name('invoice.customer-pdf');
         Route::post('/invoice/handle-transactions/{id}', [InvoiceController::class, 'handleInvoiceTransactions'])->name('invoice.handle-transactions');
+    });
+    
+    Route::prefix('penukaran-point')->group(function () {
+        Route::get('/', [PenukaranPointController::class, 'index'])->name('penukaran-point');
     });
 
     Route::get('user-level', [UserController::class, 'listLevel'])->name('level');

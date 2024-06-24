@@ -40,14 +40,16 @@ class DataPengirimanImport implements ToModel, WithValidation, WithHeadingRow //
         $customer = Customer::where('kode_customer', $row['kode_customer']);
         $rcustomer = $customer->first();
 
-        $pointOld = $rcustomer->point;
-        $kreditOld = $rcustomer->limit_credit;
-        
-        // Update Point & Credit
-        $customer->update([
-            'point' => $pointOld + ($row['ongkir'] / $konversi_point->nominal),
-            'limit_credit' => $kreditOld - $row['ongkir']
-        ]);
+        if($rcustomer != NULL){
+            $pointOld = $rcustomer->point;
+            $kreditOld = $rcustomer->limit_credit;
+            
+            // Update Point & Credit
+            $customer->update([
+                'point' => $pointOld + ($row['ongkir'] / $konversi_point->nominal),
+                'limit_credit' => $kreditOld - $row['ongkir']
+            ]);
+        }
         
         return new DataPengiriman([
             'no_resi' => $row['no_resi'],

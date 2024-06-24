@@ -41,8 +41,8 @@
 									<div class="mb-3">
 										<label class="form-label" for="">Pilih Customer</label>
 										
-										<select name="customer" id="customer" class="form-control @error('customer') is-invalid @enderror">
-											<option value="">- Pilih Customer -</option>
+										<select name="customer" id="customer" class="form-control @error('customer') is-invalid @enderror js-example-basic-single">
+											<option value="" selected>- Pilih Customer -</option>
 											@foreach ($customer as $item)
 												<option value="{{ $item->id }}" {{ old('nama') == $item->nama ? 'selected' : '' }}>
 													{{ $item->kode_customer }} - {{ $item->nama }}

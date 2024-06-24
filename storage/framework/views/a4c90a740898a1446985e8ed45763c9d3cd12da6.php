@@ -120,8 +120,8 @@
 	                                <tr>
 	                                    <th>No</th>
 										<th>No Resi</th>
-										<th>Nama Penerima</th>
-	                                    <th>Kota Tujuan</th>
+										<th>Tanggal Transaksi</th>
+	                                    <th>Customer</th>
 	                                    <th>Metode Pembayaran</th>
 	                                    <th>Status Pembayaran</th>
 	                                    <th>Status Pengiriman</th>
@@ -156,8 +156,8 @@
 												</span>
 											</td>
 
-											<td><?php echo e($data->nama_penerima); ?></td>
-											<td><?php echo e($data->kota_tujuan); ?></td>
+											<td><?php echo e(date('d-m-Y', strtotime($data->tgl_transaksi))); ?></td>
+											<td><?php echo e($data->kode_customer); ?></td>
 											
 											<td onmouseover="showBukti(<?php echo e($data->id); ?>)" onmouseout="hideBukti(<?php echo e($data->id); ?>)">
 												<?php if($bukti_pembayaran != ''): ?>
@@ -203,7 +203,9 @@
 															
 															<a class="dropdown-item" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalDataPengiriman<?php echo e($data->id); ?>" title="Detail Data"><span><i data-feather="eye"></i> Detail</span></a>
 
-															<a class="dropdown-item" href="<?php echo e(route('data-pengiriman.edit', $data->id)); ?>"><span><i data-feather="edit"></i> Edit</span></a>
+															<?php if($data->status_pembayaran == 2 || Session::get('user_level') == 2): ?>
+																<a class="dropdown-item" href="<?php echo e(route('data-pengiriman.edit', $data->id)); ?>"><span><i data-feather="edit"></i> Edit</span></a>
+															<?php endif; ?>
 
 															<a class="dropdown-item" href="<?php echo e(route('data-pengiriman.delete', $data->id)); ?>" onclick="return confirm('Apakah Anda Yakin?')"><span><i data-feather="delete"></i> Delete</span></a>
 															
@@ -277,4 +279,7 @@
 	<?php $__env->stopPush(); ?>
 
 <?php $__env->stopSection(); ?>
+
+
+
 <?php echo $__env->make('layouts.admin.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Applications/MAMP/htdocs/project-expedisi/resources/views/data-pengiriman/index.blade.php ENDPATH**/ ?>
