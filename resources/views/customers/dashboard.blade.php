@@ -37,6 +37,10 @@
                             <div class="tab-pane fade {{ $resi ? 'active show' : '' }}" id="top-contactsecondary" role="tabpanel" aria-labelledby="contact-top-tab">
                                 @include('customers.component.resi', ['data' => $resi])
                             </div>
+                            
+							<div class="tab-pane fade" id="top-invoicesecondary" role="tabpanel" aria-labelledby="profile-top-tab">
+                                @include('customers.component.invoice', ['data' => $data, 'customer' => $customer, 'invoice' => $invoice, 'total' => $total])
+                            </div>
 
                         </div>	 
                     </div> 

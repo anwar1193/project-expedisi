@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Customer;
 use App\Models\DataPengiriman;
+use App\Models\Invoice;
 use Illuminate\Http\Request;
 use App\Models\SurveilanceCar;
 use App\Models\Perangkat;
@@ -62,15 +63,16 @@ class DashboardController extends Controller
     public function dashboard_customer(Request $request) {
         $id = Session::get('id');
         $metode = 'Kredit';
-        // $no_resi = 'Enim libero fugiat';
         $no_resi = $request->no_resi;
 
         $user = User::select('users.*', 'levels.level AS nama_level')
             ->join('levels', 'levels.id', '=', 'users.user_level')
             ->where('users.id', '=', $id)
             ->first();
-
-        $customer = Customer::where('email', '=', $user->email)->first();
+            
+        $customer = Customer::join('users', 'users.username', '=', 'customers.username')
+                ->where('users.id', $id)
+                ->first();
 
         $tagihan = DataPengiriman::where('metode_pembayaran', $metode)
                     ->where('kode_customer', '=', $customer->kode_customer)
@@ -79,6 +81,16 @@ class DashboardController extends Controller
         $resi =  DataPengiriman::join('status_pengirimen AS status', 'status.status_pengiriman', '=', 'data_pengirimen.status_pengiriman')
                 ->where('no_resi', $no_resi)->first();
 
-        return view('customers.dashboard', compact('user', 'tagihan', 'resi'));
+        $data = DataPengiriman::join('transaksi_invoices', 'transaksi_invoices.data_pengiriman_id', '=', 'data_pengirimen.id')
+                ->where('kode_customer', $customer->kode_customer)
+                ->orderBy('data_pengirimen.id', 'DESC')->get();
+
+        $total = DataPengiriman::selectRaw('SUM(ongkir) AS total')
+                ->join('transaksi_invoices', 'transaksi_invoices.data_pengiriman_id', '=', 'data_pengirimen.id')
+                ->where('kode_customer', $customer->kode_customer)->first();
+
+        $invoice = Invoice::find($customer->id);
+
+        return view('customers.dashboard', compact('user', 'tagihan', 'resi', 'data', 'customer', 'total', 'invoice'));
     }
 }
