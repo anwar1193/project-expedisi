@@ -32,7 +32,7 @@
 
 						<h5>Create Invoice</h5>
 					</div>
-					<form class="form theme-form" method="POST" action="<?php echo e(route('invoices.generate')); ?>" enctype="multipart/form-data">
+					<form class="form theme-form" method="GET" action="<?php echo e(route('invoices.generate')); ?>">
                         <?php echo csrf_field(); ?>
 						<div class="card-body">
 							
@@ -48,8 +48,8 @@ if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>">
-											<option value="">- Pilih Customer -</option>
+unset($__errorArgs, $__bag); ?> js-example-basic-single">
+											<option value="" selected>- Pilih Customer -</option>
 											<?php $__currentLoopData = $customer; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 												<option value="<?php echo e($item->id); ?>" <?php echo e(old('nama') == $item->nama ? 'selected' : ''); ?>>
 													<?php echo e($item->kode_customer); ?> - <?php echo e($item->nama); ?>

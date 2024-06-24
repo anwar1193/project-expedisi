@@ -285,7 +285,7 @@ Route::middleware("auth")->group(function() {
     });
 
     Route::prefix('invoices')->group(function () {
-        Route::get('/', [InvoiceController::class, 'all_invoices'])->name('invoices.index');
+        Route::get('/all', [InvoiceController::class, 'all_invoices'])->name('invoices.index');
         Route::get('/create', [InvoiceController::class, 'createInvoice'])->name('invoices.create');
         Route::get('/generate', [InvoiceController::class, 'generateInvoice'])->name('invoices.generate');
         Route::get('/invoice-pdf/{id}', [InvoiceController::class, 'generateInvoicePdf'])->name('invoice.customer-pdf');
