@@ -1,11 +1,14 @@
 var primary = localStorage.getItem("primary") || '#24695c';
 var secondary = localStorage.getItem("secondary") || '#ba895d';
+var danger = localStorage.getItem("danger") || '#dc3545';
 
 window.vihoAdminConfig = {
 	// Theme Primary Color
 	primary: primary,
 	// theme secondary color
 	secondary: secondary,
+    // theme danger color
+    danger: danger,
 };
 localStorage.clear();
 
