@@ -1,6 +1,9 @@
 <div class="card-body">
     <div class="row"></div>
-    <div class="table-responsive">
+    <div class="table-responsive pt-5">
+        <div class="float-end">
+            <h5>Total Tagihan: Rp <?php echo e(number_format($total->total, 0, '.', '.')); ?></h5>
+        </div>
         <table class="display" id="basic-1">
             <thead>
                 <tr>
@@ -11,6 +14,7 @@
                     <th>Metode Pembayaran</th>
                     <th>Status Pembayaran</th>
                     <th>Status Pengiriman</th>
+                    <th>Ongkir</th>
                     
                     <?php if(Session::get('user_level') == 2): ?>
                         <th>Pilih</th>
@@ -65,6 +69,7 @@
                         </td>
 
                         <td><?php echo e($data->status_pengiriman); ?></td>
+                        <td><?php echo e(number_format($data->ongkir, 0, '.', ',')); ?></td>
 
                         <?php if(Session::get('user_level') == 2): ?>
                             

@@ -79,6 +79,10 @@ class DashboardController extends Controller
                     ->where('kode_customer', '=', $customer->kode_customer)
                     ->orderBy('id', 'DESC')->get();
 
+        $totalTagihan = DataPengiriman::selectRaw('SUM(ongkir) AS total')
+                        ->where('status_pembayaran', $status)
+                        ->where('kode_customer', '=', $customer->kode_customer)->first();
+
         $resi =  DataPengiriman::join('status_pengirimen AS status', 'status.status_pengiriman', '=', 'data_pengirimen.status_pengiriman')
                 ->where('no_resi', $no_resi)->first();
 
@@ -90,8 +94,12 @@ class DashboardController extends Controller
                 ->join('transaksi_invoices', 'transaksi_invoices.data_pengiriman_id', '=', 'data_pengirimen.id')
                 ->where('kode_customer', $customer->kode_customer)->first();
 
-        $invoice = Invoice::where('customer_id', $customer->id)->first();
+        $invoice = Invoice::select('invoices.invoice_no', 'invoices.created_at', 'customers.id', 'customers.kode_customer', 'customers.nama')
+                ->join('customers', 'customers.id', '=', 'invoices.customer_id')
+                ->where('customer_id', $customer->id)
+                ->orderBy('invoices.id', 'DESC')
+                ->get();
 
-        return view('customers.dashboard', compact('user', 'tagihan', 'resi', 'data', 'customer', 'total', 'invoice'));
+        return view('customers.dashboard', compact('user', 'tagihan', 'totalTagihan', 'resi', 'data', 'customer', 'total', 'invoice'));
     }
 }
