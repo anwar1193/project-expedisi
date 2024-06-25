@@ -287,7 +287,7 @@
               show: false,
           }
       },
-      colors: [vihoAdminConfig.primary]
+      colors: [vihoAdminConfig.danger]
     };
     var chart55 = new ApexCharts(document.querySelector("#user-activation-dash-2"), options55);
     chart55.render();
