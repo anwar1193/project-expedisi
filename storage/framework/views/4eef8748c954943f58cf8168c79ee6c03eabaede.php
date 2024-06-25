@@ -120,7 +120,7 @@ unset($__errorArgs, $__bag); ?>
                                     <img src="<?php echo e(asset('storage/merchandise/'.$data->gambar)); ?>" style="height: 150px" class="card-img-top" alt="...">
                                     <div class="card-body">
                                     <p class="card-title"><?php echo e($data->nama); ?></p>
-                                    <p class="card-text"><?php echo e(number_format($data->nilai, 0, '.', ',')); ?> : <?php echo e($data->points); ?></p>
+                                    <p class="card-text"><?php echo e(number_format($data->nilai, 0, '.', ',')); ?> point</p>
                                     <a href="#" class="btn btn-primary">Tukar</a>
                                     </div>
                                 </div>

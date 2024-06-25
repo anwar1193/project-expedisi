@@ -70,7 +70,8 @@ class DashboardController extends Controller
             ->where('users.id', '=', $id)
             ->first();
             
-        $customer = Customer::join('users', 'users.username', '=', 'customers.username')
+        $customer = Customer::select('customers.*')
+                ->join('users', 'users.username', '=', 'customers.username')
                 ->where('users.id', $id)
                 ->first();
 
@@ -89,7 +90,7 @@ class DashboardController extends Controller
                 ->join('transaksi_invoices', 'transaksi_invoices.data_pengiriman_id', '=', 'data_pengirimen.id')
                 ->where('kode_customer', $customer->kode_customer)->first();
 
-        $invoice = Invoice::find($customer->id);
+        $invoice = Invoice::where('customer_id', $customer->id)->first();
 
         return view('customers.dashboard', compact('user', 'tagihan', 'resi', 'data', 'customer', 'total', 'invoice'));
     }
