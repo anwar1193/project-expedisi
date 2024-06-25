@@ -21,6 +21,14 @@
 			<div class="col-sm-12">
 				<div class="card">
 					<div class="card-header pb-0">
+						@if (session()->has('success'))
+							<div class="alert alert-success alert-dismissible fade show" role="alert">
+								<strong>Berhasil <i class="fa fa-info-circle"></i></strong> 
+								{{ session('success') }}
+								<button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+							</div>
+						@endif
+
 						@if (session()->has('error'))
 							<div class="alert alert-danger alert-dismissible fade show" role="alert">
 								<strong>Gagal <i class="fa fa-info-circle"></i></strong> 
@@ -105,7 +113,14 @@
                                     <div class="card-body">
                                     <p class="card-title">{{ $data->nama }}</p>
                                     <p class="card-text">{{ number_format($data->nilai, 0, '.', ',') }} : {{ $data->points }}</p>
-                                    <a href="#" class="btn btn-primary">Tukar</a>
+									<form action="{{ route('proses-penukaran-point') }}" method="POST">
+										@csrf
+										<input type="hidden" name="customer_id" value="{{ $customer->id }}">
+										<input type="hidden" name="marchendise_id" value="{{ $data->id }}">
+
+										<button type="submit" class="btn btn-primary">Tukar</button>
+									</form>
+                                    {{-- <a href="#" class="btn btn-primary">Tukar</a> --}}
                                     </div>
                                 </div>
                             @endforeach
