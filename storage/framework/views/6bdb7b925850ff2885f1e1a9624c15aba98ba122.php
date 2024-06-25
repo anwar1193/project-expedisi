@@ -14,4 +14,9 @@
 <!-- Theme js-->
 <script src="<?php echo e(asset('assets/js/script.js')); ?>"></script>
 <script src="<?php echo e(asset('assets/js/theme-customizer/customizer.js')); ?>"></script>
-<!-- Plugin used--><?php /**PATH /Applications/MAMP/htdocs/project-expedisi/resources/views/layouts/admin/partials/js.blade.php ENDPATH**/ ?>
+<!-- Plugin used-->
+
+<!-- Select2 JS start-->
+<script src="<?php echo e(asset('assets/js/select2/select2.full.min.js')); ?>"></script>
+<script src="<?php echo e(asset('assets/js/select2/select2-custom.js')); ?>"></script>
+<!-- Plugins JS Ends--><?php /**PATH /Applications/MAMP/htdocs/project-expedisi/resources/views/layouts/admin/partials/js.blade.php ENDPATH**/ ?>

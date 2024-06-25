@@ -62,7 +62,7 @@ class DashboardController extends Controller
 
     public function dashboard_customer(Request $request) {
         $id = Session::get('id');
-        $metode = 'Kredit';
+        $status = 2;
         $no_resi = $request->no_resi;
 
         $user = User::select('users.*', 'levels.level AS nama_level')
@@ -74,7 +74,7 @@ class DashboardController extends Controller
                 ->where('users.id', $id)
                 ->first();
 
-        $tagihan = DataPengiriman::where('metode_pembayaran', $metode)
+        $tagihan = DataPengiriman::where('status_pembayaran', $status)
                     ->where('kode_customer', '=', $customer->kode_customer)
                     ->orderBy('id', 'DESC')->get();
 

@@ -16,4 +16,7 @@
 <link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/style.css')); ?>">
 <link id="color" rel="stylesheet" href="<?php echo e(asset('assets/css/color-1.css')); ?>" media="screen">
 <!-- Responsive css-->
-<link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/responsive.css')); ?>"><?php /**PATH /Applications/MAMP/htdocs/project-expedisi/resources/views/layouts/admin/partials/css.blade.php ENDPATH**/ ?>
+<link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/responsive.css')); ?>">
+
+<!-- Select2 CSS-->
+<link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/select2.css')); ?>"><?php /**PATH /Applications/MAMP/htdocs/project-expedisi/resources/views/layouts/admin/partials/css.blade.php ENDPATH**/ ?>
