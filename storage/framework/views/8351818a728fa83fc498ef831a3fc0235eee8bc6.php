@@ -36,6 +36,10 @@
                             <div class="tab-pane fade <?php echo e($resi ? 'active show' : ''); ?>" id="top-contactsecondary" role="tabpanel" aria-labelledby="contact-top-tab">
                                 <?php echo $__env->make('customers.component.resi', ['data' => $resi], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                             </div>
+                            
+							<div class="tab-pane fade" id="top-invoicesecondary" role="tabpanel" aria-labelledby="profile-top-tab">
+                                <?php echo $__env->make('customers.component.invoice', ['data' => $data, 'customer' => $customer, 'invoice' => $invoice, 'total' => $total], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+                            </div>
 
                         </div>	 
                     </div> 
