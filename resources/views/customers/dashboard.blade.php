@@ -31,7 +31,7 @@
                             </div>
 
                             <div class="tab-pane fade" id="top-profilesecondary" role="tabpanel" aria-labelledby="profile-top-tab">
-                                @include('customers.component.tagihan', ['data' => $tagihan, 'tableId' => 'basic-1'])
+                                @include('customers.component.tagihan', ['data' => $tagihan, 'total' => $totalTagihan, 'tableId' => 'basic-1'])
                             </div>
 
                             <div class="tab-pane fade {{ $resi ? 'active show' : '' }}" id="top-contactsecondary" role="tabpanel" aria-labelledby="contact-top-tab">
@@ -39,7 +39,7 @@
                             </div>
                             
 							<div class="tab-pane fade" id="top-invoicesecondary" role="tabpanel" aria-labelledby="profile-top-tab">
-                                @include('customers.component.invoice', ['data' => $data, 'customer' => $customer, 'invoice' => $invoice, 'total' => $total])
+                                @include('customers.component.invoice', ['data' => $data, 'tableId' => 'basic-2', 'customer' => $customer, 'invoice' => $invoice, 'total' => $total])
                             </div>
 
                         </div>	 
@@ -54,6 +54,30 @@
     <script>
 		$(document).ready(function() {
 			$('#basic-1').DataTable({
+				language: {
+					"emptyTable": "Tidak ada data yang tersedia pada tabel ini",
+					"info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+					"infoEmpty": "Menampilkan 0 sampai 0 dari 0 entri",
+					"infoFiltered": " (disaring dari _MAX_ entri keseluruhan)",
+					"lengthMenu": "Tampilkan _MENU_ entri",
+					"loadingRecords": "Sedang memuat...",
+					"processing": "Sedang memproses...",
+					"search": "Cari:",
+					"zeroRecords": "Tidak ditemukan data yang sesuai",
+					"paginate": {
+					"first": "Pertama",
+					"last": "Terakhir",
+					"next": "Selanjutnya",
+					"previous": "Sebelumnya"
+					},
+				},
+                searching: false,
+			});
+		})
+	</script>
+    <script>
+		$(document).ready(function() {
+			$('#basic-2').DataTable({
 				language: {
 					"emptyTable": "Tidak ada data yang tersedia pada tabel ini",
 					"info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
