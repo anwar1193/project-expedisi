@@ -4484,7 +4484,7 @@ table tbody .border-bottom-warning td {
             -webkit-transition: 0.5s;
             transition: 0.5s; }
         .page-main-header .main-header-right .nav-right .btn-primary-light:focus, .page-main-header .main-header-right .nav-right .btn-primary-light:hover {
-          background-color: #24695c !important;
+          background-color: #dc3545 !important;
           color: #fff; }
           .page-main-header .main-header-right .nav-right .btn-primary-light:focus a, .page-main-header .main-header-right .nav-right .btn-primary-light:hover a {
             color: #fff; }
