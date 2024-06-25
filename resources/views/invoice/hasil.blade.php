@@ -95,7 +95,9 @@
 												<th style="border: 1px solid">Penerima</th>
 												<th style="border: 1px solid">Tujuan</th>
 												<th style="border: 1px solid">Jumlah Pembayaran</th>
-												<th style="border: 1px solid">Pilih</th>
+												@if (!isCustomer())
+													<th style="border: 1px solid">Pilih</th>													
+												@endif
 											</tr>
 										</thead>
 										<tbody style="font-size: 14px">
@@ -108,47 +110,51 @@
                                                     <td style="border: 1px solid; padding: 5px; text-align: center">{{ $data->nama_penerima }}</td>
                                                     <td style="border: 1px solid; padding: 5px; text-align: center">{{ $data->kota_tujuan }}</td>
                                                     <td style="border: 1px solid; padding: 5px; text-align: center">Rp {{ number_format($data->ongkir, 0, '.', '.') }}</td>
-                                                    <td style="border: 1px solid; padding: 5px; text-align: center">
-														<input type="checkbox" name="id_pengiriman[]" value="{{ $data->id }}" {{ $data->transaksi->isNotEmpty() ? 'checked' : '' }}>
-													</td>
+													@if (!isCustomer())
+														<td style="border: 1px solid; padding: 5px; text-align: center">
+															<input type="checkbox" name="id_pengiriman[]" value="{{ $data->id }}" {{ $data->transaksi->isNotEmpty() ? 'checked' : '' }}>
+														</td>														
+													@endif
                                                 </tr>
                                             @empty
                                                 <tr>
-                                                    <td colspan="7" class="text-center">
+                                                    <td colspan={{ !isCustomer() ? "7" : "6" }} class="text-center">
                                                         <p class="fw-semibold">Belum Ada Data Transaksi</p>
                                                     </td>
                                                 </tr>
                                             @endforelse 
 										</tbody>
-                                        <tfoot>
-                                            {{-- <tr>
-                                                <td style="border: 1px solid; padding: 5px; text-align: center"></td>
-                                                <td colspan="6" style="border: 1px solid; padding: 5px; text-align: center">
-                                                    <p class="fw-semibold">Sub Total</p>
-                                                </td>
-                                                <td style="border: 1px solid; padding: 5px; text-align: center">
-                                                    Rp {{ number_format($total->total, 0, '.', '.') }}
-                                                </td>
-                                            </tr> --}}
-                                            <tr>
-                                                <td style="border: 1px solid; padding: 5px; text-align: center"></td>
-                                                <td colspan="6" style="border: 1px solid; padding: 5px; text-align: center">
-                                                    <p class="fw-semibold">Diskon</p>
-                                                </td>
-                                                <td style="border: 1px solid; padding: 5px; text-align: center">
-                                                    <input class="text-center form-control" type="number" name="diskon" id="diskon" value="{{ old('diskon', $invoice->diskon) }}">
-                                                </td>
-                                            </tr>
-                                            {{-- <tr>
-                                                <td style="border: 1px solid; padding: 5px; text-align: center"></td>
-                                                <td colspan="6" style="border: 1px solid; padding: 5px; text-align: center">
-                                                    <p class="fw-semibold">Total</p>
-                                                </td>
-                                                <td style="border: 1px solid; padding: 5px; text-align: center" id="totalDisplay">
-                                                    Rp {{ number_format($total->total - $invoice->diskon, 0, '.', '.') }}
-                                                </td>
-                                            </tr> --}}
-                                        </tfoot>
+										@if (!isCustomer())
+											<tfoot>
+												{{-- <tr>
+													<td style="border: 1px solid; padding: 5px; text-align: center"></td>
+													<td colspan="6" style="border: 1px solid; padding: 5px; text-align: center">
+														<p class="fw-semibold">Sub Total</p>
+													</td>
+													<td style="border: 1px solid; padding: 5px; text-align: center">
+														Rp {{ number_format($total->total, 0, '.', '.') }}
+													</td>
+												</tr> --}}
+												<tr>
+													<td style="border: 1px solid; padding: 5px; text-align: center"></td>
+													<td colspan="6" style="border: 1px solid; padding: 5px; text-align: center">
+														<p class="fw-semibold">Diskon</p>
+													</td>
+													<td style="border: 1px solid; padding: 5px; text-align: center">
+														<input class="text-center form-control" type="number" name="diskon" id="diskon" value="{{ old('diskon', $invoice->diskon) }}">
+													</td>
+												</tr>
+												{{-- <tr>
+													<td style="border: 1px solid; padding: 5px; text-align: center"></td>
+													<td colspan="6" style="border: 1px solid; padding: 5px; text-align: center">
+														<p class="fw-semibold">Total</p>
+													</td>
+													<td style="border: 1px solid; padding: 5px; text-align: center" id="totalDisplay">
+														Rp {{ number_format($total->total - $invoice->diskon, 0, '.', '.') }}
+													</td>
+												</tr> --}}
+											</tfoot>											
+										@endif
 	                                </table>
 	                            </div>
 	                            <!-- End Table-->
