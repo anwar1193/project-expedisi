@@ -294,6 +294,8 @@ Route::middleware("auth")->group(function() {
     
     Route::prefix('penukaran-point')->group(function () {
         Route::get('/', [PenukaranPointController::class, 'index'])->name('penukaran-point');
+        Route::post('/', [PenukaranPointController::class, 'proses_penukaran'])->name('proses-penukaran-point');
+        Route::get('/list', [PenukaranPointController::class, 'list_penukaran'])->name('list-penukaran-point');
     });
 
     Route::get('user-level', [UserController::class, 'listLevel'])->name('level');
