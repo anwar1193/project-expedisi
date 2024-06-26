@@ -52,7 +52,7 @@ if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>" id="nominal" type="text" name="nominal" value="<?php echo e(old('nominal', $konversiPoints->nominal)); ?>" />
+unset($__errorArgs, $__bag); ?>" type="text" name="nominal" id="dengan-rupiah" value="<?php echo e(old('nominal', $konversiPoints->nominal)); ?>" />
                                         <div id="nominal" class="form-text text-danger">*Default 1 Point = Rp. 1000</div>
 
                                         <?php $__errorArgs = ['nama'];
@@ -84,6 +84,19 @@ unset($__errorArgs, $__bag); ?>
 	
 	<?php $__env->startPush('scripts'); ?>
 	<script src="<?php echo e(asset('assets/js/height-equal.js')); ?>"></script>
+    <script>
+		document.addEventListener('DOMContentLoaded', function() {
+			const nominalInput = document.querySelector('input[name="nominal"]');
+			const displayElement = document.createElement('div');
+			displayElement.innerHTML = '<strong>RP. ' + new Intl.NumberFormat('id-ID').format(nominalInput.value) + '</strong>';
+			nominalInput.parentNode.appendChild(displayElement);
+
+			nominalInput.addEventListener('input', function() {
+				const typedValue = nominalInput.value;
+				displayElement.innerHTML = '<strong>RP. ' + new Intl.NumberFormat('id-ID').format(typedValue) + '</strong>';
+			});
+		});
+	</script>
 	<?php $__env->stopPush(); ?>
 
 <?php $__env->stopSection(); ?>
