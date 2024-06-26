@@ -4,6 +4,7 @@ use App\Models\JenisPengeluaran;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ObdController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\JasaController;
 use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\CameraController;
@@ -15,14 +16,14 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LastLoginController;
 use App\Http\Controllers\PerangkatController;
-use App\Http\Controllers\User\UserController;
 
+use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\ObdTrackerController;
 use App\Http\Controllers\PemantauanController;
 use App\Http\Controllers\LogActivityController;
-use App\Http\Controllers\MerchandiseController;
 
+use App\Http\Controllers\MerchandiseController;
 use App\Http\Controllers\PerlengkapanController;
 use App\Http\Controllers\KonversiPointController;
 use App\Http\Controllers\RiwayatArmadaController;
@@ -252,12 +253,20 @@ Route::middleware("auth")->group(function() {
 
     Route::prefix('data-barang')->group(function () {
         Route::get('/', [BarangController::class, 'index'])->name('data-barang');
-        // Route::get('/create', [PemasukanLainnyaController::class, 'create'])->name('data-pemasukan.create');
-        // Route::get('/edit/{id}', [PemasukanLainnyaController::class, 'edit'])->name('data-pemasukan.edit');
-        // Route::post('/', [PemasukanLainnyaController::class, 'store'])->name('data-pemasukan.store');
-        // Route::post('/update/{id}', [PemasukanLainnyaController::class, 'update'])->name('data-pemasukan.update');
-        // Route::get('/delete/{id}', [PemasukanLainnyaController::class, 'delete'])->name('data-pemasukan.delete');
-        // Route::get('/tanda-terima-pdf/{id}', [PemasukanLainnyaController::class, 'tanda_terima_pdf'])->name('tanda-terima.export-pdf');
+        Route::get('/create', [BarangController::class, 'create'])->name('data-barang.create');
+        Route::get('/edit/{id}', [BarangController::class, 'edit'])->name('data-barang.edit');
+        Route::post('/', [BarangController::class, 'store'])->name('data-barang.store');
+        Route::post('/update/{id}', [BarangController::class, 'update'])->name('data-barang.update');
+        Route::get('/delete/{id}', [BarangController::class, 'delete'])->name('data-barang.delete');
+    });
+
+    Route::prefix('data-jasa')->group(function () {
+        Route::get('/', [JasaController::class, 'index'])->name('data-jasa');
+        Route::get('/create', [JasaController::class, 'create'])->name('data-jasa.create');
+        Route::get('/edit/{id}', [JasaController::class, 'edit'])->name('data-jasa.edit');
+        Route::post('/', [JasaController::class, 'store'])->name('data-jasa.store');
+        Route::post('/update/{id}', [JasaController::class, 'update'])->name('data-jasa.update');
+        Route::get('/delete/{id}', [JasaController::class, 'delete'])->name('data-jasa.delete');
     });
     
     Route::prefix('pembelian-perlengkapan')->group(function () {

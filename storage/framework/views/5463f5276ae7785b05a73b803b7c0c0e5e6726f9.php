@@ -1,4 +1,4 @@
-<?php $__env->startSection('title'); ?>Data Pemasukan
+<?php $__env->startSection('title'); ?>Master Data Jasa
  <?php echo e($title); ?>
 
 <?php $__env->stopSection(); ?>
@@ -10,9 +10,9 @@
 <?php $__env->startSection('content'); ?>
 	<?php $__env->startComponent('components.breadcrumb'); ?>
 		<?php $__env->slot('breadcrumb_title'); ?>
-			<h3>Data Pemasukan</h3>
+			<h3>Master Data Jasa</h3>
 		<?php $__env->endSlot(); ?>
-		<li class="breadcrumb-item active"><a href="<?php echo e(route('data-pemasukan')); ?>">Data Pemasukan</a></li>
+		<li class="breadcrumb-item active"><a href="<?php echo e(route('data-jasa')); ?>">Master Data Jasa</a></li>
 		<li class="breadcrumb-item active">Table</li>
 	<?php echo $__env->renderComponent(); ?>
 
@@ -20,26 +20,12 @@
         <ol class="breadcrumb align-items-center">
             <div class="d-grid gap-2 d-md-block mx-2">
                 
-                    <a href="<?php echo e(route('data-pemasukan.create')); ?>" class="btn btn-sm btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Tambah Data">
-                        <i class="fa fa-plus"></i> Tambah Pemasukan
-                    </a>
+					<a href="<?php echo e(route('data-pemasukan')); ?>" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Kembali">
+						<i class="fa fa-backward"></i> Kembali
+					</a>
 
-					
-
-					<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-						<div class="btn-group" role="group">
-							<button class="btn btn-success btn-sm dropdown-toggle" id="btnGroupDropBarang" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cube"></i> Data Barang</button>
-							<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-
-								<a class="dropdown-item" href="<?php echo e(route('data-barang')); ?>" ><span>Master Data</span></a>
-								<a class="dropdown-item" href="#" ><span>Barang Masuk</span></a>
-								
-							</div>
-						</div>
-					</div>
-
-					<a href="<?php echo e(route('data-jasa')); ?>" class="btn btn-warning btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Data Jasa">
-                        <i class="fa fa-male"></i> Data Jasa
+                    <a href="<?php echo e(route('data-jasa.create')); ?>" class="btn btn-sm btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Tambah Data">
+                        <i class="fa fa-plus"></i> Tambah Jasa
                     </a>
                 
             </div>
@@ -88,11 +74,8 @@
 	                            <thead>
 	                                <tr>
 	                                    <th>No</th>
-										<th>Tanggal Pemasukan</th>
-										<th>Keterangan</th>
-	                                    <th>Jumlah Pemasukan</th>
-	                                    <th>Sumber Pemasukan</th>
-	                                    <th>Bukti Pembayaran</th>
+										<th>Nama Jasa</th>
+	                                    <th>Keterangan</th>
 										<th width="35%" class="text-center">Action</th>
 	                                </tr>
 	                            </thead>
@@ -100,22 +83,8 @@
                                     <?php $__currentLoopData = $datas; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 									<tr>
 										<td><?php echo e($loop->iteration); ?></td>
-										<td><?php echo e($data->tgl_pemasukkan); ?></td>
+										<td><?php echo e($data->nama_jasa); ?></td>
 										<td><?php echo e($data->keterangan); ?></td>
-										<td><?php echo e(number_format($data->jumlah_pemasukkan, 0, '.', ',')); ?></td>
-										<td><?php echo e($data->sumber_pemasukkan); ?></td>
-										<td onmouseover="showBukti(<?php echo e($data->id); ?>)" onmouseout="hideBukti(<?php echo e($data->id); ?>)">
-											<?php if($data->bukti_pembayaran != ''): ?>
-												<div id="view-bukti<?php echo e($data->id); ?>" class="mb-3">
-													<img src="<?php echo e(asset('storage/data-pemasukkan/'.$data->bukti_pembayaran)); ?>" alt="" width="200px" class="img-fluid mt-2">
-													<a class="btn btn-primary" href="<?php echo e(asset('storage/data-pemasukkan/'.$data->bukti_pembayaran)); ?>" target="_blank">View Image</a>
-												</div>
-											<?php endif; ?>
-											<div id="icon-view<?php echo e($data->id); ?>">
-												<i data-feather="link"></i> Gambar
-											</div>
-											
-										</td>
 										<td class="text-center">
 
 											<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
@@ -123,20 +92,14 @@
 													<button class="btn btn-secondary btn-sm dropdown-toggle" id="btnGroupDrop1" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
 													<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
 
-														<a class="dropdown-item" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalDataPemasukkan<?php echo e($data->id); ?>" title="Detail Data"><span><i data-feather="eye"></i> Detail</span></a>
+														<a class="dropdown-item" href="<?php echo e(route('data-jasa.edit', $data->id)); ?>" ><span><i data-feather="edit"></i> Edit</span></a>
 
-														<a class="dropdown-item" href="<?php echo e(route('data-pemasukan.edit', $data->id)); ?>" ><span><i data-feather="edit"></i> Edit</span></a>
-														
-														<a class="dropdown-item" href="<?php echo e(route('tanda-terima.export-pdf', $data->id)); ?>" ><span><i data-feather="file"></i> Cetak Tanda Terima</span></a>
-
-														<?php if(Session::get('user_level') == 1): ?>
-															<a class="dropdown-item" href="<?php echo e(route('data-pemasukan.delete', $data->id)); ?>" onclick="return confirm('Apakah Anda Yakin?')"><span><i data-feather="delete"></i> Delete</span></a>
-														<?php endif; ?>
+														<a class="dropdown-item" href="<?php echo e(route('data-jasa.delete', $data->id)); ?>" onclick="return confirm('Apakah Anda Yakin?')"><span><i data-feather="delete"></i> Delete</span></a>
 														
 													</div>
 												</div>
 											</div>
-											<?php echo $__env->make('data-pemasukan.detail', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+											<?php echo $__env->make('data-jasa.detail', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 										</td>
 									</tr>
 									<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -174,4 +137,4 @@
 	<?php $__env->stopPush(); ?>
 
 <?php $__env->stopSection(); ?>
-<?php echo $__env->make('layouts.admin.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/munawarahmad/Documents/Applications/projectku/frontend/resources/views/data-pemasukan/index.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.admin.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/munawarahmad/Documents/Applications/projectku/frontend/resources/views/data-jasa/index.blade.php ENDPATH**/ ?>

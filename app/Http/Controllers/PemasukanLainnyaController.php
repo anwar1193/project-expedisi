@@ -26,6 +26,7 @@ class PemasukanLainnyaController extends Controller
 
         return ['file' => $file, 'fileName' => $fileName, 'image_base64' => $image_base64];
     }
+    
     public  function index()
     {
         $datas = PemasukanLainnya::orderBy('id', 'DESC')->get();

@@ -1,6 +1,6 @@
 @extends('layouts.admin.master')
 
-@section('title')Data Pemasukan
+@section('title')Master Data Jasa
  {{ $title }}
 @endsection
 
@@ -11,9 +11,9 @@
 @section('content')
 	@component('components.breadcrumb')
 		@slot('breadcrumb_title')
-			<h3>Data Pemasukan</h3>
+			<h3>Master Data Jasa</h3>
 		@endslot
-		<li class="breadcrumb-item active"><a href="{{ route('data-pemasukan') }}">Data Pemasukan</a></li>
+		<li class="breadcrumb-item active"><a href="{{ route('data-jasa') }}">Master Data Jasa</a></li>
 		<li class="breadcrumb-item active">Table</li>
 	@endcomponent
 
@@ -21,28 +21,12 @@
         <ol class="breadcrumb align-items-center">
             <div class="d-grid gap-2 d-md-block mx-2">
                 {{-- @if (isAdmin()) --}}
-                    <a href="{{ route('data-pemasukan.create') }}" class="btn btn-sm btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Tambah Data">
-                        <i class="fa fa-plus"></i> Tambah Pemasukan
-                    </a>
+					<a href="{{ route('data-pemasukan') }}" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Kembali">
+						<i class="fa fa-backward"></i> Kembali
+					</a>
 
-					{{-- <a href="{{ route('data-barang') }}" class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Data Barang">
-                        <i class="fa fa-cube"></i> Data Barang
-                    </a> --}}
-
-					<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-						<div class="btn-group" role="group">
-							<button class="btn btn-success btn-sm dropdown-toggle" id="btnGroupDropBarang" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cube"></i> Data Barang</button>
-							<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-
-								<a class="dropdown-item" href="{{ route('data-barang') }}" ><span>Master Data</span></a>
-								<a class="dropdown-item" href="#" ><span>Barang Masuk</span></a>
-								
-							</div>
-						</div>
-					</div>
-
-					<a href="{{ route('data-jasa') }}" class="btn btn-warning btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Data Jasa">
-                        <i class="fa fa-male"></i> Data Jasa
+                    <a href="{{ route('data-jasa.create') }}" class="btn btn-sm btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Tambah Data">
+                        <i class="fa fa-plus"></i> Tambah Jasa
                     </a>
                 {{-- @endif --}}
             </div>
@@ -88,11 +72,8 @@
 	                            <thead>
 	                                <tr>
 	                                    <th>No</th>
-										<th>Tanggal Pemasukan</th>
-										<th>Keterangan</th>
-	                                    <th>Jumlah Pemasukan</th>
-	                                    <th>Sumber Pemasukan</th>
-	                                    <th>Bukti Pembayaran</th>
+										<th>Nama Jasa</th>
+	                                    <th>Keterangan</th>
 										<th width="35%" class="text-center">Action</th>
 	                                </tr>
 	                            </thead>
@@ -100,22 +81,8 @@
                                     @foreach ($datas as $data)
 									<tr>
 										<td>{{ $loop->iteration; }}</td>
-										<td>{{ $data->tgl_pemasukkan }}</td>
+										<td>{{ $data->nama_jasa }}</td>
 										<td>{{ $data->keterangan }}</td>
-										<td>{{ number_format($data->jumlah_pemasukkan, 0, '.', ',') }}</td>
-										<td>{{ $data->sumber_pemasukkan }}</td>
-										<td onmouseover="showBukti({{ $data->id }})" onmouseout="hideBukti({{ $data->id }})">
-											@if ($data->bukti_pembayaran != '')
-												<div id="view-bukti{{ $data->id }}" class="mb-3">
-													<img src="{{ asset('storage/data-pemasukkan/'.$data->bukti_pembayaran) }}" alt="" width="200px" class="img-fluid mt-2">
-													<a class="btn btn-primary" href="{{ asset('storage/data-pemasukkan/'.$data->bukti_pembayaran)}}" target="_blank">View Image</a>
-												</div>
-											@endif
-											<div id="icon-view{{ $data->id }}">
-												<i data-feather="link"></i> Gambar
-											</div>
-											
-										</td>
 										<td class="text-center">
 
 											<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
@@ -123,20 +90,14 @@
 													<button class="btn btn-secondary btn-sm dropdown-toggle" id="btnGroupDrop1" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
 													<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
 
-														<a class="dropdown-item" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalDataPemasukkan{{ $data->id }}" title="Detail Data"><span><i data-feather="eye"></i> Detail</span></a>
+														<a class="dropdown-item" href="{{ route('data-jasa.edit', $data->id) }}" ><span><i data-feather="edit"></i> Edit</span></a>
 
-														<a class="dropdown-item" href="{{ route('data-pemasukan.edit', $data->id) }}" ><span><i data-feather="edit"></i> Edit</span></a>
-														
-														<a class="dropdown-item" href="{{ route('tanda-terima.export-pdf', $data->id) }}" ><span><i data-feather="file"></i> Cetak Tanda Terima</span></a>
-
-														@if (Session::get('user_level') == 1)
-															<a class="dropdown-item" href="{{ route('data-pemasukan.delete', $data->id) }}" onclick="return confirm('Apakah Anda Yakin?')"><span><i data-feather="delete"></i> Delete</span></a>
-														@endif
+														<a class="dropdown-item" href="{{ route('data-jasa.delete', $data->id) }}" onclick="return confirm('Apakah Anda Yakin?')"><span><i data-feather="delete"></i> Delete</span></a>
 														
 													</div>
 												</div>
 											</div>
-											@include('data-pemasukan.detail')
+											@include('data-jasa.detail')
 										</td>
 									</tr>
 									@endforeach
