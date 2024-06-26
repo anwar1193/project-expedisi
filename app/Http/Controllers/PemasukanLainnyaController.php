@@ -105,6 +105,7 @@ class PemasukanLainnyaController extends Controller
     public function edit($id)
     {
         $datas = PemasukanLainnya::find($id);
+        $data['customerSelected'] = Customer::where('nama', $datas->sumber_pemasukkan)->first();
         $data['customer'] = Customer::orderBy('kode_customer', 'ASC')->get();
         $data['datas'] = $datas;
 

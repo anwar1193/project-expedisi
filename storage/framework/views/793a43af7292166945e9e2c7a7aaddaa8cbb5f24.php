@@ -91,11 +91,11 @@ unset($__errorArgs, $__bag); ?>
 								<div class="col">
 									<div class="mb-3">
 										<div class="row">
-											<div class="col-2">
+											<div class="col-3">
 												<label class="form-label" for="">Sumber Pemasukan</label>
 											</div>
 											<div class="col">
-												<input class="form-check-input" id="dataCustomer" type="checkbox" name="dataCustomer" />
+												<input class="form-check-input" id="dataCustomer" type="checkbox" name="dataCustomer" <?php echo e($customerSelected && $datas->sumber_pemasukkan == $customerSelected->nama ? "checked" : ""); ?> />
 												<label class="form-check-label" for="dataCustomer">Pilih Customer</label>
 											</div>
 										</div>
@@ -133,8 +133,8 @@ endif;
 unset($__errorArgs, $__bag); ?>" style="display: none">
 											<option value="">- Pilih Customer -</option>
 											<?php $__currentLoopData = $customer; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-												<option value="<?php echo e($item->nama); ?>" <?php echo e($datas->nama == $item->nama ? 'selected' : NULL); ?>>
-													<?php echo e($item->nama); ?>
+												<option value="<?php echo e($item->nama); ?>" <?php echo e($datas->sumber_pemasukkan == $item->nama ? 'selected' : NULL); ?>>
+													<?php echo e($item->kode_customer); ?> - <?php echo e($item->nama); ?>
 
 												</option>
 											<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -171,6 +171,7 @@ endif;
 unset($__errorArgs, $__bag); ?>">
 											<option value="tunai" <?php echo e($datas->metode_pembayaran == 'tunai' ? 'selected' : NULL); ?>>Tunai</option>
 											<option value="transfer" <?php echo e($datas->metode_pembayaran == 'transfer' ? 'selected' : NULL); ?>>Transfer</option>
+											<option style="display: block" id="kredit" value="kredit" <?php echo e($datas->metode_pembayaran == 'kredit' ? 'selected' : NULL); ?>>Kredit</option>
 										</select>
 
 										<?php $__errorArgs = ['metode_pembayaran'];
@@ -397,17 +398,20 @@ unset($__errorArgs, $__bag); ?>
 		document.addEventListener("DOMContentLoaded", function() {
 		const dataCustomerCheckbox = document.getElementById('dataCustomer');
 		const customerSelect = document.getElementById('customer');
+		const kredit = document.getElementById('kredit');
 		const sumberPemasukkan = document.getElementById('sumberPemasukkan');
 
-		// Fungsi untuk mengubah visibilitas elemen select
-		function toggleCustomerSelect() {
-			if (dataCustomerCheckbox.checked) {
-				customerSelect.style.display = 'block';
+        // Fungsi untuk mengubah visibilitas elemen select
+        function toggleCustomerSelect() {
+            if (dataCustomerCheckbox.checked) {
+                customerSelect.style.display = 'block';
+				kredit.style.display = 'block';
 				sumberPemasukkan.style.display = 'none';
-			} else {
-				customerSelect.style.display = 'none';
+            } else {
+                customerSelect.style.display = 'none';
+                kredit.style.display = 'none';
 				sumberPemasukkan.style.display = 'block';
-			}
+            }
 		}
 
 		// Tambahkan event listener ke checkbox

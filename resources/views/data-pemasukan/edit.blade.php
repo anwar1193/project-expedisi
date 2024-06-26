@@ -66,7 +66,7 @@
 												<label class="form-label" for="">Sumber Pemasukan</label>
 											</div>
 											<div class="col">
-												<input class="form-check-input" id="dataCustomer" type="checkbox" name="dataCustomer" />
+												<input class="form-check-input" id="dataCustomer" type="checkbox" name="dataCustomer" {{ $customerSelected && $datas->sumber_pemasukkan == $customerSelected->nama ? "checked" : "" }} />
 												<label class="form-check-label" for="dataCustomer">Pilih Customer</label>
 											</div>
 										</div>
@@ -82,7 +82,7 @@
 										<select name="customer" id="customer" class="form-control @error('customer') is-invalid @enderror" style="display: none">
 											<option value="">- Pilih Customer -</option>
 											@foreach ($customer as $item)
-												<option value="{{ $item->nama }}" {{ $datas->nama == $item->nama ? 'selected' : NULL }}>
+												<option value="{{ $item->nama }}" {{ $datas->sumber_pemasukkan == $item->nama ? 'selected' : NULL }}>
 													{{ $item->kode_customer }} - {{ $item->nama }}
 												</option>
 											@endforeach
@@ -104,6 +104,7 @@
                                         <select name="metode_pembayaran" id="metode_pembayaran" class="form-control @error('metode_pembayaran') is-invalid @enderror">
 											<option value="tunai" {{ $datas->metode_pembayaran == 'tunai' ? 'selected' : NULL }}>Tunai</option>
 											<option value="transfer" {{ $datas->metode_pembayaran == 'transfer' ? 'selected' : NULL }}>Transfer</option>
+											<option style="display: block" id="kredit" value="kredit" {{ $datas->metode_pembayaran == 'kredit' ? 'selected' : NULL }}>Kredit</option>
 										</select>
 
 										@error('metode_pembayaran')
@@ -284,17 +285,20 @@
 		document.addEventListener("DOMContentLoaded", function() {
 		const dataCustomerCheckbox = document.getElementById('dataCustomer');
 		const customerSelect = document.getElementById('customer');
+		const kredit = document.getElementById('kredit');
 		const sumberPemasukkan = document.getElementById('sumberPemasukkan');
 
-		// Fungsi untuk mengubah visibilitas elemen select
-		function toggleCustomerSelect() {
-			if (dataCustomerCheckbox.checked) {
-				customerSelect.style.display = 'block';
+        // Fungsi untuk mengubah visibilitas elemen select
+        function toggleCustomerSelect() {
+            if (dataCustomerCheckbox.checked) {
+                customerSelect.style.display = 'block';
+				kredit.style.display = 'block';
 				sumberPemasukkan.style.display = 'none';
-			} else {
-				customerSelect.style.display = 'none';
+            } else {
+                customerSelect.style.display = 'none';
+                kredit.style.display = 'none';
 				sumberPemasukkan.style.display = 'block';
-			}
+            }
 		}
 
 		// Tambahkan event listener ke checkbox
