@@ -173,6 +173,7 @@ unset($__errorArgs, $__bag); ?>">
 											<option value="">- Pilih Metode Pembayaran -</option>
 											<option value="tunai" <?php echo e(old('metode_pembayaran') == 'tunai' ? 'selected' : ''); ?>>Tunai</option>
 											<option value="transfer" <?php echo e(old('metode_pembayaran') == 'transfer' ? 'selected' : ''); ?>>Transfer</option>
+											<option style="display: block" id="kredit" value="kredit" <?php echo e(old('metode_pembayaran') == 'kredit' ? 'selected' : ''); ?>>Kredit</option>
 										</select>
 
 										<?php $__errorArgs = ['metode_pembayaran'];
@@ -329,6 +330,7 @@ unset($__errorArgs, $__bag); ?>
 			var dataCustomer = document.getElementById('dataCustomer');
 			var sumberPemasukkan = document.getElementById('sumberPemasukkan');
 			var customer = document.getElementById('customer');
+			var kredit = document.getElementById('kredit');
 			const video = document.querySelector(`#videoElement`);
 			const canvas = document.getElementById('canvas');
             const captureButton = document.getElementById('captureButton');
@@ -407,15 +409,18 @@ unset($__errorArgs, $__bag); ?>
 		document.addEventListener("DOMContentLoaded", function() {
         const dataCustomerCheckbox = document.getElementById('dataCustomer');
         const customerSelect = document.getElementById('customer');
+        const kredit = document.getElementById('kredit');
 		const sumberPemasukkan = document.getElementById('sumberPemasukkan');
 
         // Fungsi untuk mengubah visibilitas elemen select
         function toggleCustomerSelect() {
             if (dataCustomerCheckbox.checked) {
                 customerSelect.style.display = 'block';
+				kredit.style.display = 'block';
 				sumberPemasukkan.style.display = 'none';
             } else {
                 customerSelect.style.display = 'none';
+                kredit.style.display = 'none';
 				sumberPemasukkan.style.display = 'block';
             }
         }
