@@ -9,4 +9,5 @@ class DataPengiriman extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+    const STATUS_PENDING = 2;
 }
