@@ -22,7 +22,7 @@
 	<div class="container invoice">
 	    <div class="row">
 	        <div class="col-sm-12">
-				<form action="{{ route('invoice.handle-transactions', $customer->id) }}" method="POST">
+				<form action="{{ route('invoice.handle-transactions', $customer->id) }}" method="POST" target="_blank">
 				@csrf
 	            <div class="card">
 	                <div class="card-body">						

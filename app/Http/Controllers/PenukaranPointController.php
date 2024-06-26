@@ -53,10 +53,6 @@ class PenukaranPointController extends Controller
         $merchandise = Merchandise::where('id', $request->marchendise_id)->first();
         $point = KonversiPoint::orderBy('id', 'asc')->first();
 
-        $point_merchandise = round($merchandise->nilai / $point->nominal);
-
-        // dd($request->customer_id, $request->marchendise_id);
-        // Proses Tukar Point
         PenukaranPoint::create([
             "customer_id" => $request->customer_id,
             "marchendise_id" => $request->marchendise_id
@@ -64,8 +60,11 @@ class PenukaranPointController extends Controller
 
         // Prosese Update Point Customer
         $customer = Customer::where('id', '=', $request->customer_id)->first();
-        $customer->point = round($customer->point - $point_merchandise);
-        if ($customer->point < $point_merchandise) {
+        $customer->point = round($customer->point - $merchandise->nilai);
+
+        // dd($customer->point - $point_merchandise);
+
+        if ($customer->point < $merchandise->nilai) {
             return back()->with('error', 'Point Anda Tidak Cukup Untuk Menukarkan Item Tersebut');
         }
         $customer->save(); 

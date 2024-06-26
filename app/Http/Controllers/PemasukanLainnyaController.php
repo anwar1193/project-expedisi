@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Helper;
+use App\Models\Barang;
 use App\Models\Customer;
+use App\Models\Jasa;
 use App\Models\PemasukanLainnya;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -38,14 +40,18 @@ class PemasukanLainnyaController extends Controller
     public function create()
     {
         $customer = Customer::orderBy('kode_customer', 'ASC')->get();
+        $barangs = Barang::all();
+        $jasas = Jasa::all();
 
-        return view('data-pemasukan.create', compact('customer'));
+        return view('data-pemasukan.create', compact('customer', 'barangs', 'jasas'));
     }
 
     public function store(Request $request)
-    {
+    { 
         $today = date('Y-m-d');
         $validateData = $request->validate([
+            'kategori' => 'required',
+            'modal' => 'required',
             'keterangan' => 'required',
             'jumlah_pemasukkan' => 'required',
             'sumber_pemasukkan' => 'required_without:customer',
@@ -68,7 +74,7 @@ class PemasukanLainnyaController extends Controller
             $foto->storeAs('public/data-pemasukkan', $foto->hashName());
 
             // Proses Simpan GDrive
-            Storage::disk('google')->put($namafile, File::get($path));
+            // Storage::disk('google')->put($namafile, File::get($path));
 
             $validateData['bukti_pembayaran'] = $foto->hashName();
         } elseif (($img != '') && ($request->takeImage == 'on')) {
@@ -84,11 +90,15 @@ class PemasukanLainnyaController extends Controller
             Storage::disk('local')->put($file, $image_base64);
 
             // Proses Simpan GDrive
-            Storage::disk('google')->put($fileNamePath, File::get($path));
+            // Storage::disk('google')->put($fileNamePath, File::get($path));
 
             $validateData['bukti_pembayaran'] = $fileName;
         }
 
+        $barang = $request->barang;
+        $jasa = $request->jasa;
+
+        $validateData['barang_jasa'] = $barang != '' ? $barang : $jasa;
         $validateData['diterima_oleh'] = Session::get('nama');
         $validateData['tgl_pemasukkan'] = $today;
         $validateData['sumber_pemasukkan'] = !$request->dataCustomer ? $request->sumber_pemasukkan : $request->customer;
@@ -107,6 +117,8 @@ class PemasukanLainnyaController extends Controller
         $datas = PemasukanLainnya::find($id);
         $data['customerSelected'] = Customer::where('nama', $datas->sumber_pemasukkan)->first();
         $data['customer'] = Customer::orderBy('kode_customer', 'ASC')->get();
+        $data['barang'] = Barang::orderBy('id', 'ASC')->get();
+        $data['jasa'] = Jasa::orderBy('id', 'ASC')->get();
         $data['datas'] = $datas;
 
         return view('data-pemasukan.edit', $data);
@@ -115,6 +127,8 @@ class PemasukanLainnyaController extends Controller
     public function update($id, Request $request)
     {
         $validateData = $request->validate([
+            'kategori' => 'required',
+            'modal' => 'required',
             'keterangan' => 'required',
             'jumlah_pemasukkan' => 'required',
             'sumber_pemasukkan' => 'required_without:customer',
@@ -164,9 +178,12 @@ class PemasukanLainnyaController extends Controller
         }
 
         $sumber_pemasukkan = !$request->dataCustomer ? $request->sumber_pemasukkan : $request->customer;
+        $barang_jasa = $request->barang ? $request->barang : $request->jasa;
 
         PemasukanLainnya::where('id', '=', $id)->update([
-            'keterangan' => $request->keterangan,
+            'kategori' => $request->keterangan,
+            'barang_jasa' => $barang_jasa,
+            'modal' => $request->modal,
             'jumlah_pemasukkan' => $request->jumlah_pemasukkan,
             'sumber_pemasukkan' => $sumber_pemasukkan,
             'metode_pembayaran' => $request->metode_pembayaran,

@@ -13,7 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::dropIfExists('transaksi_invoices');
+        Schema::create('jasas', function (Blueprint $table) {
+            $table->id();
+            $table->string('nama_jasa', 255)->nullable(false);
+            $table->string('keterangan', 255)->nullable();
+            $table->timestamps();
+        });
     }
 
     /**
@@ -23,12 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::create('transaksi_invoices', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('invoice_id');
-            $table->foreign('invoice_id')->references('id')->on('invoices');
-            $table->integer('data_pengiriman_id');
-            $table->timestamps();
-        });
+        Schema::dropIfExists('jasas');
     }
 };

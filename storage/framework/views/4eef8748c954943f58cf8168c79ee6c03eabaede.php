@@ -20,6 +20,15 @@
 			<div class="col-sm-12">
 				<div class="card">
 					<div class="card-header pb-0">
+						<?php if(session()->has('success')): ?>
+							<div class="alert alert-success alert-dismissible fade show" role="alert">
+								<strong>Berhasil <i class="fa fa-info-circle"></i></strong> 
+								<?php echo e(session('success')); ?>
+
+								<button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+							</div>
+						<?php endif; ?>
+
 						<?php if(session()->has('error')): ?>
 							<div class="alert alert-danger alert-dismissible fade show" role="alert">
 								<strong>Gagal <i class="fa fa-info-circle"></i></strong> 
@@ -120,8 +129,17 @@ unset($__errorArgs, $__bag); ?>
                                     <img src="<?php echo e(asset('storage/merchandise/'.$data->gambar)); ?>" style="height: 150px" class="card-img-top" alt="...">
                                     <div class="card-body">
                                     <p class="card-title"><?php echo e($data->nama); ?></p>
-                                    <p class="card-text"><?php echo e(number_format($data->nilai, 0, '.', ',')); ?> : <?php echo e($data->points); ?></p>
-                                    <a href="#" class="btn btn-primary">Tukar</a>
+
+                                    <p class="card-text"><?php echo e(number_format($data->nilai, 0, '.', ',')); ?> point</p>
+
+									<form action="<?php echo e(route('proses-penukaran-point')); ?>" method="POST">
+										<?php echo csrf_field(); ?>
+										<input type="hidden" name="customer_id" value="<?php echo e($customer->id); ?>">
+										<input type="hidden" name="marchendise_id" value="<?php echo e($data->id); ?>">
+
+										<button type="submit" class="btn btn-primary">Tukar</button>
+									</form>
+
                                     </div>
                                 </div>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>

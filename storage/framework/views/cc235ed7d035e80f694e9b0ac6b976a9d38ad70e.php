@@ -17,6 +17,7 @@
                           confirm: {
                               text: "Lihat Data",
                               value: true,
+                              name: 'notif',
                               visible: true,
                               className: "bg-danger",
                               closeModal: true
@@ -31,7 +32,7 @@
                         }
             }).then((value) => {
                 if (value) {
-                    window.location.href = "<?php echo e(route('data-pengiriman')); ?>";
+                    window.location.href = "<?php echo e(route('data-pengiriman', ['notif' => 1])); ?>";
                 }
             });
         });
@@ -287,7 +288,7 @@
               show: false,
           }
       },
-      colors: [vihoAdminConfig.primary]
+      colors: [vihoAdminConfig.danger]
     };
     var chart55 = new ApexCharts(document.querySelector("#user-activation-dash-2"), options55);
     chart55.render();

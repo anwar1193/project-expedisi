@@ -1,39 +1,40 @@
 <?php
 
+use App\Models\JenisPengeluaran;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ObdController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ThemeController;
+use App\Http\Controllers\BarangController;
 use App\Http\Controllers\CameraController;
-use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\TestingController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\LastLoginController;
 use App\Http\Controllers\PerangkatController;
 use App\Http\Controllers\User\UserController;
+
+use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\ObdTrackerController;
 use App\Http\Controllers\PemantauanController;
 use App\Http\Controllers\LogActivityController;
+use App\Http\Controllers\MerchandiseController;
 
+use App\Http\Controllers\PerlengkapanController;
+use App\Http\Controllers\KonversiPointController;
 use App\Http\Controllers\RiwayatArmadaController;
 use App\Http\Controllers\DataPengirimanController;
 use App\Http\Controllers\JenisPerangkatController;
+use App\Http\Controllers\PenukaranPointController;
 use App\Http\Controllers\RoleManagementController;
 use App\Http\Controllers\SurveilanceCarController;
-
+use App\Http\Controllers\JenisPengeluaranController;
 use App\Http\Controllers\PemasukanLainnyaController;
 use App\Http\Controllers\DaftarPengeluaranController;
-use App\Http\Controllers\InvoiceController;
-use App\Http\Controllers\JenisPengeluaranController;
-use App\Http\Controllers\KonversiPointController;
-use App\Http\Controllers\LaporanController;
-use App\Http\Controllers\MerchandiseController;
 use App\Http\Controllers\PembelianPerlengkapanController;
-use App\Http\Controllers\PenukaranPointController;
-use App\Http\Controllers\PerlengkapanController;
-use App\Models\JenisPengeluaran;
 
 /*
 |--------------------------------------------------------------------------
@@ -247,6 +248,16 @@ Route::middleware("auth")->group(function() {
         Route::post('/update/{id}', [PemasukanLainnyaController::class, 'update'])->name('data-pemasukan.update');
         Route::get('/delete/{id}', [PemasukanLainnyaController::class, 'delete'])->name('data-pemasukan.delete');
         Route::get('/tanda-terima-pdf/{id}', [PemasukanLainnyaController::class, 'tanda_terima_pdf'])->name('tanda-terima.export-pdf');
+    });
+
+    Route::prefix('data-barang')->group(function () {
+        Route::get('/', [BarangController::class, 'index'])->name('data-barang');
+        // Route::get('/create', [PemasukanLainnyaController::class, 'create'])->name('data-pemasukan.create');
+        // Route::get('/edit/{id}', [PemasukanLainnyaController::class, 'edit'])->name('data-pemasukan.edit');
+        // Route::post('/', [PemasukanLainnyaController::class, 'store'])->name('data-pemasukan.store');
+        // Route::post('/update/{id}', [PemasukanLainnyaController::class, 'update'])->name('data-pemasukan.update');
+        // Route::get('/delete/{id}', [PemasukanLainnyaController::class, 'delete'])->name('data-pemasukan.delete');
+        // Route::get('/tanda-terima-pdf/{id}', [PemasukanLainnyaController::class, 'tanda_terima_pdf'])->name('tanda-terima.export-pdf');
     });
     
     Route::prefix('pembelian-perlengkapan')->group(function () {

@@ -49,10 +49,14 @@
 							<div id="barang" class="row" style="display: none">
 								<div class="col">
 									<div class="mb-3">
-										<label class="form-label" for="">Pilih Barang</label>
-										<select name="barang" id="barang" class="form-control @error('barang') is-invalid @enderror">
-											<option value="barang" {{ old('kategori') == 'barang' ? 'selected' : '' }}>Barang</option>
-											<option value="jasa" {{ old('kategori') == 'jasa' ? 'selected' : '' }}>Jasa</option>
+										<label class="form-label" for="">Barang</label>
+										<select name="barang" id="barangs" class="form-control @error('barang') is-invalid @enderror">
+											<option value="">- Pilih Barang -</option>
+											@foreach ($barangs as $item)
+												<option value="{{ $item->id }}" {{ old('id') == $item->id ? 'selected' : '' }}>
+													{{ $item->nama_barang }}
+												</option>
+											@endforeach
 										</select>
 										@error('barang')
 										<div class="text-danger">
@@ -66,10 +70,14 @@
 							<div id="jasa" class="row" style="display: none">
 								<div class="col">
 									<div class="mb-3">
-										<label class="form-label" for="">Pilih Jasa</label>
+										<label class="form-label" for="">Jasa</label>
 										<select name="jasa" id="jasa" class="form-control @error('jasa') is-invalid @enderror">
-											<option value="barang" {{ old('kategori') == 'barang' ? 'selected' : '' }}>Barang</option>
-											<option value="jasa" {{ old('kategori') == 'jasa' ? 'selected' : '' }}>Jasa</option>
+											<option value="">- Pilih Jasa -</option>
+											@foreach ($jasas as $item)
+												<option value="{{ $item->id }}" {{ old('id') == $item->id ? 'selected' : '' }}>
+													{{ $item->nama_jasa }}
+												</option>
+											@endforeach
 										</select>
 										@error('jasa')
 										<div class="text-danger">
@@ -367,8 +375,8 @@
 		const sumberPemasukkan = document.getElementById('sumberPemasukkan');
 		const kategori = document.getElementById('kategori');
 		const barang = document.getElementById('barang');
+		const barangs = document.getElementById('barangs');
 		const jasa = document.getElementById('jasa');
-		const value = kategori.value;
 		const modalInput = document.querySelector('input[name="modal"]');
 
         // Fungsi untuk mengubah visibilitas elemen select
@@ -386,18 +394,28 @@
 
 		function toggleCategorySelect() {
 			const value = kategori.value;
-
+			console.log(value);
+			
 			if (value === "barang") {
 				barang.style.display = 'block';
 				jasa.style.display = 'none';
-				modalInput.value = 2000;
 			} else if (value === "jasa") {
 				jasa.style.display = 'block';
 				barang.style.display = 'none';
-				modalInput.value = 0;
 			}
 		}
+		
+		function toggleBarangSelect() {
+			const value = barangs.value;
 
+			const barangData = {!! json_encode($barangs) !!};
+			
+			const valueBarang = barangData.find(item => item.id == value);
+			
+			modalInput.value = valueBarang.harga_jual;
+		}
+
+		barang.addEventListener('change', toggleBarangSelect);
 		kategori.addEventListener('change', toggleCategorySelect);
 
         // Tambahkan event listener ke checkbox
@@ -406,6 +424,7 @@
         // Panggil fungsi saat halaman pertama kali dimuat
         toggleCustomerSelect();
 		toggleCategorySelect();
+		toggleBarangSelect();
     });
 	</script>
 	@endpush

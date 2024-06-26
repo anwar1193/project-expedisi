@@ -112,7 +112,9 @@
                                     <img src="{{ asset('storage/merchandise/'.$data->gambar) }}" style="height: 150px" class="card-img-top" alt="...">
                                     <div class="card-body">
                                     <p class="card-title">{{ $data->nama }}</p>
-                                    <p class="card-text">{{ number_format($data->nilai, 0, '.', ',') }} : {{ $data->points }}</p>
+
+                                    <p class="card-text">{{ number_format($data->nilai, 0, '.', ',') }} point</p>
+
 									<form action="{{ route('proses-penukaran-point') }}" method="POST">
 										@csrf
 										<input type="hidden" name="customer_id" value="{{ $customer->id }}">
@@ -120,7 +122,7 @@
 
 										<button type="submit" class="btn btn-primary">Tukar</button>
 									</form>
-                                    {{-- <a href="#" class="btn btn-primary">Tukar</a> --}}
+
                                     </div>
                                 </div>
                             @endforeach

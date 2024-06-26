@@ -21,7 +21,7 @@
 	<div class="container invoice">
 	    <div class="row">
 	        <div class="col-sm-12">
-				<form action="<?php echo e(route('invoice.handle-transactions', $customer->id)); ?>" method="POST">
+				<form action="<?php echo e(route('invoice.handle-transactions', $customer->id)); ?>" method="POST" target="_blank">
 				<?php echo csrf_field(); ?>
 	            <div class="card">
 	                <div class="card-body">						
@@ -95,7 +95,9 @@
 												<th style="border: 1px solid">Penerima</th>
 												<th style="border: 1px solid">Tujuan</th>
 												<th style="border: 1px solid">Jumlah Pembayaran</th>
-												<th style="border: 1px solid">Pilih</th>
+												<?php if(!isCustomer()): ?>
+													<th style="border: 1px solid">Pilih</th>													
+												<?php endif; ?>
 											</tr>
 										</thead>
 										<tbody style="font-size: 14px">
@@ -108,31 +110,35 @@
                                                     <td style="border: 1px solid; padding: 5px; text-align: center"><?php echo e($data->nama_penerima); ?></td>
                                                     <td style="border: 1px solid; padding: 5px; text-align: center"><?php echo e($data->kota_tujuan); ?></td>
                                                     <td style="border: 1px solid; padding: 5px; text-align: center">Rp <?php echo e(number_format($data->ongkir, 0, '.', '.')); ?></td>
-                                                    <td style="border: 1px solid; padding: 5px; text-align: center">
-														<input type="checkbox" name="id_pengiriman[]" value="<?php echo e($data->id); ?>" <?php echo e($data->transaksi->isNotEmpty() ? 'checked' : ''); ?>>
-													</td>
+													<?php if(!isCustomer()): ?>
+														<td style="border: 1px solid; padding: 5px; text-align: center">
+															<input type="checkbox" name="id_pengiriman[]" value="<?php echo e($data->id); ?>" <?php echo e($data->transaksi->isNotEmpty() ? 'checked' : ''); ?>>
+														</td>														
+													<?php endif; ?>
                                                 </tr>
                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                                 <tr>
-                                                    <td colspan="7" class="text-center">
+                                                    <td colspan=<?php echo e(!isCustomer() ? "7" : "6"); ?> class="text-center">
                                                         <p class="fw-semibold">Belum Ada Data Transaksi</p>
                                                     </td>
                                                 </tr>
                                             <?php endif; ?> 
 										</tbody>
-                                        <tfoot>
-                                            
-                                            <tr>
-                                                <td style="border: 1px solid; padding: 5px; text-align: center"></td>
-                                                <td colspan="6" style="border: 1px solid; padding: 5px; text-align: center">
-                                                    <p class="fw-semibold">Diskon</p>
-                                                </td>
-                                                <td style="border: 1px solid; padding: 5px; text-align: center">
-                                                    <input class="text-center form-control" type="number" name="diskon" id="diskon" value="<?php echo e(old('diskon', $invoice->diskon)); ?>">
-                                                </td>
-                                            </tr>
-                                            
-                                        </tfoot>
+										<?php if(!isCustomer()): ?>
+											<tfoot>
+												
+												<tr>
+													<td style="border: 1px solid; padding: 5px; text-align: center"></td>
+													<td colspan="6" style="border: 1px solid; padding: 5px; text-align: center">
+														<p class="fw-semibold">Diskon</p>
+													</td>
+													<td style="border: 1px solid; padding: 5px; text-align: center">
+														<input class="text-center form-control" type="number" name="diskon" id="diskon" value="<?php echo e(old('diskon', $invoice->diskon)); ?>">
+													</td>
+												</tr>
+												
+											</tfoot>											
+										<?php endif; ?>
 	                                </table>
 	                            </div>
 	                            <!-- End Table-->

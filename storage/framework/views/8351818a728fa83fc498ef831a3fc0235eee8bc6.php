@@ -30,11 +30,15 @@
                             </div>
 
                             <div class="tab-pane fade" id="top-profilesecondary" role="tabpanel" aria-labelledby="profile-top-tab">
-                                <?php echo $__env->make('customers.component.tagihan', ['data' => $tagihan, 'tableId' => 'basic-1'], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+                                <?php echo $__env->make('customers.component.tagihan', ['data' => $tagihan, 'total' => $totalTagihan, 'tableId' => 'basic-1'], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                             </div>
 
                             <div class="tab-pane fade <?php echo e($resi ? 'active show' : ''); ?>" id="top-contactsecondary" role="tabpanel" aria-labelledby="contact-top-tab">
                                 <?php echo $__env->make('customers.component.resi', ['data' => $resi], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+                            </div>
+                            
+							<div class="tab-pane fade" id="top-invoicesecondary" role="tabpanel" aria-labelledby="profile-top-tab">
+                                <?php echo $__env->make('customers.component.invoice', ['data' => $data, 'tableId' => 'basic-2', 'customer' => $customer, 'invoice' => $invoice, 'total' => $total], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                             </div>
 
                         </div>	 
@@ -49,6 +53,30 @@
     <script>
 		$(document).ready(function() {
 			$('#basic-1').DataTable({
+				language: {
+					"emptyTable": "Tidak ada data yang tersedia pada tabel ini",
+					"info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+					"infoEmpty": "Menampilkan 0 sampai 0 dari 0 entri",
+					"infoFiltered": " (disaring dari _MAX_ entri keseluruhan)",
+					"lengthMenu": "Tampilkan _MENU_ entri",
+					"loadingRecords": "Sedang memuat...",
+					"processing": "Sedang memproses...",
+					"search": "Cari:",
+					"zeroRecords": "Tidak ditemukan data yang sesuai",
+					"paginate": {
+					"first": "Pertama",
+					"last": "Terakhir",
+					"next": "Selanjutnya",
+					"previous": "Sebelumnya"
+					},
+				},
+                searching: false,
+			});
+		})
+	</script>
+    <script>
+		$(document).ready(function() {
+			$('#basic-2').DataTable({
 				language: {
 					"emptyTable": "Tidak ada data yang tersedia pada tabel ini",
 					"info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
