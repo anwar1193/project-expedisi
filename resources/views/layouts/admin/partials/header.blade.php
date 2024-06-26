@@ -75,7 +75,7 @@
                         <div class="media">
                             <span class="notification-bg bg-light-success"><i data-feather="file-text"></i></span>
                             <div class="media-body">
-                                <a class="{{ $tema == 'dark' ? 'text-light' : 'text-black' }}" href="{{ route('data-pengiriman') }}">
+                                <a class="{{ $tema == 'dark' ? 'text-light' : 'text-black' }}" href="{{ route('data-pengiriman', ['notif' => 1]) }}">
                                     {{ $notificationData['text_notif'] ?? $notificationData['text_owner'] }}
                                 </a>
                             </div>

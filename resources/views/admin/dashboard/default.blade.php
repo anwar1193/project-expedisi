@@ -17,6 +17,7 @@
                           confirm: {
                               text: "Lihat Data",
                               value: true,
+                              name: 'notif',
                               visible: true,
                               className: "bg-danger",
                               closeModal: true
@@ -31,7 +32,7 @@
                         }
             }).then((value) => {
                 if (value) {
-                    window.location.href = "{{ route('data-pengiriman') }}";
+                    window.location.href = "{{ route('data-pengiriman', ['notif' => 1]) }}";
                 }
             });
         });
