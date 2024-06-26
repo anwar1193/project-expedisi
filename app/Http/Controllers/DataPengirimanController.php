@@ -10,6 +10,7 @@ use App\Models\StatusPengiriman;
 use Dflydev\DotAccessData\Data;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use Yaza\LaravelGoogleDriveStorage\Gdrive;
@@ -18,7 +19,14 @@ class DataPengirimanController extends Controller
 {
     public  function index()
     {
-        $datas = DataPengiriman::orderBy('tgl_transaksi', 'DESC')->get();
+        // $level = Session::get('user_level') == 2;
+        $notif = request('notif');
+
+        $datas = DataPengiriman::when(!$notif, function ($query) {
+            return $query->orderBy('tgl_transaksi', 'DESC');
+        })->when($notif, function ($query) {
+            return $query->where('status_pembayaran', DataPengiriman::STATUS_PENDING)->orderBy('tgl_transaksi', 'DESC');
+        })->get();
         $status = StatusPengiriman::orderBy('id', 'ASC')->get();
 
         $data['datas'] = $datas;

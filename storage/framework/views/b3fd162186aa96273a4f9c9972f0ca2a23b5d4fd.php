@@ -59,7 +59,7 @@
                         <div class="media">
                             <span class="notification-bg bg-light-success"><i data-feather="file-text"></i></span>
                             <div class="media-body">
-                                <a class="<?php echo e($tema == 'dark' ? 'text-light' : 'text-black'); ?>" href="<?php echo e(route('data-pengiriman')); ?>">
+                                <a class="<?php echo e($tema == 'dark' ? 'text-light' : 'text-black'); ?>" href="<?php echo e(route('data-pengiriman', ['notif' => 1])); ?>">
                                     <?php echo e($notificationData['text_notif'] ?? $notificationData['text_owner']); ?>
 
                                 </a>

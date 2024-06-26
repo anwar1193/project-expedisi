@@ -21,8 +21,28 @@
         <ol class="breadcrumb align-items-center">
             <div class="d-grid gap-2 d-md-block mx-2">
                 {{-- @if (isAdmin()) --}}
-                    <a href="{{ route('data-pemasukan.create') }}" class="btn btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Tambah Data">
-                        <i class="fa fa-plus"></i> Tambah
+                    <a href="{{ route('data-pemasukan.create') }}" class="btn btn-sm btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Tambah Data">
+                        <i class="fa fa-plus"></i> Tambah Pemasukan
+                    </a>
+
+					{{-- <a href="{{ route('data-barang') }}" class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Data Barang">
+                        <i class="fa fa-cube"></i> Data Barang
+                    </a> --}}
+
+					<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+						<div class="btn-group" role="group">
+							<button class="btn btn-success btn-sm dropdown-toggle" id="btnGroupDropBarang" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cube"></i> Data Barang</button>
+							<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+
+								<a class="dropdown-item" href="{{ route('data-barang') }}" ><span>Master Data</span></a>
+								<a class="dropdown-item" href="#" ><span>Barang Masuk</span></a>
+								
+							</div>
+						</div>
+					</div>
+
+					<a href="#" class="btn btn-warning btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Data Jasa">
+                        <i class="fa fa-male"></i> Data Jasa
                     </a>
                 {{-- @endif --}}
             </div>
