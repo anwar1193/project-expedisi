@@ -56,6 +56,32 @@
                                             </span>
                                         </div>
                                     </div>
+                                    <div class="row d-flex py-1 text-start justify-content-start">
+                                        <div class="pb-2">History Limit</div>
+                                        <div class="col">
+                                            <div class="table-responsive">
+                                                <table class="display" style="border: 1.5px solid;">
+                                                    <thead>
+                                                        <tr>
+                                                            <th style="border: 2px solid;" width="5%">No</th>
+                                                            <th style="border: 2px solid;" width="40%">Nominal</th>
+                                                            <th style="border: 2px solid;">Tanggal Ditambahakan</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($data->history as $data)
+                                                            <tr>
+                                                                <td style="border: 2px solid;">{{ $loop->iteration; }}</td>
+                                                                <td style="border: 2px solid;">{{ 'Rp '.number_format($data->limit_kredit, 0, '.', '.') }}</td>
+                                                                <td style="border: 2px solid;">{{ $data->created_at }}</td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
