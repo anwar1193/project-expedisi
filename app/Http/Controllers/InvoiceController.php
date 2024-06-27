@@ -113,23 +113,25 @@ class InvoiceController extends Controller
                     ->where('customers.id', $id)
                     ->first();
 
-        if ($id_pengiriman == NULL) {
-            return back()->with('error', 'Belum Ada Data Dipilih');
-        }
-
-        foreach ($id_pengiriman as $pengiriman_id) {
-            $exist = TransaksiInvoice::where('data_pengiriman_id', $pengiriman_id)->exists();
-            if (!$exist) {
-                TransaksiInvoice::create([
-                    'invoice_id' => $customer->invoiceId,
-                    'data_pengiriman_id' => $pengiriman_id
-                ]);
+        if (!isCustomer()) {
+            if ($id_pengiriman == NULL) {
+                return back()->with('error', 'Belum Ada Data Dipilih');
             }
+    
+            foreach ($id_pengiriman as $pengiriman_id) {
+                $exist = TransaksiInvoice::where('data_pengiriman_id', $pengiriman_id)->exists();
+                if (!$exist) {
+                    TransaksiInvoice::create([
+                        'invoice_id' => $customer->invoiceId,
+                        'data_pengiriman_id' => $pengiriman_id
+                    ]);
+                }
+            }
+    
+            Invoice::find($customer->invoiceId)->update([
+                'diskon' => $diskon
+            ]); 
         }
-
-        Invoice::find($customer->invoiceId)->update([
-            'diskon' => $diskon
-        ]);
 
         return redirect()->route('invoice.customer-pdf', ['id' => $customer->id]);
     }
