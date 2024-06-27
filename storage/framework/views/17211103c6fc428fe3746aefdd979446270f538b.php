@@ -32,7 +32,7 @@
 							<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
 
 								<a class="dropdown-item" href="<?php echo e(route('data-barang')); ?>" ><span>Master Data</span></a>
-								<a class="dropdown-item" href="#" ><span>Barang Masuk</span></a>
+								<a class="dropdown-item" href="<?php echo e(route('barang-masuk')); ?>" ><span>Barang Masuk</span></a>
 								
 							</div>
 						</div>
