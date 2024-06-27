@@ -19,9 +19,14 @@
                                         <div class="col-4"><?php echo e($data->tgl_pemasukkan); ?></div>
                                     </div>
                                     <div class="row d-flex py-1 text-start justify-content-start">
-                                        <div class="col-6">Keterangan</div>
+                                        <div class="col-6">Kategori</div>
                                         <div class="col-2">:</div>
-                                        <div class="col-4"><?php echo e($data->keterangan); ?></div>
+                                        <div class="col-4"><?php echo e($data->kategori); ?></div>
+                                    </div>
+                                    <div class="row d-flex py-1 text-start justify-content-start">
+                                        <div class="col-6">Modal</div>
+                                        <div class="col-2">:</div>
+                                        <div class="col-4"><?php echo e($data->modal); ?></div>
                                     </div>
                                     <div class="row d-flex py-1 text-start justify-content-start">
                                         <div class="col-6">Bukti Pembayaran</div>
