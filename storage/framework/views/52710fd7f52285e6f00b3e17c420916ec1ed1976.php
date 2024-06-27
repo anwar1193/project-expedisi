@@ -179,7 +179,7 @@
                     </table>
                 </div>
                 <div style="margin-top: -5px">
-                    <h5>Total Terbilang: <?php echo e(terbilang($total->total - $customer->diskon)); ?> RUPIAH</h5>
+                    <h5>Total Terbilang: <?php echo e(terbilang($totalBersih)); ?> RUPIAH</h5>
                 </div>
                 <div style="margin-top: -25px">
                     <p>Note:</p>
