@@ -168,5 +168,17 @@ class CustomerController extends Controller
 
         return view('customers.history-limit', compact('customer', 'data'));
     }
+
+    public function addDiskon(Request $request)
+    {
+        $id = $request->id;
+        $diskon = $request->diskon;
+
+        Customer::where('id', $id)->update([
+            'diskon' => $diskon
+        ]);
+
+        return redirect()->route('customers.index')->with('success', 'Diskon Customer Berhasil Ditambahkan');
+    }
     
 }
