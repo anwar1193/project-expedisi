@@ -32,6 +32,7 @@
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 10px;
+            font-size: 12px
         }
 
         .table-header h4, .table-header p, .table-header h3 {
@@ -103,8 +104,8 @@
                     <table id="data" style="border: 1px solid; width: 100%">
                         <thead>
                             <tr>
-                                <th style="border: 1px solid">No</th>
-                                <th style="border: 1px solid">No STT</th>
+                                <th width="4%" style="border: 1px solid">No</th>
+                                <th width="10%" style="border: 1px solid">No STT</th>
                                 <th style="border: 1px solid">Tanggal</th>
                                 <th style="border: 1px solid">Pengirim</th>
                                 <th style="border: 1px solid">Penerima</th>
@@ -112,7 +113,7 @@
                                 <th style="border: 1px solid">Jumlah Pembayaran</th>
                             </tr>
                         </thead>
-                        <tbody style="font-size: 14px">
+                        <tbody>
                             @forelse ($data as $data)
                                 <tr>
                                     <td style="border: 1px solid; padding: 5px; text-align: center">{{ $loop->iteration; }}</td>
@@ -154,10 +155,19 @@
                                 <tr>
                                     <td style="border: 1px solid; text-align: center"></td>
                                     <td colspan="5" style="border: 1px solid; text-align: center">
+                                        <p class="fw-semibold">Diskon Customer ({{ $customer->diskon_customer != 0 ?  $customer->diskon_customer : ""}}%)</p>
+                                    </td>
+                                    <td style="border: 1px solid; text-align: center">
+                                        Rp {{ $customer->diskon_customer != 0 ? number_format($diskon, 0, '.', '.') : 0 }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid; text-align: center"></td>
+                                    <td colspan="5" style="border: 1px solid; text-align: center">
                                         <p class="fw-semibold">Total</p>
                                     </td>
                                     <td style="border: 1px solid; text-align: center">
-                                        Rp {{ number_format($total->total - $customer->diskon, 0, '.', '.') }}
+                                        Rp {{ number_format($totalBersih, 0, '.', '.') }}
                                     </td>
                                 </tr>
                             </tfoot>
@@ -165,7 +175,7 @@
                     </table>
                 </div>
                 <div style="margin-top: -5px">
-                    <h5>Total Terbilang: {{ terbilang($total->total) }} RUPIAH</h5>
+                    <h5>Total Terbilang: {{ terbilang($total->total - $customer->diskon) }} RUPIAH</h5>
                 </div>
                 <div style="margin-top: -25px">
                     <p>Note:</p>
@@ -180,54 +190,32 @@
                 <div style="margin-top: -5px">
                     <p>Pembayaran dapat di transfer ke rekening :</p>
                     <div style="width: 70% ; margin-left:30px;">
+                        @foreach ($bank as $data)  
                         <table style="padding: 10px 0px 0px 10px; font-size: 14px">
                             <tbody>
                                 <tr>
                                     <td>Bank</td>
                                     <td>:</td>
-                                    <td>BCA (Bank Central Asia)</td>
+                                    <td>{{ $data->bank }}</td>
                                 </tr>
                                 <tr>
                                     <td>Cabang</td>
                                     <td>:</td>
-                                    <td>KCP Ratulangi Makassar</td>
+                                    <td>{{ $data->cabang }}</td>
                                 </tr>
                                 <tr>
                                     <td>No Rekening</td>
                                     <td>:</td>
-                                    <td>7325001488</td>
+                                    <td>{{ $data->nomor_rekening }}</td>
                                 </tr>
                                 <tr>
                                     <td>Atas Nama</td>
                                     <td>:</td>
-                                    <td>Gerry Stefanus Sidharta</td>
+                                    <td>{{ $data->atas_nama }}</td>
                                 </tr>
                             </tbody>
                         </table>
-                        <table style="padding: 10px 0px 0px 10px; font-size: 14px">
-                            <tbody>
-                                <tr>
-                                    <td>Bank</td>
-                                    <td>:</td>
-                                    <td>Mandiri</td>
-                                </tr>
-                                <tr>
-                                    <td>Cabang</td>
-                                    <td>:</td>
-                                    <td>Makassar</td>
-                                </tr>
-                                <tr>
-                                    <td>No Rekening</td>
-                                    <td>:</td>
-                                    <td>1520012846164</td>
-                                </tr>
-                                <tr>
-                                    <td>Atas Nama</td>
-                                    <td>:</td>
-                                    <td>Gerry Stefanus Sidharta</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        @endforeach 
                     </div>
                     <div>
                         <p>Bukti pembayaran dapat di kirim ke :</p>
