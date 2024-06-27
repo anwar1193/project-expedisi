@@ -19,8 +19,10 @@ class CustomerController extends Controller
         $customers = Customer::orderBy('id', 'desc')->get();
         foreach ($customers as $item) {
             $point = KonversiPoint::orderBy('id', 'asc')->first();
+            $history = HistoryLimit::where('customer_id', $item->id)->orderBy('id', 'DESC')->limit(5)->get();
 
             $item->points = round($item->limit_credit / $point->nominal);
+            $item->history = $history;
         }
 
         return view('customers.index', compact('customers'));
