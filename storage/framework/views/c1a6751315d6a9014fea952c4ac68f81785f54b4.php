@@ -132,19 +132,19 @@
 												<tr>
 													<td style="border: 1px solid; padding: 5px; text-align: center"></td>
 													<td colspan="6" style="border: 1px solid; padding: 5px; text-align: center">
-														<p class="fw-semibold">Diskon</p>
+														<p class="fw-semibold">Diskon Customer</p>
 													</td>
 													<td style="border: 1px solid; padding: 5px; text-align: center">
-														<input class="text-center form-control" type="number" name="diskon" id="diskon" value="<?php echo e(old('diskon', $invoice->diskon)); ?>">
+														<?php echo e($customer->diskon); ?>%
 													</td>
 												</tr>
 												<tr>
 													<td style="border: 1px solid; padding: 5px; text-align: center"></td>
 													<td colspan="6" style="border: 1px solid; padding: 5px; text-align: center">
-														<p class="fw-semibold">Diskon Customer</p>
+														<p class="fw-semibold">Diskon</p>
 													</td>
 													<td style="border: 1px solid; padding: 5px; text-align: center">
-														<?php echo e($customer->diskon); ?>%
+														<input class="text-center form-control" type="number" name="diskon" id="diskon" value="<?php echo e(old('diskon', $invoice->diskon)); ?>">
 													</td>
 												</tr>
 												

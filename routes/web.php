@@ -305,6 +305,7 @@ Route::middleware("auth")->group(function() {
         Route::get('/delete/{id}', [CustomerController::class, 'delete'])->name('customers.delete');
         Route::post('/add-credit', [CustomerController::class, 'addCredit'])->name('customers.addCredit');
         Route::get('/history-credit/{id}', [CustomerController::class, 'history_limit'])->name('customers.historyLimit');
+        Route::post('/add-diskon', [CustomerController::class, 'addDiskon'])->name('customers.addDiskon');
     });
    
     Route::prefix('invoice')->group(function () {
