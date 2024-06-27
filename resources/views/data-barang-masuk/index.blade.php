@@ -13,7 +13,7 @@
 		@slot('breadcrumb_title')
 			<h3>Data Barang Masuk</h3>
 		@endslot
-		<li class="breadcrumb-item active"><a href="{{ route('data-barang') }}">Master Data Barang</a></li>
+		<li class="breadcrumb-item active"><a href="{{ route('barang-masuk') }}">Data Barang Masuk</a></li>
 		<li class="breadcrumb-item active">Table</li>
 	@endcomponent
 
@@ -21,12 +21,12 @@
         <ol class="breadcrumb align-items-center">
             <div class="d-grid gap-2 d-md-block mx-2">
                 {{-- @if (isAdmin()) --}}
-					<a href="{{ route('data-pemasukan') }}" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Kembali">
+					<a href="{{ route('barang-masuk') }}" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Kembali">
 						<i class="fa fa-backward"></i> Kembali
 					</a>
 
-                    <a href="{{ route('data-barang.create') }}" class="btn btn-sm btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Tambah Data">
-                        <i class="fa fa-plus"></i> Tambah Barang
+                    <a href="{{ route('barang-masuk.create') }}" class="btn btn-sm btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Tambah Data">
+                        <i class="fa fa-plus"></i> Tambah Transaksi
                     </a>
                 {{-- @endif --}}
             </div>
@@ -72,11 +72,11 @@
 	                            <thead>
 	                                <tr>
 	                                    <th>No</th>
+										<th>Tanggal Masuk</th>
 										<th>Nama Barang</th>
-										<th>Harga Beli</th>
-	                                    <th>Harga Jual</th>
-	                                    <th>Stok</th>
-										<th width="35%" class="text-center">Action</th>
+	                                    <th>Qty</th>
+	                                    <th>Keterangan</th>
+										{{-- <th width="35%" class="text-center">Action</th> --}}
 	                                </tr>
 	                            </thead>
 	                            <tbody>                                        
@@ -87,22 +87,22 @@
 										<td>{{ number_format($data->harga_beli, 0, '.', ',') }}</td>
 										<td>{{ number_format($data->harga_jual, 0, '.', ',') }}</td>
 										<td>{{ $data->stok }}</td>
-										<td class="text-center">
+										{{-- <td class="text-center">
 
 											<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
 												<div class="btn-group" role="group">
 													<button class="btn btn-secondary btn-sm dropdown-toggle" id="btnGroupDrop1" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
 													<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
 
-														<a class="dropdown-item" href="{{ route('data-barang.edit', $data->id) }}" ><span><i data-feather="edit"></i> Edit</span></a>
+														<a class="dropdown-item" href="{{ route('barang-masuk.edit', $data->id) }}" ><span><i data-feather="edit"></i> Edit</span></a>
 
-														<a class="dropdown-item" href="{{ route('data-barang.delete', $data->id) }}" onclick="return confirm('Apakah Anda Yakin?')"><span><i data-feather="delete"></i> Delete</span></a>
+														<a class="dropdown-item" href="{{ route('barang-masuk.delete', $data->id) }}" onclick="return confirm('Apakah Anda Yakin?')"><span><i data-feather="delete"></i> Delete</span></a>
 														
 													</div>
 												</div>
 											</div>
-											@include('data-barang.detail')
-										</td>
+											@include('barang-masuk.detail')
+										</td> --}}
 									</tr>
 									@endforeach
 	                            </tbody>

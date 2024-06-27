@@ -268,6 +268,15 @@ Route::middleware("auth")->group(function() {
         Route::post('/update/{id}', [JasaController::class, 'update'])->name('data-jasa.update');
         Route::get('/delete/{id}', [JasaController::class, 'delete'])->name('data-jasa.delete');
     });
+
+    Route::prefix('barang-masuk')->group(function () {
+        Route::get('/', [BarangMasukController::class, 'index'])->name('barang-masuk');
+        Route::get('/create', [BarangMasukController::class, 'create'])->name('barang-masuk.create');
+        // Route::get('/edit/{id}', [BarangMasukController::class, 'edit'])->name('barang-masuk.edit');
+        Route::post('/', [BarangMasukController::class, 'store'])->name('barang-masuk.store');
+        // Route::post('/update/{id}', [BarangMasukController::class, 'update'])->name('barang-masuk.update');
+        // Route::get('/delete/{id}', [BarangMasukController::class, 'delete'])->name('barang-masuk.delete');
+    });
     
     Route::prefix('pembelian-perlengkapan')->group(function () {
         Route::get('/', [PembelianPerlengkapanController::class, 'index'])->name('pembelian-perlengkapan');

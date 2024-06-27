@@ -577,6 +577,7 @@ unset($__errorArgs, $__bag); ?>
 			} else if (value === "jasa") {
 				jasa.style.display = 'block';
 				barang.style.display = 'none';
+				modalInput.value = "";
 			}
 		}
 		
