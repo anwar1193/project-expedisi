@@ -58,6 +58,32 @@
                                             </span>
                                         </div>
                                     </div>
+                                    <div class="row d-flex py-1 text-start justify-content-start">
+                                        <div class="pb-2">History Limit</div>
+                                        <div class="col">
+                                            <div class="table-responsive">
+                                                <table class="display" style="border: 1.5px solid;">
+                                                    <thead>
+                                                        <tr>
+                                                            <th style="border: 2px solid;" width="5%">No</th>
+                                                            <th style="border: 2px solid;" width="40%">Nominal</th>
+                                                            <th style="border: 2px solid;">Tanggal Ditambahakan</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <?php $__currentLoopData = $data->history; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                            <tr>
+                                                                <td style="border: 2px solid;"><?php echo e($loop->iteration); ?></td>
+                                                                <td style="border: 2px solid;"><?php echo e('Rp '.number_format($data->limit_kredit, 0, '.', '.')); ?></td>
+                                                                <td style="border: 2px solid;"><?php echo e($data->created_at); ?></td>
+                                                            </tr>
+                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                    </tbody>
+                                                </table>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
