@@ -26,6 +26,140 @@
 					<form class="form theme-form" method="POST" action="<?php echo e(route('data-pemasukan.update', $datas->id)); ?>" enctype="multipart/form-data">
                         <?php echo csrf_field(); ?>
 						<div class="card-body">
+
+							<div class="row">
+								<div class="col">
+									<div class="mb-3">
+										<label class="form-label" for="">Kategori</label>
+										<select name="kategori" id="kategori" class="form-control <?php $__errorArgs = ['kategori'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>">
+											<option value="barang" <?php echo e($datas->kategori == 'barang' ? 'selected' : ''); ?>>Barang</option>
+											<option value="jasa" <?php echo e($datas->kategori == 'jasa' ? 'selected' : ''); ?>>Jasa</option>
+										</select>
+										<?php $__errorArgs = ['kategori'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+										<div class="text-danger">
+											<?php echo e($message); ?>
+
+										</div>
+										<?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+									</div>
+								</div>
+							</div>
+							
+							<div id="barang" class="row" style="display: none">
+								<div class="col">
+									<div class="mb-3">
+										<label class="form-label" for="">Barang</label>
+										<select name="barang" id="barangs" class="form-control <?php $__errorArgs = ['barang'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>">
+											<?php $__currentLoopData = $barang; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+												<option value="<?php echo e($item->id); ?>" <?php echo e($datas->kategori == "barang" && $datas->barang_jasa == $item->id ? 'selected' : ''); ?>>
+													<?php echo e($item->nama_barang); ?>
+
+												</option>
+											<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+										</select>
+										<?php $__errorArgs = ['barang'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+										<div class="text-danger">
+											<?php echo e($message); ?>
+
+										</div>
+										<?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+									</div>
+								</div>
+							</div>
+							
+							<div id="jasa" class="row" style="display: none">
+								<div class="col">
+									<div class="mb-3">
+										<label class="form-label" for="">Jasa</label>
+										<select name="jasa" id="jasa" class="form-control <?php $__errorArgs = ['jasa'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>">
+											<?php $__currentLoopData = $jasa; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+												<option value="<?php echo e($item->id); ?>" <?php echo e($datas->kategori == "jasa" && $data->barang_jasa == $item->id ? 'selected' : ''); ?>>
+													<?php echo e($item->nama_jasa); ?>
+
+												</option>
+											<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+										</select>
+										<?php $__errorArgs = ['jasa'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+										<div class="text-danger">
+											<?php echo e($message); ?>
+
+										</div>
+										<?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+									</div>
+								</div>
+							</div>
+							
+							<div class="row">
+								<div class="col">
+									<div class="mb-3">
+										<label class="form-label" for="">Modal</label>
+										<input class="form-control <?php $__errorArgs = ['modal'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" type="number" name="modal" autocomplete="off" value="<?php echo e(old('modal', $datas->modal)); ?>"/>
+
+										<?php $__errorArgs = ['modal'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+										<div class="text-danger">
+											<?php echo e($message); ?>
+
+										</div>
+										<?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+									</div>
+								</div>
+							</div>
 							
                             <div class="row">
 								<div class="col">
@@ -400,6 +534,11 @@ unset($__errorArgs, $__bag); ?>
 		const customerSelect = document.getElementById('customer');
 		const kredit = document.getElementById('kredit');
 		const sumberPemasukkan = document.getElementById('sumberPemasukkan');
+		const kategori = document.getElementById('kategori');
+		const barang = document.getElementById('barang');
+		const barangs = document.getElementById('barangs');
+		const jasa = document.getElementById('jasa');
+		const modalInput = document.querySelector('input[name="modal"]');
 
         // Fungsi untuk mengubah visibilitas elemen select
         function toggleCustomerSelect() {
@@ -414,11 +553,39 @@ unset($__errorArgs, $__bag); ?>
             }
 		}
 
+		function toggleCategorySelect() {
+			const value = kategori.value;
+			console.log(value);
+			
+			if (value === "barang") {
+				barang.style.display = 'block';
+				jasa.style.display = 'none';
+			} else if (value === "jasa") {
+				jasa.style.display = 'block';
+				barang.style.display = 'none';
+			}
+		}
+		
+		function toggleBarangSelect() {
+			const value = barangs.value;
+
+			const barangData = <?php echo json_encode($barang); ?>;
+			
+			const valueBarang = barangData.find(item => item.id == value);
+			
+			modalInput.value = valueBarang.harga_jual;
+		}
+
+		barang.addEventListener('change', toggleBarangSelect);
+		kategori.addEventListener('change', toggleCategorySelect);
+
 		// Tambahkan event listener ke checkbox
 		dataCustomerCheckbox.addEventListener('change', toggleCustomerSelect);
 
 		// Panggil fungsi saat halaman pertama kali dimuat
 		toggleCustomerSelect();
+		toggleCategorySelect();
+		toggleBarangSelect();
 	});
 	</script>
 	<?php $__env->stopPush(); ?>

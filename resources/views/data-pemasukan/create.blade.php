@@ -31,6 +31,81 @@
 							<div class="row">
 								<div class="col">
 									<div class="mb-3">
+										<label class="form-label" for="">Kategori</label>
+										<select name="kategori" id="kategori" class="form-control @error('kategori') is-invalid @enderror">
+											<option value="">- Pilih Kategori -</option>
+											<option value="barang" {{ old('kategori') == 'barang' ? 'selected' : '' }}>Barang</option>
+											<option value="jasa" {{ old('kategori') == 'jasa' ? 'selected' : '' }}>Jasa</option>
+										</select>
+										@error('kategori')
+										<div class="text-danger">
+											{{ $message }}
+										</div>
+										@enderror
+									</div>
+								</div>
+							</div>
+							
+							<div id="barang" class="row" style="display: none">
+								<div class="col">
+									<div class="mb-3">
+										<label class="form-label" for="">Barang</label>
+										<select name="barang" id="barangs" class="form-control @error('barang') is-invalid @enderror">
+											<option value="">- Pilih Barang -</option>
+											@foreach ($barangs as $item)
+												<option value="{{ $item->id }}" {{ old('id') == $item->id ? 'selected' : '' }}>
+													{{ $item->nama_barang }}
+												</option>
+											@endforeach
+										</select>
+										@error('barang')
+										<div class="text-danger">
+											{{ $message }}
+										</div>
+										@enderror
+									</div>
+								</div>
+							</div>
+							
+							<div id="jasa" class="row" style="display: none">
+								<div class="col">
+									<div class="mb-3">
+										<label class="form-label" for="">Jasa</label>
+										<select name="jasa" id="jasa" class="form-control @error('jasa') is-invalid @enderror">
+											<option value="">- Pilih Jasa -</option>
+											@foreach ($jasas as $item)
+												<option value="{{ $item->id }}" {{ old('id') == $item->id ? 'selected' : '' }}>
+													{{ $item->nama_jasa }}
+												</option>
+											@endforeach
+										</select>
+										@error('jasa')
+										<div class="text-danger">
+											{{ $message }}
+										</div>
+										@enderror
+									</div>
+								</div>
+							</div>
+							
+							<div class="row">
+								<div class="col">
+									<div class="mb-3">
+										<label class="form-label" for="">Modal</label>
+										<input class="form-control @error('modal') is-invalid @enderror" type="number" name="modal" autocomplete="off" value="{{ old('modal') }}"/>
+
+										@error('modal')
+										<div class="text-danger">
+											{{ $message }}
+										</div>
+										@enderror
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col">
+									<div class="mb-3">
 										<label class="form-label" for="">Keterangan</label>
 										<input class="form-control @error('keterangan') is-invalid @enderror" type="text" name="keterangan" autocomplete="off" value="{{ old('keterangan') }}"/>
 
@@ -298,6 +373,11 @@
         const customerSelect = document.getElementById('customer');
         const kredit = document.getElementById('kredit');
 		const sumberPemasukkan = document.getElementById('sumberPemasukkan');
+		const kategori = document.getElementById('kategori');
+		const barang = document.getElementById('barang');
+		const barangs = document.getElementById('barangs');
+		const jasa = document.getElementById('jasa');
+		const modalInput = document.querySelector('input[name="modal"]');
 
         // Fungsi untuk mengubah visibilitas elemen select
         function toggleCustomerSelect() {
@@ -312,11 +392,39 @@
             }
         }
 
+		function toggleCategorySelect() {
+			const value = kategori.value;
+			console.log(value);
+			
+			if (value === "barang") {
+				barang.style.display = 'block';
+				jasa.style.display = 'none';
+			} else if (value === "jasa") {
+				jasa.style.display = 'block';
+				barang.style.display = 'none';
+			}
+		}
+		
+		function toggleBarangSelect() {
+			const value = barangs.value;
+
+			const barangData = {!! json_encode($barangs) !!};
+			
+			const valueBarang = barangData.find(item => item.id == value);
+			
+			modalInput.value = valueBarang.harga_jual;
+		}
+
+		barang.addEventListener('change', toggleBarangSelect);
+		kategori.addEventListener('change', toggleCategorySelect);
+
         // Tambahkan event listener ke checkbox
         dataCustomerCheckbox.addEventListener('change', toggleCustomerSelect);
-
+		
         // Panggil fungsi saat halaman pertama kali dimuat
         toggleCustomerSelect();
+		toggleCategorySelect();
+		toggleBarangSelect();
     });
 	</script>
 	@endpush
