@@ -74,6 +74,7 @@
 	                                    <th>Email</th>
 	                                    <th>Limit Kredit</th>
 	                                    <th>Point</th>
+	                                    <th>Diskon</th>
 										<th width="20%" class="text-center">Action</th>
 	                                </tr>
 	                            </thead>
@@ -97,6 +98,12 @@
 													{{ $data->point }}
 												</span>
 											</td>
+											
+											<td class="text-center">
+												<span class="badge" style="background-color: blue">
+													{{ $data->diskon }}%
+												</span>
+											</td>
 
 											<td class="text-center">
 
@@ -108,6 +115,10 @@
 															@if (Session::get('user_level') == 2)
 																<a class="dropdown-item" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#customerLimitKredit{{ $data->id }}">
 																	<span><i class="pt-2 pe-2" data-feather="tag"></i> Limit Kredit</span>
+																</a>
+																
+																<a class="dropdown-item" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#customerDiskon{{ $data->id }}">
+																	<span><i class="pt-2 pe-2" data-feather="dollar-sign"></i> Diskon</span>
 																</a>
 																
 																<a class="dropdown-item" href="{{ route('customers.historyLimit', $data->id) }}"><span><i class="pt-2 pe-2" data-feather="list"></i> History Limit</span></a>
@@ -125,6 +136,7 @@
 														</div>
 														@include('customers.detail')
 														@include('customers.limit_kredit')
+														@include('customers.diskon')
 													</div>
 												</div>
 											</td>
