@@ -146,19 +146,19 @@
                                 <tr>
                                     <td style="border: 1px solid; text-align: center"></td>
                                     <td colspan="5" style="border: 1px solid; text-align: center">
-                                        <p class="fw-semibold">Diskon</p>
+                                        <p class="fw-semibold">Diskon Customer ({{ $customer->diskon_customer != 0 ?  $customer->diskon_customer : ""}}%)</p>
                                     </td>
                                     <td style="border: 1px solid; text-align: center">
-                                        Rp {{ number_format($customer->diskon, 0, '.', '.') }}
+                                        Rp {{ $customer->diskon_customer != 0 ? number_format($diskon, 0, '.', '.') : 0 }}
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="border: 1px solid; text-align: center"></td>
                                     <td colspan="5" style="border: 1px solid; text-align: center">
-                                        <p class="fw-semibold">Diskon Customer ({{ $customer->diskon_customer != 0 ?  $customer->diskon_customer : ""}}%)</p>
+                                        <p class="fw-semibold">Diskon</p>
                                     </td>
                                     <td style="border: 1px solid; text-align: center">
-                                        Rp {{ $customer->diskon_customer != 0 ? number_format($diskon, 0, '.', '.') : 0 }}
+                                        Rp {{ number_format($customer->diskon, 0, '.', '.') }}
                                     </td>
                                 </tr>
                                 <tr>
