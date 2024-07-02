@@ -11,10 +11,35 @@ class BarangMasukController extends Controller
 {
     public function index(Request $request)
     {
-        $datas = BarangMasuk::orderBy('id', 'DESC')->get();
+        $barang = Barang::orderBy('id', 'ASC')->get();
 
-        $data['datas'] = $datas;
+        $data['barang'] = $barang;
 
         return view('data-barang-masuk.index', $data);
+    }
+
+    public function store(Request $request)
+    {
+        $validateData = $request->validate([
+            'tanggal_masuk' => 'required',
+            'id_barang' => 'required',
+            'jumlah' => 'required'
+        ]);
+
+        $validateData['keterangan'] = $request->keterangan;
+
+        BarangMasuk::create($validateData);
+
+        // Update Stok Barang
+        $barang = Barang::where('id', $request->id_barang);
+        $stok_lama = $barang->first()->stok;
+        $stok_baru = $stok_lama + $request->jumlah;
+        $barang->update([
+            'stok' => $stok_baru
+        ]);
+
+        Helper::logActivity('Simpan Transaksi Barang Masuk');
+
+        return redirect()->route('data-barang')->with('success', 'Barang masuk berhasil ditambahkan');
     }
 }

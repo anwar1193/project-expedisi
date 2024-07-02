@@ -29,9 +29,9 @@
 								<div class="col">
 									<div class="mb-3">
 										<label class="form-label" for="">Tanggal Masuk</label>
-										<input type="date" class="form-control @error('tanggal') is-invalid @enderror" type="text" name="tanggal" autocomplete="off" value="{{ date('Y-m-d') }}"/>
+										<input type="date" class="form-control @error('tanggal_masuk') is-invalid @enderror" type="text" name="tanggal_masuk" autocomplete="off" value="{{ date('Y-m-d') }}"/>
 
-										@error('tanggal')
+										@error('tanggal_masuk')
 										<div class="text-danger">
 											{{ $message }}
 										</div>
@@ -45,11 +45,11 @@
 									<div class="mb-3">
 										<label class="form-label" for="">Pilih Barang</label>
 										
-										<select name="nama_barang" id="nama_barang" class="form-control @error('nama_barang') is-invalid @enderror js-example-basic-single">
+										<select name="id_barang" id="id_barang" class="form-control @error('id_barang') is-invalid @enderror js-example-basic-single">
 											<option value="" selected>- Pilih Barang -</option>
 											@foreach ($barang as $item)
-												<option value="{{ $item->id }}" {{ old('nama') == $item->nama ? 'selected' : '' }}>
-													{{ $item->kode_customer }} - {{ $item->nama }}
+												<option value="{{ $item->id }}">
+													{{ $item->nama_barang }}
 												</option>
 											@endforeach
 										</select>
@@ -66,10 +66,10 @@
 							<div class="row">
 								<div class="col">
 									<div class="mb-3">
-										<label class="form-label" for="">Nama Barang</label>
-										<input class="form-control @error('nama_barang') is-invalid @enderror" type="text" name="nama_barang" autocomplete="off" value="{{ old('nama_barang') }}"/>
+										<label class="form-label" for="">Quantity</label>
+										<input class="form-control @error('jumlah') is-invalid @enderror" type="number" name="jumlah" autocomplete="off" value="{{ old('jumlah') }}"/>
 
-										@error('nama_barang')
+										@error('jumlah')
 										<div class="text-danger">
 											{{ $message }}
 										</div>
@@ -81,40 +81,10 @@
 							<div class="row">
 								<div class="col">
 									<div class="mb-3">
-										<label class="form-label" for="">Harga Beli</label>
-										<input class="form-control @error('harga_beli') is-invalid @enderror" type="number" name="harga_beli" autocomplete="off" value="{{ old('harga_beli') }}"/>
+										<label class="form-label" for="">Keterangan</label>
+										<textarea name="keterangan" id="keterangan" class="form-control"></textarea>
 
-										@error('harga_beli')
-										<div class="text-danger">
-											{{ $message }}
-										</div>
-										@enderror
-									</div>
-								</div>
-							</div>
-
-							<div class="row">
-								<div class="col">
-									<div class="mb-3">
-										<label class="form-label" for="">Harga Jual</label>
-										<input class="form-control @error('harga_jual') is-invalid @enderror" type="number" name="harga_jual" autocomplete="off" value="{{ old('harga_jual') }}"/>
-
-										@error('harga_jual')
-										<div class="text-danger">
-											{{ $message }}
-										</div>
-										@enderror
-									</div>
-								</div>
-							</div>
-
-							<div class="row">
-								<div class="col">
-									<div class="mb-3">
-										<label class="form-label" for="">Stok Awal</label>
-										<input class="form-control @error('stok') is-invalid @enderror" type="number" name="stok" autocomplete="off" value="{{ old('stok') }}"/>
-
-										@error('stok')
+										@error('keterangan')
 										<div class="text-danger">
 											{{ $message }}
 										</div>

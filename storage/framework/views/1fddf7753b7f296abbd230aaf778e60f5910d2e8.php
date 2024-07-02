@@ -28,16 +28,16 @@
 								<div class="col">
 									<div class="mb-3">
 										<label class="form-label" for="">Tanggal Masuk</label>
-										<input type="date" class="form-control <?php $__errorArgs = ['tanggal'];
+										<input type="date" class="form-control <?php $__errorArgs = ['tanggal_masuk'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>" type="text" name="tanggal" autocomplete="off" value="<?php echo e(date('Y-m-d')); ?>"/>
+unset($__errorArgs, $__bag); ?>" type="text" name="tanggal_masuk" autocomplete="off" value="<?php echo e(date('Y-m-d')); ?>"/>
 
-										<?php $__errorArgs = ['tanggal'];
+										<?php $__errorArgs = ['tanggal_masuk'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -57,17 +57,26 @@ unset($__errorArgs, $__bag); ?>
 							<div class="row">
 								<div class="col">
 									<div class="mb-3">
-										<label class="form-label" for="">Nama Barang</label>
-										<input class="form-control <?php $__errorArgs = ['nama_barang'];
+										<label class="form-label" for="">Pilih Barang</label>
+										
+										<select name="id_barang" id="id_barang" class="form-control <?php $__errorArgs = ['id_barang'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>" type="text" name="nama_barang" autocomplete="off" value="<?php echo e(old('nama_barang')); ?>"/>
+unset($__errorArgs, $__bag); ?> js-example-basic-single">
+											<option value="" selected>- Pilih Barang -</option>
+											<?php $__currentLoopData = $barang; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+												<option value="<?php echo e($item->id); ?>">
+													<?php echo e($item->nama_barang); ?>
 
-										<?php $__errorArgs = ['nama_barang'];
+												</option>
+											<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+										</select>
+
+										<?php $__errorArgs = ['customer'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -87,17 +96,17 @@ unset($__errorArgs, $__bag); ?>
 							<div class="row">
 								<div class="col">
 									<div class="mb-3">
-										<label class="form-label" for="">Harga Beli</label>
-										<input class="form-control <?php $__errorArgs = ['harga_beli'];
+										<label class="form-label" for="">Quantity</label>
+										<input class="form-control <?php $__errorArgs = ['jumlah'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>" type="number" name="harga_beli" autocomplete="off" value="<?php echo e(old('harga_beli')); ?>"/>
+unset($__errorArgs, $__bag); ?>" type="number" name="jumlah" autocomplete="off" value="<?php echo e(old('jumlah')); ?>"/>
 
-										<?php $__errorArgs = ['harga_beli'];
+										<?php $__errorArgs = ['jumlah'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -117,47 +126,10 @@ unset($__errorArgs, $__bag); ?>
 							<div class="row">
 								<div class="col">
 									<div class="mb-3">
-										<label class="form-label" for="">Harga Jual</label>
-										<input class="form-control <?php $__errorArgs = ['harga_jual'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>" type="number" name="harga_jual" autocomplete="off" value="<?php echo e(old('harga_jual')); ?>"/>
+										<label class="form-label" for="">Keterangan</label>
+										<textarea name="keterangan" id="keterangan" class="form-control"></textarea>
 
-										<?php $__errorArgs = ['harga_jual'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-										<div class="text-danger">
-											<?php echo e($message); ?>
-
-										</div>
-										<?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-									</div>
-								</div>
-							</div>
-
-							<div class="row">
-								<div class="col">
-									<div class="mb-3">
-										<label class="form-label" for="">Stok Awal</label>
-										<input class="form-control <?php $__errorArgs = ['stok'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>" type="number" name="stok" autocomplete="off" value="<?php echo e(old('stok')); ?>"/>
-
-										<?php $__errorArgs = ['stok'];
+										<?php $__errorArgs = ['keterangan'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
