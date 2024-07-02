@@ -87,11 +87,11 @@
   </div>
   <div class="row">
     <div class="col-xl-4 col-md-4 col-sm-4 box-col-4 des-xl-25 rate-sec">
-      <a href="<?php echo e(route("surveilance-car")); ?>">
+      <a href="<?php echo e(route("data-pengiriman")); ?>">
         <div class="card income-card card-primary">
           <div class="card-body text-center">
             <p class="fs-6">Pengiriman</p>
-            <h5><i class="icofont icofont-police-car"></i> 30</h5>
+            <h5><i class="icofont icofont-police-car"></i> <?php echo e($pengiriman); ?></h5>
             <div class="parrten">
               <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
                 y="0px" viewbox="0 0 448.057 448.057" style="enable-background:new 0 0 448.057 448.057;"
@@ -117,11 +117,11 @@
       </a>
     </div>
     <div class="col-xl-4 col-md-4 col-sm-4 box-col-4 des-xl-25 rate-sec">
-      <a href="<?php echo e(route("perangkat")); ?>">
+      <a href="<?php echo e(route("data-pemasukan")); ?>">
         <div class="card income-card card-primary">
           <div class="card-body text-center">
             <p class="fs-6">Pemasukan Lainnya</p>
-            <h5><i class="icofont icofont-ui-rss"></i> 40</h5>
+            <h5><i class="icofont icofont-ui-rss"></i> <?php echo e($pemasukan); ?></h5>
             <div class="parrten">
               <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
                 y="0px" viewbox="0 0 448.057 448.057" style="enable-background:new 0 0 448.057 448.057;"
@@ -147,11 +147,11 @@
       </a>
     </div>
     <div class="col-xl-4 col-md-4 col-sm-4 box-col-4 des-xl-25 rate-sec">
-      <a href="<?php echo e(route("perangkat")); ?>">
+      <a href="<?php echo e(route("daftar-pengeluaran")); ?>">
         <div class="card income-card card-primary">
           <div class="card-body text-center">
             <p class="fs-6">Pengeluaran</p>
-            <h5><i class="icofont icofont-ui-note"></i> 35</h5>
+            <h5><i class="icofont icofont-ui-note"></i> <?php echo e($pengeluaran); ?></h5>
             <div class="parrten">
               <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
                 y="0px" viewbox="0 0 448.057 448.057" style="enable-background:new 0 0 448.057 448.057;"

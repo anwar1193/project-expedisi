@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\DaftarPengeluaran;
 use App\Models\DataPengiriman;
 use App\Models\Invoice;
 use Illuminate\Http\Request;
 use App\Models\SurveilanceCar;
 use App\Models\Perangkat;
 use App\Models\LogActivity;
+use App\Models\PemasukanLainnya;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -20,13 +22,16 @@ class DashboardController extends Controller
     {
         $tahun_terpilih = $request->input("tahun") ? $request->input("tahun") : Carbon::now()->year;
 
-        // $jumlahArmada = SurveilanceCar::select("merk")
-        //                 ->whereYear('created_at', $tahun_terpilih)
-        //                 ->get()->count();
+        $pengiriman = DataPengiriman::whereYear('created_at', $tahun_terpilih)
+                        ->get()->count();
 
-        // $armada = SurveilanceCar::select("*")
-        //             ->whereYear('created_at', $tahun_terpilih)            
-        //             ->get();
+        $pemasukan = PemasukanLainnya::whereYear('created_at', $tahun_terpilih)            
+                    ->get()
+                    ->count();
+
+        $pengeluaran = DaftarPengeluaran::whereYear('created_at', $tahun_terpilih)            
+                        ->get()
+                        ->count();
 
         $aktifitas = [];
 
@@ -39,25 +44,7 @@ class DashboardController extends Controller
             array_push($aktifitas, $jumlah);
         }
 
-        return view("admin.dashboard.default", compact(["aktifitas"]));
-    }
-
-    public function riwayatArmada($id) 
-    {
-        $item = SurveilanceCar::select("*")
-                    ->where('id', $id)            
-                    ->first();
-
-        return view("admin.dashboard.action.riwayat", compact("item"));
-    }
-
-    public function lokasiArmada($id) 
-    {
-        $item = SurveilanceCar::select("*")
-                    ->where('id', $id)            
-                    ->first();
-
-        return view("admin.dashboard.action.location", compact("item"));
+        return view("admin.dashboard.default", compact(["aktifitas", "pengiriman", "pemasukan", "pengeluaran"]));
     }
 
     public function dashboard_customer(Request $request) {

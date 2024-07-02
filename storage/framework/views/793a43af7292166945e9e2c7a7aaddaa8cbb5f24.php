@@ -108,7 +108,7 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>">
 											<?php $__currentLoopData = $jasa; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-												<option value="<?php echo e($item->id); ?>" <?php echo e($datas->kategori == "jasa" && $data->barang_jasa == $item->id ? 'selected' : ''); ?>>
+												<option value="<?php echo e($item->id); ?>" <?php echo e($datas->kategori == "jasa" && $datas->barang_jasa == $item->id ? 'selected' : ''); ?>>
 													<?php echo e($item->nama_jasa); ?>
 
 												</option>
@@ -563,6 +563,7 @@ unset($__errorArgs, $__bag); ?>
 			} else if (value === "jasa") {
 				jasa.style.display = 'block';
 				barang.style.display = 'none';
+				modalInput.value = "";
 			}
 		}
 		

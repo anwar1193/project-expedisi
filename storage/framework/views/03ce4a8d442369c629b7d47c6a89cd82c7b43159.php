@@ -38,7 +38,7 @@
 						</div>
 					</div>
 
-					<a href="#" class="btn btn-warning btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Data Jasa">
+					<a href="<?php echo e(route('data-jasa')); ?>" class="btn btn-warning btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Data Jasa">
                         <i class="fa fa-male"></i> Data Jasa
                     </a>
                 

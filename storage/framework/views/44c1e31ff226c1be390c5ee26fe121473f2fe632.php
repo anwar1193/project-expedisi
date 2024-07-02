@@ -71,8 +71,4 @@
             <div class="right-arrow" id="right-arrow"><i data-feather="arrow-right"></i></div>
         </div>
     </nav>
-</header>
-
-
-
-<?php echo $__env->make('components.modal-sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Applications/MAMP/htdocs/project-expedisi/resources/views/layouts/admin/partials/sidebar.blade.php ENDPATH**/ ?>
+</header><?php /**PATH /Applications/MAMP/htdocs/project-expedisi/resources/views/layouts/admin/partials/sidebar.blade.php ENDPATH**/ ?>

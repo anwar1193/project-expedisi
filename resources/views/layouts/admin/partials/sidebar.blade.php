@@ -72,7 +72,3 @@
         </div>
     </nav>
 </header>
-
-
-{{-- MODAL ............................................ --}}
-@include('components.modal-sidebar')

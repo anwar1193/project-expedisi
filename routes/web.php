@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\JasaController;
 use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\BarangController;
+use App\Http\Controllers\BarangMasukController;
 use App\Http\Controllers\CameraController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\LaporanController;
@@ -85,16 +86,6 @@ Route::middleware("auth")->group(function() {
 
     Route::prefix('master-data')->group(function () {
 
-        Route::get('surveilance-car', [SurveilanceCarController::class, 'index'])->name('surveilance-car');
-        Route::get('surveilance-car/create', [SurveilanceCarController::class, 'create'])->name('surveilance-car.create');
-        Route::post('surveilance-car/store', [SurveilanceCarController::class, 'store'])->name('surveilance-car.store');
-        Route::get('surveilance-car/edit/{id}', [SurveilanceCarController::class, 'edit'])->name('surveilance-car.edit');
-        Route::post('surveilance-car/update', [SurveilanceCarController::class, 'update'])->name('surveilance-car.update');
-        Route::get('surveilance-car/delete/{id}', [SurveilanceCarController::class, 'delete'])->name('surveilance-car.delete');
-        Route::get('surveilance-car/detail/{id}', [SurveilanceCarController::class, 'detail'])->name('surveilance-car.detail');
-        Route::get('surveilance-car/export-pdf', [SurveilanceCarController::class, 'export_pdf'])->name('surveilance-car.export-pdf');
-        Route::get('surveilance-car/export-excel', [SurveilanceCarController::class, 'export_excel'])->name('surveilance-car.export-excel');
-
         Route::get('jenis-pengeluaran', [JenisPengeluaranController::class, 'index'])->name('jenis-pengeluaran');
         Route::get('jenis-pengeluaran/create', [JenisPengeluaranController::class, 'create'])->name('jenis-pengeluaran.create');
         Route::post('jenis-pengeluaran/store', [JenisPengeluaranController::class, 'store'])->name('jenis-pengeluaran.store');
@@ -115,26 +106,6 @@ Route::middleware("auth")->group(function() {
         Route::post('merchandise', [MerchandiseController::class, 'store'])->name('merchandise.store');
         Route::post('merchandise/update/{id}', [MerchandiseController::class, 'update'])->name('merchandise.update');
         Route::get('merchandise/delete/{id}', [MerchandiseController::class, 'delete'])->name('merchandise.delete');
-
-        Route::get('perangkat', [PerangkatController::class, 'index'])->name('perangkat');
-        Route::get('perangkat/create', [PerangkatController::class, 'create'])->name('perangkat.create');
-        Route::post('perangkat/store', [PerangkatController::class, 'store'])->name('perangkat.store');
-        Route::get('perangkat/edit/{id}', [PerangkatController::class, 'edit'])->name('perangkat.edit');
-        Route::post('perangkat/update', [PerangkatController::class, 'update'])->name('perangkat.update');
-        Route::get('perangkat/delete/{id}', [PerangkatController::class, 'delete'])->name('perangkat.delete');
-        Route::get('perangkat/detail/{id}', [PerangkatController::class, 'detail'])->name('perangkat.detail');
-        Route::get('perangkat/export-pdf', [PerangkatController::class, 'export_pdf'])->name('perangkat.export-pdf');
-        Route::get('perangkat/export-excel', [PerangkatController::class, 'export_excel'])->name('perangkat.export-excel');
-
-        Route::get('obd', [ObdController::class, 'index'])->name('obd');
-        Route::get('obd/create', [ObdController::class, 'create'])->name('obd.create');
-        Route::post('obd/store', [ObdController::class, 'store'])->name('obd.store');
-        Route::get('obd/edit/{id}', [ObdController::class, 'edit'])->name('obd.edit');
-        Route::post('obd/update', [ObdController::class, 'update'])->name('obd.update');
-        Route::get('obd/delete/{id}', [ObdController::class, 'delete'])->name('obd.delete');
-        Route::get('obd/detail/{id}', [ObdController::class, 'detail'])->name('obd.detail');
-        Route::get('obd/export-pdf', [ObdController::class, 'export_pdf'])->name('obd.export-pdf');
-        Route::get('obd/export-excel', [ObdController::class, 'export_excel'])->name('obd.export-excel');
     });
 
     Route::prefix('users')->group(function () {
@@ -180,30 +151,6 @@ Route::middleware("auth")->group(function() {
 
         Route::get('konversi-point', [KonversiPointController::class, 'index'])->name('konversi-point');
         Route::post('konversi-point', [KonversiPointController::class, 'update'])->name('konversi-point.update');
-    });
-
-    Route::get('pemantauan-gps',[PemantauanController::class, 'index'])->name('pemantauan-gps');
-
-    Route::prefix('pemantauan-camera')->group(function () {
-        Route::get('/', [CameraController::class, 'index'])->name('pemantauan-camera');
-        Route::get('detail/{id}', [CameraController::class, 'detail'])->name('pemantauan-camera.detail');
-        Route::post('front-camera', [CameraController::class, 'store_front_camera'])->name('store.front-camera');
-        Route::post('rear-camera', [CameraController::class, 'store_rear_camera'])->name('store.rear-camera');
-        Route::get('image/front-camera/{id}', [CameraController::class, 'detail_front_camera'])->name('pemantauan-camera.front');
-        Route::get('image/rear-camera/{id}', [CameraController::class, 'detail_rear_camera'])->name('pemantauan-camera.rear');
-        Route::get('front-camera', [CameraController::class, 'front_camera'])->name('front-camera');
-        Route::get('rear-camera', [CameraController::class, 'rear_camera'])->name('rear-camera');
-    });
-
-    Route::prefix('obd-tracker')->group(function () {
-        Route::get('/', [ObdTrackerController::class, 'index'])->name('obd-tracker');
-        Route::post('/hubungkan', [ObdTrackerController::class, 'hubungkan_obd'])->name('obd-connect-car');
-        Route::post('/lepaskan', [ObdTrackerController::class, 'lepaskan_obd'])->name('obd-disconnect-car');
-        Route::post('/switch-engine', [ObdTrackerController::class, 'switch_engine'])->name('obd-switch-engine');
-    });
-
-    Route::prefix('riwayat-armada')->group(function () {
-        Route::get('/', [RiwayatArmadaController::class, 'index'])->name('riwayat-armada');
     });
     
     Route::prefix('data-pengiriman')->group(function () {

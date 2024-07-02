@@ -75,7 +75,7 @@ class PemasukanLainnyaController extends Controller
             $foto->storeAs('public/data-pemasukkan', $foto->hashName());
 
             // Proses Simpan GDrive
-            // Storage::disk('google')->put($namafile, File::get($path));
+            Storage::disk('google')->put($namafile, File::get($path));
 
             $validateData['bukti_pembayaran'] = $foto->hashName();
         } elseif (($img != '') && ($request->takeImage == 'on')) {
@@ -91,7 +91,7 @@ class PemasukanLainnyaController extends Controller
             Storage::disk('local')->put($file, $image_base64);
 
             // Proses Simpan GDrive
-            // Storage::disk('google')->put($fileNamePath, File::get($path));
+            Storage::disk('google')->put($fileNamePath, File::get($path));
 
             $validateData['bukti_pembayaran'] = $fileName;
         }
