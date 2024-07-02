@@ -140,6 +140,15 @@
 												<tr>
 													<td style="border: 1px solid; padding: 5px; text-align: center"></td>
 													<td colspan="6" style="border: 1px solid; padding: 5px; text-align: center">
+														<p class="fw-semibold">Diskon Customer</p>
+													</td>
+													<td style="border: 1px solid; padding: 5px; text-align: center">
+														{{ $customer->diskon }}%
+													</td>
+												</tr>
+												<tr>
+													<td style="border: 1px solid; padding: 5px; text-align: center"></td>
+													<td colspan="6" style="border: 1px solid; padding: 5px; text-align: center">
 														<p class="fw-semibold">Diskon</p>
 													</td>
 													<td style="border: 1px solid; padding: 5px; text-align: center">

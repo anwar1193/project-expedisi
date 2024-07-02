@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bank;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -112,30 +113,32 @@ class InvoiceController extends Controller
                     ->where('customers.id', $id)
                     ->first();
 
-        if ($id_pengiriman == NULL) {
-            return back()->with('error', 'Belum Ada Data Dipilih');
-        }
-
-        foreach ($id_pengiriman as $pengiriman_id) {
-            $exist = TransaksiInvoice::where('data_pengiriman_id', $pengiriman_id)->exists();
-            if (!$exist) {
-                TransaksiInvoice::create([
-                    'invoice_id' => $customer->invoiceId,
-                    'data_pengiriman_id' => $pengiriman_id
-                ]);
+        if (!isCustomer()) {
+            if ($id_pengiriman == NULL) {
+                return back()->with('error', 'Belum Ada Data Dipilih');
             }
+    
+            foreach ($id_pengiriman as $pengiriman_id) {
+                $exist = TransaksiInvoice::where('data_pengiriman_id', $pengiriman_id)->exists();
+                if (!$exist) {
+                    TransaksiInvoice::create([
+                        'invoice_id' => $customer->invoiceId,
+                        'data_pengiriman_id' => $pengiriman_id
+                    ]);
+                }
+            }
+    
+            Invoice::find($customer->invoiceId)->update([
+                'diskon' => $diskon
+            ]); 
         }
-
-        Invoice::find($customer->invoiceId)->update([
-            'diskon' => $diskon
-        ]);
 
         return redirect()->route('invoice.customer-pdf', ['id' => $customer->id]);
     }
 
     public function generateInvoicePdf($id)
     {
-        $customer = Customer::select('customers.id', 'customers.kode_customer', 'customers.nama', 'customers.alamat', 'invoices.invoice_no', 'invoices.id AS invoiceId', 'invoices.diskon', 'invoices.created_at')
+        $customer = Customer::select('customers.id', 'customers.diskon AS diskon_customer', 'customers.kode_customer', 'customers.nama', 'customers.alamat', 'invoices.invoice_no', 'invoices.id AS invoiceId', 'invoices.diskon', 'invoices.created_at')
                     ->join('invoices', 'invoices.customer_id', '=', 'customers.id')
                     ->where('customers.id', $id)
                     ->first();
@@ -148,11 +151,17 @@ class InvoiceController extends Controller
                 ->join('transaksi_invoices', 'transaksi_invoices.data_pengiriman_id', '=', 'data_pengirimen.id')
                 ->where('kode_customer', $customer->kode_customer)->first();
 
+        $diskon = round($total->total * $customer->diskon_customer / 100);
+
+        $totalBersih = round($total->total - $customer->diskon - $diskon);
+
+        $bank = Bank::orderBy('id')->get();
+
         $notEmpty = $data->isNotEmpty();
         $waktuCetak = date('d-m-Y H:i:s');
         $picture = public_path('assets/lionparcel.png');
 
-        $pdf = Pdf::loadView('invoice.hasil-pdf', compact('customer', 'data' ,'picture', 'waktuCetak', 'total', 'notEmpty'));
+        $pdf = Pdf::loadView('invoice.hasil-pdf', compact('customer', 'data' ,'picture', 'waktuCetak', 'total', 'notEmpty', 'bank', 'diskon', 'totalBersih'));
         return $pdf->stream('Invoice-'.$customer->name.'.pdf');
     }
 }
