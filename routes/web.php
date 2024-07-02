@@ -1,14 +1,11 @@
 <?php
 
-use App\Models\JenisPengeluaran;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ObdController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\JasaController;
 use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\BarangMasukController;
-use App\Http\Controllers\CameraController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\TestingController;
@@ -16,23 +13,17 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LastLoginController;
-use App\Http\Controllers\PerangkatController;
 
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\GoogleAuthController;
-use App\Http\Controllers\ObdTrackerController;
-use App\Http\Controllers\PemantauanController;
 
 use App\Http\Controllers\LogActivityController;
 use App\Http\Controllers\MerchandiseController;
 use App\Http\Controllers\PerlengkapanController;
 use App\Http\Controllers\KonversiPointController;
-use App\Http\Controllers\RiwayatArmadaController;
 use App\Http\Controllers\DataPengirimanController;
-use App\Http\Controllers\JenisPerangkatController;
 use App\Http\Controllers\PenukaranPointController;
 use App\Http\Controllers\RoleManagementController;
-use App\Http\Controllers\SurveilanceCarController;
 use App\Http\Controllers\JenisPengeluaranController;
 use App\Http\Controllers\PemasukanLainnyaController;
 use App\Http\Controllers\DaftarPengeluaranController;
