@@ -84,7 +84,7 @@
 							</div>
 	                        <!-- End Invoice Mid-->
 	                        <div>
-	                            <div class="table-responsive invoice-table" id="table">
+	                            <div class="table-responsive" id="table">
 	                                <table class="display" id="basic-1">
 	                                    <thead class="text-center">
 											<tr>
@@ -96,7 +96,9 @@
 												<th style="border: 1px solid">Tujuan</th>
 												<th style="border: 1px solid">Jumlah Pembayaran</th>
 												<?php if(!isCustomer()): ?>
-													<th style="border: 1px solid">Pilih</th>													
+													<th style="border: 1px solid; padding: 5px; text-align: center"">
+														<input type="checkbox" name="checkAll" id="checkAll" title="Pilih Semua" checked />
+													</th>															
 												<?php endif; ?>
 											</tr>
 										</thead>
@@ -204,6 +206,24 @@
 				const typedValue = diskonInput.value;
 				displayElement.innerHTML = '<strong>RP. ' + new Intl.NumberFormat('id-ID').format(typedValue) + '</strong>';
 			});
+
+			function toggleCheckAllSelect() {
+				const checkAll = document.getElementById('checkAll');
+				const checkPengiriman = document.getElementsByName('id_pengiriman[]');
+				if (checkAll.checked) {
+						checkPengiriman.forEach(item => {
+						item.checked = true; 
+					});
+				} else {
+					checkPengiriman.forEach(item => {
+						item.checked = false; 
+					});
+				}
+			}
+
+			checkAll.addEventListener('change', toggleCheckAllSelect);
+
+			toggleCheckAllSelect();
 		});
 	</script>
 	<?php $__env->stopPush(); ?>

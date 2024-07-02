@@ -1,141 +1,130 @@
 @extends('layouts.admin.master')
 
-@section('title')Data Barang Masuk
+@section('title')Input Barang Masuk
  {{ $title }}
 @endsection
 
 @push('css')
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/datatables.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/select2.css') }}">
 @endpush
 
 @section('content')
 	@component('components.breadcrumb')
 		@slot('breadcrumb_title')
-			<h3>Data Barang Masuk</h3>
+			<h3>Barang Masuk</h3>
 		@endslot
-		<li class="breadcrumb-item active"><a href="{{ route('barang-masuk') }}">Data Barang Masuk</a></li>
-		<li class="breadcrumb-item active">Table</li>
+		<li class="breadcrumb-item active"><a href="{{ route('barang-masuk') }}">Barang Masuk</a></li>
+        <li class="breadcrumb-item active">Tambah</li>
 	@endcomponent
-
-    <nav class="page-breadcrumb">
-        <ol class="breadcrumb align-items-center">
-            <div class="d-grid gap-2 d-md-block mx-2">
-                {{-- @if (isAdmin()) --}}
-					<a href="{{ route('barang-masuk') }}" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Kembali">
-						<i class="fa fa-backward"></i> Kembali
-					</a>
-
-                    <a href="{{ route('barang-masuk.create') }}" class="btn btn-sm btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Tambah Data">
-                        <i class="fa fa-plus"></i> Tambah Transaksi
-                    </a>
-                {{-- @endif --}}
-            </div>
-        </ol>
-    </nav>
 	
 	<div class="container-fluid">
-        <div class="row">
-        </div>
-	    <div class="row">
-	        <!-- Server Side Processing start-->
-	        <div class="col-sm-12">
-	            <div class="card">
-	                <div class="card-body">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="card">
+					<form class="form theme-form" method="POST" action="{{ route('barang-masuk.store') }}" enctype="multipart/form-data">
+                        @csrf
+						<div class="card-body">
 
-						@if (session()->has('success'))
-							<div class="alert alert-success alert-dismissible fade show" role="alert">
-								<strong>Berhasil <i class="fa fa-info-circle"></i></strong> 
-								{{ session('success') }}
-								<button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+							<div class="row">
+								<div class="col">
+									<div class="mb-3">
+										<label class="form-label" for="">Tanggal Masuk</label>
+										<input type="date" class="form-control @error('tanggal_masuk') is-invalid @enderror" type="text" name="tanggal_masuk" autocomplete="off" value="{{ date('Y-m-d') }}"/>
+
+										@error('tanggal_masuk')
+										<div class="text-danger">
+											{{ $message }}
+										</div>
+										@enderror
+									</div>
+								</div>
 							</div>
-						@endif
 
-						@if (session()->has('delete'))
-							<div class="alert alert-danger alert-dismissible fade show" role="alert">
-								<strong>Berhasil <i class="fa fa-info-circle"></i></strong> 
-								{{ session('delete') }}
-								<button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+							<div class="row">
+								<div class="col">
+									<div class="mb-3">
+										<label class="form-label" for="">Pilih Barang</label>
+										
+										<select name="id_barang" id="id_barang" class="form-control @error('id_barang') is-invalid @enderror js-example-basic-single">
+											<option value="" selected>- Pilih Barang -</option>
+											@foreach ($barang as $item)
+												<option value="{{ $item->id }}">
+													{{ $item->nama_barang }}
+												</option>
+											@endforeach
+										</select>
+
+										@error('customer')
+										<div class="text-danger">
+											{{ $message }}
+										</div>
+										@enderror
+									</div>
+								</div>
 							</div>
-						@endif
-						
-						@if (session()->has('error'))
-							<div class="alert alert-danger alert-dismissible fade show" role="alert">
-								<strong>Gagal <i class="fa fa-info-circle"></i></strong> 
-								{{ session('error') }}
-								<button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+
+							<div class="row">
+								<div class="col">
+									<div class="mb-3">
+										<label class="form-label" for="">Quantity</label>
+										<input class="form-control @error('jumlah') is-invalid @enderror" type="number" name="jumlah" autocomplete="off" value="{{ old('jumlah') }}"/>
+
+										@error('jumlah')
+										<div class="text-danger">
+											{{ $message }}
+										</div>
+										@enderror
+									</div>
+								</div>
 							</div>
-						@endif
-	                    
-						{{-- Table --}}
-						<div class="table-responsive">
-	                        <table class="display" id="basic-1">
-	                            <thead>
-	                                <tr>
-	                                    <th>No</th>
-										<th>Tanggal Masuk</th>
-										<th>Nama Barang</th>
-	                                    <th>Qty</th>
-	                                    <th>Keterangan</th>
-										{{-- <th width="35%" class="text-center">Action</th> --}}
-	                                </tr>
-	                            </thead>
-	                            <tbody>                                        
-                                    @foreach ($datas as $data)
-									<tr>
-										<td>{{ $loop->iteration; }}</td>
-										<td>{{ $data->nama_barang }}</td>
-										<td>{{ number_format($data->harga_beli, 0, '.', ',') }}</td>
-										<td>{{ number_format($data->harga_jual, 0, '.', ',') }}</td>
-										<td>{{ $data->stok }}</td>
-										{{-- <td class="text-center">
 
-											<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-												<div class="btn-group" role="group">
-													<button class="btn btn-secondary btn-sm dropdown-toggle" id="btnGroupDrop1" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
-													<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+							<div class="row">
+								<div class="col">
+									<div class="mb-3">
+										<label class="form-label" for="">Keterangan</label>
+										<textarea name="keterangan" id="keterangan" class="form-control"></textarea>
 
-														<a class="dropdown-item" href="{{ route('barang-masuk.edit', $data->id) }}" ><span><i data-feather="edit"></i> Edit</span></a>
+										@error('keterangan')
+										<div class="text-danger">
+											{{ $message }}
+										</div>
+										@enderror
+									</div>
+								</div>
+							</div>
 
-														<a class="dropdown-item" href="{{ route('barang-masuk.delete', $data->id) }}" onclick="return confirm('Apakah Anda Yakin?')"><span><i data-feather="delete"></i> Delete</span></a>
-														
-													</div>
-												</div>
-											</div>
-											@include('barang-masuk.detail')
-										</td> --}}
-									</tr>
-									@endforeach
-	                            </tbody>
-	                        </table>
-	                    </div>
-
-	                </div>
-	            </div>
-	        </div>
-	        <!-- Server Side Processing end-->
-	    </div>
+						</div>
+						<div class="card-footer text-end">
+							<button class="btn btn-primary" type="submit">Simpan Data</button>
+							<a href="{{ route('data-pemasukan') }}" class="btn btn-light">Kembali</a>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
 	</div>
 	
 	@push('scripts')
-	<script src="{{ asset('assets/js/datatable/datatables/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('assets/js/datatable/datatables/datatable.custom.js') }}"></script>
-	@foreach ($datas as $data)
-		<script>
-			$('#view-bukti'+{{ $data->id }}).hide();
-			$('#icon-view'+{{ $data->id }}).show();
-		</script>
-	@endforeach
-	<script>
-		function showBukti(id) {
-			$('#view-bukti'+id).show();
-			$('#icon-view'+id).hide();
-		}
-
-		function hideBukti(id) {
-			$('#view-bukti'+id).hide();
-			$('#icon-view'+id).show();
-		}
-	</script>
+    <script src="{{ asset('assets/js/select2/select2.full.min.js') }}"></script>
+    <script src="{{ asset('assets/js/select2/select2-custom.js') }}"></script>
+	{{-- <script>
+		document.addEventListener('input', function (e) {
+			if (e.target.name === 'harga_beli' || e.target.name === 'harga_jual') {
+				const typedValue = e.target.value;
+				const formattedValue = new Intl.NumberFormat('id-ID').format(typedValue);
+				const displayElement = e.target.parentNode.querySelector('.typed-value');
+				
+				if (displayElement) {
+					displayElement.innerHTML = 'Number Format: <strong>RP. ' + formattedValue + '</strong>';
+				} else {
+					const newDisplayElement = document.createElement('div');
+					newDisplayElement.className = 'typed-value';
+					newDisplayElement.innerHTML = 'Number Format: <strong>RP. ' + formattedValue + '</strong>';
+					e.target.parentNode.appendChild(newDisplayElement);
+				}
+			}
+		});
+	</script> --}}
 	@endpush
 
 @endsection

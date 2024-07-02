@@ -22,8 +22,9 @@ use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\ObdTrackerController;
 use App\Http\Controllers\PemantauanController;
-use App\Http\Controllers\LogActivityController;
+use App\Http\Controllers\BarangMasukController;
 
+use App\Http\Controllers\LogActivityController;
 use App\Http\Controllers\MerchandiseController;
 use App\Http\Controllers\PerlengkapanController;
 use App\Http\Controllers\KonversiPointController;
