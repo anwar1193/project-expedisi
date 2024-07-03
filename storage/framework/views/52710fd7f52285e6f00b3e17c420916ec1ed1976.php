@@ -97,7 +97,7 @@
                 </table>
             </div>
             <div>
-                <p><small>Biaya Pengiriman</small>  <?php echo e($customer->nama); ?> RUPIAH</p>
+                <p><small>Biaya Pengiriman</small>  <?php echo e($customer->nama); ?></p>
             </div>
             <div>
                 <div>
