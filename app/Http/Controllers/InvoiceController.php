@@ -167,6 +167,9 @@ class InvoiceController extends Controller
         $picture = public_path('assets/lionparcel.png');
         $customerName = str_replace(' ', '', $customer->nama);
 
+        ini_set('max_execution_time', 300);
+        ini_set("memory_limit","512M");
+        
         $pdf = Pdf::loadView('invoice.hasil-pdf', compact('customer', 'data' ,'picture', 'waktuCetak', 'total', 'notEmpty', 'bank', 'diskon', 'totalBersih'));
         $pdfContent = $pdf->output();
 
