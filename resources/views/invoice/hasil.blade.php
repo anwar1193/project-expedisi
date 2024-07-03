@@ -182,8 +182,25 @@
 	                    <!-- End Invoice Holder-->
 	                </div>
                     <div class="card-footer">
-                        <div class="col-sm-12 text-center">
-							<button type="submit" class="btn btn-primary">Cetak Invoice</button>
+                        <div class="d-flex justify-content-center">
+							<div class="px-2">
+								<button type="submit" class="btn btn-primary">Cetak Invoice</button>
+							</div>
+							</form>
+							<div class="px-2">
+								<form action="{{ route('invoice.send-wa') }}" method="POST">
+									@csrf
+									<input type="hidden" name="id" value="{{ $customer->id }}">
+									<button type="submit" class="btn btn-success">Kirim Ke Whatsapp</button>
+								</form>
+							</div>
+							<div class="pz-2">
+								<form action="{{ route('invoice.send-email') }}" method="POST">
+									@csrf
+									<input type="hidden" name="id" value="{{ $customer->id }}">
+									<button type="submit" class="btn btn-success">Kirim Ke Email</button>
+								</form>
+							</div>
                             {{-- <a href="{{ route('invoice.customer-pdf', $customer->id) }}" class="btn btn btn-primary me-2">Cetak Invoice</a> --}}
 	                    </div>
                     </div>
