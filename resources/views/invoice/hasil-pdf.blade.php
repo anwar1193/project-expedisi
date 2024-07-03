@@ -97,7 +97,7 @@
                 </table>
             </div>
             <div>
-                <p><small>Biaya Pengiriman</small>  {{ $customer->nama }} RUPIAH</p>
+                <p><small>Biaya Pengiriman</small>  {{ $customer->nama }}</p>
             </div>
             <div>
                 <div>

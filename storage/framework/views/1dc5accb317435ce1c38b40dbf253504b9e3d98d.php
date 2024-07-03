@@ -71,8 +71,4 @@
             <div class="right-arrow" id="right-arrow"><i data-feather="arrow-right"></i></div>
         </div>
     </nav>
-</header>
-
-
-
-<?php echo $__env->make('components.modal-sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/munawarahmad/Documents/Applications/projectku/frontend/resources/views/layouts/admin/partials/sidebar.blade.php ENDPATH**/ ?>
+</header><?php /**PATH /Users/munawarahmad/Documents/Applications/projectku/frontend/resources/views/layouts/admin/partials/sidebar.blade.php ENDPATH**/ ?>

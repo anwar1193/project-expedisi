@@ -18,8 +18,8 @@
 						<?php echo csrf_field(); ?>
 
 						<div class="logo mb-3" style="text-align: center">
+							<img src="/assets/logo-kejaksaan.png" width="100px" alt="">
 							
-							<img src="/assets/lionparcel.png" width="250px" alt="">
 						</div>
 
 	                    <p class="mb-3">AGEN EXPEDISI</p>
@@ -50,15 +50,14 @@
 	                        <label>Username</label>
 	                        <div class="input-group">
 	                            <span class="input-group-text"><i class="icon-email"></i></span>
-	                            
-	                            <input class="form-control" type="text" name="username" value="admin01" autofocus autocomplete="off"/>
+	                            <input class="form-control" type="text" name="username" value="<?php echo e(old('username')); ?>" autofocus autocomplete="off"/>
 	                        </div>
 	                    </div>
 	                    <div class="form-group">
 	                        <label>Kata Sandi</label>
 	                        <div class="input-group">
 	                            <span class="input-group-text"><i class="icon-lock"></i></span>
-	                            <input class="form-control" type="password" name="password" id="password" value="password" />
+	                            <input class="form-control" type="password" name="password" id="password" />
 	                        </div>
 	                        <div class="input-group mt-2 pt-2">
 								<input class="ms-3 me-2" type="checkbox" id="showPassword"> <label class="pt-1" for="showPassword">Tampilkan Kata Sandi</label>

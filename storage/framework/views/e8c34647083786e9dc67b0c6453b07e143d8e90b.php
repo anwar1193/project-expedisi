@@ -76,6 +76,7 @@
 	                                    <th>Email</th>
 	                                    <th>Limit Kredit</th>
 	                                    <th>Point</th>
+	                                    <th>Diskon</th>
 										<th width="20%" class="text-center">Action</th>
 	                                </tr>
 	                            </thead>
@@ -101,6 +102,12 @@
 
 												</span>
 											</td>
+											
+											<td class="text-center">
+												<span class="badge" style="background-color: blue">
+													<?php echo e($data->diskon); ?>%
+												</span>
+											</td>
 
 											<td class="text-center">
 
@@ -112,6 +119,10 @@
 															<?php if(Session::get('user_level') == 2): ?>
 																<a class="dropdown-item" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#customerLimitKredit<?php echo e($data->id); ?>">
 																	<span><i class="pt-2 pe-2" data-feather="tag"></i> Limit Kredit</span>
+																</a>
+																
+																<a class="dropdown-item" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#customerDiskon<?php echo e($data->id); ?>">
+																	<span><i class="pt-2 pe-2" data-feather="dollar-sign"></i> Diskon</span>
 																</a>
 																
 																<a class="dropdown-item" href="<?php echo e(route('customers.historyLimit', $data->id)); ?>"><span><i class="pt-2 pe-2" data-feather="list"></i> History Limit</span></a>
@@ -129,6 +140,7 @@
 														</div>
 														<?php echo $__env->make('customers.detail', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 														<?php echo $__env->make('customers.limit_kredit', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+														<?php echo $__env->make('customers.diskon', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 													</div>
 												</div>
 											</td>
