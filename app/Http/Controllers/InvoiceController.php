@@ -184,7 +184,7 @@ class InvoiceController extends Controller
         $customer = Customer::find($id);
         $customerName = str_replace(' ', '', $customer->nama);
 
-        if (!Storage::exists('/public/invoices/invoice-'.$customerName.'.pdf')) {
+        if (!Storage::exists('app/public/invoices/invoice-'.$customerName.'.pdf')) {
             return back()->with("error", "Silahka Cetak invoice Terlebih Dahulu");
         }
 
