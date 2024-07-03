@@ -36,7 +36,8 @@
             "app/Helpers/user.php",
             "app/Helpers/periode.php",
             "app/Helpers/notification.php",
-            "app/Helpers/angka.php"
+            "app/Helpers/angka.php",
+            "app/Helpers/send_invoice.php"
         ]
     },
     "autoload-dev": {
