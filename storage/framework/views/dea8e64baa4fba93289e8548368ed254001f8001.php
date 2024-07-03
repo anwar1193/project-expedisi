@@ -21,6 +21,15 @@
 			<div class="col-sm-12">
 				<div class="card">
 					<div class="card-header pb-0">
+						<?php if(session()->has('success')): ?>
+							<div class="alert alert-success alert-dismissible fade show" role="alert">
+								<strong>Berhasil <i class="fa fa-info-circle"></i></strong> 
+								<?php echo e(session('success')); ?>
+
+								<button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+							</div>
+						<?php endif; ?>
+
 						<?php if(session()->has('error')): ?>
 							<div class="alert alert-danger alert-dismissible fade show" role="alert">
 								<strong>Gagal <i class="fa fa-info-circle"></i></strong> 

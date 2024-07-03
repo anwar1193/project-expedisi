@@ -101,7 +101,7 @@ class CustomerController extends Controller
 
             $this->validate($request, [
                 'nama' => 'required',
-                'email' => 'required|email|unique:customers,email,' . $id.'|unique:users,email,' . $id,
+                'email' => 'required',
                 'no_wa' => 'required|regex:/^\+?[0-9]+$/|unique:customers,no_wa,' . $id.'|unique:users,nomor_telepon,' . $id,
                 'alamat' => 'required',
             ]);
