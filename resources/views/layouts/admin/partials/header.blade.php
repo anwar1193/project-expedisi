@@ -4,9 +4,9 @@
 
       <div class="logo-wrapper">
         <a href="{{ route('index') }}">
-          {{-- <img class="img-fluid" src="{{asset('assets/logo-kejaksaan.png')}}" alt="" width="40px">
-          <span style="font-size: 20px; font-weight:bold; letter-spacing:2px; margin-left:10px">SIPBIS</span> --}}
-          <img src="/assets/lionparcel.png" width="200px" alt="">
+          <img class="img-fluid" src="{{asset('assets/logo-kejaksaan.png')}}" alt="" width="40px">
+          <span style="font-size: 20px; font-weight:bold; letter-spacing:2px; margin-left:10px">SIPBIS</span>
+          {{-- <img src="/assets/lionparcel.png" width="200px" alt=""> --}}
         </a>
       </div>
 
