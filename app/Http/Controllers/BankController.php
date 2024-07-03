@@ -16,44 +16,48 @@ class BankController extends Controller
 
     public function create()
     {
-        return view('perlengkapan.create');
+        return view('bank.create');
     }
 
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'nama_perlengkapan' => 'required',
-            'keterangan' => 'required',
+            'bank' => 'required',
+            'nomor_rekening' => 'required',
+            'atas_nama' => 'required',
+            'cabang' => 'required',
         ]);
 
-        Perlengkapan::create($validatedData);
+        Bank::create($validatedData);
 
-        Helper::logActivity('success', 'Perlengkapan berhasil ditambahkan');
+        Helper::logActivity('success', 'Bank berhasil ditambahkan');
 
-        return redirect()->route('perlengkapan')->with('success', 'Perlengkapan berhasil ditambahkan');
+        return redirect()->route('bank')->with('success', 'Bank berhasil ditambahkan');
     }
 
     public function edit($id)
     {
-        $perlengkapan = Perlengkapan::findOrFail($id);
-        return view('perlengkapan.edit', compact('perlengkapan'));
+        $bank = Bank::findOrFail($id);
+        return view('bank.edit', compact('bank'));
     }
 
     public function update(Request $request)
     {
         $id = $request->id;
-        $validateData = $request->validate([
-            'nama_perlengkapan' => 'required',
-            'keterangan' => 'required'
+        $validatedData = $request->validate([
+            'bank' => 'required',
+            'nomor_rekening' => 'required',
+            'atas_nama' => 'required',
+            'cabang' => 'required',
         ]);
 
-        $perlengkapan = Perlengkapan::findOrFail($id);
+        $bank = Bank::findOrFail($id);
 
-        $perlengkapan->update($request->all());
+        $bank->update($request->all());
 
-        Helper::logActivity('success', 'Perlengkapan berhasil diupdate');
+        Helper::logActivity('success', 'Bank berhasil diupdate');
 
-        return redirect()->route('perlengkapan')->with('success', 'Perlengkapan berhasil diupdate');
+        return redirect()->route('bank')->with('success', 'Bank berhasil diupdate');
     }
 
     public function delete($id)
