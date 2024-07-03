@@ -187,14 +187,8 @@ class InvoiceController extends Controller
         // if (!Storage::exists('app/public/invoices/invoice-'.$customerName.'.pdf')) {
         //     return back()->with("error", "Silahka Cetak invoice Terlebih Dahulu");
         // }
-
-        $dataSending = [
-            "api_key" => "TYBUL3W5VDXSUT9P",
-            "number_key" => "TAlgCr43YndCNG0g",
-            "phone_no" => 6282375377287,
-            "message" => "Test Invoice",
-        ];
-        // $dataSending = sendWaText($customer->no_wa, "Terlampir Invoice");
+        
+        $dataSending = sendWaText($customer->no_wa, "Terlampir Invoice");
         // $dataSendings = sendWaUrl($customer->no_wa, URL::to('/'). "/storage/invoices/invoice-".$customerName.".pdf");
     
         try {
