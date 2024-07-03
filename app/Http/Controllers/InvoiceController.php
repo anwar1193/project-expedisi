@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\Invoice as MailInvoice;
 use App\Models\Bank;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Dompdf\Dompdf;
@@ -12,6 +13,10 @@ use App\Models\DataPengiriman;
 use App\Models\Invoice;
 use App\Models\TransaksiInvoice;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 
 class InvoiceController extends Controller
 {
@@ -160,8 +165,63 @@ class InvoiceController extends Controller
         $notEmpty = $data->isNotEmpty();
         $waktuCetak = date('d-m-Y H:i:s');
         $picture = public_path('assets/lionparcel.png');
+        $customerName = str_replace(' ', '', $customer->nama);
 
         $pdf = Pdf::loadView('invoice.hasil-pdf', compact('customer', 'data' ,'picture', 'waktuCetak', 'total', 'notEmpty', 'bank', 'diskon', 'totalBersih'));
-        return $pdf->stream('Invoice-'.$customer->name.'.pdf');
+        $pdfContent = $pdf->output();
+
+        // Simpan ke storage
+        Storage::put('public/invoices/Invoice-'.$customerName.'.pdf', $pdfContent);
+        return $pdf->stream('Invoice-'.$customerName.'.pdf');
+    }
+
+    public function send_wa_invoice(Request $request)
+    {
+        $id = $request->id;
+        $customer = Customer::find($id);
+        $customerName = str_replace(' ', '', $customer->nama);
+
+        if (!Storage::exists('/public/invoices/invoice-'.$customerName.'.pdf')) {
+            return back()->with("error", "Silahka Cetak invoice Terlebih Dahulu");
+        }
+
+        $dataSending = sendWaText($customer->no_wa, "Terlampir Invoice");
+        $dataSendings = sendWaUrl($customer->no_wa, URL::to('/'). "/storage/invoices/invoice-".$customerName.".pdf");
+    
+        try {
+            $response = Http::withHeaders([
+                'Content-Type' => 'application/json',
+            ])->post('https://api.watzap.id/v1/send_message', $dataSending);
+            
+            $responses = Http::withHeaders([
+                'Content-Type' => 'application/json',
+            ])->post('https://api.watzap.id/v1/send_file_url', $dataSendings);
+    
+            if ($response->successful() && $responses->successful()) {
+               return redirect()->route("invoices.index")->with("success", "Invoice Berhasil Dikirim Ke WhatsApp " .$customer->nama);
+            } else {
+                return redirect()->route("invoices.index")->with("error", "Invoice Gagal Dikirim Ke WhatsApp " .$customer->nama);
+            }
+        } catch (\Throwable $e) {
+            return redirect()->route("invoices.index")->with("success", "Proses Pengiriman Invoice Kepada ".$customer->nama." Berhasil");
+        }
+    }
+
+    public function send_email_invoice(Request $request)
+    {
+        $id = $request->id;
+        $invoice = Customer::select('customers.id', 'customers.diskon AS diskon_customer', 'customers.kode_customer', 'customers.nama', 'customers.alamat', 'invoices.invoice_no', 'invoices.id AS invoiceId', 'invoices.diskon', 'invoices.created_at')
+                    ->join('invoices', 'invoices.customer_id', '=', 'customers.id')
+                    ->where('customers.id', $id)
+                    ->first();
+
+        $customerName = str_replace(' ', '', $invoice->nama);
+        if (!Storage::exists('/public/invoices/invoice-'.$customerName.'.pdf')) {
+            return back()->with("error", "Silahka Cetak invoice Terlebih Dahulu");
+        }
+                                
+        Mail::to("ziggerred@gmail.com")->send(new MailInvoice($invoice));
+
+        return redirect()->route("invoices.index")->with("success", "Invoice Berhasil Dikirim Ke Email " .$invoice->nama);
     }
 }
