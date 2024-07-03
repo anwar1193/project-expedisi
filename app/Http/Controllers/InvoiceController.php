@@ -184,9 +184,9 @@ class InvoiceController extends Controller
         $customer = Customer::find($id);
         $customerName = str_replace(' ', '', $customer->nama);
 
-        if (!Storage::exists('app/public/invoices/invoice-'.$customerName.'.pdf')) {
-            return back()->with("error", "Silahka Cetak invoice Terlebih Dahulu");
-        }
+        // if (!Storage::exists('app/public/invoices/invoice-'.$customerName.'.pdf')) {
+        //     return back()->with("error", "Silahka Cetak invoice Terlebih Dahulu");
+        // }
 
         $dataSending = sendWaText($customer->no_wa, "Terlampir Invoice");
         $dataSendings = sendWaUrl($customer->no_wa, URL::to('/'). "/storage/invoices/invoice-".$customerName.".pdf");
