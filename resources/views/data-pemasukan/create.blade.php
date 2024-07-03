@@ -309,6 +309,7 @@
 		
 			if (video && takeImageCheckbox.checked) {
 				if (navigator.mediaDevices.getUserMedia) {
+					// navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment'}  })
 					navigator.mediaDevices.getUserMedia({ video: true })
 						.then(function (stream) {
 							video.srcObject = stream;
