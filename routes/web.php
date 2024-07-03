@@ -2,10 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BankController;
 use App\Http\Controllers\JasaController;
 use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\BarangController;
-use App\Http\Controllers\BarangMasukController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\TestingController;
@@ -17,6 +17,7 @@ use App\Http\Controllers\LastLoginController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\GoogleAuthController;
 
+use App\Http\Controllers\BarangMasukController;
 use App\Http\Controllers\LogActivityController;
 use App\Http\Controllers\MerchandiseController;
 use App\Http\Controllers\PerlengkapanController;
@@ -97,6 +98,13 @@ Route::middleware("auth")->group(function() {
         Route::post('merchandise', [MerchandiseController::class, 'store'])->name('merchandise.store');
         Route::post('merchandise/update/{id}', [MerchandiseController::class, 'update'])->name('merchandise.update');
         Route::get('merchandise/delete/{id}', [MerchandiseController::class, 'delete'])->name('merchandise.delete');
+
+        Route::get('bank', [BankController::class, 'index'])->name('bank');
+        Route::get('bank/create', [BankController::class, 'create'])->name('bank.create');
+        Route::post('bank/store', [BankController::class, 'store'])->name('bank.store');
+        Route::get('bank/edit/{id}', [BankController::class, 'edit'])->name('bank.edit');
+        Route::post('bank/update', [BankController::class, 'update'])->name('bank.update');
+        Route::get('bank/delete/{id}', [BankController::class, 'delete'])->name('bank.delete');
     });
 
     Route::prefix('users')->group(function () {
