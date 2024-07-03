@@ -268,6 +268,7 @@ Route::middleware("auth")->group(function() {
         Route::post('/invoice/handle-transactions/{id}', [InvoiceController::class, 'handleInvoiceTransactions'])->name('invoice.handle-transactions');
         Route::post('/send-wa', [InvoiceController::class, 'send_wa_invoice'])->name('invoice.send-wa');
         Route::post('/send-email', [InvoiceController::class, 'send_email_invoice'])->name('invoice.send-email');
+        Route::get('/test-wa', [InvoiceController::class, 'test_wa'])->name('invoice.test-wa');
     });
     
     Route::prefix('penukaran-point')->group(function () {

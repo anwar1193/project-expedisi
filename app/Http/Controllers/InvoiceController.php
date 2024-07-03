@@ -187,7 +187,6 @@ class InvoiceController extends Controller
         // if (!Storage::exists('app/public/invoices/invoice-'.$customerName.'.pdf')) {
         //     return back()->with("error", "Silahka Cetak invoice Terlebih Dahulu");
         // }
-        
         $dataSending = sendWaText($customer->no_wa, "Terlampir Invoice");
         // $dataSendings = sendWaUrl($customer->no_wa, URL::to('/'). "/storage/invoices/invoice-".$customerName.".pdf");
     
@@ -227,5 +226,21 @@ class InvoiceController extends Controller
         Mail::to($invoice->email)->send(new MailInvoice($invoice));
 
         return redirect()->route("invoices.index")->with("success", "Invoice Berhasil Dikirim Ke Email " .$invoice->nama);
+    }
+
+    public function test_wa()
+    {
+        $dataSending = [
+            "api_key" => "TYBUL3W5VDXSUT9P",
+            "number_key" => "TAlgCr43YndCNG0g",
+            "phone_no" => 6282375377287,
+            "message" => "Test Invoice",
+        ];
+
+        $response = Http::withHeaders([
+            'Content-Type' => 'application/json',
+        ])->post('https://api.watzap.id/v1/send_message', $dataSending);
+
+        return "Berhasil";
     }
 }
