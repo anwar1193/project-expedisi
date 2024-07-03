@@ -210,7 +210,7 @@ class InvoiceController extends Controller
     public function send_email_invoice(Request $request)
     {
         $id = $request->id;
-        $invoice = Customer::select('customers.id', 'customers.diskon AS diskon_customer', 'customers.kode_customer', 'customers.nama', 'customers.alamat', 'invoices.invoice_no', 'invoices.id AS invoiceId', 'invoices.diskon', 'invoices.created_at')
+        $invoice = Customer::select('customers.id', 'customers.diskon AS diskon_customer', 'customers.kode_customer', 'customers.nama', 'customers.email', 'customers.alamat', 'invoices.invoice_no', 'invoices.id AS invoiceId', 'invoices.diskon', 'invoices.created_at')
                     ->join('invoices', 'invoices.customer_id', '=', 'customers.id')
                     ->where('customers.id', $id)
                     ->first();
@@ -220,7 +220,7 @@ class InvoiceController extends Controller
             return back()->with("error", "Silahka Cetak invoice Terlebih Dahulu");
         }
                                 
-        Mail::to("ziggerred@gmail.com")->send(new MailInvoice($invoice));
+        Mail::to($invoice->email)->send(new MailInvoice($invoice));
 
         return redirect()->route("invoices.index")->with("success", "Invoice Berhasil Dikirim Ke Email " .$invoice->nama);
     }
