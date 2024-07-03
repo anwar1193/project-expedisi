@@ -185,6 +185,12 @@
 									<button type="submit" class="btn btn-success">Kirim Ke Email</button>
 								</form>
 							</div>
+							<div class="pz-2">
+								<form action="<?php echo e(route('invoice.test-wa')); ?>" method="POST">
+									<?php echo csrf_field(); ?>
+									<button type="submit" class="btn btn-success">Test</button>
+								</form>
+							</div>
                             
 	                    </div>
                     </div>
