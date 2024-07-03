@@ -219,9 +219,9 @@ class InvoiceController extends Controller
                     ->first();
 
         $invoice->customerName = str_replace(' ', '', $invoice->nama);
-        if (!Storage::exists('/public/invoices/invoice-'. $invoice->customerName .'.pdf')) {
-            return back()->with("error", "Silahka Cetak invoice Terlebih Dahulu");
-        }
+        // if (!Storage::exists('/public/invoices/invoice-'. $invoice->customerName .'.pdf')) {
+        //     return back()->with("error", "Silahka Cetak invoice Terlebih Dahulu");
+        // }
                                 
         Mail::to($invoice->email)->send(new MailInvoice($invoice));
 
