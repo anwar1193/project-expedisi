@@ -258,6 +258,8 @@ Route::middleware("auth")->group(function() {
         Route::get('/generate', [InvoiceController::class, 'generateInvoice'])->name('invoices.generate');
         Route::get('/invoice-pdf/{id}', [InvoiceController::class, 'generateInvoicePdf'])->name('invoice.customer-pdf');
         Route::post('/invoice/handle-transactions/{id}', [InvoiceController::class, 'handleInvoiceTransactions'])->name('invoice.handle-transactions');
+        Route::post('/send-wa', [InvoiceController::class, 'send_wa_invoice'])->name('invoice.send-wa');
+        Route::post('/send-email', [InvoiceController::class, 'send_email_invoice'])->name('invoice.send-email');
     });
     
     Route::prefix('penukaran-point')->group(function () {
