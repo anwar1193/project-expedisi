@@ -186,11 +186,11 @@ class InvoiceController extends Controller
         $customerName = str_replace(' ', '', $customer->nama);
         $pesan = Pesan::find(Pesan::INV);
 
-        return "https://lionparcel.dangelexpress.my.id/storage/invoices/invoice-".$customerName.".pdf";
+        // return "https://lionparcel.dangelexpress.my.id/storage/invoices/invoice-".$customerName.".pdf";
 
-        if (!Storage::exists('app/public/invoices/invoice-'.$customerName.'.pdf')) {
-            return back()->with("error", "Silahkan Cetak invoice Terlebih Dahulu");
-        }
+        // if (!Storage::exists('app/public/invoices/invoice-'.$customerName.'.pdf')) {
+        //     return back()->with("error", "Silahkan Cetak invoice Terlebih Dahulu");
+        // }
 
         $dataSending = sendWaText($customer->no_wa, "Terlampir Invoice");
         $dataSendings = sendWaUrl($customer->no_wa, "https://lionparcel.dangelexpress.my.id/storage/invoices/invoice-".$customerName.".pdf");
