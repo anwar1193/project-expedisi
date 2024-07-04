@@ -188,8 +188,8 @@ class InvoiceController extends Controller
         //     return back()->with("error", "Silahka Cetak invoice Terlebih Dahulu");
         // }
         $dataSending = sendWaText($customer->no_wa, "Terlampir Invoice");
-        // $dataSendings = sendWaUrl($customer->no_wa, URL::to('/'). "/storage/invoices/invoice-".$customerName.".pdf");
-        $dataSendings = sendWaUrl($customer->no_wa, "https://bff7-203-142-86-77.ngrok-free.app/storage/invoices/invoice-".$customerName.".pdf");
+        $dataSendings = sendWaUrl($customer->no_wa, URL::to('/'). "/storage/invoices/invoice-".$customerName.".pdf");
+        // $dataSendings = sendWaUrl($customer->no_wa, "https://bff7-203-142-86-77.ngrok-free.app/storage/invoices/invoice-".$customerName.".pdf");
     
         try {
             $response = Http::withHeaders([
@@ -207,8 +207,8 @@ class InvoiceController extends Controller
                 return redirect()->route("invoices.index")->with("error", "Invoice Gagal Dikirim Ke WhatsApp " .$customer->nama);
             }
         } catch (\Throwable $e) {
+            return redirect()->route("invoices.index")->with("error", "Koneksi ke watzap.id gagal");
             // return redirect()->route("invoices.index")->with("success", "Proses Pengiriman Invoice Kepada ".$customer->nama." Berhasil");
-            return redirect()->route("invoices.index")->with("error", "koneksi ke watzap.id gagal!");
         }
     }
 
