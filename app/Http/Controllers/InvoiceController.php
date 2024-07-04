@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Models\Customer;
 use App\Models\DataPengiriman;
 use App\Models\Invoice;
+use App\Models\Pesan;
 use App\Models\TransaksiInvoice;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
@@ -183,13 +184,14 @@ class InvoiceController extends Controller
         $id = $request->id;
         $customer = Customer::find($id);
         $customerName = str_replace(' ', '', $customer->nama);
+        $pesan = Pesan::find(Pesan::INV);
 
         // if (!Storage::exists('app/public/invoices/invoice-'.$customerName.'.pdf')) {
         //     return back()->with("error", "Silahka Cetak invoice Terlebih Dahulu");
         // }
-        $dataSending = sendWaText($customer->no_wa, "Terlampir Invoice");
-        // $dataSendings = sendWaUrl($customer->no_wa, URL::to('/'). "/storage/invoices/invoice-".$customerName.".pdf");
-        $dataSendings = sendWaUrl($customer->no_wa, "https://bff7-203-142-86-77.ngrok-free.app/storage/invoices/invoice-".$customerName.".pdf");
+        $dataSending = sendWaText($customer->no_wa, $pesan->isi_pesan);
+        $dataSendings = sendWaUrl($customer->no_wa, URL::to('/'). "/storage/invoices/invoice-".$customerName.".pdf");
+        // $dataSendings = sendWaUrl($customer->no_wa, "https://bff7-203-142-86-77.ngrok-free.app/storage/invoices/invoice-".$customerName.".pdf");
     
         try {
             $response = Http::withHeaders([
@@ -215,12 +217,14 @@ class InvoiceController extends Controller
     public function send_email_invoice(Request $request)
     {
         $id = $request->id;
+        $pesan = Pesan::find(Pesan::INV);
         $invoice = Customer::select('customers.id', 'customers.diskon AS diskon_customer', 'customers.kode_customer', 'customers.nama', 'customers.email', 'customers.alamat', 'invoices.invoice_no', 'invoices.id AS invoiceId', 'invoices.diskon', 'invoices.created_at')
                     ->join('invoices', 'invoices.customer_id', '=', 'customers.id')
                     ->where('customers.id', $id)
                     ->first();
 
         $invoice->customerName = str_replace(' ', '', $invoice->nama);
+        $invoice->isi_pesan = $pesan->isi_pesan;
         // if (!Storage::exists('/public/invoices/invoice-'. $invoice->customerName .'.pdf')) {
         //     return back()->with("error", "Silahka Cetak invoice Terlebih Dahulu");
         // }
