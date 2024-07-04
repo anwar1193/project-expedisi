@@ -193,7 +193,12 @@ class InvoiceController extends Controller
         // }
 
         $dataSending = sendWaText($customer->no_wa, "Terlampir Invoice");
-        $dataSendings = sendWaUrl($customer->no_wa, "https://lionparcel.dangelexpress.my.id/storage/invoices/".$customerName.".pdf");
+        $dataSendings = sendWaUrl($customer->no_wa, "https://lionparcel.dangelexpress.my.id/storage/invoices/Invoice-Rizky.pdf");
+
+        return [
+            "https://lionparcel.dangelexpress.my.id/storage/invoices/Invoice-Rizky.pdf",
+            "https://lionparcel.dangelexpress.my.id/storage/invoices/invoice-".$customerName.".pdf"
+        ];
         // $dataSendings = sendWaUrl($customer->no_wa, URL::to('/'). "/storage/invoices/invoice-".$customerName.".pdf");
         // $dataSendings = sendWaUrl($customer->no_wa, "https://bff7-203-142-86-77.ngrok-free.app/storage/invoices/invoice-".$customerName.".pdf");
     
