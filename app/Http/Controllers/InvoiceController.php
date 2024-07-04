@@ -209,8 +209,8 @@ class InvoiceController extends Controller
                 return redirect()->route("invoices.index")->with("error", "Invoice Gagal Dikirim Ke WhatsApp " .$customer->nama);
             }
         } catch (\Throwable $e) {
+            return redirect()->route("invoices.index")->with("error", "Koneksi ke watzap.id gagal");
             // return redirect()->route("invoices.index")->with("success", "Proses Pengiriman Invoice Kepada ".$customer->nama." Berhasil");
-            return redirect()->route("invoices.index")->with("error", "koneksi ke watzap.id gagal!");
         }
     }
 

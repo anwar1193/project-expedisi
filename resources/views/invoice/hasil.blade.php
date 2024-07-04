@@ -201,12 +201,12 @@
 									<button type="submit" class="btn btn-success">Kirim Ke Email</button>
 								</form>
 							</div>
-							<div class="pz-2">
+							{{-- <div class="pz-2">
 								<form action="{{ route('invoice.test-wa') }}" method="POST">
 									@csrf
 									<button type="submit" class="btn btn-success">Test</button>
 								</form>
-							</div>
+							</div> --}}
                             {{-- <a href="{{ route('invoice.customer-pdf', $customer->id) }}" class="btn btn btn-primary me-2">Cetak Invoice</a> --}}
 	                    </div>
                     </div>
