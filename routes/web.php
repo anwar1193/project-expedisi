@@ -29,6 +29,7 @@ use App\Http\Controllers\JenisPengeluaranController;
 use App\Http\Controllers\PemasukanLainnyaController;
 use App\Http\Controllers\DaftarPengeluaranController;
 use App\Http\Controllers\PembelianPerlengkapanController;
+use App\Http\Controllers\PesanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -150,6 +151,9 @@ Route::middleware("auth")->group(function() {
 
         Route::get('konversi-point', [KonversiPointController::class, 'index'])->name('konversi-point');
         Route::post('konversi-point', [KonversiPointController::class, 'update'])->name('konversi-point.update');
+
+        Route::get('pesan', [PesanController::class, 'index'])->name('pesan');
+        Route::post('pesan/update', [PesanController::class, 'update'])->name('pesan.update');
     });
     
     Route::prefix('data-pengiriman')->group(function () {
