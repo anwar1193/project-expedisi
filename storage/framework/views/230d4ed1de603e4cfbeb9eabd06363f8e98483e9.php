@@ -60,7 +60,7 @@
   </head>
   <body>
     <div style="margin-bottom: 20px">
-        <div style="padding-bottom: 50px; page-break-before: auto">
+        <div style="padding-bottom: 50px;">
             <div>
                 <table>
                     <tbody>
