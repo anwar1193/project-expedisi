@@ -188,7 +188,7 @@ class InvoiceController extends Controller
 
         // return "https://lionparcel.dangelexpress.my.id/storage/invoices/invoice-".$customerName.".pdf";
 
-        if (!Storage::exists('app/public/invoices/Invoice-'.$customerName.'.pdf')) {
+        if (!Storage::exists('public/invoices/Invoice-'.$customerName.'.pdf')) {
             return back()->with("error", "Silahkan Cetak invoice Terlebih Dahulu");
         }
 
