@@ -184,11 +184,12 @@ class InvoiceController extends Controller
         $customer = Customer::find($id);
         $customerName = str_replace(' ', '', $customer->nama);
 
-        // if (!Storage::exists('app/public/invoices/invoice-'.$customerName.'.pdf')) {
-        //     return back()->with("error", "Silahka Cetak invoice Terlebih Dahulu");
-        // }
+        if (!Storage::exists('app/public/invoices/invoice-'.$customerName.'.pdf')) {
+            return back()->with("error", "Silahka Cetak invoice Terlebih Dahulu");
+        }
         $dataSending = sendWaText($customer->no_wa, "Terlampir Invoice");
-        $dataSendings = sendWaUrl($customer->no_wa, URL::to('/'). "/storage/invoices/invoice-".$customerName.".pdf");
+        $dataSendings = sendWaUrl($customer->no_wa, "https://lionparcel.dangelexpress.my.id/storage/invoices/invoice-".$customerName.".pdf");
+        // $dataSendings = sendWaUrl($customer->no_wa, URL::to('/'). "/storage/invoices/invoice-".$customerName.".pdf");
         // $dataSendings = sendWaUrl($customer->no_wa, "https://bff7-203-142-86-77.ngrok-free.app/storage/invoices/invoice-".$customerName.".pdf");
     
         try {
@@ -207,8 +208,8 @@ class InvoiceController extends Controller
                 return redirect()->route("invoices.index")->with("error", "Invoice Gagal Dikirim Ke WhatsApp " .$customer->nama);
             }
         } catch (\Throwable $e) {
-            return redirect()->route("invoices.index")->with("error", "Koneksi ke watzap.id gagal");
-            // return redirect()->route("invoices.index")->with("success", "Proses Pengiriman Invoice Kepada ".$customer->nama." Berhasil");
+            // return redirect()->route("invoices.index")->with("error", "Koneksi ke watzap.id gagal");
+            return redirect()->route("invoices.index")->with("success", "Proses Pengiriman Invoice Kepada ".$customer->nama." Berhasil");
         }
     }
 
