@@ -190,10 +190,8 @@ class InvoiceController extends Controller
             return back()->with("error", "Silahkan Cetak invoice Terlebih Dahulu");
         }
 
-        $dataSending = sendWaText($customer->no_wa, "Terlampir Invoice");
-
+        $dataSending = sendWaText($customer->no_wa, $pesan->isi_pesan);
         $dataSendings = sendWaUrl($customer->no_wa, URL::to('/'). "/storage/invoices/Invoice-".$customerName.".pdf");
-        // $dataSendings = sendWaUrl($customer->no_wa, "https://bff7-203-142-86-77.ngrok-free.app/storage/invoices/invoice-".$customerName.".pdf");
     
         try {
             $response = Http::withHeaders([
