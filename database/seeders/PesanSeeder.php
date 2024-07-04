@@ -17,12 +17,12 @@ class PesanSeeder extends Seeder
     {
         $pesan = [
             [
-                "kode_pesan" => 1, 
+                "kode_pesan" => "INV", 
                 "judul" => "Invoice",
                 "isi_pesan" => "Terlampir Invoice"
             ],
             [
-                "kode_pesan" => 2, 
+                "kode_pesan" => "SP", 
                 "judul" => "Status Pengiriman",
                 "isi_pesan" => "Update Status Pengiriman Terbaru"
             ]
