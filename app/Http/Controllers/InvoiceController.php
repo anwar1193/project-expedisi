@@ -66,6 +66,10 @@ class InvoiceController extends Controller
                     ->orderBy('id', 'ASC')->get();
             $item->transaksi = $transaksi;
         }
+                
+        $total = DataPengiriman::selectRaw('SUM(ongkir) AS total')
+                ->where('status_pembayaran', DataPengiriman::STATUS_PENDING)
+                ->where('kode_customer', $customer->kode_customer)->first();
 
         if ($data->isEmpty()) {
             return back()->with('error', 'Customer Belum Memiliki Riwayat Transaksi');
@@ -81,13 +85,15 @@ class InvoiceController extends Controller
             ['invoice_no' => $no_invoice]
         );
 
-        $total = DataPengiriman::selectRaw('SUM(ongkir) AS total')
-                ->join('transaksi_invoices', 'transaksi_invoices.data_pengiriman_id', '=', 'data_pengirimen.id')
-                ->where('kode_customer', $customer->kode_customer)->first();
+        $exist = TransaksiInvoice::where('invoice_id', $invoice->id)->exists();
+
+        // $total = DataPengiriman::selectRaw('SUM(ongkir) AS total')
+        //         ->join('transaksi_invoices', 'transaksi_invoices.data_pengiriman_id', '=', 'data_pengirimen.id')
+        //         ->where('kode_customer', $customer->kode_customer)->first();
 
         $today = date('Y-m-d');
 
-        return view('invoice.hasil', compact('data', 'customer', 'today', 'total', 'invoice'));
+        return view('invoice.hasil', compact('data', 'customer', 'today', 'total', 'invoice', 'total', 'exist'));
     }
 
     public function all_invoices(Request $request)
