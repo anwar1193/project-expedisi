@@ -22,7 +22,7 @@
 	<div class="container invoice">
 	    <div class="row">
 	        <div class="col-sm-12">
-				<form action="{{ route('invoice.handle-transactions', $customer->id) }}" method="POST" target="_blank">
+				<form action="{{ route('invoice.handle-transactions', $customer->id) }}" method="POST">
 				@csrf
 	            <div class="card">
 	                <div class="card-body">	
@@ -33,7 +33,7 @@
 								<button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
 							</div>
 						@endif
-											
+
 						@if (session()->has('error'))
 							<div class="alert alert-danger alert-dismissible fade show" role="alert">
 								<strong>Gagal <i class="fa fa-info-circle"></i></strong> 
