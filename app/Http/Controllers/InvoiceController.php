@@ -125,6 +125,8 @@ class InvoiceController extends Controller
                     ->where('customers.id', $id)
                     ->first();
 
+                    return "halo";
+
         if (!isCustomer()) {
             if ($id_pengiriman == NULL) {
                 return back()->with('error', 'Belum Ada Data Dipilih');
