@@ -80,7 +80,7 @@
 	                            </div>
 	                        </div>
 							<div class="my-2 py-2">
-								<small>Biaya Pengiriman</small>  PT. Dion Farma Abadi
+								<small>Biaya Pengiriman</small> {{ $customer->nama }}
 							</div>
 	                        <!-- End Invoice Mid-->
 	                        <div>
@@ -155,6 +155,15 @@
 														<input class="text-center form-control" type="number" name="diskon" id="diskon" value="{{ old('diskon', $invoice->diskon) }}">
 													</td>
 												</tr>
+												<tr>
+													<td style="border: 1px solid; padding: 5px; text-align: center"></td>
+													<td colspan="6" style="border: 1px solid; padding: 5px; text-align: center">
+														<p class="fw-semibold">Total</p>
+													</td>
+													<td style="border: 1px solid; padding: 5px; text-align: center">
+														Rp {{ number_format($total->total, 0, '.', '.') }}
+													</td>
+												</tr>
 												{{-- <tr>
 													<td style="border: 1px solid; padding: 5px; text-align: center"></td>
 													<td colspan="6" style="border: 1px solid; padding: 5px; text-align: center">
@@ -184,23 +193,25 @@
                     <div class="card-footer">
                         <div class="d-flex justify-content-center">
 							<div class="px-2">
-								<button type="submit" class="btn btn-primary">Cetak Invoice</button>
+								<button type="submit" class="btn btn-primary">Generate Invoice</button>
 							</div>
 							</form>
-							<div class="px-2">
-								<form action="{{ route('invoice.send-wa') }}" method="POST">
-									@csrf
-									<input type="hidden" name="id" value="{{ $customer->id }}">
-									<button type="submit" class="btn btn-success">Kirim Ke Whatsapp</button>
-								</form>
-							</div>
-							<div class="pz-2">
-								<form action="{{ route('invoice.send-email') }}" method="POST">
-									@csrf
-									<input type="hidden" name="id" value="{{ $customer->id }}">
-									<button type="submit" class="btn btn-success">Kirim Ke Email</button>
-								</form>
-							</div>
+							@if ($exist)
+								<div class="px-2">
+									<form action="{{ route('invoice.send-wa') }}" method="POST">
+										@csrf
+										<input type="hidden" name="id" value="{{ $customer->id }}">
+										<button type="submit" class="btn btn-success">Kirim Ke Whatsapp</button>
+									</form>
+								</div>
+								<div class="pz-2">
+									<form action="{{ route('invoice.send-email') }}" method="POST">
+										@csrf
+										<input type="hidden" name="id" value="{{ $customer->id }}">
+										<button type="submit" class="btn btn-success">Kirim Ke Email</button>
+									</form>
+								</div>
+							@endif
 							{{-- <div class="pz-2">
 								<form action="{{ route('invoice.test-wa') }}" method="POST">
 									@csrf
