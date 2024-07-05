@@ -182,9 +182,12 @@ class InvoiceController extends Controller
 
         if (!Storage::exists('public/invoices/Invoice-'.$customerName.'.pdf')) {
             // Simpan ke storage
-            Storage::put('public/invoices/Invoice-'.$customerName.'.pdf', $pdfContent);
+           $simpan =  Storage::put('public/invoices/Invoice-'.$customerName.'.pdf', $pdfContent);
 
+           if ($simpan) {
             return back()->with("success", "Generate Invoice Berhasil");
+           }
+            
         }
         
         return $pdf->stream('Invoice-'.$customerName.'.pdf');
