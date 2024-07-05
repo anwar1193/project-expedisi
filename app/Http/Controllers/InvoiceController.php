@@ -143,6 +143,10 @@ class InvoiceController extends Controller
             // Invoice::find($customer->invoiceId)->update([
             //     'diskon' => $diskon
             // ]); 
+
+            $invoice = Invoice::find($customer->invoiceId);
+
+            return [$invoice, $diskon];
         }
 
         return redirect()->route('invoice.customer-pdf', ['id' => $customer->id]);
