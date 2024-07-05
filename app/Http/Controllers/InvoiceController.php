@@ -139,12 +139,12 @@ class InvoiceController extends Controller
                     ]);
                 }
             }
-
-            return "Test 2";
     
             Invoice::find($customer->invoiceId)->update([
                 'diskon' => $diskon
             ]); 
+
+            return "Test 2";
         }
 
         // return redirect()->route('invoice.customer-pdf', ['id' => $customer->id]);
