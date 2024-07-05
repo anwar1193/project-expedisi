@@ -151,7 +151,7 @@ class InvoiceController extends Controller
 
     public function generateInvoicePdf($id)
     {
-        $customer = Customer::select('customers.id', 'customers.diskon AS diskon_customer', 'customers.kode_customer', 'customers.nama', 'customers.alamat', 'invoices.invoice_no', 'invoices.id AS invoiceId', 'invoices.diskon', 'invoices.created_at')
+        $customer = Customer::select('customers.id', 'customers.diskon AS diskon_customer', 'customers.kode_customer', 'customers.nama', 'customers.alamat', 'invoices.invoice_no', 'invoices.invoice_name', 'invoices.id AS invoiceId', 'invoices.diskon', 'invoices.created_at')
                     ->join('invoices', 'invoices.customer_id', '=', 'customers.id')
                     ->where('customers.id', $id)
                     ->first();
@@ -181,9 +181,15 @@ class InvoiceController extends Controller
         $pdf = Pdf::loadView('invoice.hasil-pdf', compact('customer', 'data' ,'picture', 'waktuCetak', 'total', 'notEmpty', 'bank', 'diskon', 'totalBersih'));
         $pdfContent = $pdf->output();
 
-        if (!Storage::exists('public/invoices/Invoice-'.$customerName.'.pdf')) {
+        if (!Storage::exists('public/invoices/Invoice-'.$customer->invoice_name.'.pdf')) {
             // Simpan ke storage
-           $simpan =  Storage::put('public/invoices/Invoice-'.$customerName.'.pdf', $pdfContent);
+        
+            $name_invoice = $customerName.date("YmdHis"); 
+            $simpan =  Storage::put('public/invoices/Invoice-'.$name_invoice.'.pdf', $pdfContent);
+
+           Invoice::find($customer->invoiceId)->update([
+                'invoice_name' => $name_invoice
+            ]); 
 
            if ($simpan) {
             return back()->with("success", "Generate Invoice Berhasil");
@@ -198,6 +204,7 @@ class InvoiceController extends Controller
     {
         $id = $request->id;
         $customer = Customer::find($id);
+        $invoice = Invoice::where('customer_id', $customer->id)->first();
         $customerName = str_replace(' ', '', $customer->nama);
         $pesan = Pesan::find(Pesan::INV);
 
@@ -206,7 +213,7 @@ class InvoiceController extends Controller
         }
 
         $dataSending = sendWaText($customer->no_wa, $pesan->isi_pesan);
-        $dataSendings = sendWaUrl($customer->no_wa, URL::to('/'). "/storage/invoices/Invoice-".$customerName.".pdf");
+        $dataSendings = sendWaUrl($customer->no_wa, URL::to('/'). "/storage/invoices/Invoice-".$invoice->invoice_name.".pdf");
     
         try {
             $response = Http::withHeaders([
@@ -233,14 +240,14 @@ class InvoiceController extends Controller
     {
         $id = $request->id;
         $pesan = Pesan::find(Pesan::INV);
-        $invoice = Customer::select('customers.id', 'customers.diskon AS diskon_customer', 'customers.kode_customer', 'customers.nama', 'customers.email', 'customers.alamat', 'invoices.invoice_no', 'invoices.id AS invoiceId', 'invoices.diskon', 'invoices.created_at')
+        $invoice = Customer::select('customers.id', 'customers.diskon AS diskon_customer', 'customers.kode_customer', 'customers.nama', 'customers.email', 'customers.alamat', 'invoices.invoice_no', 'invoices.invoice_name', 'invoices.id AS invoiceId', 'invoices.diskon', 'invoices.created_at')
                     ->join('invoices', 'invoices.customer_id', '=', 'customers.id')
                     ->where('customers.id', $id)
                     ->first();
 
         $invoice->customerName = str_replace(' ', '', $invoice->nama);
         $invoice->isi_pesan = $pesan->isi_pesan;
-        if (!Storage::exists('public/invoices/Invoice-'.$invoice->customerName.'.pdf')) {
+        if (!Storage::exists('public/invoices/Invoice-'.$invoice->invoice_name.'.pdf')) {
             return back()->with("error", "Silahkan Cetak invoice Terlebih Dahulu");
         }
                                 
