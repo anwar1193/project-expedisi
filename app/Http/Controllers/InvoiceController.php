@@ -140,15 +140,13 @@ class InvoiceController extends Controller
                 }
             }
     
-            Invoice::find($customer->invoiceId)->update([
-                'diskon' => $diskon
-            ]); 
-
-            return "Test 2";
+            // Invoice::find($customer->invoiceId)->update([
+            //     'diskon' => $diskon
+            // ]); 
         }
 
-        // return redirect()->route('invoice.customer-pdf', ['id' => $customer->id]);
-        return "TEST";
+        return redirect()->route('invoice.customer-pdf', ['id' => $customer->id]);
+        // return "TEST";
     }
 
     public function generateInvoicePdf($id)
