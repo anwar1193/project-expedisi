@@ -179,7 +179,10 @@
                     <div class="card-footer">
                         <div class="d-flex justify-content-center">
 							<div class="px-2">
-								<button type="submit" class="btn btn-primary">Generate Invoice</button>
+								<button type="submit" class="btn btn-primary">
+									<?php echo e($exist ? "Cetak Invoice" : "Generate Invoice"); ?>
+
+								</button>
 							</div>
 							</form>
 							<?php if($exist): ?>
