@@ -118,34 +118,35 @@ class InvoiceController extends Controller
 
     public function handleInvoiceTransactions(Request $request, $id)
     {
-        $id_pengiriman = $request->id_pengiriman;
-        $diskon = $request->diskon;
-        $customer = Customer::select('customers.id', 'customers.kode_customer', 'customers.nama', 'customers.alamat', 'invoices.invoice_no', 'invoices.id AS invoiceId', 'invoices.diskon')
-                    ->join('invoices', 'invoices.customer_id', '=', 'customers.id')
-                    ->where('customers.id', $id)
-                    ->first();
+        // $id_pengiriman = $request->id_pengiriman;
+        // $diskon = $request->diskon;
+        // $customer = Customer::select('customers.id', 'customers.kode_customer', 'customers.nama', 'customers.alamat', 'invoices.invoice_no', 'invoices.id AS invoiceId', 'invoices.diskon')
+        //             ->join('invoices', 'invoices.customer_id', '=', 'customers.id')
+        //             ->where('customers.id', $id)
+        //             ->first();
 
-        if (!isCustomer()) {
-            if ($id_pengiriman == NULL) {
-                return back()->with('error', 'Belum Ada Data Dipilih');
-            }
+        // if (!isCustomer()) {
+        //     if ($id_pengiriman == NULL) {
+        //         return back()->with('error', 'Belum Ada Data Dipilih');
+        //     }
     
-            foreach ($id_pengiriman as $pengiriman_id) {
-                $exist = TransaksiInvoice::where('data_pengiriman_id', $pengiriman_id)->exists();
-                if (!$exist) {
-                    TransaksiInvoice::create([
-                        'invoice_id' => $customer->invoiceId,
-                        'data_pengiriman_id' => $pengiriman_id
-                    ]);
-                }
-            }
+        //     foreach ($id_pengiriman as $pengiriman_id) {
+        //         $exist = TransaksiInvoice::where('data_pengiriman_id', $pengiriman_id)->exists();
+        //         if (!$exist) {
+        //             TransaksiInvoice::create([
+        //                 'invoice_id' => $customer->invoiceId,
+        //                 'data_pengiriman_id' => $pengiriman_id
+        //             ]);
+        //         }
+        //     }
     
-            Invoice::find($customer->invoiceId)->update([
-                'diskon' => $diskon
-            ]); 
-        }
+        //     Invoice::find($customer->invoiceId)->update([
+        //         'diskon' => $diskon
+        //     ]); 
+        // }
 
-        return redirect()->route('invoice.customer-pdf', ['id' => $customer->id]);
+        // return redirect()->route('invoice.customer-pdf', ['id' => $customer->id]);
+        return "halo";
     }
 
     public function generateInvoicePdf($id)
