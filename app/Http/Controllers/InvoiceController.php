@@ -180,8 +180,13 @@ class InvoiceController extends Controller
         $pdf = Pdf::loadView('invoice.hasil-pdf', compact('customer', 'data' ,'picture', 'waktuCetak', 'total', 'notEmpty', 'bank', 'diskon', 'totalBersih'));
         $pdfContent = $pdf->output();
 
-        // Simpan ke storage
-        Storage::put('public/invoices/Invoice-'.$customerName.'.pdf', $pdfContent);
+        if (!Storage::exists('public/invoices/Invoice-'.$customerName.'.pdf')) {
+            // Simpan ke storage
+            Storage::put('public/invoices/Invoice-'.$customerName.'.pdf', $pdfContent);
+
+            return back()->with("success", "Generate Invoice Berhasil");
+        }
+        
         return $pdf->stream('Invoice-'.$customerName.'.pdf');
     }
 
