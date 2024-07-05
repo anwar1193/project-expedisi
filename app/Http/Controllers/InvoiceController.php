@@ -129,8 +129,6 @@ class InvoiceController extends Controller
             if ($id_pengiriman == NULL) {
                 return back()->with('error', 'Belum Ada Data Dipilih');
             }
-
-            return "halo";
     
             foreach ($id_pengiriman as $pengiriman_id) {
                 $exist = TransaksiInvoice::where('data_pengiriman_id', $pengiriman_id)->exists();
