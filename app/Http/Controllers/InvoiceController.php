@@ -119,7 +119,7 @@ class InvoiceController extends Controller
     public function handleInvoiceTransactions(Request $request, $id)
     {
         $id_pengiriman = $request->id_pengiriman;
-        $diskon = $request->diskon;
+        $diskon = $request->diskon ?? 0;
         $customer = Customer::select('customers.id', 'customers.kode_customer', 'customers.nama', 'customers.alamat', 'invoices.invoice_no', 'invoices.id AS invoiceId', 'invoices.diskon')
                     ->join('invoices', 'invoices.customer_id', '=', 'customers.id')
                     ->where('customers.id', $id)
@@ -140,13 +140,9 @@ class InvoiceController extends Controller
                 }
             }
     
-            // Invoice::find($customer->invoiceId)->update([
-            //     'diskon' => $diskon
-            // ]); 
-
-            $invoice = Invoice::find($customer->invoiceId);
-
-            return [$invoice, $diskon];
+            Invoice::find($customer->invoiceId)->update([
+                'diskon' => $diskon
+            ]); 
         }
 
         return redirect()->route('invoice.customer-pdf', ['id' => $customer->id]);
