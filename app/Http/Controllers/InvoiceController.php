@@ -125,12 +125,12 @@ class InvoiceController extends Controller
                     ->where('customers.id', $id)
                     ->first();
 
-                    return "halo";
-
         if (!isCustomer()) {
             if ($id_pengiriman == NULL) {
                 return back()->with('error', 'Belum Ada Data Dipilih');
             }
+
+            return "halo";
     
             foreach ($id_pengiriman as $pengiriman_id) {
                 $exist = TransaksiInvoice::where('data_pengiriman_id', $pengiriman_id)->exists();
@@ -141,6 +141,8 @@ class InvoiceController extends Controller
                     ]);
                 }
             }
+
+            return "Test 2";
     
             Invoice::find($customer->invoiceId)->update([
                 'diskon' => $diskon
