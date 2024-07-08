@@ -63,14 +63,14 @@ class BankController extends Controller
     public function delete($id)
     {
         if(isAdmin()) {
-            $perlengkapan = Perlengkapan::findOrFail($id);
-            $perlengkapan->delete();
+            $bank = Bank::findOrFail($id);
+            $bank->delete();
 
-            Helper::logActivity('success', 'Perlengkapan berhasil dihapus');
+            Helper::logActivity('success', 'Bank berhasil dihapus');
 
-            return redirect()->route('perlengkapan')->with('success', 'Perlengkapan berhasil dihapus');
+            return redirect()->route('bank')->with('success', 'Bank berhasil dihapus');
         } else {
-            return redirect()->route('perlengkapan')->with('error', 'Anda tidak memiliki akses untuk melakukan ini');
+            return redirect()->route('bank')->with('error', 'Anda tidak memiliki akses untuk melakukan ini');
         }
     }
 }

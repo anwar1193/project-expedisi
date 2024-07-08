@@ -167,6 +167,20 @@
 
 													</td>
 												</tr>
+<<<<<<< HEAD:storage/framework/views/69e691130bd572d97accf30a6d23e0863a8d2feb.php
+=======
+												<tr>
+													<td style="border: 1px solid; padding: 5px; text-align: center"></td>
+													<td colspan="6" style="border: 1px solid; padding: 5px; text-align: center">
+														<p class="fw-semibold">Total</p>
+													</td>
+													<td style="border: 1px solid; padding: 5px; text-align: center">
+														Rp <?php echo e(number_format($total->total, 0, '.', '.')); ?>
+
+													</td>
+												</tr>
+												
+>>>>>>> b7d2255f1f4ecf4ace15a78c857c0777992b1dfb:storage/framework/views/e70a00c117927a1ccae7b98247a21098ae5a421c.php
 											</tfoot>											
 										<?php endif; ?>
 	                                </table>
@@ -187,9 +201,13 @@
                     <div class="card-footer">
                         <div class="d-flex justify-content-center">
 							<div class="px-2">
-								<button type="submit" class="btn btn-primary">Cetak Invoice</button>
+								<button type="submit" class="btn btn-primary">
+									<?php echo e($exist ? "Cetak Invoice" : "Generate Invoice"); ?>
+
+								</button>
 							</div>
 							</form>
+<<<<<<< HEAD:storage/framework/views/69e691130bd572d97accf30a6d23e0863a8d2feb.php
                             <div class="px-2">
                                 <form action="<?php echo e(route('invoice.send-wa')); ?>" method="POST">
                                     <?php echo csrf_field(); ?>
@@ -206,6 +224,25 @@
                                     <button type="submit" class="btn btn-success">Kirim Ke Email</button>
                                 </form>
                             </div>
+=======
+							<?php if($exist): ?>
+								<div class="px-2">
+									<form action="<?php echo e(route('invoice.send-wa')); ?>" method="POST">
+										<?php echo csrf_field(); ?>
+										<input type="hidden" name="id" value="<?php echo e($customer->id); ?>">
+										<button type="submit" class="btn btn-success">Kirim Ke Whatsapp</button>
+									</form>
+								</div>
+								<div class="pz-2">
+									<form action="<?php echo e(route('invoice.send-email')); ?>" method="POST">
+										<?php echo csrf_field(); ?>
+										<input type="hidden" name="id" value="<?php echo e($customer->id); ?>">
+										<button type="submit" class="btn btn-success">Kirim Ke Email</button>
+									</form>
+								</div>
+							<?php endif; ?>
+							
+>>>>>>> b7d2255f1f4ecf4ace15a78c857c0777992b1dfb:storage/framework/views/e70a00c117927a1ccae7b98247a21098ae5a421c.php
                             
 	                    </div>
                     </div>
