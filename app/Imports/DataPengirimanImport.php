@@ -12,21 +12,19 @@ use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\SkipsFailures;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
+use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 Use PhpOffice\PhpSpreadsheet\Shared\Date;
 
-class DataPengirimanImport implements ToModel, WithValidation, WithHeadingRow //SkipsOnFailure
+class DataPengirimanImport implements ToArray, WithValidation, WithHeadingRow
 {
-    // use SkipsFailures;
-    private $firstRowSkipped = false;
-
     /**
     * @param array $row
     *
     * @return \Illuminate\Database\Eloquent\Model|null
     */
-    public function model(array $row)
+    public function array(array $row)
     {
         // if (!$this->firstRowSkipped) {
         //     $this->firstRowSkipped = true;
@@ -35,23 +33,23 @@ class DataPengirimanImport implements ToModel, WithValidation, WithHeadingRow //
 
         $tgl_transaksi = Date::excelToDateTimeObject($row['tgl_transaksi'])->format('Y-m-d');
 
-        $konversi_point = KonversiPoint::where('id', 1)->first();
+        // $konversi_point = KonversiPoint::where('id', 1)->first();
 
-        $customer = Customer::where('kode_customer', $row['kode_customer']);
-        $rcustomer = $customer->first();
+        // $customer = Customer::where('kode_customer', $row['kode_customer']);
+        // $rcustomer = $customer->first();
 
-        if($rcustomer != NULL){
-            $pointOld = $rcustomer->point;
-            $kreditOld = $rcustomer->limit_credit;
+        // if($rcustomer != NULL){
+        //     $pointOld = $rcustomer->point;
+        //     $kreditOld = $rcustomer->limit_credit;
             
-            // Update Point & Credit
-            $customer->update([
-                'point' => $pointOld + ($row['ongkir'] / $konversi_point->nominal),
-                'limit_credit' => $kreditOld - $row['ongkir']
-            ]);
-        }
+        //     // Update Point & Credit
+        //     $customer->update([
+        //         'point' => $pointOld + ($row['ongkir'] / $konversi_point->nominal),
+        //         'limit_credit' => $kreditOld - $row['ongkir']
+        //     ]);
+        // }
         
-        return new DataPengiriman([
+        return [
             'no_resi' => $row['no_resi'],
             'tgl_transaksi' => $tgl_transaksi,
             'kode_customer' => $row['kode_customer'],
@@ -71,7 +69,7 @@ class DataPengirimanImport implements ToModel, WithValidation, WithHeadingRow //
             'bawa_sendiri' => $row['bawa_sendiri'],
             'status_pengiriman' => $row['status_pengiriman'],
             'keterangan' => $row['keterangan'] != '' ? $row['keterangan'] : '-',
-        ]);
+        ];
     }
 
     public function rules(): array
