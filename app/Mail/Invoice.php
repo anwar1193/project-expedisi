@@ -66,6 +66,6 @@ class Invoice extends Mailable
      */
     public function attachments()
     {
-        return Attachment::fromStorage('public/invoices/Invoice-'.$this->invoice->customerName.'.pdf');
+        return Attachment::fromStorage('public/invoices/Invoice-'.$this->invoice->invoice_name.'.pdf');
     }
 }
