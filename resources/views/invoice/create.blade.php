@@ -38,7 +38,7 @@
 							</div>
 						@endif
 
-						<h5>Create Invoice</h5>
+						{{-- <h5>Invoice</h5> --}}
 					</div>
 					<form class="form theme-form" method="GET" action="{{ route('invoices.generate') }}">
                         @csrf
@@ -69,7 +69,7 @@
 
 						</div>
 						<div class="card-footer text-end">
-							<button class="btn btn-primary" type="submit">Generate Invoice</button>
+							<button class="btn btn-primary" type="submit"> Lihat Data</button>
 							{{-- <button class="btn btn-light" href="{{ route('jenis-pengeluaran') }}" type="button">Kembali</button> --}}
 							{{-- <a href="{{ route('jenis-pengeluaran') }}" class="btn btn-light">Kembali</a> --}}
 							{{-- <input class="btn btn-light" type="button" value="Cancel" /> --}}

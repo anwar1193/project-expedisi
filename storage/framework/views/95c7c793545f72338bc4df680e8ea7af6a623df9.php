@@ -39,7 +39,7 @@
 							</div>
 						<?php endif; ?>
 
-						<h5>Create Invoice</h5>
+						
 					</div>
 					<form class="form theme-form" method="GET" action="<?php echo e(route('invoices.generate')); ?>">
                         <?php echo csrf_field(); ?>
@@ -86,7 +86,7 @@ unset($__errorArgs, $__bag); ?>
 
 						</div>
 						<div class="card-footer text-end">
-							<button class="btn btn-primary" type="submit">Generate Invoice</button>
+							<button class="btn btn-primary" type="submit"> Lihat Data</button>
 							
 							
 							
