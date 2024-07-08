@@ -268,11 +268,13 @@ Route::middleware("auth")->group(function() {
         Route::get('/all', [InvoiceController::class, 'all_invoices'])->name('invoices.index');
         Route::get('/create', [InvoiceController::class, 'createInvoice'])->name('invoices.create');
         Route::get('/generate', [InvoiceController::class, 'generateInvoice'])->name('invoices.generate');
-        Route::get('/invoice-pdf/{id}', [InvoiceController::class, 'generateInvoicePdf'])->name('invoice.customer-pdf');
-        Route::post('/invoice/handle-transactions/{id}', [InvoiceController::class, 'handleInvoiceTransactions'])->name('invoice.handle-transactions');
+        Route::get('/detail/{id}', [InvoiceController::class, 'detail'])->name('invoices.detail');
+        Route::get('/invoice-pdf/{id}/{invoiceId}', [InvoiceController::class, 'generateInvoicePdf'])->name('invoice.customer-pdf');
+        Route::post('/invoice/handle-transactions/{id}/{invoiceId}', [InvoiceController::class, 'handleInvoiceTransactions'])->name('invoice.handle-transactions');
         Route::post('/send-wa', [InvoiceController::class, 'send_wa_invoice'])->name('invoice.send-wa');
         Route::post('/send-email', [InvoiceController::class, 'send_email_invoice'])->name('invoice.send-email');
         Route::post('/test-wa', [InvoiceController::class, 'test_wa'])->name('invoice.test-wa');
+        Route::get('/invoices/hasil-generate/{id}/{invoiceId}', [InvoiceController::class, 'hasil_transaksi'])->name('invoice.hasil-transaksi');
     });
     
     Route::prefix('penukaran-point')->group(function () {

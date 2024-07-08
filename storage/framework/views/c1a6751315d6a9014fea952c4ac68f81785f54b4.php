@@ -21,7 +21,7 @@
 	<div class="container invoice">
 	    <div class="row">
 	        <div class="col-sm-12">
-				<form action="<?php echo e(route('invoice.handle-transactions', $customer->id)); ?>" method="POST" target="_blank">
+				<form action="<?php echo e(route('invoice.handle-transactions', ['id' => $customer->id, 'invoiceId' => $invoice->id])); ?>" method="POST">
 				<?php echo csrf_field(); ?>
 	            <div class="card">
 	                <div class="card-body">	

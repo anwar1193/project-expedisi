@@ -95,8 +95,8 @@
 											<td><?php echo e($data->kode_customer); ?></td>
 											<td><?php echo e($data->nama); ?></td>
 											<td>
-												<form method="GET" action="<?php echo e(route('invoices.generate')); ?>">
-                                                    <button class="btn btn-warning" type="submit" name="customer" value="<?php echo e($data->id); ?>">Detail</button>
+												<form method="GET" action="<?php echo e(route('invoice.hasil-transaksi', ['id' => $data->id, 'invoiceId' => $data->invoiceId])); ?>">
+                                                    <button class="btn btn-warning" type="submit">Detail</button>
                                                 </form>
 											</td>
 										</tr>

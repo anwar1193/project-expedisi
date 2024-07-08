@@ -21,10 +21,18 @@
 	<div class="container invoice">
 	    <div class="row">
 	        <div class="col-sm-12">
-				<form action="<?php echo e(route('invoice.handle-transactions', $customer->id)); ?>" method="POST" target="_blank">
-				<?php echo csrf_field(); ?>
+				<form action="<?php echo e(route('invoice.customer-pdf', ['id' => $customer->id, 'invoiceId' => $customer->invoiceId])); ?>" method="GET" target="_blank">
 	            <div class="card">
-	                <div class="card-body">						
+	                <div class="card-body">	
+						<?php if(session()->has('success')): ?>
+							<div class="alert alert-success alert-dismissible fade show" role="alert">
+								<strong>Berhasil <i class="fa fa-info-circle"></i></strong> 
+								<?php echo e(session('success')); ?>
+
+								<button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+							</div>
+						<?php endif; ?>
+											
 						<?php if(session()->has('error')): ?>
 							<div class="alert alert-danger alert-dismissible fade show" role="alert">
 								<strong>Gagal <i class="fa fa-info-circle"></i></strong> 
@@ -52,7 +60,7 @@
 	                                </div>
 	                                <div class="col-sm-3 d-flex align-items-end">
 	                                    <div class="text-md-end text-xs-center">
-	                                        <p>Makassar, <?php echo e(formatTanggalIndonesia($invoice->created_at)); ?></p>
+	                                        <p>Makassar, <?php echo e(formatTanggalIndonesia($customer->created_at)); ?></p>
 	                                    </div>
 	                                </div>
 	                            </div>
@@ -64,7 +72,7 @@
                                         <div class="row d-flex py-1 text-start justify-content-start">
                                             <div class="col-4 col-lg-4">Invoice No</div>
                                             <div class="col-1 col-lg-2">:</div>
-                                            <div class="col-6 col-lg-6 text-capitalize"><?php echo e($invoice->invoice_no); ?></div>
+                                            <div class="col-6 col-lg-6 text-capitalize"><?php echo e($customer->invoice_no); ?></div>
                                         </div>
                                         <div class="row d-flex py-1 text-start justify-content-start">
                                             <div class="col-4 col-lg-4">Customer Name</div>
@@ -80,7 +88,8 @@
 	                            </div>
 	                        </div>
 							<div class="my-2 py-2">
-								<small>Biaya Pengiriman</small>  PT. Dion Farma Abadi
+								<small>Biaya Pengiriman</small> <?php echo e($customer->nama); ?>
+
 							</div>
 	                        <!-- End Invoice Mid-->
 	                        <div>
@@ -95,11 +104,6 @@
 												<th style="border: 1px solid">Penerima</th>
 												<th style="border: 1px solid">Tujuan</th>
 												<th style="border: 1px solid">Jumlah Pembayaran</th>
-												<?php if(!isCustomer()): ?>
-													<th style="border: 1px solid; padding: 5px; text-align: center"">
-														<input type="checkbox" name="checkAll" id="checkAll" title="Pilih Semua" checked />
-													</th>															
-												<?php endif; ?>
 											</tr>
 										</thead>
 										<tbody style="font-size: 14px">
@@ -112,11 +116,6 @@
                                                     <td style="border: 1px solid; padding: 5px; text-align: center"><?php echo e($data->nama_penerima); ?></td>
                                                     <td style="border: 1px solid; padding: 5px; text-align: center"><?php echo e($data->kota_tujuan); ?></td>
                                                     <td style="border: 1px solid; padding: 5px; text-align: center">Rp <?php echo e(number_format($data->ongkir, 0, '.', '.')); ?></td>
-													<?php if(!isCustomer()): ?>
-														<td style="border: 1px solid; padding: 5px; text-align: center">
-															<input type="checkbox" name="id_pengiriman[]" value="<?php echo e($data->id); ?>" <?php echo e($data->transaksi->isNotEmpty() ? 'checked' : ''); ?>>
-														</td>														
-													<?php endif; ?>
                                                 </tr>
                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                                 <tr>
@@ -128,26 +127,46 @@
 										</tbody>
 										<?php if(!isCustomer()): ?>
 											<tfoot>
-												
 												<tr>
 													<td style="border: 1px solid; padding: 5px; text-align: center"></td>
-													<td colspan="6" style="border: 1px solid; padding: 5px; text-align: center">
-														<p class="fw-semibold">Diskon Customer</p>
+													<td colspan="5" style="border: 1px solid; padding: 5px; text-align: center">
+														<p class="fw-semibold">Sub Total</p>
 													</td>
 													<td style="border: 1px solid; padding: 5px; text-align: center">
-														<?php echo e($customer->diskon); ?>%
+														Rp <?php echo e(number_format($total->total, 0, '.', '.')); ?>
+
 													</td>
 												</tr>
 												<tr>
 													<td style="border: 1px solid; padding: 5px; text-align: center"></td>
-													<td colspan="6" style="border: 1px solid; padding: 5px; text-align: center">
+													<td colspan="5" style="border: 1px solid; padding: 5px; text-align: center">
+														<p class="fw-semibold">Diskon Customer (<?php echo e($customer->diskon_customer); ?>%)</p>
+													</td>
+													<td style="border: 1px solid; padding: 5px; text-align: center">
+														Rp <?php echo e(number_format($diskon, 0, '.', '.')); ?>
+
+													</td>
+												</tr>
+												<tr>
+													<td style="border: 1px solid; padding: 5px; text-align: center"></td>
+													<td colspan="5" style="border: 1px solid; padding: 5px; text-align: center">
 														<p class="fw-semibold">Diskon</p>
 													</td>
 													<td style="border: 1px solid; padding: 5px; text-align: center">
-														<input class="text-center form-control" type="number" name="diskon" id="diskon" value="<?php echo e(old('diskon', $invoice->diskon)); ?>">
+														Rp <?php echo e(number_format($customer->diskon, 0, '.', '.')); ?>
+
 													</td>
 												</tr>
-												
+												<tr>
+													<td style="border: 1px solid; padding: 5px; text-align: center"></td>
+													<td colspan="5" style="border: 1px solid; padding: 5px; text-align: center">
+														<p class="fw-semibold">Total</p>
+													</td>
+													<td style="border: 1px solid; padding: 5px; text-align: center">
+														Rp <?php echo e(number_format($totalBersih, 0, '.', '.')); ?>
+
+													</td>
+												</tr>
 											</tfoot>											
 										<?php endif; ?>
 	                                </table>
@@ -171,21 +190,22 @@
 								<button type="submit" class="btn btn-primary">Cetak Invoice</button>
 							</div>
 							</form>
-							<div class="px-2">
-								<form action="<?php echo e(route('invoice.send-wa')); ?>" method="POST">
-									<?php echo csrf_field(); ?>
-									<input type="hidden" name="id" value="<?php echo e($customer->id); ?>">
-									<button type="submit" class="btn btn-success">Kirim Ke Whatsapp</button>
-								</form>
-							</div>
-							<div class="pz-2">
-								<form action="<?php echo e(route('invoice.send-email')); ?>" method="POST">
-									<?php echo csrf_field(); ?>
-									<input type="hidden" name="id" value="<?php echo e($customer->id); ?>">
-									<button type="submit" class="btn btn-success">Kirim Ke Email</button>
-								</form>
-							</div>
-							
+                            <div class="px-2">
+                                <form action="<?php echo e(route('invoice.send-wa')); ?>" method="POST">
+                                    <?php echo csrf_field(); ?>
+                                    <input type="hidden" name="id" value="<?php echo e($customer->id); ?>">
+                                    <input type="hidden" name="invoice_id" value="<?php echo e($customer->invoiceId); ?>">
+                                    <button type="submit" class="btn btn-success">Kirim Ke Whatsapp</button>
+                                </form>
+                            </div>
+                            <div class="pz-2">
+                                <form action="<?php echo e(route('invoice.send-email')); ?>" method="POST">
+                                    <?php echo csrf_field(); ?>
+                                    <input type="hidden" name="id" value="<?php echo e($customer->id); ?>">
+                                    <input type="hidden" name="invoice_id" value="<?php echo e($customer->invoiceId); ?>">
+                                    <button type="submit" class="btn btn-success">Kirim Ke Email</button>
+                                </form>
+                            </div>
                             
 	                    </div>
                     </div>
@@ -257,4 +277,4 @@
 
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('layouts.admin.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/munawarahmad/Documents/Applications/projectku/frontend/resources/views/invoice/hasil.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.admin.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Applications/MAMP/htdocs/project-expedisi/resources/views/invoice/hasil-transaksi.blade.php ENDPATH**/ ?>
