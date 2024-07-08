@@ -5,7 +5,7 @@
                 <h5 class="modal-title" id="exampleModalLabel">Import Data Pengiriman</h5>
                 <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form class="form theme-form" enctype="multipart/form-data" method="POST" action="{{ route('data-pengiriman.import_excel') }}">
+            <form class="form theme-form" enctype="multipart/form-data" method="POST" action="{{ route('data-pengiriman.konfimasi-excel') }}">
             @csrf
                 <div class="modal-body">
                     <div class="row">
