@@ -58,18 +58,17 @@ class InvoiceController extends Controller
             return back()->with('error', 'Customer tidak ditemukan');
         }
 
-        $data = DataPengiriman::where('kode_customer', $customer->kode_customer)
-                ->where('status_pembayaran', 2)
+        $data = DataPengiriman::select('data_pengirimen.*')
+                ->leftJoin('transaksi_invoices', 'data_pengirimen.id', '=', 'transaksi_invoices.data_pengiriman_id')
+                ->where('data_pengirimen.kode_customer', $customer->kode_customer)
+                ->where('data_pengirimen.status_pembayaran', DataPengiriman::STATUS_PENDING)
+                ->whereNull('transaksi_invoices.data_pengiriman_id')
                 ->orderBy('id', 'DESC')->get();
         foreach ($data as $item) {
             $transaksi = TransaksiInvoice::where('data_pengiriman_id', $item->id)
                     ->orderBy('id', 'ASC')->get();
             $item->transaksi = $transaksi;
         }
-                
-        $total = DataPengiriman::selectRaw('SUM(ongkir) AS total')
-                ->where('status_pembayaran', DataPengiriman::STATUS_PENDING)
-                ->where('kode_customer', $customer->kode_customer)->first();
 
         if ($data->isEmpty()) {
             return back()->with('error', 'Customer Belum Memiliki Riwayat Transaksi');
@@ -80,20 +79,42 @@ class InvoiceController extends Controller
         $count_invoice = Invoice::whereMonth('created_at', $month)->count() + 1;
         $no_invoice = "{$count_invoice}/INV/LP/{$year}";
 
-        $invoice = Invoice::firstOrCreate(
-            ['customer_id' => $customer_id],
-            ['invoice_no' => $no_invoice]
-        );
+        $invoice = Invoice::create([
+            'customer_id' => $customer_id,
+            'invoice_no' => $no_invoice
+        ]);
+
+        return redirect()->route('invoices.detail', ['id' => $customer_id]);
+    }
+
+    public function detail($id)
+    {
+        $customer = Customer::find($id);
+        $data = DataPengiriman::select('data_pengirimen.*')
+                ->leftJoin('transaksi_invoices', 'data_pengirimen.id', '=', 'transaksi_invoices.data_pengiriman_id')
+                ->where('data_pengirimen.kode_customer', $customer->kode_customer)
+                ->where('data_pengirimen.status_pembayaran', DataPengiriman::STATUS_PENDING)
+                ->whereNull('transaksi_invoices.data_pengiriman_id')
+                ->orderBy('id', 'DESC')->get();
+        foreach ($data as $item) {
+            $transaksi = TransaksiInvoice::where('data_pengiriman_id', $item->id)
+                    ->orderBy('id', 'ASC')->get();
+            $item->transaksi = $transaksi;
+        }
+
+        $invoice = Invoice::where('customer_id', $id)->orderBy('id', 'DESC')->first();
+
+        $total = DataPengiriman::selectRaw('SUM(ongkir) AS total')
+                ->leftJoin('transaksi_invoices', 'data_pengirimen.id', '=', 'transaksi_invoices.data_pengiriman_id')
+                ->where('status_pembayaran', DataPengiriman::STATUS_PENDING)
+                ->whereNull('transaksi_invoices.invoice_id')
+                ->where('kode_customer', $customer->kode_customer)->first();
 
         $exist = TransaksiInvoice::where('invoice_id', $invoice->id)->exists();
 
-        // $total = DataPengiriman::selectRaw('SUM(ongkir) AS total')
-        //         ->join('transaksi_invoices', 'transaksi_invoices.data_pengiriman_id', '=', 'data_pengirimen.id')
-        //         ->where('kode_customer', $customer->kode_customer)->first();
-
         $today = date('Y-m-d');
 
-        return view('invoice.hasil', compact('data', 'customer', 'today', 'total', 'invoice', 'total', 'exist'));
+        return view('invoice.hasil', compact('data', 'customer', 'today', 'total', 'invoice', 'exist'));
     }
 
     public function all_invoices(Request $request)
@@ -102,7 +123,7 @@ class InvoiceController extends Controller
         $customer = $request->customer_id;
         $customers = Customer::all();
 
-        $data = Invoice::select('invoices.invoice_no', 'invoices.created_at', 'customers.id', 'customers.kode_customer', 'customers.nama')
+        $data = Invoice::select('invoices.invoice_no', 'invoices.created_at', 'invoices.id AS invoiceId', 'customers.id', 'customers.kode_customer', 'customers.nama')
                 ->join('customers', 'customers.id', '=', 'invoices.customer_id')
                 ->when($customer, function ($query, $customer) {
                     return $query->where('customers.id', $customer);
@@ -116,13 +137,14 @@ class InvoiceController extends Controller
         return view('invoice.all', compact('data', 'customers'));
     }
 
-    public function handleInvoiceTransactions(Request $request, $id)
+    public function handleInvoiceTransactions(Request $request, $id, $invoiceId)
     {
         $id_pengiriman = $request->id_pengiriman;
         $diskon = $request->diskon ?? 0;
         $customer = Customer::select('customers.id', 'customers.kode_customer', 'customers.nama', 'customers.alamat', 'invoices.invoice_no', 'invoices.id AS invoiceId', 'invoices.diskon')
                     ->join('invoices', 'invoices.customer_id', '=', 'customers.id')
                     ->where('customers.id', $id)
+                    ->where('invoices.id', $invoiceId)
                     ->first();
 
         if (!isCustomer()) {
@@ -145,24 +167,27 @@ class InvoiceController extends Controller
             ]); 
         }
 
-        return redirect()->route('invoice.customer-pdf', ['id' => $customer->id]);
-        // return "TEST";
+        return redirect()->route('invoice.hasil-transaksi', ['id' => $customer->id, 'invoiceId' => $customer->invoiceId])->with("success", "Generate Invoice Berhasil");
     }
 
-    public function generateInvoicePdf($id)
+    public function generateInvoicePdf($id, $invoiceId)
     {
         $customer = Customer::select('customers.id', 'customers.diskon AS diskon_customer', 'customers.kode_customer', 'customers.nama', 'customers.alamat', 'invoices.invoice_no', 'invoices.invoice_name', 'invoices.id AS invoiceId', 'invoices.diskon', 'invoices.created_at')
                     ->join('invoices', 'invoices.customer_id', '=', 'customers.id')
                     ->where('customers.id', $id)
+                    ->where('invoices.id', $invoiceId)
                     ->first();
 
         $data = DataPengiriman::join('transaksi_invoices', 'transaksi_invoices.data_pengiriman_id', '=', 'data_pengirimen.id')
                 ->where('kode_customer', $customer->kode_customer)
+                ->where('invoice_id', $invoiceId)
                 ->orderBy('data_pengirimen.id', 'DESC')->get();
                 
         $total = DataPengiriman::selectRaw('SUM(ongkir) AS total')
                 ->join('transaksi_invoices', 'transaksi_invoices.data_pengiriman_id', '=', 'data_pengirimen.id')
-                ->where('kode_customer', $customer->kode_customer)->first();
+                ->where('kode_customer', $customer->kode_customer)
+                ->where('invoice_id', $invoiceId)
+                ->first();
 
         $diskon = round($total->total * $customer->diskon_customer / 100);
 
@@ -183,18 +208,12 @@ class InvoiceController extends Controller
 
         if (!Storage::exists('public/invoices/Invoice-'.$customer->invoice_name.'.pdf')) {
             // Simpan ke storage
-        
             $name_invoice = $customerName.date("YmdHis"); 
-            $simpan =  Storage::put('public/invoices/Invoice-'.$name_invoice.'.pdf', $pdfContent);
+            Storage::put('public/invoices/Invoice-'.$name_invoice.'.pdf', $pdfContent);
 
            Invoice::find($customer->invoiceId)->update([
                 'invoice_name' => $name_invoice
-            ]); 
-
-           if ($simpan) {
-            return back()->with("success", "Generate Invoice Berhasil");
-           }
-            
+            ]);             
         }
         
         return $pdf->stream('Invoice-'.$customerName.'.pdf');
@@ -203,12 +222,13 @@ class InvoiceController extends Controller
     public function send_wa_invoice(Request $request)
     {
         $id = $request->id;
+        $invoiceId = $request->invoice_id;
         $customer = Customer::find($id);
-        $invoice = Invoice::where('customer_id', $customer->id)->first();
+        $invoice = Invoice::where('id', $invoiceId)->where('customer_id', $customer->id)->first();
         $customerName = str_replace(' ', '', $customer->nama);
         $pesan = Pesan::find(Pesan::INV);
 
-        if (!Storage::exists('public/invoices/Invoice-'.$customerName.'.pdf')) {
+        if (!Storage::exists('public/invoices/Invoice-'.$invoice->invoice_name.'.pdf')) {
             return back()->with("error", "Silahkan Cetak invoice Terlebih Dahulu");
         }
 
@@ -239,9 +259,11 @@ class InvoiceController extends Controller
     public function send_email_invoice(Request $request)
     {
         $id = $request->id;
+        $invoiceId = $request->invoice_id;
         $pesan = Pesan::find(Pesan::INV);
         $invoice = Customer::select('customers.id', 'customers.diskon AS diskon_customer', 'customers.kode_customer', 'customers.nama', 'customers.email', 'customers.alamat', 'invoices.invoice_no', 'invoices.invoice_name', 'invoices.id AS invoiceId', 'invoices.diskon', 'invoices.created_at')
                     ->join('invoices', 'invoices.customer_id', '=', 'customers.id')
+                    ->where('invoices.id', $invoiceId)
                     ->where('customers.id', $id)
                     ->first();
 
@@ -250,25 +272,35 @@ class InvoiceController extends Controller
         if (!Storage::exists('public/invoices/Invoice-'.$invoice->invoice_name.'.pdf')) {
             return back()->with("error", "Silahkan Cetak invoice Terlebih Dahulu");
         }
-                                
+                                       //natiboh@mailinator.com 
         Mail::to($invoice->email)->send(new MailInvoice($invoice));
 
         return redirect()->route("invoices.index")->with("success", "Invoice Berhasil Dikirim Ke Email " .$invoice->nama);
     }
 
-    public function test_wa()
+    public function hasil_transaksi($id, $invoiceId)
     {
-        $dataSending = [
-            "api_key" => "TYBUL3W5VDXSUT9P",
-            "number_key" => "TAlgCr43YndCNG0g",
-            "phone_no" => 6282375377287,
-            "message" => "Test Invoice",
-        ];
+        $customer = Customer::select('customers.id', 'customers.diskon AS diskon_customer', 'customers.kode_customer', 'customers.nama', 'customers.alamat', 'invoices.invoice_no', 'invoices.invoice_name', 'invoices.id AS invoiceId', 'invoices.diskon', 'invoices.created_at')
+                    ->join('invoices', 'invoices.customer_id', '=', 'customers.id')
+                    ->where('customers.id', $id)
+                    ->where('invoices.id', $invoiceId)
+                    ->first();
 
-        $response = Http::withHeaders([
-            'Content-Type' => 'application/json',
-        ])->post('https://api.watzap.id/v1/send_message', $dataSending);
+        $data = DataPengiriman::join('transaksi_invoices', 'transaksi_invoices.data_pengiriman_id', '=', 'data_pengirimen.id')
+                ->where('kode_customer', $customer->kode_customer)
+                ->where('invoice_id', $invoiceId)
+                ->orderBy('data_pengirimen.id', 'DESC')->get();
+                
+        $total = DataPengiriman::selectRaw('SUM(ongkir) AS total')
+                ->join('transaksi_invoices', 'transaksi_invoices.data_pengiriman_id', '=', 'data_pengirimen.id')
+                ->where('kode_customer', $customer->kode_customer)
+                ->where('invoice_id', $invoiceId)
+                ->first();
 
-        return "Berhasil";
+        $diskon = round($total->total * $customer->diskon_customer / 100);
+
+        $totalBersih = round($total->total - $customer->diskon - $diskon);
+
+        return view('invoice.hasil-transaksi', compact('customer', 'data', 'total', 'diskon', 'totalBersih'));
     }
 }
