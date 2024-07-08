@@ -5,13 +5,17 @@ namespace App\Http\Controllers;
 use App\Helpers\Helper;
 use App\Imports\DataPengirimanImport;
 use App\Imports\StatusPengirimanImport;
+use App\Models\Bank;
+use App\Models\Customer;
 use App\Models\DataPengiriman;
+use App\Models\KonversiPoint;
 use App\Models\StatusPengiriman;
 use Dflydev\DotAccessData\Data;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use Yaza\LaravelGoogleDriveStorage\Gdrive;
 
@@ -236,6 +240,93 @@ class DataPengirimanController extends Controller
         }
 
         return back()->with('success', 'Data berhasil diimport');
+    }
+
+    public function konfimasiExcel(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xls,xlsx'
+        ]);
+
+        $bank = Bank::all();
+        $customer = Customer::all();
+
+        $path = $request->file('file')->getRealPath();
+        $data = Excel::toArray(new DataPengirimanImport, $request->file('file'));
+
+        $sheetData = $data[0];
+
+        $formattedData = [];
+        foreach ($sheetData as $key => $row) {
+            $formattedData[] = (new DataPengirimanImport)->array($row);
+        }
+
+        return view('data-pengiriman.konfirmasi-data', compact('bank', 'customer','formattedData'));
+    }
+
+    public function proses_hasil_import(Request $request)
+    {   
+        $rules = [
+            'no_resi.*' => 'required|unique:data_pengirimen,no_resi',
+            'tgl_transaksi.*' => 'required|date',
+            'kode_customer.*' => 'required',
+            'nama_pengirim.*' => 'required',
+            'nama_penerima.*' => 'required',
+            'kota_tujuan.*' => 'required',
+            'no_hp_pengirim.*' => 'required',
+            'no_hp_penerima.*' => 'required',
+            'berat_barang.*' => 'required|numeric',
+            'ongkir.*' => 'required|numeric',
+            'komisi.*' => 'required|numeric',
+            'metode_pembayaran.*' => 'required',
+            'jenis_pengiriman.*' => 'required',
+            'bawa_sendiri.*' => 'required',
+            'status_pengiriman.*' => 'required',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);    
+
+        for ($i = 0; $i < count($request->no_resi); $i++) {
+
+            $konversi_point = KonversiPoint::where('id', 1)->first();
+            $customer = Customer::where('kode_customer', $request->kode_customer[$i]);
+            $rcustomer = $customer->first();
+
+            if($rcustomer != NULL){
+                $pointOld = $rcustomer->point;
+                $kreditOld = $rcustomer->limit_credit;
+                
+                // Update Point & Credit
+                $customer->update([
+                    'point' => $pointOld + ($request->ongkir[$i] / $konversi_point->nominal),
+                    'limit_credit' => $kreditOld - $request->ongkir[$i]
+                ]);
+            }
+
+            DataPengiriman::create([
+                'no_resi' => $request->no_resi[$i],
+                'tgl_transaksi' => $request->tgl_transaksi[$i],
+                'kode_customer' => $request->kode_customer[$i],
+                'nama_pengirim' => $request->nama_pengirim[$i],
+                'nama_penerima' => $request->nama_penerima[$i],
+                'kota_tujuan' => $request->kota_tujuan[$i],
+                'no_hp_pengirim' => $request->no_hp_pengirim[$i],
+                'no_hp_penerima' => $request->no_hp_penerima[$i],
+                'berat_barang' => $request->berat_barang[$i],
+                'ongkir' => $request->ongkir[$i],
+                'komisi' => $request->komisi[$i],
+                'status_pembayaran' => $request->metode_pembayaran[$i] == 'tunai' ? 1 : 2,
+                'metode_pembayaran' => $request->metode_pembayaran[$i],
+                'bank' => $request->bank[$i] ?? '',
+                'bukti_pembayaran' => $request->bukti_pembayaran[$i] ?? '',
+                'jenis_pengiriman' => $request->jenis_pengiriman[$i],
+                'bawa_sendiri' => $request->bawa_sendiri[$i],
+                'status_pengiriman' => $request->status_pengiriman[$i],
+                'keterangan' => $request->keterangan[$i] != '' ? $request->keterangan[$i] : '-',
+            ]);
+        }
+    
+        return redirect()->route('data-pengiriman')->with('success', 'Data Pengiriman Berhasil Disimpan');
     }
 }
 
