@@ -250,41 +250,89 @@ class DataPengirimanController extends Controller
 
         $bank = Bank::all();
         $customer = Customer::all();
-
-        $path = $request->file('file')->getRealPath();
+    
         $data = Excel::toArray(new DataPengirimanImport, $request->file('file'));
+    
+        $formattedData = (new DataPengirimanImport)->array($data[0]);
 
-        $sheetData = $data[0];
+        $rules = [
+            '*.no_resi' => 'required|unique:data_pengirimen',
+            '*.tgl_transaksi' => 'required',
+            '*.nama_pengirim' => 'required',
+            '*.nama_penerima' => 'required',
+            '*.kota_tujuan' => 'required',
+            '*.no_hp_pengirim' => 'required',
+            '*.no_hp_penerima' => 'required',
+            '*.berat_barang' => 'required',
+            '*.ongkir' => 'required',
+            '*.komisi' => 'required',
+            '*.metode_pembayaran' => function($attribute, $value, $onFailure) {
+                if($value !== NULL){
+                    if ($value !== 'Transfer' && $value !== 'Tunai' && $value !== 'Kredit') {
+                        $onFailure('Metode Pembayaran Harus Transfer, Tunai, Kredit, atau Dikosongkan');
+                   }
+                }
+            },
 
-        $formattedData = [];
-        foreach ($sheetData as $key => $row) {
-            $formattedData[] = (new DataPengirimanImport)->array($row);
+            '*.jenis_pengiriman' => 'required',
+            '*.bawa_sendiri' => 'required',
+            '*.status_pengiriman' => 'required',
+        ];
+
+        $validator = Helper::validateFormattedData($formattedData);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
         }
 
+        $validationResult = Helper::customValidasi($formattedData);
+
+        if ($validationResult !== null) {
+            return $validationResult;
+        }
+    
         return view('data-pengiriman.konfirmasi-data', compact('bank', 'customer','formattedData'));
     }
 
     public function proses_hasil_import(Request $request)
     {   
-        $rules = [
-            'no_resi.*' => 'required|unique:data_pengirimen,no_resi',
-            'tgl_transaksi.*' => 'required|date',
-            'kode_customer.*' => 'required',
-            'nama_pengirim.*' => 'required',
-            'nama_penerima.*' => 'required',
-            'kota_tujuan.*' => 'required',
-            'no_hp_pengirim.*' => 'required',
-            'no_hp_penerima.*' => 'required',
-            'berat_barang.*' => 'required|numeric',
-            'ongkir.*' => 'required|numeric',
-            'komisi.*' => 'required|numeric',
-            'metode_pembayaran.*' => 'required',
-            'jenis_pengiriman.*' => 'required',
-            'bawa_sendiri.*' => 'required',
-            'status_pengiriman.*' => 'required',
-        ];
+        $datas = [];
 
-        $validator = Validator::make($request->all(), $rules);    
+        foreach ($request->no_resi as $i => $no_resi) {
+            $datas[] = [
+                'no_resi' => $request->no_resi[$i],
+                'tgl_transaksi' => $request->tgl_transaksi[$i],
+                'kode_customer' => $request->kode_customer[$i],
+                'nama_pengirim' => $request->nama_pengirim[$i],
+                'nama_penerima' => $request->nama_penerima[$i],
+                'kota_tujuan' => $request->kota_tujuan[$i],
+                'no_hp_pengirim' => $request->no_hp_pengirim[$i],
+                'no_hp_penerima' => $request->no_hp_penerima[$i],
+                'berat_barang' => $request->berat_barang[$i],
+                'ongkir' => $request->ongkir[$i],
+                'komisi' => $request->komisi[$i],
+                'status_pembayaran' => $request->metode_pembayaran[$i] == "Tunai" ? 1 : 2,
+                'metode_pembayaran' => $request->metode_pembayaran[$i],
+                'bank' => $request->bank[$i],
+                'bukti_pembayaran' => $request->bukti_pembayaran[$i] ?? "",
+                'jenis_pengiriman' => $request->jenis_pengiriman[$i],
+                'bawa_sendiri' => $request->bawa_sendiri[$i],
+                'status_pengiriman' => $request->status_pengiriman[$i],
+                'keterangan' => $request->keterangan[$i] != '' ? $request->keterangan[$i] : '-',
+            ];
+    
+            $validator = Helper::validateFormattedData($datas);
+
+            if ($validator->fails()) {
+                return redirect()->route('data-pengiriman')->withErrors($validator)->withInput();
+            }
+
+            $validationResult = Helper::customValidasi($datas);
+
+            if ($validationResult !== null) {
+                return $validationResult;
+            }
+        }
 
         for ($i = 0; $i < count($request->no_resi); $i++) {
 
