@@ -5,6 +5,11 @@
 
 <?php $__env->startPush('css'); ?>
 <link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/datatables.css')); ?>">
+<style>
+    .dataTables_wrapper {
+        overflow-x: auto;
+    }
+</style>
 <?php $__env->stopPush(); ?>
 
 <?php $__env->startSection('content'); ?>	
@@ -233,6 +238,7 @@ unset($__errorArgs, $__bag); ?>">
 					"previous": "Sebelumnya"
 					},
 				},
+                scrollX: true,
                 searching: false,
 			});
 		})

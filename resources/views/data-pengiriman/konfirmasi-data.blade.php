@@ -6,6 +6,11 @@
 
 @push('css')
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/datatables.css') }}">
+<style>
+    .dataTables_wrapper {
+        overflow-x: auto;
+    }
+</style>
 @endpush
 
 @section('content')	
@@ -202,6 +207,7 @@
 					"previous": "Sebelumnya"
 					},
 				},
+                scrollX: true,
                 searching: false,
 			});
 		})
