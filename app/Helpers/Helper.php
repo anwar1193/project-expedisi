@@ -2,11 +2,14 @@
 
 namespace App\Helpers;
 
+use App\Models\Bank;
+use App\Models\Customer;
 use App\Models\LogActivity;
 use App\Models\MasterMenu;
 use App\Models\MenuPermission;
 use App\Models\Level;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class Helper
 {
@@ -142,4 +145,91 @@ class Helper
       $data = Level::find($id_level);
       return $data->level;
     }
+
+    public static function validateFormattedData($formattedData)
+    {
+        $rules = [
+            '*.no_resi' => 'required|unique:data_pengirimen',
+            '*.tgl_transaksi' => 'required|date',
+            '*.kode_customer' => 'required',
+            '*.nama_pengirim' => 'required',
+            '*.nama_penerima' => 'required',
+            '*.kota_tujuan' => 'required',
+            '*.no_hp_pengirim' => 'required',
+            '*.no_hp_penerima' => 'required',
+            '*.berat_barang' => 'required|numeric',
+            '*.ongkir' => 'required|numeric',
+            '*.komisi' => 'required|numeric',
+            '*.metode_pembayaran' => 'required',
+            '*.bank' => 'nullable',
+            '*.bukti_pembayaran' => 'nullable',
+            '*.jenis_pengiriman' => 'required',
+            '*.bawa_sendiri' => 'required',
+            '*.status_pengiriman' => 'required',
+            '*.keterangan' => 'nullable',
+        ];
+
+        $validator = Validator::make($formattedData, $rules);
+
+        return $validator;
+    }
+
+    public static function customValidasi($datas)
+    {
+        $errors = [];
+
+        foreach ($datas as $key => $data) {
+            if (is_array($data)) {
+                if ($data['metode_pembayaran'] == 'Transfer' && empty($data['bank'])) {
+                    $errors[] = 'Bank Wajib Diisi Ketika Metode Pembayaran = Transfer';
+                }
+
+                if ($data['metode_pembayaran'] != 'Transfer' && !empty($data['bank'])) {
+                    $errors[] = 'Kolom Bank Harus Dikosongkan Ketika Metode Pembayaran Bukan Transfer';
+                }
+
+                if ($data['metode_pembayaran'] == 'Transfer') {
+                    if (empty($data['bukti_pembayaran'])) {
+                        $errors[] = 'Bukti Pembayaran Wajib Diisi Ketika Metode Pembayaran = Transfer';
+                    }
+
+                    $bankTerdaftar = Bank::where('bank', $data['bank'])->exists();
+                    if (!$bankTerdaftar) {
+                        $errors[] = 'Bank yang anda input tidak tersedia di sistem!';
+                    }
+                }
+
+                if ($data['metode_pembayaran'] != 'Transfer' && !empty($data['bukti_pembayaran'])) {
+                    $errors[] = 'Kolom Bukti Pembayaran Harus Dikosongkan Ketika Metode Pembayaran Bukan Transfer';
+                }
+
+                if ($data['metode_pembayaran'] == 'Kredit') {
+                    $customerTerdaftar = Customer::where('kode_customer', $data['kode_customer'])->exists();
+                    if (!$customerTerdaftar) {
+                        $errors[] = 'Metode pembayaran kredit hanya berlaku untuk customer terdaftar!';
+                    }
+                }
+
+                $tanggalSekarang = date('Y-m-d');
+                $diff = strtotime($tanggalSekarang) - strtotime($data['tgl_transaksi']);
+                $jarakHari = abs(round($diff / 86400));
+
+                if ($jarakHari > 7) {
+                    $errors[] = 'Tanggal transaksi tidak boleh mundur lebih dari 7 hari!';
+                }
+            } else {
+                $errors[] = 'Invalid data format.';
+            }
+        }
+
+        // Check if there are errors, redirect back with errors if any
+        if (!empty($errors)) {
+            // return redirect()->back()->with("error", $errors);
+            return redirect()->route('data-pengiriman')->withErrors($errors)->with('error', 'Silahkan Ulangi Import Data');
+        }
+
+        // Return null if no errors (optional)
+        return null;
+    }
+
 }
