@@ -80,7 +80,7 @@
 							</div>
 						@endif
 						
-						@if (session()->has('error'))
+						@if (session()->has('error') && is_string(session('error')))
 							<div class="alert alert-danger alert-dismissible fade show" role="alert">
 								<strong>Gagal <i class="fa fa-info-circle"></i></strong> 
 								{{ session('error') }}
@@ -88,10 +88,23 @@
 							</div>
 						@endif
 
+
+						@if (session()->has('error') && is_array(session('error')))
+							<div class="alert alert-danger alert-dismissible fade show" role="alert">
+								<strong>Gagal <i class="fa fa-info-circle"></i></strong>
+								<ul>
+									@foreach (session('error') as $error)
+										<li>{{ $error }}</li>
+									@endforeach
+								</ul>
+								<button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+							</div>
+						@endif
+
 						@if ($errors->any())
 							<div class="alert alert-danger alert-dismissible fade show" role="alert">
 								@foreach ($errors->all() as $error)
-									<strong>Failed <i class="fa fa-info-circle"></i></strong> 
+									<strong>Gagal <i class="fa fa-info-circle"></i></strong> 
 									{{ $error }}
 									<button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
 									<br>
