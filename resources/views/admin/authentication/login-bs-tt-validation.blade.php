@@ -23,7 +23,7 @@
 							<img src="/assets/lionparcel.png" width="250px" alt="">
 						</div>
 
-	                    <p class="mb-3">AGEN EXPEDISIS</p>
+	                    <p class="mb-3">AGEN EXPEDISI</p>
 
 	                    {{-- <h6>Selamat Datang! Silahkan Masuk Ke akun Anda.</h6> --}}
 						

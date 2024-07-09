@@ -22,7 +22,7 @@
 							<img src="/assets/lionparcel.png" width="250px" alt="">
 						</div>
 
-	                    <p class="mb-3">AGEN EXPEDISI</p>
+	                    <p class="mb-3">AGEN EXPEDISIS</p>
 
 	                    
 						
