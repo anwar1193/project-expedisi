@@ -1,59 +1,56 @@
-@extends('admin.authentication.master')
+<?php $__env->startSection('title'); ?>login
+ <?php echo e($title); ?>
 
-@section('title')login
- {{ $title }}
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('css')
-	<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/sweetalert2.css') }}">
-@endpush
+<?php $__env->startPush('css'); ?>
+	<link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/sweetalert2.css')); ?>">
+<?php $__env->stopPush(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
     <div class="container-fluid">
 	    <div class="row">
-	        {{-- <div class="col-xl-5"><img class="bg-img-cover bg-center" src="{{ asset('assets/images/login/login.jpg') }}" alt="looginpage" height="50%" /></div> --}}
-	        {{-- <div class="col-xl-5"><img class="bg-img-cover bg-center" src="{{ asset('assets/kejagung.jpg') }}" alt="looginpage" height="50%" /></div> --}}
+	        
+	        
 	        <div class="col-xl-12 p-0">
 	            <div class="login-card">
-	                <form class="theme-form login-form needs-validation" method="POST" action="{{ route('signin') }}">
-						@csrf
+	                <form class="theme-form login-form needs-validation" method="POST" action="<?php echo e(route('signin')); ?>">
+						<?php echo csrf_field(); ?>
 
 						<div class="logo mb-3" style="text-align: center">
-							{{-- <img src="/assets/logo-kejaksaan.png" width="100px" alt=""> --}}
+							
 							<img src="/assets/lionparcel.png" width="250px" alt="">
 						</div>
 
-	                    <p class="mb-3">AGEN EXPEDISIS</p>
+	                    <p class="mb-3">AGEN EXPEDISI</p>
 
-	                    {{-- <h6>Selamat Datang! Silahkan Masuk Ke akun Anda.</h6> --}}
+	                    
 						
-						@if ($errors->has('login'))
-                            {{-- <div class="alert alert-danger my-2" role="alert">
-                                <p class="ps-2">{{ $errors->first('login') }}</p>
-                            </div> --}}
+						<?php if($errors->has('login')): ?>
+                            
 							<div class="alert alert-danger dark alert-dismissible fade show" role="alert">
 								<strong>Gagal ! </strong> 
-								{{ $errors->first('login') }}
-								<button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
-							</div>
-                        @endif
+								<?php echo e($errors->first('login')); ?>
 
-                        @if(session('error'))
-                            {{-- <div class="alert alert-danger my-2" role="alert">
-                                <p class="ps-2">{{ session('error') }}</p>
-                            </div> --}}
-							<div class="alert alert-danger dark alert-dismissible fade show" role="alert">
-								<strong>Gagal ! </strong> 
-								{{ session('error') }}
 								<button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
 							</div>
-                        @endif
+                        <?php endif; ?>
+
+                        <?php if(session('error')): ?>
+                            
+							<div class="alert alert-danger dark alert-dismissible fade show" role="alert">
+								<strong>Gagal ! </strong> 
+								<?php echo e(session('error')); ?>
+
+								<button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+							</div>
+                        <?php endif; ?>
 						
 	                    <div class="form-group">
 	                        <label>Username</label>
 	                        <div class="input-group">
 	                            <span class="input-group-text"><i class="icon-email"></i></span>
-	                            <input class="form-control" type="text" name="username" value="{{ old('username') }}" autofocus autocomplete="off"/>
+	                            <input class="form-control" type="text" name="username" value="<?php echo e(old('username')); ?>" autofocus autocomplete="off"/>
 	                        </div>
 	                    </div>
 	                    <div class="form-group">
@@ -75,7 +72,7 @@
 	                    <div class="form-group my-4">
 							<div class="d-flex justify-content-center my-4">
 								<div>
-									<a href="{{ route('google-login') }}" class="btn btn-primary"><i class="fa fa-google me-2"></i> Lanjutkan Dengan Google</a>
+									<a href="<?php echo e(route('google-login')); ?>" class="btn btn-primary"><i class="fa fa-google me-2"></i> Lanjutkan Dengan Google</a>
 								</div>
 							</div>
 	                    </div>
@@ -119,10 +116,11 @@
 	    })();
 	</script>
 
-	<script src="{{ asset('assets/js/sweet-alert/sweetalert.min.js') }}"></script>
+	<script src="<?php echo e(asset('assets/js/sweet-alert/sweetalert.min.js')); ?>"></script>
 
 
-    @push('scripts')
-    @endpush
+    <?php $__env->startPush('scripts'); ?>
+    <?php $__env->stopPush(); ?>
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('admin.authentication.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Users/munawarahmad/Documents/Applications/projectku/project-expedisi/resources/views/admin/authentication/login-bs-tt-validation.blade.php ENDPATH**/ ?>
