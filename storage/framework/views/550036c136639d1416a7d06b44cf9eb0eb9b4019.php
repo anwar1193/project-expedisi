@@ -21,7 +21,7 @@
                     <form method="POST" action="<?php echo e(route('data-pengiriman.proses-konfimasi-excel')); ?>">
                         <?php echo csrf_field(); ?>
                         <div class="card-body">
-                            <?php if(session()->has('error')): ?>
+                            <?php if(session()->has('error') && is_string(session('error'))): ?>
                                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                     <strong>Gagal <i class="fa fa-info-circle"></i></strong> 
                                     <?php echo e(session('error')); ?>
@@ -30,10 +30,23 @@
                                 </div>
                             <?php endif; ?>
 
+
+                            <?php if(session()->has('error') && is_array(session('error'))): ?>
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <strong>Gagal <i class="fa fa-info-circle"></i></strong>
+                                    <ul>
+                                        <?php $__currentLoopData = session('error'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <li><?php echo e($error); ?></li>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    </ul>
+                                    <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            <?php endif; ?>
+
                             <?php if($errors->any()): ?>
                                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                     <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                        <strong>Failed <i class="fa fa-info-circle"></i></strong> 
+                                        <strong>Gagal <i class="fa fa-info-circle"></i></strong> 
                                         <?php echo e($error); ?>
 
                                         <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -128,9 +141,9 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>">
-                                                        <option value="transfer" <?php echo e($row['metode_pembayaran'] == 'Transfer' ? 'selected' : ''); ?>> Transfer </option>
-                                                        <option value="tunai" <?php echo e($row['metode_pembayaran'] == 'Tunai' ? 'selected' : ''); ?>> Tunai </option>
-                                                        <option value="kredit" <?php echo e($row['metode_pembayaran'] == 'Kredit' ? 'selected' : ''); ?>> Kredit </option>
+                                                        <option value="Transfer" <?php echo e($row['metode_pembayaran'] == 'Transfer' ? 'selected' : ''); ?>> Transfer </option>
+                                                        <option value="Tunai" <?php echo e($row['metode_pembayaran'] == 'Tunai' ? 'selected' : ''); ?>> Tunai </option>
+                                                        <option value="Kredit" <?php echo e($row['metode_pembayaran'] == 'Kredit' ? 'selected' : ''); ?>> Kredit </option>
                                                     </select>
                                                 </td>
                                                 <td>

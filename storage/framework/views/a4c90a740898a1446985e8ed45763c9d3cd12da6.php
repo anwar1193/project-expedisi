@@ -79,7 +79,7 @@
 							</div>
 						<?php endif; ?>
 						
-						<?php if(session()->has('error')): ?>
+						<?php if(session()->has('error') && is_string(session('error'))): ?>
 							<div class="alert alert-danger alert-dismissible fade show" role="alert">
 								<strong>Gagal <i class="fa fa-info-circle"></i></strong> 
 								<?php echo e(session('error')); ?>
@@ -88,10 +88,23 @@
 							</div>
 						<?php endif; ?>
 
+
+						<?php if(session()->has('error') && is_array(session('error'))): ?>
+							<div class="alert alert-danger alert-dismissible fade show" role="alert">
+								<strong>Gagal <i class="fa fa-info-circle"></i></strong>
+								<ul>
+									<?php $__currentLoopData = session('error'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+										<li><?php echo e($error); ?></li>
+									<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+								</ul>
+								<button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+							</div>
+						<?php endif; ?>
+
 						<?php if($errors->any()): ?>
 							<div class="alert alert-danger alert-dismissible fade show" role="alert">
 								<?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-									<strong>Failed <i class="fa fa-info-circle"></i></strong> 
+									<strong>Gagal <i class="fa fa-info-circle"></i></strong> 
 									<?php echo e($error); ?>
 
 									<button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -119,18 +132,22 @@
 	                            <thead>
 	                                <tr>
 	                                    <th>No</th>
+										<th width="35%" class="text-center">Action</th>
 										<th>No Resi</th>
 										<th>Tanggal Transaksi</th>
 	                                    <th>Customer</th>
-	                                    <th>Metode Pembayaran</th>
+										<th>Metode Pembayaran</th>
 	                                    <th>Status Pembayaran</th>
 	                                    <th>Status Pengiriman</th>
+	                                    <th>Pengirim</th>
+	                                    <th>Penerima</th>
+	                                    <th>Kota Tujuan</th>
+	                                    <th>Ongkir</th>
+	                                    <th>Komisi</th>
 										
 										<?php if(Session::get('user_level') == 2): ?>
 											<th>Pilih</th>
 										<?php endif; ?>
-										
-										<th width="35%" class="text-center">Action</th>
 	                                </tr>
 	                            </thead>
 	                            <tbody>
@@ -149,45 +166,7 @@
 										<tr>
 											<td><?php echo e($loop->iteration); ?></td>
 
-											<td>
-												<span class="badge badge-danger">
-													<?php echo e($data->no_resi); ?>
-
-												</span>
-											</td>
-
-											<td><?php echo e(date('d-m-Y', strtotime($data->tgl_transaksi))); ?></td>
-											<td><?php echo e($data->kode_customer); ?></td>
 											
-											<td onmouseover="showBukti(<?php echo e($data->id); ?>)" onmouseout="hideBukti(<?php echo e($data->id); ?>)">
-												<?php if($bukti_pembayaran != ''): ?>
-													<div id="view-bukti<?php echo e($data->id); ?>" class="mb-3">
-														<img src="<?php echo e($bukti_pembayaran_view); ?>" alt="test" class="mb-2">
-														<a class="btn btn-primary" href="<?php echo e($bukti_pembayaran); ?>" target="_blank">View Full Image</a>
-													</div>
-												<?php endif; ?>
-
-												<?php echo e($data->metode_pembayaran); ?> <i class="<?php echo e($data->metode_pembayaran == 'Transfer' ? 'fa fa-eye' : ''); ?>"></i>
-											</td>
-
-											<td class="text-center">
-												<span class="badge <?php echo e($data->status_pembayaran == 1 ? 'badge-primary' : 'badge-warning'); ?>">
-													<i class="fa <?php echo e($data->status_pembayaran == 1 ? 'fa-check' : 'fa-warning'); ?>"></i>
-													<?php echo e($data->status_pembayaran == 1 ? 'Lunas' : 'Pending'); ?>
-
-												</span>
-											</td>
-
-											<td><?php echo e($data->status_pengiriman); ?></td>
-
-											<?php if(Session::get('user_level') == 2): ?>
-												
-												<td class="text-center">
-													<input type="checkbox" value="5" name="id_pengiriman[]" id="flexCheckDefault" onclick="ceklis(<?php echo e($data->id); ?>)">
-												</td>
-											<?php endif; ?>
-											
-
 											<td class="text-center">
 
 												
@@ -215,6 +194,49 @@
 												<?php echo $__env->make('data-pengiriman.detail', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 												<?php echo $__env->make('data-pengiriman.status-pembayaran', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 											</td>
+
+											<td>
+												<span class="badge badge-danger">
+													<?php echo e($data->no_resi); ?>
+
+												</span>
+											</td>
+
+											<td><?php echo e(date('d-m-Y', strtotime($data->tgl_transaksi))); ?></td>
+											<td><?php echo e($data->kode_customer); ?></td>
+											<td onmouseover="showBukti(<?php echo e($data->id); ?>)" onmouseout="hideBukti(<?php echo e($data->id); ?>)">
+												<?php if($bukti_pembayaran != ''): ?>
+													<div id="view-bukti<?php echo e($data->id); ?>" class="mb-3">
+														<img src="<?php echo e($bukti_pembayaran_view); ?>" alt="test" class="mb-2">
+														<a class="btn btn-primary" href="<?php echo e($bukti_pembayaran); ?>" target="_blank">View Full Image</a>
+													</div>
+												<?php endif; ?>
+
+												<?php echo e($data->metode_pembayaran); ?> <i class="<?php echo e($data->metode_pembayaran == 'Transfer' ? 'fa fa-eye' : ''); ?>"></i>
+											</td>
+
+											<td class="text-center">
+												<span class="badge <?php echo e($data->status_pembayaran == 1 ? 'badge-primary' : 'badge-warning'); ?>">
+													<i class="fa <?php echo e($data->status_pembayaran == 1 ? 'fa-check' : 'fa-warning'); ?>"></i>
+													<?php echo e($data->status_pembayaran == 1 ? 'Lunas' : 'Pending'); ?>
+
+												</span>
+											</td>
+
+											<td><?php echo e($data->status_pengiriman); ?></td>
+											
+											<td><?php echo e($data->nama_pengirim); ?></td>
+											<td><?php echo e($data->nama_penerima); ?></td>
+											<td><?php echo e($data->kota_tujuan); ?></td>
+											<td><?php echo e(number_format($data->ongkir, 0, '.', ',')); ?></td>
+											<td><?php echo e(number_format($data->komisi, 0, '.', ',')); ?></td>
+
+											<?php if(Session::get('user_level') == 2): ?>
+												
+												<td class="text-center">
+													<input type="checkbox" value="5" name="id_pengiriman[]" id="flexCheckDefault" onclick="ceklis(<?php echo e($data->id); ?>)">
+												</td>
+											<?php endif; ?>
 										</tr>
 									<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 									

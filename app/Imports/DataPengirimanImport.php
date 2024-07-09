@@ -31,7 +31,7 @@ class DataPengirimanImport implements ToArray, WithValidation, WithHeadingRow
         //     return null;
         // }
 
-        $tgl_transaksi = Date::excelToDateTimeObject($row['tgl_transaksi'])->format('Y-m-d');
+        // $tgl_transaksi = Date::excelToDateTimeObject($row['tgl_transaksi'])->format('Y-m-d');
 
         // $konversi_point = KonversiPoint::where('id', 1)->first();
 
@@ -48,28 +48,34 @@ class DataPengirimanImport implements ToArray, WithValidation, WithHeadingRow
         //         'limit_credit' => $kreditOld - $row['ongkir']
         //     ]);
         // }
-        
-        return [
-            'no_resi' => $row['no_resi'],
-            'tgl_transaksi' => $tgl_transaksi,
-            'kode_customer' => $row['kode_customer'],
-            'nama_pengirim' => $row['nama_pengirim'],
-            'nama_penerima' => $row['nama_penerima'],
-            'kota_tujuan' => $row['kota_tujuan'],
-            'no_hp_pengirim' => '0'.$row['no_hp_pengirim'],
-            'no_hp_penerima' => '0'.$row['no_hp_penerima'],
-            'berat_barang' => $row['berat_barang'],
-            'ongkir' => $row['ongkir'],
-            'komisi' => $row['komisi'],
-            'status_pembayaran' => $row['metode_pembayaran'] == "Tunai" ? 1 : 2,
-            'metode_pembayaran' => $row['metode_pembayaran'],
-            'bank' => $row['bank'],
-            'bukti_pembayaran' => $row['bukti_pembayaran'] ?? "",
-            'jenis_pengiriman' => $row['jenis_pengiriman'],
-            'bawa_sendiri' => $row['bawa_sendiri'],
-            'status_pengiriman' => $row['status_pengiriman'],
-            'keterangan' => $row['keterangan'] != '' ? $row['keterangan'] : '-',
-        ];
+
+        $formattedData = [];
+
+        foreach ($row as $row) {
+            $formattedData[] = [
+                'no_resi' => $row['no_resi'],
+                'tgl_transaksi' => Date::excelToDateTimeObject($row['tgl_transaksi'])->format('Y-m-d'), // Assuming tgl_transaksi is in the row data
+                'kode_customer' => $row['kode_customer'],
+                'nama_pengirim' => $row['nama_pengirim'],
+                'nama_penerima' => $row['nama_penerima'],
+                'kota_tujuan' => $row['kota_tujuan'],
+                'no_hp_pengirim' => '0' . $row['no_hp_pengirim'],
+                'no_hp_penerima' => '0' . $row['no_hp_penerima'],
+                'berat_barang' => $row['berat_barang'],
+                'ongkir' => $row['ongkir'],
+                'komisi' => $row['komisi'],
+                'status_pembayaran' => $row['metode_pembayaran'] == "Tunai" ? 1 : 2,
+                'metode_pembayaran' => $row['metode_pembayaran'],
+                'bank' => $row['bank'],
+                'bukti_pembayaran' => $row['bukti_pembayaran'] ?? "",
+                'jenis_pengiriman' => $row['jenis_pengiriman'],
+                'bawa_sendiri' => $row['bawa_sendiri'],
+                'status_pengiriman' => $row['status_pengiriman'],
+                'keterangan' => $row['keterangan'] != '' ? $row['keterangan'] : '-',
+            ];
+        }
+
+        return $formattedData;
     }
 
     public function rules(): array
