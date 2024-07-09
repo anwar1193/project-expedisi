@@ -22,7 +22,7 @@
                     <form method="POST" action="{{ route('data-pengiriman.proses-konfimasi-excel') }}">
                         @csrf
                         <div class="card-body">
-                            @if (session()->has('error'))
+                            @if (session()->has('error') && is_string(session('error')))
                                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                     <strong>Gagal <i class="fa fa-info-circle"></i></strong> 
                                     {{ session('error') }}
@@ -30,10 +30,23 @@
                                 </div>
                             @endif
 
+
+                            @if (session()->has('error') && is_array(session('error')))
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <strong>Gagal <i class="fa fa-info-circle"></i></strong>
+                                    <ul>
+                                        @foreach (session('error') as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                    <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            @endif
+
                             @if ($errors->any())
                                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                     @foreach ($errors->all() as $error)
-                                        <strong>Failed <i class="fa fa-info-circle"></i></strong> 
+                                        <strong>Gagal <i class="fa fa-info-circle"></i></strong> 
                                         {{ $error }}
                                         <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
                                         <br>
@@ -112,9 +125,9 @@
                                                 </td>
                                                 <td>
                                                     <select name="metode_pembayaran[]" class="form-control @error('metode_pembayaran') is-invalid @enderror">
-                                                        <option value="transfer" {{ $row['metode_pembayaran'] == 'Transfer' ? 'selected' : '' }}> Transfer </option>
-                                                        <option value="tunai" {{ $row['metode_pembayaran'] == 'Tunai' ? 'selected' : '' }}> Tunai </option>
-                                                        <option value="kredit" {{ $row['metode_pembayaran'] == 'Kredit' ? 'selected' : '' }}> Kredit </option>
+                                                        <option value="Transfer" {{ $row['metode_pembayaran'] == 'Transfer' ? 'selected' : '' }}> Transfer </option>
+                                                        <option value="Tunai" {{ $row['metode_pembayaran'] == 'Tunai' ? 'selected' : '' }}> Tunai </option>
+                                                        <option value="Kredit" {{ $row['metode_pembayaran'] == 'Kredit' ? 'selected' : '' }}> Kredit </option>
                                                     </select>
                                                 </td>
                                                 <td>
