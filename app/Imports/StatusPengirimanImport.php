@@ -57,7 +57,7 @@ class StatusPengirimanImport implements ToModel, WithValidation, WithHeadingRow
                 $pesan->isi_pesan
             );
             
-            $dataSending = sendWaText($data->no_hp_penerima, $message);
+            $dataSending = sendWaText($data->no_hp_pengirim, $message);
             $response = Http::withHeaders([
                 'Content-Type' => 'application/json',
             ])->post('https://api.watzap.id/v1/send_message', $dataSending);
