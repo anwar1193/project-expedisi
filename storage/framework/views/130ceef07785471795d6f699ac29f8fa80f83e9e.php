@@ -1,45 +1,44 @@
 <div class="card-body">
-    @if (session()->has('success'))
+    <?php if(session()->has('success')): ?>
     <div class="alert alert-success alert-dismissible fade show" role="alert">
         <strong>Berhasil <i class="fa fa-info-circle"></i></strong>
-        {{ session('success') }}
+        <?php echo e(session('success')); ?>
+
         <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-    @endif
+    <?php endif; ?>
 
-    @if (session()->has('delete'))
+    <?php if(session()->has('delete')): ?>
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
         <strong>Berhasil <i class="fa fa-info-circle"></i></strong>
-        {{ session('delete') }}
+        <?php echo e(session('delete')); ?>
+
         <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-    @endif
+    <?php endif; ?>
 
-    @if (session()->has('error'))
+    <?php if(session()->has('error')): ?>
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
         <strong>Gagal <i class="fa fa-info-circle"></i></strong>
-        {{ session('error') }}
+        <?php echo e(session('error')); ?>
+
         <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-    @endif
+    <?php endif; ?>
 
-    @if ($errors->any())
+    <?php if($errors->any()): ?>
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        @foreach ($errors->all() as $error)
+        <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         <strong>Failed <i class="fa fa-info-circle"></i></strong>
-        {{ $error }}
+        <?php echo e($error); ?>
+
         <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
         <br>
-        @endforeach
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
     </div>
-    @endif
+    <?php endif; ?>
 
-    {{-- <div class="tombol-export mb-3">
-        <a href="{{ route('laporan.pengeluaran.export-pdf', ['start' => request('start'), 'end' => request('end')]) }}" class="btn btn-danger" data-bs-toggle="tooltip"
-            data-bs-placement="top" title="Cetak PDF">
-            <i class="fa fa-file-pdf-o"></i> Cetak PDF
-        </a>
-    </div> --}}
+    
 
     <div class="table-responsive">
         <div class="row py-3">
@@ -55,13 +54,13 @@
                 <label class="form-label" for="">Metode Pembayaran</label>
                 <select name="search-metode-pengeluaran" id="search-metode-pengeluaran" class="form-control js-example-basic-single">
                     <option value="">- Pilih Metode Pembayaran -</option>
-                    @foreach ($metodePembayaran as $metode)
-                        <option value="{{ $metode }}">{{ $metode }}</option>
-                    @endforeach
+                    <?php $__currentLoopData = $metodePembayaran; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $metode): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <option value="<?php echo e($metode); ?>"><?php echo e($metode); ?></option>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </select>
             </div>
         </div>
-        <table class="display" id="{{ $tableId }}">
+        <table class="display" id="<?php echo e($tableId); ?>">
             <thead>
                 <tr>
                     <th>No</th>
@@ -76,20 +75,21 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($data as $item)
+                <?php $__currentLoopData = $data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <tr>
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{{ $item->tgl_pengeluaran }}</td>
-                    <td>{{ $item->keterangan }}</td>
-                    <td>{{ number_format($item->jumlah_pembayaran, 0, ',', '.') }}</td>
-                    <td>{{ $item->yang_membayar }}</td>
-                    <td>{{ $item->yang_menerima }}</td>
-                    <td>{{ $item->metode_pembayaran }}</td>
-                    <td>{{ $item->status_pengeluaran == 1 ? 'Disetujui' : 'Pending' }}</td>
-                    <td>{{ $item->jenis_pengeluaran }}</td>
+                    <td><?php echo e($loop->iteration); ?></td>
+                    <td><?php echo e($item->tgl_pengeluaran); ?></td>
+                    <td><?php echo e($item->keterangan); ?></td>
+                    <td><?php echo e(number_format($item->jumlah_pembayaran, 0, ',', '.')); ?></td>
+                    <td><?php echo e($item->yang_membayar); ?></td>
+                    <td><?php echo e($item->yang_menerima); ?></td>
+                    <td><?php echo e($item->metode_pembayaran); ?></td>
+                    <td><?php echo e($item->status_pengeluaran == 1 ? 'Disetujui' : 'Pending'); ?></td>
+                    <td><?php echo e($item->jenis_pengeluaran); ?></td>
                 </tr>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </tbody>
         </table>
     </div>
 </div>
+<?php /**PATH /Applications/MAMP/htdocs/project-expedisi/resources/views/laporan/table/data-pengeluaran.blade.php ENDPATH**/ ?>

@@ -42,18 +42,57 @@
     </div> --}}
 
     <div class="table-responsive">
+        <div class="row py-3">
+            <div class="col">
+                <label class="form-label" for="">Metode Pembayaran</label>
+                <select name="search-metode" id="search-metode" class="form-control js-example-basic-single">
+                    <option value="">- Pilih Metode Pembayaran -</option>
+                    @foreach ($metodePembayaran as $metode)
+                        <option value="{{ $metode }}">{{ $metode }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col">
+                <label class="form-label" for="">Status Pembayaran</label>
+                <select name="search-pembayaran" id="search-pembayaran" class="form-control js-example-basic-single">
+                    <option value="">- Pilih Status Pembayaran -</option>
+                    @foreach ($statusPembayaran as $status)
+                        <option value="{{ $status['name'] }}">{{ $status['name'] }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col">
+                <label class="form-label" for="">Status Pengiriman</label>
+                <select name="search-pengiriman" id="search-pengiriman" class="form-control js-example-basic-single">
+                    <option value="">- Pilih Status Pengiriman -</option>
+                    @foreach ($statusPengiriman as $status)
+                        <option value="{{ $status->status_pengiriman }}">{{ $status->status_pengiriman }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col">
+                <label class="form-label" for="">Customer</label>
+                <select name="search-customer" id="search-customer" class="form-control js-example-basic-single">
+                    <option value="">- Pilih Customer -</option>
+                    @foreach ($customer as $customer)
+                        <option value="{{ $customer->nama }}">{{ $customer->nama }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
         <table class="display" id="{{ $tableId }}">
             <thead>
                 <tr>
                     <th>No</th>
                     <th>No Resi</th>
                     <th>Tanggal Transaksi</th>
+                    <th>Customer</th>
                     <th>Nama Penerima</th>
                     <th>Kota Tujuan</th>
                     <th>Metode Pembayaran</th>
                     <th>Status Pembayaran</th>
+                    <th style="display: none">Status Pengiriman</th>
                     <th>Ongkir</th>
-                    <th>Komisi</th>
                 </tr>
             </thead>
             <tbody>
@@ -68,6 +107,7 @@
                     </td>
 
                     <td>{{ $item->tgl_transaksi }}</td>
+                    <td>{{ $item->nama ?? '-' }}</td>
                     <td>{{ $item->nama_penerima }}</td>
                     <td>{{ $item->kota_tujuan }}</td>
                     <td>{{ $item->metode_pembayaran }}</td>
@@ -79,8 +119,8 @@
                         </span>
                     </td>
 
+                    <td style="display: none">{{ $item->status_pengiriman }}</td>
                     <td>{{ number_format($item->ongkir, 0, '.', ',') }}</td>
-                    <td>{{ number_format($item->komisi, 0, '.', ',') }}</td>
                 </tr>
                 @endforeach
             </tbody>
