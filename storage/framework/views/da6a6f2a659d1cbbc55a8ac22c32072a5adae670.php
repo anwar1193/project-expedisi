@@ -38,6 +38,9 @@
                                             <div class="col-1">:</div>
                                             <div class="col-6">
                                                 <textarea name="isi_pesan" class="form-control" id="" cols="30" rows="5"><?php echo e(old('isi_pesan', $data->isi_pesan)); ?></textarea>
+                                                <?php if($data->id == 2): ?>
+                                                    <p class="text-warning pt-2" style="font-size: 10px">* Untuk{timeof_day}, {tanggal}, {resi}, {nama_penerima}, [tujuan], dan {status} tidak boleh dihapus</p>
+                                                <?php endif; ?>
                                             </div>
                                         </div>
 
