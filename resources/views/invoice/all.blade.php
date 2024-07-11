@@ -84,6 +84,7 @@
 	                                    <th width="5%">No</th>
 	                                    <th>No Invoice</th>
 	                                    <th>Total Tagihan</th>
+	                                    <th>Sisa Tagihan</th>
 	                                    <th>Tanggal Cetak</th>
 										<th>Kode Customer</th>
 										<th>Nama Customer</th>
@@ -97,13 +98,14 @@
 											<td>{{ $loop->iteration; }}</td>
 											<td>{{ $data->invoice_no }}</td>
 											<td>Rp {{ number_format($data->totalBersih, 0, '.', '.') }}</td>
+											<td>Rp {{ number_format($data->sisa, 0, '.', '.') }}</td>
 											<td>{{ formatTanggalIndonesia($data->created_at) }}</td>
 											<td>{{ $data->kode_customer }}</td>
 											<td>{{ $data->nama }}</td>
 											<td class="text-center">
-												<span class="badge {{ $data->totalBersih == 0 ? 'badge-primary' : 'badge-warning' }}">
-													<i class="fa {{ $data->totalBersih == 0 ? 'fa-check' : 'fa-warning' }}"></i>
-													{{ $data->totalBersih == 0 ? 'Lunas' : 'Belum Lunas'; }}
+												<span class="badge {{ $data->sisa == 0 ? 'badge-primary' : 'badge-warning' }}">
+													<i class="fa {{ $data->sisa == 0 ? 'fa-check' : 'fa-warning' }}"></i>
+													{{ $data->sisa == 0 ? 'Lunas' : 'Belum Lunas'; }}
 												</span>
 											</td>
 											<td>
