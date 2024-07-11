@@ -13,6 +13,7 @@ use App\Models\DataPengiriman;
 use App\Models\Invoice;
 use App\Models\Pesan;
 use App\Models\TransaksiInvoice;
+use App\Models\TransaksiPembayaran;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
@@ -123,7 +124,7 @@ class InvoiceController extends Controller
         $customer = $request->customer_id;
         $customers = Customer::all();
 
-        $data = Invoice::select('invoices.invoice_no', 'invoices.created_at', 'invoices.id AS invoiceId', 'customers.id', 'customers.kode_customer', 'customers.nama')
+        $data = Invoice::select('invoices.invoice_no', 'invoices.created_at', 'invoices.id AS invoiceId', 'invoices.diskon', 'customers.id', 'customers.kode_customer', 'customers.nama', 'customers.diskon AS diskon_customer')
                 ->join('customers', 'customers.id', '=', 'invoices.customer_id')
                 ->when($customer, function ($query, $customer) {
                     return $query->where('customers.id', $customer);
@@ -133,7 +134,28 @@ class InvoiceController extends Controller
                 })
                 ->orderBy('invoices.id', 'DESC')
                 ->get();
+                
+            foreach ($data as $item) {
+                $total = DataPengiriman::selectRaw('SUM(ongkir) AS total')
+                ->join('transaksi_invoices', 'transaksi_invoices.data_pengiriman_id', '=', 'data_pengirimen.id')
+                ->where('kode_customer', $item->kode_customer)
+                ->where('invoice_id', $item->invoiceId)
+                ->first();
 
+                $nominal = TransaksiPembayaran::selectRaw('SUM(nominal) AS total')
+                            ->where('invoice_id', $item->invoiceId)->first();
+
+                $diskon = round($total->total * $item->diskon_customer / 100);
+
+                $totalBersih = round($total->total - $item->diskon - $diskon);
+
+                if ($nominal) {
+                    $item->totalBersih = round($totalBersih - $nominal->total);
+                } else {
+                    $item->totalBersih = $totalBersih;
+                }
+            }
+                
         return view('invoice.all', compact('data', 'customers'));
     }
 
@@ -302,5 +324,31 @@ class InvoiceController extends Controller
         $totalBersih = round($total->total - $customer->diskon - $diskon);
 
         return view('invoice.hasil-transaksi', compact('customer', 'data', 'total', 'diskon', 'totalBersih'));
+    }
+
+    public function pembayaran_invoice(Request $request)
+    {
+        $validateData = $request->validate([
+            'invoice_id' => 'required|numeric',
+            'nominal' => 'required|numeric',
+            'tanggal_bayar' => 'required',
+            'bukti_bayar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $foto = $request->file('bukti_bayar');
+
+        if ($request->nominal > $request->total_tagihan) {
+            return back()->with('error', 'Nominal Yang Anda Masukan Melebihi Total Tagihan');
+        }
+
+        if($foto != ''){
+            $foto->storeAs('public/invoice-bukti-bayar', $foto->hashName());
+        }
+
+        $validateData['bukti_bayar'] = ($foto != '' ? $foto->hashName() : '');
+
+        TransaksiPembayaran::create($validateData);
+
+        return redirect()->route('invoices.index')->with('success', 'Pembayaran Invoice Berhasil Ditambahkan');
     }
 }
