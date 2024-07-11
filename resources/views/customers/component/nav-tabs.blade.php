@@ -21,4 +21,10 @@
         </a>
         <div class="material-border"></div>
     </li>
+    <li class="nav-item">
+        <a class="nav-link {{ $activeTab == 'invoice' ? 'active' : '' }}" id="point-top-secondary" data-bs-toggle="tab" href="#top-pointsecondary" role="tab" aria-controls="top-invoicesecondary" aria-selected="false">
+            <i class="pt-2 pe-2" data-feather="info"></i>Point
+        </a>
+        <div class="material-border"></div>
+    </li>
 </ul>
