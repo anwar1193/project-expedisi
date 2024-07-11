@@ -26,7 +26,7 @@
                                         <div class="row d-flex py-1 text-start justify-content-start">
                                             <div class="col-4">Total Sisa Tagihan</div>
                                             <div class="col-1">:</div>
-                                            <div class="col-6">Rp <?php echo e(number_format($data->totalBersih, 0, '.', '.')); ?></div>
+                                            <div class="col-6">Rp <?php echo e(number_format($data->sisa == 0 ? $data->totalBersih : $data->sisa, 0, '.', '.')); ?></div>
                                             <input type="hidden" style="display: none" class="form-control" value="<?php echo e($data->sisa == 0 ? $data->totalBersih : $data->sisa); ?>" name="total_tagihan">
                                         </div>
 
