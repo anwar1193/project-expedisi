@@ -122,6 +122,7 @@ class InvoiceController extends Controller
     {
         $tanggal = $request->tanggal;
         $customer = $request->customer_id;
+        $status = $request->status;
         $customers = Customer::all();
 
         $data = Invoice::select('invoices.invoice_no', 'invoices.created_at', 'invoices.id AS invoiceId', 'invoices.diskon', 'customers.id', 'customers.kode_customer', 'customers.nama', 'customers.diskon AS diskon_customer')
@@ -157,6 +158,17 @@ class InvoiceController extends Controller
 
                 $item->totalBersih = $totalBersih;
             }
+
+            $data = $data->filter(function ($item) use ($status) {
+                if ($status == '1') {
+                    return $item->sisa == 0;
+                } elseif ($status == '0') {
+                    return $item->sisa != 0;
+                }
+                return true;
+            });
+                    
+            $data = $data->values();
                 
         return view('invoice.all', compact('data', 'customers'));
     }
@@ -352,5 +364,16 @@ class InvoiceController extends Controller
         TransaksiPembayaran::create($validateData);
 
         return redirect()->route('invoices.index')->with('success', 'Pembayaran Invoice Berhasil Ditambahkan');
+    }
+
+    public function detail_riwayat_invoices($invoiceId)
+    {
+        $datas = TransaksiPembayaran::select('transaksi_pembayarans.*', 'invoices.invoice_no')
+                ->leftjoin('invoices', 'invoices.id', '=', 'transaksi_pembayarans.invoice_id')
+                ->where('transaksi_pembayarans.invoice_id', $invoiceId)
+                ->orderBy('transaksi_pembayarans.id', 'DESC')
+                ->get();
+
+        return view('invoice.riwayat-pembayaran', compact('datas'));
     }
 }

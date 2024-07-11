@@ -25,7 +25,7 @@
         <form class="d-flex flex-column col-12" role="search" action="" method="GET">
 			<div class="d-flex justify-content-end">
                 <div id="customer_id">
-                    <input class="form-control" type="date" name="tanggal" value="<?php echo e(request('tanggal') ? request('tanggal') : date('Y-m-d')); ?>" />
+                    <input class="form-control" type="date" name="tanggal" value="" />
                 </div>
                 <div id="customer_id" class="px-2">
                     <select name="customer_id" class="form-control py-2">
@@ -34,6 +34,13 @@
                             <option value="<?php echo e($customer->id); ?>" <?php echo e(request('customer_id') == $customer->id ? 'selected' : ''); ?>><?php echo e($customer->nama); ?></option>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </select>
+                </div>
+                <div id="status" class="px-2">
+                    <select name="status" class="form-control py-2">
+                        <option value="">- Pilih Status -</option>
+						<option value="1" <?php echo e(request('status') == '1' ? 'selected' : ''); ?>>Lunas</option>
+						<option value="0" <?php echo e(request('status') == '0' ? 'selected' : ''); ?>>Belum Lunas</option>
+					</select>
                 </div>
 				<div class="px-1">
 					<button type="submit" class="btn btn-primary" title="Cari"><i class="fa fa-search"></i> Cari</button>
@@ -120,8 +127,14 @@
 																<span><i class="pt-2 pe-2" data-feather="eye"></i> Detail</span>
 															</a>
 
-															<a class="dropdown-item" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#pembayaranInvoice<?php echo e($data->invoiceId); ?>">
-																<span><i class="pt-2 pe-2" data-feather="dollar-sign"></i> Pembayaran</span>
+															<?php if($data->sisa != 0): ?>
+																<a class="dropdown-item" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#pembayaranInvoice<?php echo e($data->invoiceId); ?>">
+																	<span><i class="pt-2 pe-2" data-feather="dollar-sign"></i> Pembayaran</span>
+																</a>
+															<?php endif; ?>
+
+															<a class="dropdown-item" href="<?php echo e(route('invoice.transaksi-pembayaran.detail', $data->invoiceId)); ?>">
+																<span><i class="pt-2 pe-2" data-feather="eye"></i> History Pembayaran</span>
 															</a>
 														</div>
 													</div>
