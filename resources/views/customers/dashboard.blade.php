@@ -6,6 +6,17 @@
 
 @push('css')
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/datatables.css') }}">
+<link rel="stylesheet" type="text/css" href="{{asset('assets/css/animate.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('assets/css/chartist.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('assets/css/date-picker.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('assets/css/prism.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('assets/css/vector-map.css')}}">
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/select2.css') }}">
+<style>
+	th {
+		background-color: rgb(200, 75, 75)
+	}
+</style>
 @endpush
 
 @php
@@ -40,6 +51,10 @@
                             
 							<div class="tab-pane fade" id="top-invoicesecondary" role="tabpanel" aria-labelledby="profile-top-tab">
                                 @include('customers.component.invoice', ['data' => $data, 'tableId' => 'basic-2', 'customer' => $customer, 'invoice' => $invoice, 'total' => $total])
+                            </div>
+							
+							<div class="tab-pane fade" id="top-pointsecondary" role="tabpanel" aria-labelledby="profile-top-tab">
+                                @include('customers.component.point', ['customer' => $customer])
                             </div>
 
                         </div>	 

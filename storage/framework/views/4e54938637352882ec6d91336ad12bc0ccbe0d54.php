@@ -19,6 +19,11 @@
                                         <div class="col-6"><?php echo e($data->nama); ?></div>
                                     </div>
                                     <div class="row d-flex py-1 text-start justify-content-start">
+                                        <div class="col-4">Perusahaan</div>
+                                        <div class="col-1">:</div>
+                                        <div class="col-6"><?php echo e($data->perusahaan); ?></div>
+                                    </div>
+                                    <div class="row d-flex py-1 text-start justify-content-start">
                                         <div class="col-4">No Whatsapp</div>
                                         <div class="col-1">:</div>
                                         <div class="col-6 text-capitalize"><?php echo e($data->no_wa); ?></div>
