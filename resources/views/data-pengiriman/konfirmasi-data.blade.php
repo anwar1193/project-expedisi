@@ -62,11 +62,12 @@
                             {{-- Table --}}
                             <div class="table-responsive">
                                 <p class="mb-4">Jika Sudah Sesuai Silahkan Klik Simpan</p>
-                                <table class="display" id="basic-1">
+                                <table class="table table-bordered" id="">
                                     <thead>
                                         <tr>
                                             <th>No Resi</th>
                                             <th>Tgl Transaksi</th>
+                                            <th>Diinput Oleh</th>
                                             <th>Kode Customer</th>
                                             <th>Nama Pengirim</th>
                                             <th>Nama Penerima</th>
@@ -94,9 +95,22 @@
                                                 <td>
                                                     <input type="date" name="tgl_transaksi[]" value="{{ $row['tgl_transaksi'] }}">
                                                 </td>
+
                                                 <td>
-                                                    <select name="kode_customer[]" class="form-control @error('kode_customer') is-invalid @enderror">
-                                                        <option value="general" {{ $row['kode_customer'] == 'general' ? 'selected' : '' }}> General </option>
+                                                    <select name="input_by[]" class="form-control @error('input_by') is-invalid @enderror js-example-basic-single" required="">
+                                                        <option value="">-Pilih-</option>
+                                                        @foreach ($kasir as $item)
+                                                            <option value="{{ $item->nama }}">
+                                                                {{ $item->nama }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </td>
+
+                                                <td>
+                                                    <select name="kode_customer[]" class="form-control @error('kode_customer') is-invalid @enderror js-example-basic-single" required="">
+                                                        <option value="">-Pilih-</option>
+                                                        <option value="General" {{ $row['kode_customer'] == 'General' ? 'selected' : '' }}> General </option>
                                                         @foreach ($customer as $item)
                                                             <option value="{{ $item->kode_customer }}" {{ $row['kode_customer']== $item->kode_customer ? 'selected' : '' }}>
                                                                 {{ $item->kode_customer }}
@@ -166,6 +180,7 @@
                                                 <td>
                                                     <input type="text" name="keterangan[]" value="{{ $row['keterangan'] }}"> 
                                                 </td>
+
                                             </tr>
                                         @endforeach
                                     </tbody>

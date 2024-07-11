@@ -10,6 +10,7 @@ use App\Models\Customer;
 use App\Models\DataPengiriman;
 use App\Models\KonversiPoint;
 use App\Models\StatusPengiriman;
+use App\Models\User;
 use Dflydev\DotAccessData\Data;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -82,6 +83,7 @@ class DataPengirimanController extends Controller
     {
         $datas = DataPengiriman::find($id);
         $data['datas'] = $datas;
+        $data['customer'] = Customer::orderBy('id')->get();
 
         return view('data-pengiriman.edit', $data);
     }
@@ -89,6 +91,7 @@ class DataPengirimanController extends Controller
     public function update($id, Request $request)
     {
         $validateData = $request->validate([
+            'kode_customer' => 'required',
             'no_resi' => 'required',
             'tgl_transaksi' => 'required',
             'nama_pengirim' => 'required',
@@ -102,24 +105,13 @@ class DataPengirimanController extends Controller
             'metode_pembayaran' => 'required'
         ]);
 
-        // $foto = $request->file('bukti_pembayaran');
-
-        // $getImage = DataPengiriman::find($id);
-
-        // if($foto != ''){
-        //     Storage::delete('public/bukti_pembayaran/'.$getImage->bukti_pembayaran);
-        //     $foto->storeAs('public/bukti_pembayaran', $foto->hashName());
-
-        //     $namafile = 'data-pengiriman/'.$foto->hashName();
-        //     $path = public_path('storage/bukti_pembayaran/' . $foto->hashName());
-
-        //     Gdrive::delete('data-pengiriman/'.$getImage->bukti_pembayaran);
-        //     Storage::disk('google')->put($namafile, File::get($path));
-        // }
-
-        // $validateData['bukti_pembayaran'] = ($foto != '' ? $foto->hashName() : '');
+        $customer_terdaftar = Customer::where('kode_customer', $request->kode_customer)->exists();
+        if(!$customer_terdaftar){
+            return redirect()->route('data-pengiriman')->with('error', 'Metode Pembayaran Kredit Hanya Untuk Customer Terdaftar!');
+        }
 
         DataPengiriman::where('id', '=', $id)->update([
+            'kode_customer' => $request->kode_customer,
             'no_resi' => $request->no_resi,
             'tgl_transaksi' => $request->tgl_transaksi,
             'nama_pengirim' => $request->nama_pengirim,
@@ -131,7 +123,7 @@ class DataPengirimanController extends Controller
             'ongkir' => $request->ongkir,
             'komisi' => $request->komisi,
             'metode_pembayaran' => $request->metode_pembayaran,
-            'bukti_pembayaran' => $request->bukti_pembayaran
+            'bukti_pembayaran' => $request->bukti_pembayaran == NULL ? '' : $request->bukti_pembayaran
             // 'bukti_pembayaran' => ($foto != '' ? $foto->hashName() : $getImage->bukti_pembayaran)
         ]);
 
@@ -250,6 +242,7 @@ class DataPengirimanController extends Controller
 
         $bank = Bank::all();
         $customer = Customer::all();
+        $kasir = User::where('user_level', 4)->get();
     
         $data = Excel::toArray(new DataPengirimanImport, $request->file('file'));
     
@@ -291,7 +284,7 @@ class DataPengirimanController extends Controller
             return $validationResult;
         }
     
-        return view('data-pengiriman.konfirmasi-data', compact('bank', 'customer','formattedData'));
+        return view('data-pengiriman.konfirmasi-data', compact('bank', 'customer','formattedData', 'kasir'));
     }
 
     public function proses_hasil_import(Request $request)
@@ -319,6 +312,7 @@ class DataPengirimanController extends Controller
                 'bawa_sendiri' => $request->bawa_sendiri[$i],
                 'status_pengiriman' => $request->status_pengiriman[$i],
                 'keterangan' => $request->keterangan[$i] != '' ? $request->keterangan[$i] : '-',
+                'input_by' => $request->input_by[$i],
             ];
     
             $validator = Helper::validateFormattedData($datas);
@@ -371,6 +365,7 @@ class DataPengirimanController extends Controller
                 'bawa_sendiri' => $request->bawa_sendiri[$i],
                 'status_pengiriman' => $request->status_pengiriman[$i],
                 'keterangan' => $request->keterangan[$i] != '' ? $request->keterangan[$i] : '-',
+                'input_by' => $request->input_by[$i],
             ]);
         }
     

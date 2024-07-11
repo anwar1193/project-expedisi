@@ -142,8 +142,9 @@
 	                                    <th>Pengirim</th>
 	                                    <th>Penerima</th>
 	                                    <th>Kota Tujuan</th>
+	                                    <th>Bawa Sendiri</th>
 	                                    <th>Ongkir</th>
-	                                    <th>Komisi</th>
+	                                    <th>Diinput Oleh</th>
 										
 										<?php if(Session::get('user_level') == 2): ?>
 											<th>Pilih</th>
@@ -228,8 +229,10 @@
 											<td><?php echo e($data->nama_pengirim); ?></td>
 											<td><?php echo e($data->nama_penerima); ?></td>
 											<td><?php echo e($data->kota_tujuan); ?></td>
+											<td><?php echo e($data->bawa_sendiri); ?></td>
 											<td><?php echo e(number_format($data->ongkir, 0, '.', ',')); ?></td>
-											<td><?php echo e(number_format($data->komisi, 0, '.', ',')); ?></td>
+
+											<td><?php echo e($data->input_by); ?></td>
 
 											<?php if(Session::get('user_level') == 2): ?>
 												

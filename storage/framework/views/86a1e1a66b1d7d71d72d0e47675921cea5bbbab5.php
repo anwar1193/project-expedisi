@@ -63,11 +63,12 @@
                             
                             <div class="table-responsive">
                                 <p class="mb-4">Jika Sudah Sesuai Silahkan Klik Simpan</p>
-                                <table class="display" id="basic-1">
+                                <table class="table table-bordered" id="">
                                     <thead>
                                         <tr>
                                             <th>No Resi</th>
                                             <th>Tgl Transaksi</th>
+                                            <th>Diinput Oleh</th>
                                             <th>Kode Customer</th>
                                             <th>Nama Pengirim</th>
                                             <th>Nama Penerima</th>
@@ -95,6 +96,26 @@
                                                 <td>
                                                     <input type="date" name="tgl_transaksi[]" value="<?php echo e($row['tgl_transaksi']); ?>">
                                                 </td>
+
+                                                <td>
+                                                    <select name="input_by[]" class="form-control <?php $__errorArgs = ['input_by'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?> js-example-basic-single" required="">
+                                                        <option value="">-Pilih-</option>
+                                                        <?php $__currentLoopData = $kasir; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                            <option value="<?php echo e($item->nama); ?>">
+                                                                <?php echo e($item->nama); ?>
+
+                                                            </option>
+                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                    </select>
+                                                </td>
+
                                                 <td>
                                                     <select name="kode_customer[]" class="form-control <?php $__errorArgs = ['kode_customer'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -103,8 +124,9 @@ if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>">
-                                                        <option value="general" <?php echo e($row['kode_customer'] == 'general' ? 'selected' : ''); ?>> General </option>
+unset($__errorArgs, $__bag); ?> js-example-basic-single" required="">
+                                                        <option value="">-Pilih-</option>
+                                                        <option value="General" <?php echo e($row['kode_customer'] == 'General' ? 'selected' : ''); ?>> General </option>
                                                         <?php $__currentLoopData = $customer; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                             <option value="<?php echo e($item->kode_customer); ?>" <?php echo e($row['kode_customer']== $item->kode_customer ? 'selected' : ''); ?>>
                                                                 <?php echo e($item->kode_customer); ?>
@@ -197,6 +219,7 @@ unset($__errorArgs, $__bag); ?>">
                                                 <td>
                                                     <input type="text" name="keterangan[]" value="<?php echo e($row['keterangan']); ?>"> 
                                                 </td>
+
                                             </tr>
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </tbody>

@@ -141,8 +141,9 @@
 	                                    <th>Pengirim</th>
 	                                    <th>Penerima</th>
 	                                    <th>Kota Tujuan</th>
+	                                    <th>Bawa Sendiri</th>
 	                                    <th>Ongkir</th>
-	                                    <th>Komisi</th>
+	                                    <th>Diinput Oleh</th>
 										
 										@if (Session::get('user_level') == 2)
 											<th>Pilih</th>
@@ -227,8 +228,10 @@
 											<td>{{ $data->nama_pengirim }}</td>
 											<td>{{ $data->nama_penerima }}</td>
 											<td>{{ $data->kota_tujuan }}</td>
+											<td>{{ $data->bawa_sendiri }}</td>
 											<td>{{ number_format($data->ongkir, 0, '.', ',') }}</td>
-											<td>{{ number_format($data->komisi, 0, '.', ',') }}</td>
+
+											<td>{{ $data->input_by }}</td>
 
 											@if (Session::get('user_level') == 2)
 												{{-- Select/Pilih --}}

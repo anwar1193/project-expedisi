@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('invoices', function (Blueprint $table) {
-            $table->string("invoice_name")->after('invoice_no')->nullable();
+        Schema::table('data_pengirimen', function (Blueprint $table) {
+            $table->string('input_by')->after('keterangan')->nullable();
         });
     }
 
@@ -25,8 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('invoices', function (Blueprint $table) {
-            $table->dropColumn('invoice_name');
+        Schema::table('data_pengirimen', function (Blueprint $table) {
+            $table->dropColumn('input_by');
         });
     }
 };

@@ -151,7 +151,7 @@ class Helper
         $rules = [
             '*.no_resi' => 'required|unique:data_pengirimen',
             '*.tgl_transaksi' => 'required|date',
-            '*.kode_customer' => 'required',
+            // '*.kode_customer' => 'required',
             '*.nama_pengirim' => 'required',
             '*.nama_penerima' => 'required',
             '*.kota_tujuan' => 'required',
@@ -205,8 +205,8 @@ class Helper
 
                 if ($data['metode_pembayaran'] == 'Kredit') {
                     $customerTerdaftar = Customer::where('kode_customer', $data['kode_customer'])->exists();
-                    if (!$customerTerdaftar) {
-                        $errors[] = 'Metode pembayaran kredit hanya berlaku untuk customer terdaftar!';
+                    if (!$customerTerdaftar && $data['kode_customer'] != '') {
+                        $errors[] = 'Metode pembayaran kredit hanya berlaku untuk customer terdaftar atau kosongkan kolom customer!';
                     }
                 }
 

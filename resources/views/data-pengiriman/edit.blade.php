@@ -31,6 +31,30 @@
 							<div class="row">
 								<div class="col">
 									<div class="mb-3">
+										<label class="form-label" for="">Pilih Customer</label>
+										
+										<select name="kode_customer" id="kode_customer" class="form-control @error('kode_customer') is-invalid @enderror js-example-basic-single">
+											<option value="">- Pilih Customer -</option>
+											<option value="General" {{ $datas->kode_customer == 'General' ? 'selected' : NULL }}>General</option>
+											@foreach ($customer as $item)
+												<option value="{{ $item->kode_customer }}" {{ $item->kode_customer == $datas->kode_customer ? 'selected' : '' }}>
+													{{ $item->kode_customer }} - {{ $item->nama }}
+												</option>
+											@endforeach
+										</select>
+
+										@error('customer')
+										<div class="text-danger">
+											{{ $message }}
+										</div>
+										@enderror
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col">
+									<div class="mb-3">
 										<label class="form-label" for="">No Resi</label>
 										<input class="form-control @error('no_resi') is-invalid @enderror" type="text" name="no_resi" autocomplete="off" value="{{ old('no_resi', $datas->no_resi) }}"/>
 
@@ -182,9 +206,11 @@
 								<div class="col">
 									<div class="mb-3">
 										<label class="form-label" for="">Metode Pembayaran</label>
-                                        <select name="metode_pembayaran" id="metode_pembayaran" class="form-control @error('metode_pembayaran') is-invalid @enderror">
+                                        <select name="metode_pembayaran" id="metode_pembayaran" class="form-control @error('metode_pembayaran') is-invalid @enderror js-example-basic-single">
+											<option value="">- Pilih -</option>
 											<option value="Tunai" {{ $datas->metode_pembayaran == 'Tunai' ? 'selected' : NULL }}>Tunai</option>
 											<option value="Transfer" {{ $datas->metode_pembayaran == 'Transfer' ? 'selected' : NULL }}>Transfer</option>
+											<option value="Kredit" {{ $datas->metode_pembayaran == 'Kredit' ? 'selected' : NULL }}>Kredit</option>
 										</select>
 
 										@error('metode_pembayaran')
