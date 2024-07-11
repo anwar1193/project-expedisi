@@ -150,10 +150,12 @@ class InvoiceController extends Controller
                 $totalBersih = round($total->total - $item->diskon - $diskon);
 
                 if ($nominal) {
-                    $item->totalBersih = round($totalBersih - $nominal->total);
+                    $item->sisa = round($totalBersih - $nominal->total);
                 } else {
-                    $item->totalBersih = $totalBersih;
+                    $item->sisa = $totalBersih;
                 }
+
+                $item->totalBersih = $totalBersih;
             }
                 
         return view('invoice.all', compact('data', 'customers'));
