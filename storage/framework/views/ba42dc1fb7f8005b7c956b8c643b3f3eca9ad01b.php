@@ -1,4 +1,4 @@
-<div class="modal fade modal-bookmark" id="pembayaranInvoice<?php echo e($data->id); ?>" tabindex="-1" role="dialog"
+<div class="modal fade modal-bookmark" id="pembayaranInvoice<?php echo e($data->invoiceId); ?>" tabindex="-1" role="dialog"
     aria-labelledby="modalPembayaranInvoice" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content justify-content-start">
@@ -24,10 +24,10 @@
                                         </div>
                                         
                                         <div class="row d-flex py-1 text-start justify-content-start">
-                                            <div class="col-4">Total Tagihan</div>
+                                            <div class="col-4">Total Sisa Tagihan</div>
                                             <div class="col-1">:</div>
                                             <div class="col-6">Rp <?php echo e(number_format($data->totalBersih, 0, '.', '.')); ?></div>
-                                            <input type="hidden" style="display: none" class="form-control" value="<?php echo e($data->totalBersih); ?>" name="total_tagihan">
+                                            <input type="hidden" style="display: none" class="form-control" value="<?php echo e($data->sisa == 0 ? $data->totalBersih : $data->sisa); ?>" name="total_tagihan">
                                         </div>
 
                                         <div class="row d-flex py-1 text-start justify-content-start">
