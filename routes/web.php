@@ -277,6 +277,7 @@ Route::middleware("auth")->group(function() {
         Route::post('/send-email', [InvoiceController::class, 'send_email_invoice'])->name('invoice.send-email');
         Route::post('/test-wa', [InvoiceController::class, 'test_wa'])->name('invoice.test-wa');
         Route::get('/invoices/hasil-generate/{id}/{invoiceId}', [InvoiceController::class, 'hasil_transaksi'])->name('invoice.hasil-transaksi');
+        Route::post('/all/transaksi-pembayaran', [InvoiceController::class, 'pembayaran_invoice'])->name('invoice.transaksi-pembayaran');
     });
     
     Route::prefix('penukaran-point')->group(function () {

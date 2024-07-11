@@ -1,46 +1,45 @@
-@extends('layouts.admin.master')
+<?php $__env->startSection('title'); ?>All Invoices
+ <?php echo e($title); ?>
 
-@section('title')All Invoices
- {{ $title }}
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('css')
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/datatables.css') }}">
+<?php $__env->startPush('css'); ?>
+<link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/datatables.css')); ?>">
 <style>
 	.dataTables_filter {
 		display: none;
 	}
 </style>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@section('content')
-	@component('components.breadcrumb')
-		@slot('breadcrumb_title')
+<?php $__env->startSection('content'); ?>
+	<?php $__env->startComponent('components.breadcrumb'); ?>
+		<?php $__env->slot('breadcrumb_title'); ?>
 			<h3>Data All Invoices</h3>
-		@endslot
-		<li class="breadcrumb-item active"><a href="{{ route('jenis-pengeluaran') }}">Invoices</a></li>
+		<?php $__env->endSlot(); ?>
+		<li class="breadcrumb-item active"><a href="<?php echo e(route('jenis-pengeluaran')); ?>">Invoices</a></li>
 		<li class="breadcrumb-item active">Table</li>
-	@endcomponent
+	<?php echo $__env->renderComponent(); ?>
 	
 	<div class="container-fluid">
         <form class="d-flex flex-column col-12" role="search" action="" method="GET">
 			<div class="d-flex justify-content-end">
                 <div id="customer_id">
-                    <input class="form-control" type="date" name="tanggal" value="{{ request('tanggal') ? request('tanggal') : date('Y-m-d') }}" />
+                    <input class="form-control" type="date" name="tanggal" value="<?php echo e(request('tanggal') ? request('tanggal') : date('Y-m-d')); ?>" />
                 </div>
                 <div id="customer_id" class="px-2">
                     <select name="customer_id" class="form-control py-2">
                         <option value="">- Pilih Customer -</option>
-                        @foreach($customers as $customer)
-                            <option value="{{ $customer->id }}" {{ request('customer_id') == $customer->id ? 'selected' : '' }}>{{ $customer->nama }}</option>
-                        @endforeach
+                        <?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <option value="<?php echo e($customer->id); ?>" <?php echo e(request('customer_id') == $customer->id ? 'selected' : ''); ?>><?php echo e($customer->nama); ?></option>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </select>
                 </div>
 				<div class="px-1">
 					<button type="submit" class="btn btn-primary" title="Cari"><i class="fa fa-search"></i> Cari</button>
 				</div>
 				<div class="px-1">
-					<a href="{{ route('invoices.index') }}" class="btn btn-md btn-secondary" title="Reset"><i class="fa fa-refresh"></i> Reset</a>
+					<a href="<?php echo e(route('invoices.index')); ?>" class="btn btn-md btn-secondary" title="Reset"><i class="fa fa-refresh"></i> Reset</a>
 				</div>
 			</div>
 		</form>
@@ -52,31 +51,34 @@
 	            <div class="card">
 	                <div class="card-body">
 
-						@if (session()->has('success'))
+						<?php if(session()->has('success')): ?>
 							<div class="alert alert-success alert-dismissible fade show" role="alert">
 								<strong>Berhasil <i class="fa fa-info-circle"></i></strong> 
-								{{ session('success') }}
+								<?php echo e(session('success')); ?>
+
 								<button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
 							</div>
-						@endif
+						<?php endif; ?>
 
-						@if (session()->has('delete'))
+						<?php if(session()->has('delete')): ?>
 							<div class="alert alert-danger alert-dismissible fade show" role="alert">
 								<strong>Berhasil <i class="fa fa-info-circle"></i></strong> 
-								{{ session('delete') }}
+								<?php echo e(session('delete')); ?>
+
 								<button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
 							</div>
-						@endif
+						<?php endif; ?>
 						
-						@if (session()->has('error'))
+						<?php if(session()->has('error')): ?>
 							<div class="alert alert-danger alert-dismissible fade show" role="alert">
 								<strong>Gagal <i class="fa fa-info-circle"></i></strong> 
-								{{ session('error') }}
+								<?php echo e(session('error')); ?>
+
 								<button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
 							</div>
-						@endif
+						<?php endif; ?>
 	                    
-						{{-- Table --}}
+						
 						<div class="table-responsive">
 	                        <table class="display" id="basic-1">
 	                            <thead>
@@ -92,18 +94,19 @@
 	                                </tr>
 	                            </thead>
 	                            <tbody>
-	                                @foreach ($data as $data)
+	                                <?php $__currentLoopData = $data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 										<tr>
-											<td>{{ $loop->iteration; }}</td>
-											<td>{{ $data->invoice_no }}</td>
-											<td>Rp {{ number_format($data->totalBersih, 0, '.', '.') }}</td>
-											<td>{{ formatTanggalIndonesia($data->created_at) }}</td>
-											<td>{{ $data->kode_customer }}</td>
-											<td>{{ $data->nama }}</td>
+											<td><?php echo e($loop->iteration); ?></td>
+											<td><?php echo e($data->invoice_no); ?></td>
+											<td>Rp <?php echo e(number_format($data->totalBersih, 0, '.', '.')); ?></td>
+											<td><?php echo e(formatTanggalIndonesia($data->created_at)); ?></td>
+											<td><?php echo e($data->kode_customer); ?></td>
+											<td><?php echo e($data->nama); ?></td>
 											<td class="text-center">
-												<span class="badge {{ $data->totalBersih == 0 ? 'badge-primary' : 'badge-warning' }}">
-													<i class="fa {{ $data->totalBersih == 0 ? 'fa-check' : 'fa-warning' }}"></i>
-													{{ $data->totalBersih == 0 ? 'Lunas' : 'Belum Lunas'; }}
+												<span class="badge <?php echo e($data->totalBersih == 0 ? 'badge-primary' : 'badge-warning'); ?>">
+													<i class="fa <?php echo e($data->totalBersih == 0 ? 'fa-check' : 'fa-warning'); ?>"></i>
+													<?php echo e($data->totalBersih == 0 ? 'Lunas' : 'Belum Lunas'); ?>
+
 												</span>
 											</td>
 											<td>
@@ -111,24 +114,22 @@
 													<div class="btn-group" role="group">
 														<button class="btn btn-secondary btn-sm dropdown-toggle" id="btnGroupDrop1" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
 														<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-															<a class="dropdown-item" href="{{ route('invoice.hasil-transaksi', ['id' => $data->id, 'invoiceId' => $data->invoiceId]) }}">
+															<a class="dropdown-item" href="<?php echo e(route('invoice.hasil-transaksi', ['id' => $data->id, 'invoiceId' => $data->invoiceId])); ?>">
 																<span><i class="pt-2 pe-2" data-feather="eye"></i> Detail</span>
 															</a>
 
-															<a class="dropdown-item" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#pembayaranInvoice{{ $data->id }}">
+															<a class="dropdown-item" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#pembayaranInvoice<?php echo e($data->id); ?>">
 																<span><i class="pt-2 pe-2" data-feather="dollar-sign"></i> Pembayaran</span>
 															</a>
 														</div>
 													</div>
 												</div>
-												@include('invoice.pembayaran')
+												<?php echo $__env->make('invoice.pembayaran', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
-														{{-- <form method="GET" action="{{ route('invoice.hasil-transaksi', ['id' => $data->id, 'invoiceId' => $data->invoiceId]) }}">
-															<button class="btn btn-warning" type="submit">Detail</button>
-														</form> --}}
+														
 											</td>
 										</tr>
-									@endforeach
+									<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 	                            </tbody>
 	                        </table>
 	                    </div>
@@ -140,9 +141,9 @@
 	    </div>
 	</div>
 	
-	@push('scripts')
-	<script src="{{ asset('assets/js/datatable/datatables/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('assets/js/datatable/datatables/datatable.custom.js') }}"></script>
+	<?php $__env->startPush('scripts'); ?>
+	<script src="<?php echo e(asset('assets/js/datatable/datatables/jquery.dataTables.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/js/datatable/datatables/datatable.custom.js')); ?>"></script>
 	<script>
 		document.addEventListener('DOMContentLoaded', function() {
 			const jumlahPembayaranInput = document.querySelector('input[name="nominal"]');
@@ -156,6 +157,7 @@
 			});
 		});
 	</script>
-	@endpush
+	<?php $__env->stopPush(); ?>
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.admin.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /Applications/MAMP/htdocs/project-expedisi/resources/views/invoice/all.blade.php ENDPATH**/ ?>
