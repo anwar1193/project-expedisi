@@ -340,7 +340,7 @@ class InvoiceController extends Controller
         $foto = $request->file('bukti_bayar');
 
         if ($request->nominal > $request->total_tagihan) {
-            return back()->with('error', 'Nominal Yang Anda Masukan Melebihi Total Tagihan');
+            return back()->with('error', 'Nominal Yang Anda Masukan Melebihi Total Sisa Tagihan');
         }
 
         if($foto != ''){
