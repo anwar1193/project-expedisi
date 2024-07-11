@@ -81,7 +81,7 @@ class DashboardController extends Controller
                 ->join('transaksi_invoices', 'transaksi_invoices.data_pengiriman_id', '=', 'data_pengirimen.id')
                 ->where('kode_customer', $customer->kode_customer)->first();
 
-        $invoice = Invoice::select('invoices.invoice_no', 'invoices.created_at', 'customers.id', 'customers.kode_customer', 'customers.nama')
+        $invoice = Invoice::select('invoices.invoice_no', 'invoices.id AS invoiceId', 'invoices.created_at', 'customers.id', 'customers.kode_customer', 'customers.nama')
                 ->join('customers', 'customers.id', '=', 'invoices.customer_id')
                 ->where('customer_id', $customer->id)
                 ->orderBy('invoices.id', 'DESC')

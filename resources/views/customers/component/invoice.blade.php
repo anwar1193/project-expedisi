@@ -21,7 +21,7 @@
                             <td>{{ $data->kode_customer }}</td>
                             <td>{{ $data->nama }}</td>
                             <td>
-                                <form method="GET" action="{{ route('invoices.generate') }}">
+                                <form method="GET" action="{{ route('invoice.hasil-transaksi', ['id' => $data->id, 'invoiceId' => $data->invoiceId]) }}">
                                     <button class="btn btn-warning" type="submit" name="customer" value="{{ $data->id }}">Detail</button>
                                 </form>
                             </td>
