@@ -5,6 +5,11 @@
 
 <?php $__env->startPush('css'); ?>
 <link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/datatables.css')); ?>">
+<style>
+	.dataTables_filter {
+		display: none;
+	}
+</style>
 <?php $__env->stopPush(); ?>
 
 <?php $__env->startSection('content'); ?>
@@ -80,9 +85,11 @@
 	                                <tr>
 	                                    <th width="5%">No</th>
 	                                    <th>No Invoice</th>
+	                                    <th>Total Tagihan</th>
 	                                    <th>Tanggal Cetak</th>
 										<th>Kode Customer</th>
 										<th>Nama Customer</th>
+										<th>Status</th>
 										<th width="20%">Action</th>
 	                                </tr>
 	                            </thead>
@@ -91,13 +98,35 @@
 										<tr>
 											<td><?php echo e($loop->iteration); ?></td>
 											<td><?php echo e($data->invoice_no); ?></td>
+											<td>Rp <?php echo e(number_format($data->totalBersih, 0, '.', '.')); ?></td>
 											<td><?php echo e(formatTanggalIndonesia($data->created_at)); ?></td>
 											<td><?php echo e($data->kode_customer); ?></td>
 											<td><?php echo e($data->nama); ?></td>
+											<td class="text-center">
+												<span class="badge <?php echo e($data->totalBersih == 0 ? 'badge-primary' : 'badge-warning'); ?>">
+													<i class="fa <?php echo e($data->totalBersih == 0 ? 'fa-check' : 'fa-warning'); ?>"></i>
+													<?php echo e($data->totalBersih == 0 ? 'Lunas' : 'Belum Lunas'); ?>
+
+												</span>
+											</td>
 											<td>
-												<form method="GET" action="<?php echo e(route('invoice.hasil-transaksi', ['id' => $data->id, 'invoiceId' => $data->invoiceId])); ?>">
-                                                    <button class="btn btn-warning" type="submit">Detail</button>
-                                                </form>
+												<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+													<div class="btn-group" role="group">
+														<button class="btn btn-secondary btn-sm dropdown-toggle" id="btnGroupDrop1" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
+														<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+															<a class="dropdown-item" href="<?php echo e(route('invoice.hasil-transaksi', ['id' => $data->id, 'invoiceId' => $data->invoiceId])); ?>">
+																<span><i class="pt-2 pe-2" data-feather="eye"></i> Detail</span>
+															</a>
+
+															<a class="dropdown-item" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#pembayaranInvoice<?php echo e($data->id); ?>">
+																<span><i class="pt-2 pe-2" data-feather="dollar-sign"></i> Pembayaran</span>
+															</a>
+														</div>
+													</div>
+												</div>
+												<?php echo $__env->make('invoice.pembayaran', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
+														
 											</td>
 										</tr>
 									<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -115,6 +144,19 @@
 	<?php $__env->startPush('scripts'); ?>
 	<script src="<?php echo e(asset('assets/js/datatable/datatables/jquery.dataTables.min.js')); ?>"></script>
     <script src="<?php echo e(asset('assets/js/datatable/datatables/datatable.custom.js')); ?>"></script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			const jumlahPembayaranInput = document.querySelector('input[name="nominal"]');
+			const displayElement = document.createElement('div');
+			displayElement.innerHTML = '<strong>RP. ' + new Intl.NumberFormat('id-ID').format(jumlahPembayaranInput.value) + '</strong>';
+			jumlahPembayaranInput.parentNode.appendChild(displayElement);
+
+			jumlahPembayaranInput.addEventListener('input', function() {
+				const typedValue = jumlahPembayaranInput.value;
+				displayElement.innerHTML = '<strong>RP. ' + new Intl.NumberFormat('id-ID').format(typedValue) + '</strong>';
+			});
+		});
+	</script>
 	<?php $__env->stopPush(); ?>
 
 <?php $__env->stopSection(); ?>
