@@ -2,9 +2,13 @@
 
 namespace App\Imports;
 
+use App\Helpers\Helper;
 use Carbon\Carbon;
+use App\Models\data;
 use App\Models\DataPengiriman;
+use App\Models\Pesan;
 use App\Models\StatusPengiriman;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\SkipsFailures;
@@ -23,16 +27,42 @@ class StatusPengirimanImport implements ToModel, WithValidation, WithHeadingRow
     public function model(array $row)
     {
         $statusValid = StatusPengiriman::where('status_pengiriman', $row['status_pengiriman'])->exists();
+        $pesan = Pesan::find(Pesan::SP);
+        $data = DataPengiriman::where('no_resi', $row['no_resi'])->first();
 
         if (!$statusValid) {
             $this->errors[] = 'Status pengiriman yang diiput untuk no resi: ' . $row['no_resi'] .' tidak sesuai';
             return null;
         }
 
-        DataPengiriman::where('no_resi', $row['no_resi'])->update([
-            'status_pengiriman' => $row['status_pengiriman']
-        ]);
+        // $update = data::where('no_resi', $row['no_resi'])->update([
+        //     'status_pengiriman' => $row['status_pengiriman']
+        // ]);
 
+        if ($data) {
+            $data->update(['status_pengiriman' => $row['status_pengiriman']]);
+
+            $statusUpdate = StatusPengiriman::where('status_pengiriman', $row['status_pengiriman'])->first();
+
+            $timeOfDay = Helper::getTimeOfDay().' '.'*'.$data->nama_pengirim.'*';
+            $tanggal = $data->tgl_transaksi;
+            $noResi = $data->no_resi;
+            $namaPenerima = $data->nama_penerima;
+            $tujuan = $data->kota_tujuan;
+            $status = $statusUpdate->keterangan_pengiriman;
+
+            $message = str_replace(
+                ['{timeof_day}', '{tanggal}', '{no_resi}', '{nama_penerima}', '{tujuan}', '{status}'],
+                [$timeOfDay, '*'.$tanggal.'*', '*'.$noResi.'*', '*'.$namaPenerima.'*', '*'.$tujuan.'*', '*'.$status.'*'],
+                $pesan->isi_pesan
+            );
+            
+            $dataSending = sendWaText($data->no_hp_pengirim, $message);
+            $response = Http::withHeaders([
+                'Content-Type' => 'application/json',
+            ])->post('https://api.watzap.id/v1/send_message', $dataSending);
+        }
+//08172645362
         return null;
     }
 

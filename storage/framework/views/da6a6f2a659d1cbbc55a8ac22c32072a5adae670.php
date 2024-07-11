@@ -1,4 +1,4 @@
-<div class="modal fade modal-bookmark" id="pesan{{ $data->id }}" tabindex="-1" role="dialog"
+<div class="modal fade modal-bookmark" id="pesan<?php echo e($data->id); ?>" tabindex="-1" role="dialog"
     aria-labelledby="modalPesanLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content justify-content-start">
@@ -12,16 +12,16 @@
                         <div class="tab-pane contact-tab-0 tab-content-child fade show active" id="v-pills-user"
                             role="tabpanel" aria-labelledby="v-pills-user-tab">
                             <div class="profile-mail">
-                                <form action="{{ route('pesan.update') }}" method="post">
-                                @csrf
+                                <form action="<?php echo e(route('pesan.update')); ?>" method="post">
+                                <?php echo csrf_field(); ?>
                                 <div class="email-general mb-2">
-                                        <input type="hidden" name="id" value="{{ $data->id }}">
+                                        <input type="hidden" name="id" value="<?php echo e($data->id); ?>">
 
                                         <div class="row d-flex py-1 text-start justify-content-start">
                                             <div class="col-4">Judul</div>
                                             <div class="col-1">:</div>
                                             <div class="col-6">
-                                                <input type="text" class="form-control" value="{{ old('kode_pesan', $data->kode_pesan) }}" name="kode_pesan">
+                                                <input type="text" class="form-control" value="<?php echo e(old('kode_pesan', $data->kode_pesan)); ?>" name="kode_pesan">
                                             </div>
                                         </div>
 
@@ -29,7 +29,7 @@
                                             <div class="col-4">Judul</div>
                                             <div class="col-1">:</div>
                                             <div class="col-6">
-                                                <input type="text" class="form-control" value="{{ old('judul', $data->judul) }}" name="judul">
+                                                <input type="text" class="form-control" value="<?php echo e(old('judul', $data->judul)); ?>" name="judul">
                                             </div>
                                         </div>
                                         
@@ -37,10 +37,10 @@
                                             <div class="col-4">Isi Pesan</div>
                                             <div class="col-1">:</div>
                                             <div class="col-6">
-                                                <textarea name="isi_pesan" class="form-control" id="" cols="30" rows="5">{{ old('isi_pesan', $data->isi_pesan) }}</textarea>
-                                                @if ($data->id == 2)
+                                                <textarea name="isi_pesan" class="form-control" id="" cols="30" rows="5"><?php echo e(old('isi_pesan', $data->isi_pesan)); ?></textarea>
+                                                <?php if($data->id == 2): ?>
                                                     <p class="text-warning pt-2" style="font-size: 10px">* Untuk{timeof_day}, {tanggal}, {resi}, {nama_penerima}, [tujuan], dan {status} tidak boleh dihapus</p>
-                                                @endif
+                                                <?php endif; ?>
                                             </div>
                                         </div>
 
@@ -63,4 +63,4 @@
             </div>
         </div>
     </div>
-</div>
+</div><?php /**PATH /Applications/MAMP/htdocs/project-expedisi/resources/views/pesan/edit.blade.php ENDPATH**/ ?>

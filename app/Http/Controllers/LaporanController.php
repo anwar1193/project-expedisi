@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
 use App\Models\DaftarPengeluaran;
 use App\Models\DataPengiriman;
 use App\Models\PemasukanLainnya;
+use App\Models\StatusPengiriman;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
@@ -89,20 +91,30 @@ class LaporanController extends Controller
             $end = date('Y-m-d', strtotime('+1 day'));
         }
 
-        $pengiriman = DataPengiriman::orderBy('id', 'desc')
-            ->whereBetween('tgl_transaksi', [$start, $end])
+        $pengiriman = DataPengiriman::select('data_pengirimen.*', 'customers.nama')
+            ->leftjoin('customers', 'customers.kode_customer', '=', 'data_pengirimen.kode_customer')
+            ->whereBetween('data_pengirimen.tgl_transaksi', [$start, $end])
+            ->orderBy('id', 'desc')
             ->get();
 
-        // $pemasukkan = PemasukanLainnya::orderBy('id', 'desc')
-        //     ->whereBetween('tanggal_transaksi', [$start, $end])
-        //     ->get();
+        $pemasukkan = PemasukanLainnya::orderBy('id', 'desc')
+            ->whereBetween('tgl_pemasukkan', [$start, $end])
+            ->get();
 
         $pengeluaran = DaftarPengeluaran::join('jenis_pengeluarans', 'jenis_pengeluarans.id', '=', 'daftar_pengeluarans.jenis_pengeluaran')
             ->orderBy('daftar_pengeluarans.id', 'desc')
             ->whereBetween('daftar_pengeluarans.created_at', [$start, $end])
             ->get();
 
-        return view('laporan.transaksi-harian', compact('pengiriman', 'pengeluaran', 'start', 'end_date', 'periode', 'filter'));
+        $customer = Customer::all();
+        $statusPengiriman = StatusPengiriman::all();
+        $metodePembayaran = ['Transfer', 'Tunai', 'Kredit'];
+        $statusPembayaran = [
+            ['id' => 1, 'name' => 'Lunas'],
+            ['id' => 2, 'name' => 'Pending'],
+        ];
+
+        return view('laporan.transaksi-harian', compact('pengiriman', 'pemasukkan', 'pengeluaran', 'start', 'end_date', 'periode', 'filter', 'customer', 'statusPengiriman', 'metodePembayaran', 'statusPembayaran'));
     }
 
     public function data_pengiriman_pdf(Request $request)

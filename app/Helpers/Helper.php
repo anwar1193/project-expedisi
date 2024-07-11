@@ -232,4 +232,18 @@ class Helper
         return null;
     }
 
+    public static function getTimeOfDay()
+    {
+        date_default_timezone_set("Asia/Jakarta");
+        $hour = date('H');
+
+        if ($hour >= 5 && $hour < 12) {
+            return 'Selamat Pagi';
+        } elseif ($hour >= 12 && $hour < 18) {
+            return 'Selamat Siang';
+        } else {
+            return 'Selamat Malam';
+        }
+    }
+
 }
