@@ -278,6 +278,7 @@ Route::middleware("auth")->group(function() {
         Route::post('/test-wa', [InvoiceController::class, 'test_wa'])->name('invoice.test-wa');
         Route::get('/invoices/hasil-generate/{id}/{invoiceId}', [InvoiceController::class, 'hasil_transaksi'])->name('invoice.hasil-transaksi');
         Route::post('/all/transaksi-pembayaran', [InvoiceController::class, 'pembayaran_invoice'])->name('invoice.transaksi-pembayaran');
+        Route::get('/detail/{invoiceId}/transaksi-pembayaran', [InvoiceController::class, 'detail_riwayat_invoices'])->name('invoice.transaksi-pembayaran.detail');
     });
     
     Route::prefix('penukaran-point')->group(function () {

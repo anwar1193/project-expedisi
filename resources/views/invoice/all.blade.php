@@ -26,7 +26,7 @@
         <form class="d-flex flex-column col-12" role="search" action="" method="GET">
 			<div class="d-flex justify-content-end">
                 <div id="customer_id">
-                    <input class="form-control" type="date" name="tanggal" value="{{ request('tanggal') ? request('tanggal') : date('Y-m-d') }}" />
+                    <input class="form-control" type="date" name="tanggal" value="" />
                 </div>
                 <div id="customer_id" class="px-2">
                     <select name="customer_id" class="form-control py-2">
@@ -35,6 +35,13 @@
                             <option value="{{ $customer->id }}" {{ request('customer_id') == $customer->id ? 'selected' : '' }}>{{ $customer->nama }}</option>
                         @endforeach
                     </select>
+                </div>
+                <div id="status" class="px-2">
+                    <select name="status" class="form-control py-2">
+                        <option value="">- Pilih Status -</option>
+						<option value="1" {{ request('status') == '1' ? 'selected' : '' }}>Lunas</option>
+						<option value="0" {{ request('status') == '0' ? 'selected' : '' }}>Belum Lunas</option>
+					</select>
                 </div>
 				<div class="px-1">
 					<button type="submit" class="btn btn-primary" title="Cari"><i class="fa fa-search"></i> Cari</button>
@@ -122,6 +129,10 @@
 																	<span><i class="pt-2 pe-2" data-feather="dollar-sign"></i> Pembayaran</span>
 																</a>
 															@endif
+
+															<a class="dropdown-item" href="{{ route('invoice.transaksi-pembayaran.detail', $data->invoiceId) }}">
+																<span><i class="pt-2 pe-2" data-feather="eye"></i> History Pembayaran</span>
+															</a>
 														</div>
 													</div>
 												</div>
