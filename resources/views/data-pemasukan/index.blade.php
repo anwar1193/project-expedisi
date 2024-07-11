@@ -89,6 +89,7 @@
 	                                <tr>
 	                                    <th>No</th>
 										<th>Tanggal Pemasukan</th>
+										<th>Barang/Jasa</th>
 										<th>Keterangan</th>
 	                                    <th>Jumlah Pemasukan</th>
 	                                    <th>Sumber Pemasukan</th>
@@ -101,6 +102,14 @@
 									<tr>
 										<td>{{ $loop->iteration; }}</td>
 										<td>{{ $data->tgl_pemasukkan }}</td>
+										<td>
+											@if ($data->kategori == 'barang')
+												{{ HApp::namaBarang($data->barang_jasa) }}
+											@else
+												{{ HApp::namaJasa($data->barang_jasa) }}
+											@endif
+											{{-- {{ $data->barang_jasa }} --}}
+										</td>
 										<td>{{ $data->keterangan }}</td>
 										<td>{{ number_format($data->jumlah_pemasukkan, 0, '.', ',') }}</td>
 										<td>{{ $data->sumber_pemasukkan }}</td>

@@ -41,18 +41,57 @@
     
 
     <div class="table-responsive">
+        <div class="row py-3">
+            <div class="col">
+                <label class="form-label" for="">Metode Pembayaran</label>
+                <select name="search-metode" id="search-metode" class="form-control js-example-basic-single">
+                    <option value="">- Pilih Metode Pembayaran -</option>
+                    <?php $__currentLoopData = $metodePembayaran; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $metode): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <option value="<?php echo e($metode); ?>"><?php echo e($metode); ?></option>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                </select>
+            </div>
+            <div class="col">
+                <label class="form-label" for="">Status Pembayaran</label>
+                <select name="search-pembayaran" id="search-pembayaran" class="form-control js-example-basic-single">
+                    <option value="">- Pilih Status Pembayaran -</option>
+                    <?php $__currentLoopData = $statusPembayaran; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $status): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <option value="<?php echo e($status['name']); ?>"><?php echo e($status['name']); ?></option>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                </select>
+            </div>
+            <div class="col">
+                <label class="form-label" for="">Status Pengiriman</label>
+                <select name="search-pengiriman" id="search-pengiriman" class="form-control js-example-basic-single">
+                    <option value="">- Pilih Status Pengiriman -</option>
+                    <?php $__currentLoopData = $statusPengiriman; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $status): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <option value="<?php echo e($status->status_pengiriman); ?>"><?php echo e($status->status_pengiriman); ?></option>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                </select>
+            </div>
+            <div class="col">
+                <label class="form-label" for="">Customer</label>
+                <select name="search-customer" id="search-customer" class="form-control js-example-basic-single">
+                    <option value="">- Pilih Customer -</option>
+                    <?php $__currentLoopData = $customer; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <option value="<?php echo e($customer->nama); ?>"><?php echo e($customer->nama); ?></option>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                </select>
+            </div>
+        </div>
         <table class="display" id="<?php echo e($tableId); ?>">
             <thead>
                 <tr>
                     <th>No</th>
                     <th>No Resi</th>
                     <th>Tanggal Transaksi</th>
+                    <th>Customer</th>
                     <th>Nama Penerima</th>
                     <th>Kota Tujuan</th>
                     <th>Metode Pembayaran</th>
                     <th>Status Pembayaran</th>
+                    <th style="display: none">Status Pengiriman</th>
                     <th>Ongkir</th>
-                    <th>Komisi</th>
                 </tr>
             </thead>
             <tbody>
@@ -68,6 +107,7 @@
                     </td>
 
                     <td><?php echo e($item->tgl_transaksi); ?></td>
+                    <td><?php echo e($item->nama ?? '-'); ?></td>
                     <td><?php echo e($item->nama_penerima); ?></td>
                     <td><?php echo e($item->kota_tujuan); ?></td>
                     <td><?php echo e($item->metode_pembayaran); ?></td>
@@ -80,8 +120,8 @@
                         </span>
                     </td>
 
+                    <td style="display: none"><?php echo e($item->status_pengiriman); ?></td>
                     <td><?php echo e(number_format($item->ongkir, 0, '.', ',')); ?></td>
-                    <td><?php echo e(number_format($item->komisi, 0, '.', ',')); ?></td>
                 </tr>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </tbody>

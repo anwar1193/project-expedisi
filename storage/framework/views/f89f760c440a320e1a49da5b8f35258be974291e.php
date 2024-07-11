@@ -41,6 +41,25 @@
     
 
     <div class="table-responsive">
+        <div class="row py-3">
+            <div class="col">
+                <label class="form-label" for="">Pembayar</label>
+                <input class="form-control" type="text" name="pembayar" id="search-pembayar" placeholder="Masukan Yang Melakukan Pembayaran"/>
+            </div>
+            <div class="col">
+                <label class="form-label" for="">Penerima</label>
+                <input class="form-control" type="text" name="penerima" id="search-penerima" placeholder="Masukan Yang Menerima Pembayaran"/>
+            </div>
+            <div class="col">
+                <label class="form-label" for="">Metode Pembayaran</label>
+                <select name="search-metode-pengeluaran" id="search-metode-pengeluaran" class="form-control js-example-basic-single">
+                    <option value="">- Pilih Metode Pembayaran -</option>
+                    <?php $__currentLoopData = $metodePembayaran; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $metode): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <option value="<?php echo e($metode); ?>"><?php echo e($metode); ?></option>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                </select>
+            </div>
+        </div>
         <table class="display" id="<?php echo e($tableId); ?>">
             <thead>
                 <tr>

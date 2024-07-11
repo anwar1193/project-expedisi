@@ -8,6 +8,8 @@ use App\Models\LogActivity;
 use App\Models\MasterMenu;
 use App\Models\MenuPermission;
 use App\Models\Level;
+use App\Models\Barang;
+use App\Models\Jasa;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
@@ -244,6 +246,20 @@ class Helper
         } else {
             return 'Selamat Malam';
         }
+    }
+
+    public static function namaBarang($id)
+    {
+        $data = Barang::where('id', $id)->first();
+        $nama_barang = $data->nama_barang;
+        return $nama_barang;
+    }
+
+    public static function namaJasa($id)
+    {
+        $data = Jasa::where('id', $id)->first();
+        $nama_jasa = $data->nama_jasa;
+        return $nama_jasa;
     }
 
 }

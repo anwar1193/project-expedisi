@@ -63,7 +63,7 @@ class PemasukanLainnyaController extends Controller
             'keterangan_tambahan' => 'required',
         ]);
 
-        $foto = $request->file('bukti_pembayaran');
+        $foto = $request->file('bukti_pembayaran'); // take picture
         $img = $request->image;      
 
         if($foto != ''){
@@ -75,7 +75,7 @@ class PemasukanLainnyaController extends Controller
             $foto->storeAs('public/data-pemasukkan', $foto->hashName());
 
             // Proses Simpan GDrive
-            Storage::disk('google')->put($namafile, File::get($path));
+            // Storage::disk('google')->put($namafile, File::get($path));
 
             $validateData['bukti_pembayaran'] = $foto->hashName();
         } elseif (($img != '') && ($request->takeImage == 'on')) {
@@ -91,7 +91,7 @@ class PemasukanLainnyaController extends Controller
             Storage::disk('local')->put($file, $image_base64);
 
             // Proses Simpan GDrive
-            Storage::disk('google')->put($fileNamePath, File::get($path));
+            // Storage::disk('google')->put($fileNamePath, File::get($path));
 
             $validateData['bukti_pembayaran'] = $fileName;
         }
@@ -106,6 +106,17 @@ class PemasukanLainnyaController extends Controller
         $validateData['keterangan_tambahan'] = $request->keterangan_tambahan;
 
         PemasukanLainnya::create($validateData);
+
+        // Jika barang, stok barang berkurang
+        if($barang != ''){
+            $data_barang = Barang::where('id', '=', $request->barang)->first();
+            $stok_lama = $data_barang->stok;
+            $stok_baru = $stok_lama - 1;
+
+            Barang::where('id' ,'=' ,$request->barang)->update([
+                'stok' => $stok_baru
+            ]);
+        }
 
         Helper::logActivity('Simpan data pemasukan');
 
@@ -153,8 +164,8 @@ class PemasukanLainnyaController extends Controller
             $path = public_path('storage/data-pemasukkan/' . $foto->hashName());
 
             // Proses Simoan GDrive
-            Gdrive::delete('data-pemasukkan/'.$getImage->bukti_pembayaran);
-            Storage::disk('google')->put($namafile, File::get($path));
+            // Gdrive::delete('data-pemasukkan/'.$getImage->bukti_pembayaran);
+            // Storage::disk('google')->put($namafile, File::get($path));
             $buktiPembayaran = $foto->hashName();
         } elseif (($img != '') && ($request->takeImage == 'on')) {
             // Proses Image Base64
@@ -171,9 +182,9 @@ class PemasukanLainnyaController extends Controller
             $namafile = 'data-pemasukkan/'.$fileName;
             $path = public_path('storage/data-pemasukkan/' . $fileName);
 
-            // Proses Simoan Storage
-            Gdrive::delete('data-pemasukkan/'.$getImage->bukti_pembayaran);
-            Storage::disk('google')->put($namafile, File::get($path));
+            // Proses Simoan GDrive
+            // Gdrive::delete('data-pemasukkan/'.$getImage->bukti_pembayaran);
+            // Storage::disk('google')->put($namafile, File::get($path));
 
             $buktiPembayaran = $fileName;
         }

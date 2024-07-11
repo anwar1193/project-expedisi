@@ -89,6 +89,7 @@
 	                                <tr>
 	                                    <th>No</th>
 										<th>Tanggal Pemasukan</th>
+										<th>Barang/Jasa</th>
 										<th>Keterangan</th>
 	                                    <th>Jumlah Pemasukan</th>
 	                                    <th>Sumber Pemasukan</th>
@@ -101,6 +102,16 @@
 									<tr>
 										<td><?php echo e($loop->iteration); ?></td>
 										<td><?php echo e($data->tgl_pemasukkan); ?></td>
+										<td>
+											<?php if($data->kategori == 'barang'): ?>
+												<?php echo e(HApp::namaBarang($data->barang_jasa)); ?>
+
+											<?php else: ?>
+												<?php echo e(HApp::namaJasa($data->barang_jasa)); ?>
+
+											<?php endif; ?>
+											
+										</td>
 										<td><?php echo e($data->keterangan); ?></td>
 										<td><?php echo e(number_format($data->jumlah_pemasukkan, 0, '.', ',')); ?></td>
 										<td><?php echo e($data->sumber_pemasukkan); ?></td>
