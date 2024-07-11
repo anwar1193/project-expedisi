@@ -120,9 +120,11 @@
 																<span><i class="pt-2 pe-2" data-feather="eye"></i> Detail</span>
 															</a>
 
-															<a class="dropdown-item" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#pembayaranInvoice<?php echo e($data->invoiceId); ?>">
-																<span><i class="pt-2 pe-2" data-feather="dollar-sign"></i> Pembayaran</span>
-															</a>
+															<?php if($data->sisa != 0): ?>
+																<a class="dropdown-item" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#pembayaranInvoice<?php echo e($data->invoiceId); ?>">
+																	<span><i class="pt-2 pe-2" data-feather="dollar-sign"></i> Pembayaran</span>
+																</a>
+															<?php endif; ?>
 														</div>
 													</div>
 												</div>

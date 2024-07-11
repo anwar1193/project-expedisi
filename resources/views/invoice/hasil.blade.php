@@ -88,7 +88,7 @@
 	                            </div>
 	                        </div>
 							<div class="my-2 py-2">
-								<small>Biaya Pengiriman</small> {{ $customer->nama }}
+								<small>Biaya Pengiriman</small> {{ $customer->perusahaan != NULL ? $customer->perusahaan : $customer->nama }}
 							</div>
 	                        <!-- End Invoice Mid-->
 	                        <div>

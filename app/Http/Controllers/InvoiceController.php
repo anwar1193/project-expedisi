@@ -196,7 +196,7 @@ class InvoiceController extends Controller
 
     public function generateInvoicePdf($id, $invoiceId)
     {
-        $customer = Customer::select('customers.id', 'customers.diskon AS diskon_customer', 'customers.kode_customer', 'customers.nama', 'customers.alamat', 'invoices.invoice_no', 'invoices.invoice_name', 'invoices.id AS invoiceId', 'invoices.diskon', 'invoices.created_at')
+        $customer = Customer::select('customers.id', 'customers.diskon AS diskon_customer', 'customers.kode_customer', 'customers.nama', 'customers.alamat', 'customers.perusahaan', 'invoices.invoice_no', 'invoices.invoice_name', 'invoices.id AS invoiceId', 'invoices.diskon', 'invoices.created_at')
                     ->join('invoices', 'invoices.customer_id', '=', 'customers.id')
                     ->where('customers.id', $id)
                     ->where('invoices.id', $invoiceId)
@@ -304,7 +304,7 @@ class InvoiceController extends Controller
 
     public function hasil_transaksi($id, $invoiceId)
     {
-        $customer = Customer::select('customers.id', 'customers.diskon AS diskon_customer', 'customers.kode_customer', 'customers.nama', 'customers.alamat', 'invoices.invoice_no', 'invoices.invoice_name', 'invoices.id AS invoiceId', 'invoices.diskon', 'invoices.created_at')
+        $customer = Customer::select('customers.id', 'customers.diskon AS diskon_customer', 'customers.kode_customer', 'customers.nama', 'customers.alamat', 'customers.perusahaan', 'invoices.invoice_no', 'invoices.invoice_name', 'invoices.id AS invoiceId', 'invoices.diskon', 'invoices.created_at')
                     ->join('invoices', 'invoices.customer_id', '=', 'customers.id')
                     ->where('customers.id', $id)
                     ->where('invoices.id', $invoiceId)

@@ -7,7 +7,7 @@
     <meta name="description" content="viho admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities. laravel/framework: ^8.40">
     <meta name="keywords" content="admin template, viho admin template, dashboard template, flat admin template, responsive admin template, web app">
     <meta name="author" content="pixelstrap">
-    <title>Invoice {{ $title }}</title>
+    <title>Invoice <?php echo e($title); ?></title>
 
     <style>
         body {
@@ -66,11 +66,11 @@
                     <tbody>
                         <tr>
                             <td class="table-header">
-                                <img src="{{  $picture }}" alt="Lion Parcel" style="width: 150px; height: 60px;" />
+                                <img src="<?php echo e($picture); ?>" alt="Lion Parcel" style="width: 150px; height: 60px;" />
                                 <h3 style="color: red; padding-right: 10px; font-weight: bold">D Angel Express</h3>
                             </td>
                             <td style="text-align: center; font-weight: bold"><h2>Invoice</h2></td>
-                            <td style="display: flex; align-items: flex-end; padding-top: 45px; text-align: center;"><p>Makassar, {{ formatTanggalIndonesia($customer->created_at) }}</p></td>
+                            <td style="display: flex; align-items: flex-end; padding-top: 45px; text-align: center;"><p>Makassar, <?php echo e(formatTanggalIndonesia($customer->created_at)); ?></p></td>
                         </tr>
                     </tbody>
                 </table>
@@ -81,23 +81,23 @@
                         <tr>
                             <td>Invoice No</td>
                             <td>:</td>
-                            <td>{{ $customer->invoice_no }}</td>
+                            <td><?php echo e($customer->invoice_no); ?></td>
                         </tr>
                         <tr>
                             <td>Customer Name</td>
                             <td>:</td>
-                            <td>{{ $customer->nama }}</td>
+                            <td><?php echo e($customer->nama); ?></td>
                         </tr>
                         <tr>
                             <td>Address</td>
                             <td>:</td>
-                            <td>{{ $customer->alamat }}</td>
+                            <td><?php echo e($customer->alamat); ?></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
             <div>
-                <p><small>Biaya Pengiriman</small>  {{ $customer->perusahaan != NULL ? $customer->perusahaan : $customer->nama }}</p>
+                <p><small>Biaya Pengiriman</small>  <?php echo e($customer->perusahaan != NULL ? $customer->perusahaan : $customer->nama); ?></p>
             </div>
             <div>
                 <div>
@@ -114,25 +114,25 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($data as $data)
+                            <?php $__empty_1 = true; $__currentLoopData = $data; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                 <tr>
-                                    <td style="border: 1px solid; padding: 5px; text-align: center">{{ $loop->iteration; }}</td>
-                                    <td style="border: 1px solid; padding: 5px; text-align: center">{{ $data->no_resi }}</td>
-                                    <td style="border: 1px solid; padding: 5px; text-align: center">{{ $data->created_at }}</td>
-                                    <td style="border: 1px solid; padding: 5px; text-align: center">{{ $data->nama_pengirim }}</td>
-                                    <td style="border: 1px solid; padding: 5px; text-align: center">{{ $data->nama_penerima }}</td>
-                                    <td style="border: 1px solid; padding: 5px; text-align: center">{{ $data->kota_tujuan }}</td>
-                                    <td style="border: 1px solid; padding: 5px; text-align: center">Rp {{ number_format($data->ongkir, 0, '.', '.') }}</td>
+                                    <td style="border: 1px solid; padding: 5px; text-align: center"><?php echo e($loop->iteration); ?></td>
+                                    <td style="border: 1px solid; padding: 5px; text-align: center"><?php echo e($data->no_resi); ?></td>
+                                    <td style="border: 1px solid; padding: 5px; text-align: center"><?php echo e($data->created_at); ?></td>
+                                    <td style="border: 1px solid; padding: 5px; text-align: center"><?php echo e($data->nama_pengirim); ?></td>
+                                    <td style="border: 1px solid; padding: 5px; text-align: center"><?php echo e($data->nama_penerima); ?></td>
+                                    <td style="border: 1px solid; padding: 5px; text-align: center"><?php echo e($data->kota_tujuan); ?></td>
+                                    <td style="border: 1px solid; padding: 5px; text-align: center">Rp <?php echo e(number_format($data->ongkir, 0, '.', '.')); ?></td>
                                 </tr>
-                            @empty
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                 <tr>
                                     <td colspan="7" class="text-center">
                                         <p class="fw-semibold">Belum Ada Data Transaksi</p>
                                     </td>
                                 </tr>
-                            @endforelse 
+                            <?php endif; ?> 
                         </tbody>
-                        @if ($notEmpty)
+                        <?php if($notEmpty): ?>
                             <tfoot>
                                 <tr>
                                     <td style="border: 1px solid; text-align: center"></td>
@@ -140,16 +140,18 @@
                                         <p class="fw-semibold">Sub Total</p>
                                     </td>
                                     <td style="border: 1px solid; text-align: center">
-                                        Rp {{ number_format($total->total, 0, '.', '.') }}
+                                        Rp <?php echo e(number_format($total->total, 0, '.', '.')); ?>
+
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="border: 1px solid; text-align: center"></td>
                                     <td colspan="5" style="border: 1px solid; text-align: center">
-                                        <p class="fw-semibold">Diskon Customer ({{ $customer->diskon_customer != 0 ?  $customer->diskon_customer : ""}}%)</p>
+                                        <p class="fw-semibold">Diskon Customer (<?php echo e($customer->diskon_customer != 0 ?  $customer->diskon_customer : ""); ?>%)</p>
                                     </td>
                                     <td style="border: 1px solid; text-align: center">
-                                        Rp {{ $customer->diskon_customer != 0 ? number_format($diskon, 0, '.', '.') : 0 }}
+                                        Rp <?php echo e($customer->diskon_customer != 0 ? number_format($diskon, 0, '.', '.') : 0); ?>
+
                                     </td>
                                 </tr>
                                 <tr>
@@ -158,7 +160,8 @@
                                         <p class="fw-semibold">Diskon</p>
                                     </td>
                                     <td style="border: 1px solid; text-align: center">
-                                        Rp {{ number_format($customer->diskon, 0, '.', '.') }}
+                                        Rp <?php echo e(number_format($customer->diskon, 0, '.', '.')); ?>
+
                                     </td>
                                 </tr>
                                 <tr>
@@ -167,15 +170,16 @@
                                         <p class="fw-semibold">Total</p>
                                     </td>
                                     <td style="border: 1px solid; text-align: center">
-                                        Rp {{ number_format($totalBersih, 0, '.', '.') }}
+                                        Rp <?php echo e(number_format($totalBersih, 0, '.', '.')); ?>
+
                                     </td>
                                 </tr>
                             </tfoot>
-                        @endif
+                        <?php endif; ?>
                     </table>
                 </div>
                 <div style="margin-top: -5px">
-                    <h5>Total Terbilang: {{ terbilang($totalBersih) }} RUPIAH</h5>
+                    <h5>Total Terbilang: <?php echo e(terbilang($totalBersih)); ?> RUPIAH</h5>
                 </div>
                 <div style="margin-top: -25px">
                     <p>Note:</p>
@@ -190,32 +194,32 @@
                 <div style="margin-top: -5px">
                     <p>Pembayaran dapat di transfer ke rekening :</p>
                     <div style="width: 70% ; margin-left:30px;">
-                        @foreach ($bank as $data)  
+                        <?php $__currentLoopData = $bank; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>  
                         <table style="padding: 10px 0px 0px 10px; font-size: 14px">
                             <tbody>
                                 <tr>
                                     <td>Bank</td>
                                     <td>:</td>
-                                    <td>{{ $data->bank }}</td>
+                                    <td><?php echo e($data->bank); ?></td>
                                 </tr>
                                 <tr>
                                     <td>Cabang</td>
                                     <td>:</td>
-                                    <td>{{ $data->cabang }}</td>
+                                    <td><?php echo e($data->cabang); ?></td>
                                 </tr>
                                 <tr>
                                     <td>No Rekening</td>
                                     <td>:</td>
-                                    <td>{{ $data->nomor_rekening }}</td>
+                                    <td><?php echo e($data->nomor_rekening); ?></td>
                                 </tr>
                                 <tr>
                                     <td>Atas Nama</td>
                                     <td>:</td>
-                                    <td>{{ $data->atas_nama }}</td>
+                                    <td><?php echo e($data->atas_nama); ?></td>
                                 </tr>
                             </tbody>
                         </table>
-                        @endforeach 
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?> 
                     </div>
                     <div>
                         <p>Bukti pembayaran dapat di kirim ke :</p>
@@ -282,4 +286,4 @@
         <p>Website : http://lionparcel.com/</p>
     </footer>
 </body>
-</html>
+</html><?php /**PATH /Users/munawarahmad/Documents/Applications/projectku/project-expedisi/resources/views/invoice/hasil-pdf.blade.php ENDPATH**/ ?>

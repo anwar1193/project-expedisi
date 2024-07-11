@@ -70,44 +70,21 @@
 	                            <thead>
 	                                <tr>
 	                                    <th>No</th>
-										<th>Nama</th>
+										<th width="20%" class="text-center">Action</th>
 										<th>Kode Customer</th>
+										<th>Nama</th>
+										<th>Perusahaan</th>
 										<th>No Whatsapp</th>
 	                                    <th>Email</th>
 	                                    <th>Limit Kredit</th>
 	                                    <th>Point</th>
 	                                    <th>Diskon</th>
-										<th width="20%" class="text-center">Action</th>
 	                                </tr>
 	                            </thead>
 	                            <tbody>                                        
                                     <?php $__currentLoopData = $customers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 										<tr>
 											<td><?php echo e($loop->iteration); ?></td>
-											<td><?php echo e($data->nama); ?></td>
-											<td><?php echo e($data->kode_customer); ?></td>
-											<td><?php echo e($data->no_wa); ?></td>
-											<td><?php echo e($data->email); ?></td>
-
-											<td class="text-center">
-												<span class="badge badge-primary">
-													<?php echo e('Rp '.number_format($data->limit_credit, 0, '.', ',')); ?>
-
-												</span>
-											</td>
-
-											<td class="text-center">
-												<span class="badge" style="background-color: blue">
-													<?php echo e($data->point); ?>
-
-												</span>
-											</td>
-											
-											<td class="text-center">
-												<span class="badge" style="background-color: blue">
-													<?php echo e($data->diskon); ?>%
-												</span>
-											</td>
 
 											<td class="text-center">
 
@@ -143,6 +120,32 @@
 														<?php echo $__env->make('customers.diskon', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 													</div>
 												</div>
+											</td>
+											
+											<td><?php echo e($data->kode_customer); ?></td>
+											<td><?php echo e($data->nama); ?></td>
+											<td><?php echo e($data->perusahaan == NULL ? '-' : $data->perusahaan); ?></td>
+											<td><?php echo e($data->no_wa); ?></td>
+											<td><?php echo e($data->email); ?></td>
+
+											<td class="text-center">
+												<span class="badge badge-primary">
+													<?php echo e('Rp '.number_format($data->limit_credit, 0, '.', ',')); ?>
+
+												</span>
+											</td>
+
+											<td class="text-center">
+												<span class="badge" style="background-color: blue">
+													<?php echo e($data->point); ?>
+
+												</span>
+											</td>
+											
+											<td class="text-center">
+												<span class="badge" style="background-color: blue">
+													<?php echo e($data->diskon); ?>%
+												</span>
 											</td>
 										</tr>
 									<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>

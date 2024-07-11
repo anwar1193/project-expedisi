@@ -95,6 +95,19 @@
 							</div>
 
 							<div class="row g-3 py-2">
+								<div class="col-md-6">
+									<label class="form-label" for="perusahaan">Perusahaan</label>
+									<input class="form-control @error('perusahaan') is-invalid @enderror" id="perusahaan" type="text" name="perusahaan" value="{{ old('perusahaan') }}" autocomplete="off"/>
+
+									@error('perusahaan')
+										<div class="text-danger">
+											{{ $message }}
+										</div>
+									@enderror
+								</div>
+							</div>
+
+							<div class="row g-3 py-2">
 								<div class="col-md-2 d-flex align-items-end">
 									<div class="form-check">
 										<input class="form-check-input" id="addUser" type="checkbox" name="addUser" />

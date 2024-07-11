@@ -68,42 +68,21 @@
 	                            <thead>
 	                                <tr>
 	                                    <th>No</th>
-										<th>Nama</th>
+										<th width="20%" class="text-center">Action</th>
 										<th>Kode Customer</th>
+										<th>Nama</th>
+										<th>Perusahaan</th>
 										<th>No Whatsapp</th>
 	                                    <th>Email</th>
 	                                    <th>Limit Kredit</th>
 	                                    <th>Point</th>
 	                                    <th>Diskon</th>
-										<th width="20%" class="text-center">Action</th>
 	                                </tr>
 	                            </thead>
 	                            <tbody>                                        
                                     @foreach ($customers as $data)
 										<tr>
 											<td>{{ $loop->iteration; }}</td>
-											<td>{{ $data->nama }}</td>
-											<td>{{ $data->kode_customer }}</td>
-											<td>{{ $data->no_wa }}</td>
-											<td>{{ $data->email }}</td>
-
-											<td class="text-center">
-												<span class="badge badge-primary">
-													{{ 'Rp '.number_format($data->limit_credit, 0, '.', ',') }}
-												</span>
-											</td>
-
-											<td class="text-center">
-												<span class="badge" style="background-color: blue">
-													{{ $data->point }}
-												</span>
-											</td>
-											
-											<td class="text-center">
-												<span class="badge" style="background-color: blue">
-													{{ $data->diskon }}%
-												</span>
-											</td>
 
 											<td class="text-center">
 
@@ -139,6 +118,30 @@
 														@include('customers.diskon')
 													</div>
 												</div>
+											</td>
+											
+											<td>{{ $data->kode_customer }}</td>
+											<td>{{ $data->nama }}</td>
+											<td>{{ $data->perusahaan == NULL ? '-' : $data->perusahaan }}</td>
+											<td>{{ $data->no_wa }}</td>
+											<td>{{ $data->email }}</td>
+
+											<td class="text-center">
+												<span class="badge badge-primary">
+													{{ 'Rp '.number_format($data->limit_credit, 0, '.', ',') }}
+												</span>
+											</td>
+
+											<td class="text-center">
+												<span class="badge" style="background-color: blue">
+													{{ $data->point }}
+												</span>
+											</td>
+											
+											<td class="text-center">
+												<span class="badge" style="background-color: blue">
+													{{ $data->diskon }}%
+												</span>
 											</td>
 										</tr>
 									@endforeach
