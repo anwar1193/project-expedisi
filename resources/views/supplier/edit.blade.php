@@ -42,51 +42,6 @@
 									</div>
 								</div>
 							</div>
-							
-                            <div class="row">
-								<div class="col">
-									<div class="mb-3">
-										<label class="form-label" for="">Keterangan Barang</label>
-										<input class="form-control @error('keterangan') is-invalid @enderror" type="text" name="keterangan" autocomplete="off" value="{{ old('keterangan', $datas->keterangan_barang) }}"/>
-
-										@error('keterangan')
-										<div class="text-danger">
-											{{ $message }}
-										</div>
-										@enderror
-									</div>
-								</div>
-							</div>
-                            
-                            <div class="row">
-								<div class="col">
-									<div class="mb-3">
-										<label class="form-label" for="">Harga</label>
-										<input class="form-control @error('harga') is-invalid @enderror" type="number" name="harga" autocomplete="off" value="{{ old('harga', $datas->harga) }}"/>
-
-										@error('harga')
-										<div class="text-danger">
-											{{ $message }}
-										</div>
-										@enderror
-									</div>
-								</div>
-							</div>
-                            
-                            <div class="row">
-								<div class="col">
-									<div class="mb-3">
-										<label class="form-label" for="">Jumlah Barang</label>
-										<input class="form-control @error('jumlah') is-invalid @enderror" type="number" name="jumlah" autocomplete="off" value="{{ old('jumlah', $datas->jumlah_barang) }}"/>
-
-										@error('jumlah')
-										<div class="text-danger">
-											{{ $message }}
-										</div>
-										@enderror
-									</div>
-								</div>
-							</div>
 
 							<div class="row">
 								<div class="col">
@@ -102,10 +57,26 @@
 									</div>
 								</div>
 							</div>
+
+							<div class="row">
+								<div class="col">
+									<div class="mb-3">
+										<label class="form-label" for="">Alamat</label>
+										<textarea name="alamat" id="alamat" class="form-control">{{ $datas->alamat }}</textarea>
+
+										@error('alamat')
+										<div class="text-danger">
+											{{ $message }}
+										</div>
+										@enderror
+									</div>
+								</div>
+							</div>
+
 						</div>
 						<div class="card-footer text-end">
 							<button class="btn btn-primary" type="submit">Simpan Data</button>
-							<a href="{{ route('data-pengiriman') }}" class="btn btn-light">Kembali</a>
+							<a href="{{ route('supplier') }}" class="btn btn-light">Kembali</a>
 						</div>
 					</form>
 				</div>

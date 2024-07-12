@@ -27,10 +27,8 @@ class SupplierController extends Controller
     {
         $validateData = $request->validate([
             'nama_supplier' => 'required',
-            'keterangan_barang' => 'required',
-            'harga' => 'required',
-            'jumlah_barang' => 'required',
-            'nomor_hp' => 'required'
+            'nomor_hp' => 'required',
+            'alamat' => 'required',
         ]);
         Supplier::create($validateData);
 
@@ -52,18 +50,14 @@ class SupplierController extends Controller
     {
         $validateData = $request->validate([
             'nama_supplier' => 'required',
-            'keterangan' => 'required',
-            'harga' => 'required',
-            'jumlah' => 'required',
-            'nomor_hp' => 'required'
+            'nomor_hp' => 'required',
+            'alamat' => 'required',
         ]);
 
         Supplier::where('id', '=', $id)->update([
             'nama_supplier' => $request->nama_supplier,
-            'keterangan_barang' => $request->keterangan,
-            'harga' => $request->harga,
-            'jumlah_barang' => $request->jumlah,
-            'nomor_hp' => $request->nomor_hp
+            'nomor_hp' => $request->nomor_hp,
+            'alamat' => $request->alamat
         ]);
 
         Helper::logActivity('Update data supplier '.$request->nama_supplier);
