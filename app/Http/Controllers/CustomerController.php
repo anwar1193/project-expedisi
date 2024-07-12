@@ -58,7 +58,6 @@ class CustomerController extends Controller
                 'email' => 'required|email|unique:customers,email|unique:users,email',
                 'no_wa' => 'required|regex:/^\+?[0-9]+$/|unique:customers,no_wa|unique:users,nomor_telepon',
                 'alamat' => 'required',
-                'perusahaan' => 'required',
             ]);
 
             $request['kode_customer'] = $kode_customer;

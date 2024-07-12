@@ -95,12 +95,12 @@
         document.addEventListener('DOMContentLoaded', function() {
 			const nominalInput = document.querySelector('input[name="nilai"]');
 			const displayElement = document.createElement('div');
-			displayElement.innerHTML = '<strong>RP. ' + new Intl.NumberFormat('id-ID').format(nominalInput.value) + '</strong>';
+			displayElement.innerHTML = '<strong>' + new Intl.NumberFormat('id-ID').format(nominalInput.value) + ' point</strong>';
 			nominalInput.parentNode.appendChild(displayElement);
 
 			nominalInput.addEventListener('input', function() {
 				const typedValue = nominalInput.value;
-				displayElement.innerHTML = '<strong>RP. ' + new Intl.NumberFormat('id-ID').format(typedValue) + '</strong>';
+				displayElement.innerHTML = '<strong>' + new Intl.NumberFormat('id-ID').format(typedValue) + ' point</strong>';
 			});
 		});
     </script>
