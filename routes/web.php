@@ -18,6 +18,7 @@ use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\GoogleAuthController;
 
 use App\Http\Controllers\BarangMasukController;
+use App\Http\Controllers\CashController;
 use App\Http\Controllers\LogActivityController;
 use App\Http\Controllers\MerchandiseController;
 use App\Http\Controllers\PerlengkapanController;
@@ -285,6 +286,12 @@ Route::middleware("auth")->group(function() {
         Route::get('/', [PenukaranPointController::class, 'index'])->name('penukaran-point');
         Route::post('/', [PenukaranPointController::class, 'proses_penukaran'])->name('proses-penukaran-point');
         Route::get('/list', [PenukaranPointController::class, 'list_penukaran'])->name('list-penukaran-point');
+    });
+
+    Route::prefix('posisi-cash')->group(function() {
+        Route::get('/', [CashController::class, 'index'])->name('posisi-cash');
+        Route::post('/pemasukan', [CashController::class, 'pemasukan_cash'])->name('posisi-cash.pemasukan');
+        Route::post('/pengeluaran', [CashController::class, 'pengeluaran_cash'])->name('posisi-cash.pengeluaran');
     });
 
     Route::get('user-level', [UserController::class, 'listLevel'])->name('level');
