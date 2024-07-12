@@ -55,20 +55,20 @@
 
                         <div class="row ps-3 ms-3 py-3 my-3">
                             <div class="col-xl-4 col-md-4 col-sm-4 box-col-4 des-xl-25 rate-sec">
-                                <div class="card shadow-lg" style="width: 18rem; border-radius:15px; background-color: rgb(33, 174, 47)">
+                                <div class="card shadow-lg" style="width: 18rem; border-radius:15px; background-color: rgb(219, 176, 55)">
                                     <div class="card-body text-center fw-bold">
                                       <h5 class="card-title pb-3 text-center fw-bold">Total Saldo</h5>
-                                      <h4><i class="icofont icofont-ui-pointer "></i></h4>
-                                      <h3 class="fw-bold"><?php echo e($saldo); ?></h3>
+                                      <h4><i class="icofont icofont-sale-discount"></i></h4>
+                                      <h3 class="fw-bold"><?php echo e('Rp '.number_format($saldo, 0, '.', '.')); ?></h3>
                                     </div>
                                   </div>
                               </div>
                               <div class="col-xl-4 col-md-4 col-sm-4 box-col-4 des-xl-25 rate-sec">
-                                <div class="card shadow-lg" style="width: 18rem; border-radius:15px; background-color: rgb(219, 176, 55)">
+                                <div class="card shadow-lg" style="width: 18rem; border-radius:15px; background-color: rgb(33, 174, 47)">
                                     <div class="card-body text-center fw-bold">
                                         <h5 class="card-title pb-3 text-center fw-bold">Pemasukan</h5>
-                                        <h4><i class="icofont icofont-ui-tag"></i></h4>
-                                        <h3 class="fw-bold"><?php echo e($pemasukan->total ?? 0); ?></h3>
+                                        <h4><i class="icofont icofont-arrow-up"></i></h4>
+                                        <h3 class="fw-bold"><?php echo e('Rp '.number_format($pemasukan->total ?? 0, 0, '.', '.')); ?></h3>
                                       </div>
                                   </div>
                               </div>
@@ -76,8 +76,8 @@
                                 <div class="card shadow-lg" style="width: 18rem; border-radius:15px; background-color: rgb(200, 75, 75)">
                                     <div class="card-body text-center fw-bold">
                                         <h5 class="card-title pb-3 text-center fw-bold">Pengeluaran</h5>
-                                        <h4><i class="icofont icofont-sale-discount"></i></h4>
-                                        <h3 class="fw-bold"><?php echo e($pengeluaran->total ?? 0); ?></h3>
+                                        <h4><i class="icofont icofont-arrow-down"></i></h4>
+                                        <h3 class="fw-bold"><?php echo e('Rp '.number_format($pengeluaran->total ?? 0, 0, '.', '.')); ?></h3>
                                       </div>
                                   </div>
                               </div>
