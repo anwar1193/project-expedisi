@@ -71,7 +71,7 @@
 									<div class="mb-3">
 										<label class="form-label" for="">Gambar</label>
 										<input class="form-control @error('gambar') is-invalid @enderror" type="file" width="48" height="48" name="gambar" />
-                                        <div id="nominal" class="form-text text-danger">*Maximun Size 2 Mb</div>
+                                        <div id="nominal" class="form-text text-danger">*Maximun Size 10 Mb</div>
 
 										@error('gambar')
 										<div class="text-danger">
