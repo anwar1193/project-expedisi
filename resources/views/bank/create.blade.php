@@ -55,7 +55,7 @@
 								<div class="col">
 									<div class="mb-3">
 										<label class="form-label" for="">Nomor Rekening</label>
-										<input class="form-control @error('nomor_rekening') is-invalid @enderror" type="number" name="nomor_rekening" autocomplete="off" value="{{ old('nomor_rekening') }}"/>
+										<input class="form-control @error('nomor_rekening') is-invalid @enderror" type="text" name="nomor_rekening" autocomplete="off" value="{{ old('nomor_rekening') }}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"/>
 
 										@error('nomor_rekening')
 										<div class="text-danger">

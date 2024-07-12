@@ -30,7 +30,7 @@
 							</div>
 						@endif
 
-						<h5>Form Tambah Jenis Pengeluaran</h5>
+						<h5>Form Tambah Merchandise</h5>
 					</div>
 					<form class="form theme-form" method="POST" action="{{ route('merchandise.store') }}" enctype="multipart/form-data">
                         @csrf
@@ -107,11 +107,11 @@
 				const displayElement = e.target.parentNode.querySelector('.typed-value');
 				
 				if (displayElement) {
-					displayElement.innerHTML = '<strong>RP. ' + formattedValue + '</strong>';
+					displayElement.innerHTML = '<strong>' + formattedValue + ' point</strong>';
 				} else {
 					const newDisplayElement = document.createElement('div');
 					newDisplayElement.className = 'typed-value';
-					newDisplayElement.innerHTML = '<strong>RP. ' + formattedValue + '</strong>';
+					newDisplayElement.innerHTML = '<strong>' + formattedValue + ' point</strong>';
 					e.target.parentNode.appendChild(newDisplayElement);
 				}
 			}

@@ -27,7 +27,7 @@ class MerchandiseController extends Controller
             $this->validate($request, [
                 'nama' => 'required',
                 'nilai' => 'required',
-                'gambar' => 'required|image|mimes:jpeg,png,jpg|max:2048'
+                'gambar' => 'required|image|mimes:jpeg,png,jpg|max:10024'
             ]);
 
             $foto = $request->file('gambar');
@@ -64,7 +64,7 @@ class MerchandiseController extends Controller
             $this->validate($request, [
                 'nama' => 'required',
                 'nilai' => 'required',
-                'gambar' => 'image|mimes:jpeg,png,jpg|max:2048'
+                'gambar' => 'image|mimes:jpeg,png,jpg|max:10024'
             ]);
 
             $foto = $request->file('foto');
