@@ -54,51 +54,6 @@
 							<div class="row">
 								<div class="col">
 									<div class="mb-3">
-										<label class="form-label" for="">Keterangan Barang</label>
-										<input class="form-control @error('keterangan_barang') is-invalid @enderror" type="text" name="keterangan_barang" autocomplete="off" value="{{ old('keterangan_barang') }}"/>
-
-										@error('keterangan_barang')
-										<div class="text-danger">
-											{{ $message }}
-										</div>
-										@enderror
-									</div>
-								</div>
-							</div>
-
-							<div class="row">
-								<div class="col">
-									<div class="mb-3">
-										<label class="form-label" for="">Harga</label>
-										<input class="form-control @error('harga') is-invalid @enderror" type="number" name="harga" autocomplete="off" value="{{ old('harga') }}"/>
-
-										@error('harga')
-										<div class="text-danger">
-											{{ $message }}
-										</div>
-										@enderror
-									</div>
-								</div>
-							</div>
-							
-                            <div class="row">
-								<div class="col">
-									<div class="mb-3">
-										<label class="form-label" for="">Jumlah Barang</label>
-										<input class="form-control @error('jumlah_barang') is-invalid @enderror" type="number" name="jumlah_barang" autocomplete="off" value="{{ old('jumlah_barang') }}"/>
-
-										@error('jumlah_barang')
-										<div class="text-danger">
-											{{ $message }}
-										</div>
-										@enderror
-									</div>
-								</div>
-							</div>
-
-							<div class="row">
-								<div class="col">
-									<div class="mb-3">
 										<label class="form-label" for="">Nomor Hp</label>
 										<input class="form-control @error('nomor_hp') is-invalid @enderror" type="text" name="nomor_hp" autocomplete="off" value="{{ old('nomor_hp') }}"/>
 
@@ -110,10 +65,26 @@
 									</div>
 								</div>
 							</div>
+
+							<div class="row">
+								<div class="col">
+									<div class="mb-3">
+										<label class="form-label" for="">Alamat</label>
+										<textarea name="alamat" id="alamat" class="form-control"></textarea>
+
+										@error('alamat')
+										<div class="text-danger">
+											{{ $message }}
+										</div>
+										@enderror
+									</div>
+								</div>
+							</div>
+
 						</div>
 						<div class="card-footer text-end">
 							<button class="btn btn-primary" type="submit">Simpan Data</button>
-							<a href="{{ route('data-pengiriman') }}" class="btn btn-light">Kembali</a>
+							<a href="{{ route('supplier') }}" class="btn btn-light">Kembali</a>
 						</div>
 					</form>
 				</div>

@@ -69,10 +69,8 @@
 	                                <tr>
 	                                    <th>No</th>
 										<th>Nama Supplier</th>
-										<th>Keterangan Barang</th>
-	                                    <th>Harga</th>
-	                                    <th>Jumlah Barang</th>
 	                                    <th>No Hp</th>
+	                                    <th>Alamat</th>
 										<th width="35%" class="text-center">Action</th>
 	                                </tr>
 	                            </thead>
@@ -81,10 +79,8 @@
 										<tr>
 											<td>{{ $loop->iteration; }}</td>
 											<td>{{ $data->nama_supplier }}</td>
-											<td>{{ $data->keterangan_barang }}</td>
-											<td>{{ $data->harga }}</td>
-											<td>{{ $data->jumlah_barang }}</td>
 											<td>{{ $data->nomor_hp }}</td>
+											<td>{{ $data->alamat }}</td>
 											<td class="text-center">
 
 												<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
