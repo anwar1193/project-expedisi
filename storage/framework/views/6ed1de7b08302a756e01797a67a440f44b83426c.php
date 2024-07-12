@@ -9,6 +9,7 @@
                         <th>Tanggal Cetak</th>
                         <th>Kode Customer</th>
                         <th>Nama Customer</th>
+                        <th>Status</th>
                         <th width="20%">Action</th>
                     </tr>
                 </thead>
@@ -20,8 +21,15 @@
                             <td><?php echo e(formatTanggalIndonesia($data->created_at)); ?></td>
                             <td><?php echo e($data->kode_customer); ?></td>
                             <td><?php echo e($data->nama); ?></td>
+                            <td class="text-center">
+                                <span class="badge <?php echo e($data->sisa == 0 ? 'badge-primary' : 'badge-warning'); ?>">
+                                    <i class="fa <?php echo e($data->sisa == 0 ? 'fa-check' : 'fa-warning'); ?>"></i>
+                                    <?php echo e($data->sisa == 0 ? 'Lunas' : 'Belum Lunas'); ?>
+
+                                </span>
+                            </td>
                             <td>
-                                <form method="GET" action="<?php echo e(route('invoices.generate')); ?>">
+                                <form method="GET" action="<?php echo e(route('invoice.hasil-transaksi', ['id' => $data->id, 'invoiceId' => $data->invoiceId])); ?>">
                                     <button class="btn btn-warning" type="submit" name="customer" value="<?php echo e($data->id); ?>">Detail</button>
                                 </form>
                             </td>

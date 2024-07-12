@@ -5,6 +5,17 @@
 
 <?php $__env->startPush('css'); ?>
 <link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/datatables.css')); ?>">
+<link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/animate.css')); ?>">
+<link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/chartist.css')); ?>">
+<link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/date-picker.css')); ?>">
+<link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/prism.css')); ?>">
+<link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/vector-map.css')); ?>">
+<link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/select2.css')); ?>">
+<style>
+	th {
+		background-color: rgb(200, 75, 75)
+	}
+</style>
 <?php $__env->stopPush(); ?>
 
 <?php
@@ -39,6 +50,10 @@
                             
 							<div class="tab-pane fade" id="top-invoicesecondary" role="tabpanel" aria-labelledby="profile-top-tab">
                                 <?php echo $__env->make('customers.component.invoice', ['data' => $data, 'tableId' => 'basic-2', 'customer' => $customer, 'invoice' => $invoice, 'total' => $total], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+                            </div>
+							
+							<div class="tab-pane fade" id="top-pointsecondary" role="tabpanel" aria-labelledby="profile-top-tab">
+                                <?php echo $__env->make('customers.component.point', ['customer' => $customer], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                             </div>
 
                         </div>	 

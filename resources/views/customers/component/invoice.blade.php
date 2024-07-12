@@ -9,6 +9,7 @@
                         <th>Tanggal Cetak</th>
                         <th>Kode Customer</th>
                         <th>Nama Customer</th>
+                        <th>Status</th>
                         <th width="20%">Action</th>
                     </tr>
                 </thead>
@@ -20,6 +21,12 @@
                             <td>{{ formatTanggalIndonesia($data->created_at) }}</td>
                             <td>{{ $data->kode_customer }}</td>
                             <td>{{ $data->nama }}</td>
+                            <td class="text-center">
+                                <span class="badge {{ $data->sisa == 0 ? 'badge-primary' : 'badge-warning' }}">
+                                    <i class="fa {{ $data->sisa == 0 ? 'fa-check' : 'fa-warning' }}"></i>
+                                    {{ $data->sisa == 0 ? 'Lunas' : 'Belum Lunas'; }}
+                                </span>
+                            </td>
                             <td>
                                 <form method="GET" action="{{ route('invoice.hasil-transaksi', ['id' => $data->id, 'invoiceId' => $data->invoiceId]) }}">
                                     <button class="btn btn-warning" type="submit" name="customer" value="{{ $data->id }}">Detail</button>
