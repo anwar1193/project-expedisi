@@ -8,5 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class MetodePembayaran extends Model
 {
     use HasFactory;
-    protected $table = '';
+    protected $table = 'metode_pembayarans';
+    protected $guarded = ['id'];
 }
