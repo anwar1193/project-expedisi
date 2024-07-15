@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BankController;
 use App\Http\Controllers\JasaController;
+use App\Http\Controllers\PesanController;
 use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\InvoiceController;
@@ -12,11 +13,11 @@ use App\Http\Controllers\TestingController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\DashboardController;
+
 use App\Http\Controllers\LastLoginController;
-
 use App\Http\Controllers\User\UserController;
-use App\Http\Controllers\GoogleAuthController;
 
+use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\BarangMasukController;
 use App\Http\Controllers\CashController;
 use App\Http\Controllers\LogActivityController;
@@ -27,10 +28,10 @@ use App\Http\Controllers\DataPengirimanController;
 use App\Http\Controllers\PenukaranPointController;
 use App\Http\Controllers\RoleManagementController;
 use App\Http\Controllers\JenisPengeluaranController;
+use App\Http\Controllers\MetodePembayaranController;
 use App\Http\Controllers\PemasukanLainnyaController;
 use App\Http\Controllers\DaftarPengeluaranController;
 use App\Http\Controllers\PembelianPerlengkapanController;
-use App\Http\Controllers\PesanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -108,6 +109,13 @@ Route::middleware("auth")->group(function() {
         Route::get('bank/edit/{id}', [BankController::class, 'edit'])->name('bank.edit');
         Route::post('bank/update', [BankController::class, 'update'])->name('bank.update');
         Route::get('bank/delete/{id}', [BankController::class, 'delete'])->name('bank.delete');
+
+        Route::get('metode_pembayaran', [MetodePembayaranController::class, 'index'])->name('metode_pembayaran');
+        Route::get('metode_pembayaran/create', [MetodePembayaranController::class, 'create'])->name('metode_pembayaran.create');
+        Route::post('metode_pembayaran/store', [MetodePembayaranController::class, 'store'])->name('metode_pembayaran.store');
+        Route::get('metode_pembayaran/edit/{id}', [MetodePembayaranController::class, 'edit'])->name('metode_pembayaran.edit');
+        Route::post('metode_pembayaran/update', [MetodePembayaranController::class, 'update'])->name('metode_pembayaran.update');
+        Route::get('metode_pembayaran/delete/{id}', [MetodePembayaranController::class, 'delete'])->name('metode_pembayaran.delete');
     });
 
     Route::prefix('users')->group(function () {
