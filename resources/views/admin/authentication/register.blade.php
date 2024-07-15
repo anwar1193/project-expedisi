@@ -1,8 +1,8 @@
 <div class="modal fade bd-example-modal-lg" id="modalRegister" tabindex="-1" role="dialog" aria-labelledby="registerLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
+        <div class="modal-content" style="background-color: #202938">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Form Register</h5>
+                <h5 class="modal-title text-white" id="exampleModalLabel">Form Daftar Sebagai Customer</h5>
                 <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body d-flex justify-content-center">
@@ -12,7 +12,7 @@
                         
                         <div class="row g-3 py-2">
                             <div class="col-md-6">
-                                <label class="form-label" for="nama">Nama</label>
+                                <label class="form-label text-white" for="nama">Nama</label>
                                 <input class="form-control @error('nama') is-invalid @enderror" id="nama" type="text" name="nama" value="{{ old('nama') }}" autocomplete="off"/>
 
                                 @error('nama')
@@ -23,7 +23,7 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label" for="no_wa">No Whatsapp</label>
+                                <label class="form-label text-white" for="no_wa">No Whatsapp</label>
                                 <input class="form-control @error('no_wa') is-invalid @enderror" id="no_wa" type="text" placeholder="08********" name="no_wa" value="{{ old('no_wa') }}" autocomplete="off"/>
 
                                 @error('no_wa')
@@ -36,7 +36,7 @@
                         
                         <div class="row g-3 py-2">
                             <div class="col-md-6">
-                                <label class="form-label" for="email">Email</label>
+                                <label class="form-label text-white" for="email">Email</label>
                                 <input class="form-control @error('email') is-invalid @enderror" id="email" type="text" name="email" value="{{ old('email') }}" autocomplete="off"/>
 
                                 @error('email')
@@ -47,7 +47,7 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label" for="alamat">Alamat</label>
+                                <label class="form-label text-white" for="alamat">Alamat</label>
                                 <input class="form-control @error('alamat') is-invalid @enderror" id="alamat" type="text" name="alamat" value="{{ old('alamat') }}" autocomplete="off"/>
 
                                 @error('alamat')
@@ -60,7 +60,7 @@
 
                         <div class="row g-3 py-2">
                             <div class="col-md-6">
-                                <label class="form-label" for="perusahaan">Perusahaan <span class="text-danger">*optional</span></label>
+                                <label class="form-label text-white" for="perusahaan">Perusahaan <span class="text-danger">*optional</span></label>
                                 <input class="form-control @error('perusahaan') is-invalid @enderror" id="perusahaan" type="text" name="perusahaan" value="{{ old('perusahaan') }}" autocomplete="off"/>
 
                                 @error('perusahaan')
@@ -80,7 +80,7 @@
                             </div>
 
                             <div class="col-md-5" id="usernameField" style="display:none">
-                                <label class="form-label" for="username">Username</label>
+                                <label class="form-label text-white" for="username">Username</label>
                                 <input class="form-control @error('username') is-invalid @enderror" id="username" type="text" name="username" value="{{ old('username') }}" />
 
                                 @error('username')
@@ -91,7 +91,7 @@
                             </div>
                             
                             <div class="col-md-5" id="passwordField" style="display:none">
-                                <label class="form-label" for="password">Password</label>
+                                <label class="form-label text-white" for="password">Password</label>
                                 <input class="form-control" id="password" type="password" name="password" />
 
                                 @error('password')
@@ -105,7 +105,7 @@
 
                     <div class="card-footer text-end">
                         <button class="btn btn-primary" type="submit">Simpan Data</button>
-                        <a href="{{ route('customers.index') }}" class="btn btn-light">Kembali</a>
+                        <button type="button" data-bs-dismiss="modal" aria-label="Close" class="btn btn-light">Kembali</button>
                     </div>
                 </form>
             </div>
