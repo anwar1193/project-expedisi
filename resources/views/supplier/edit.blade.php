@@ -72,6 +72,21 @@
 									</div>
 								</div>
 							</div>
+							
+							<div class="row">
+								<div class="col">
+									<div class="mb-3">
+										<label class="form-label" for="">Note</label>
+										<textarea name="note" id="note" class="form-control">{{ $datas->note }}</textarea>
+
+										@error('note')
+										<div class="text-danger">
+											{{ $message }}
+										</div>
+										@enderror
+									</div>
+								</div>
+							</div>
 
 						</div>
 						<div class="card-footer text-end">

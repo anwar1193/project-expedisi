@@ -7,8 +7,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use App\Helpers\Helper;
-
+use App\Models\Customer;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
@@ -77,5 +78,54 @@ class AuthController extends Controller
         Auth::logout();
         Session::flush();
         return redirect()->route("login");
+    }
+
+    public function register(Request $request)
+    {
+        $next_year = date('Y-m-d H:i:s', strtotime('+1 year'));
+
+        try {
+            // Kode Customer Otomatis ----------
+            $kode_query = DB::select('select MAX(MID(kode_customer, 4, 3)) AS kodee from customers');
+
+            if($kode_query[0]->kodee == NULL){
+                $no = '001';
+            }else{
+                $kodee = $kode_query[0]->kodee;
+                $n = ((int)$kodee + 1);
+                $no = sprintf("%'.03d", $n);
+            }
+
+            $kode_customer = 'LP-'.$no;
+            // END Kode Customer Otomatis -------
+
+            $this->validate($request, [
+                'nama' => 'required',
+                'email' => 'required|email|unique:customers,email|unique:users,email',
+                'no_wa' => 'required|regex:/^\+?[0-9]+$/|unique:customers,no_wa|unique:users,nomor_telepon',
+                'alamat' => 'required',
+            ]);
+
+            $request['kode_customer'] = $kode_customer;
+            $request['status'] = false;
+
+            Customer::create($request->all());
+
+            if (($request->username) && ($request->addUser == 'on')) {
+                User::create([
+                    'nama' => $request->nama,
+                    'username' => $request->username,
+                    'email' => $request->email,
+                    'nomor_telepon' => $request->no_wa,
+                    'user_level' => 3,
+                    'password' => Hash::make($request->password),
+                    'status' => 0
+                ]);
+            }
+
+            return redirect()->route('login')->with('success', 'Register Berhasil, Silahkan Tunggu Approval Dari Admin');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', $th->getMessage());
+        }
     }
 }

@@ -70,6 +70,7 @@
 	                                    <th>No</th>
 										<th width="20%" class="text-center">Action</th>
 										<th>Kode Customer</th>
+										<th>Status</th>
 										<th>Nama</th>
 										<th>Perusahaan</th>
 										<th>No Whatsapp</th>
@@ -111,6 +112,8 @@
 															<a class="dropdown-item" href="{{ route('customers.edit', $data->id) }}"><span><i class="pt-2 pe-2" data-feather="edit"></i> Edit</span></a>
 
 															<a class="dropdown-item" href="{{ route('customers.delete', $data->id) }}" onclick="return confirm('Apakah Anda Yakin?')"><span><i class="pt-2 pe-2" data-feather="delete"></i> Delete</span></a>
+
+															<a class="dropdown-item" href="{{ route('customers.approval', $data->id) }}" onclick="return confirm('Approve Data Customer Ini?')"><span><i data-feather="check-square"></i> Approve</span></a>
 															
 														</div>
 														@include('customers.detail')
@@ -121,6 +124,7 @@
 											</td>
 											
 											<td>{{ $data->kode_customer }}</td>
+											<td>{{ $data->status == true ? "Altif" : "Tidak Aktif" }}</td>
 											<td>{{ $data->nama }}</td>
 											<td>{{ $data->perusahaan == NULL ? '-' : $data->perusahaan }}</td>
 											<td>{{ $data->no_wa }}</td>

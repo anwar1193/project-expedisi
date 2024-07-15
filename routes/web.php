@@ -53,6 +53,7 @@ Route::middleware("guest")->group(function() {
 
     Route::get('login', [AuthController::class, 'index'])->name('login');
     Route::post('login', [AuthController::class, 'login'])->name('signin');
+    Route::post('register', [AuthController::class, 'register'])->name('register');
 
     // Google Auth
     Route::get('google-login', [GoogleAuthController::class, 'redirect'])->name('google-login');
@@ -259,6 +260,7 @@ Route::middleware("auth")->group(function() {
         Route::post('/add-credit', [CustomerController::class, 'addCredit'])->name('customers.addCredit');
         Route::get('/history-credit/{id}', [CustomerController::class, 'history_limit'])->name('customers.historyLimit');
         Route::post('/add-diskon', [CustomerController::class, 'addDiskon'])->name('customers.addDiskon');
+        Route::get('/approval/{id}', [CustomerController::class, 'approval_customer'])->name('customers.approval');
     });
    
     Route::prefix('invoice')->group(function () {

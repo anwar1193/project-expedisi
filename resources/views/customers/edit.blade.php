@@ -119,6 +119,41 @@
 											</div>
 										@enderror
 									</div>
+
+									<div class="col-md-6">
+										<label class="form-label" for="username">Password Lama</label>
+										<input name="password_lama" class="form-control @error('password_lama') is-invalid @enderror" type="password" autocomplete="off" value="{{ old('password_lama') }}"/>
+
+										@error('password_lama')
+											<div class="text-danger">
+												{{ $message }}
+											</div>
+										@enderror
+									</div>
+								</div>
+								
+								<div class="row g-3 py-2">
+									<div class="col-md-6">
+										<label class="form-label" for="">Password Baru</label>
+										<input name="password_baru" class="form-control @error('password_baru') is-invalid @enderror" type="password" autocomplete="off" value="{{ old('password_baru') }}"/>
+
+										@error('password_baru')
+											<div class="text-danger">
+												{{ $message }}
+											</div>
+										@enderror
+									</div>
+
+									<div class="col-md-6">
+										<label class="form-label" for="">Konfirmasi Password Baru</label>
+										<input name="password_baru_confirmation" class="form-control @error('password_baru_confirmation') is-invalid @enderror" type="password" autocomplete="off"/>
+
+										@error('password_baru_confirmation')
+											<div class="text-danger">
+												{{ $message }}
+											</div>
+										@enderror
+									</div>
 								</div>
 							@else
 								<div class="row g-3 py-2">

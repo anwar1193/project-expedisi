@@ -30,6 +30,7 @@ class SupplierController extends Controller
             'nomor_hp' => 'required',
             'alamat' => 'required',
         ]);
+        $validateData['note'] = $request->note;
         Supplier::create($validateData);
 
         Helper::logActivity('Simpan Data Supplier');
@@ -57,7 +58,8 @@ class SupplierController extends Controller
         Supplier::where('id', '=', $id)->update([
             'nama_supplier' => $request->nama_supplier,
             'nomor_hp' => $request->nomor_hp,
-            'alamat' => $request->alamat
+            'alamat' => $request->alamat,
+            'note' => $request->note,
         ]);
 
         Helper::logActivity('Update data supplier '.$request->nama_supplier);

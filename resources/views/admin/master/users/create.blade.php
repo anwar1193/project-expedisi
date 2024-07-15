@@ -77,7 +77,7 @@
 								<div class="col">
 									<div class="mb-3">
 										<label class="form-label" for="">Nomor Telepon</label>
-										<input class="form-control @error('nomor_telepon') is-invalid @enderror" type="text" type="text" name="nomor_telepon" autocomplete="off" value="{{ old('nomor_telepon') }}"/>
+										<input class="form-control @error('nomor_telepon') is-invalid @enderror" type="text" type="text" placeholder="08xxxxxxxxxx" name="nomor_telepon" autocomplete="off" value="{{ old('nomor_telepon') }}"/>
 
 										@error('nomor_telepon')
 										<div class="text-danger">
@@ -89,10 +89,10 @@
 							</div>
 
 							<div class="row">
-								<div class="col">
+								<div class="col-3">
 									<div class="mb-3">
 										<label class="form-label" for="">User Level</label>
-										<select name="user_level" id="user_level" class="form-control @error('user_level') is-invalid @enderror">
+										<select name="user_level" id="user_level" class="form-select @error('user_level') is-invalid @enderror">
 											<option value="">- Pilih Level -</option>
 											@foreach ($levels as $item)
 												<option value="{{ $item->id }}" {{ old('user_level') == $item->id ? 'selected' : '' }}>

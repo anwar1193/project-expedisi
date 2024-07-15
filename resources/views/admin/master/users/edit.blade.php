@@ -28,6 +28,14 @@
                         @csrf
 						<div class="card-body">
 
+							@if (session()->has('error'))
+								<div class="alert alert-danger alert-dismissible fade show" role="alert">
+									<strong>Gagal <i class="fa fa-info-circle"></i></strong> 
+									{{ session('error') }}
+									<button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+								</div>
+							@endif
+
 							<input type="text" name="id" value="{{ $user->id }}" hidden>
 							<input type="text" name="old_foto" value="{{ $user->foto }}" hidden>
 
@@ -123,6 +131,51 @@
 										</select>
 
 										@error('status')
+										<div class="text-danger">
+											{{ $message }}
+										</div>
+										@enderror
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col">
+									<div class="mb-3">
+										<label class="form-label" for="">Password Lama</label>
+										<input name="password_lama" class="form-control @error('password_lama') is-invalid @enderror" type="password" autocomplete="off" value="{{ old('password_lama') }}"/>
+
+										@error('password')
+										<div class="text-danger">
+											{{ $message }}
+										</div>
+										@enderror
+									</div>
+								</div>
+							</div>
+
+                            <div class="row">
+								<div class="col">
+									<div class="mb-3">
+										<label class="form-label" for="">Password Baru</label>
+										<input name="password_baru" class="form-control @error('password_baru') is-invalid @enderror" type="password" autocomplete="off" value="{{ old('password_baru') }}"/>
+
+										@error('password_baru')
+										<div class="text-danger">
+											{{ $message }}
+										</div>
+										@enderror
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col">
+									<div class="mb-3">
+										<label class="form-label" for="">Konfirmasi Password Baru</label>
+										<input name="password_baru_confirmation" class="form-control @error('password_baru_confirmation') is-invalid @enderror" type="password" autocomplete="off"/>
+
+										@error('password_baru_confirmation')
 										<div class="text-danger">
 											{{ $message }}
 										</div>

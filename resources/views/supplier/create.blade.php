@@ -55,7 +55,7 @@
 								<div class="col">
 									<div class="mb-3">
 										<label class="form-label" for="">Nomor Hp</label>
-										<input class="form-control @error('nomor_hp') is-invalid @enderror" type="text" name="nomor_hp" autocomplete="off" value="{{ old('nomor_hp') }}"/>
+										<input class="form-control @error('nomor_hp') is-invalid @enderror" type="text" placeholder="08xxxxxxxx" name="nomor_hp" autocomplete="off" value="{{ old('nomor_hp') }}"/>
 
 										@error('nomor_hp')
 										<div class="text-danger">
@@ -73,6 +73,21 @@
 										<textarea name="alamat" id="alamat" class="form-control"></textarea>
 
 										@error('alamat')
+										<div class="text-danger">
+											{{ $message }}
+										</div>
+										@enderror
+									</div>
+								</div>
+							</div>
+							
+							<div class="row">
+								<div class="col">
+									<div class="mb-3">
+										<label class="form-label" for="">Note</label>
+										<textarea name="note" id="note" class="form-control"></textarea>
+
+										@error('note')
 										<div class="text-danger">
 											{{ $message }}
 										</div>

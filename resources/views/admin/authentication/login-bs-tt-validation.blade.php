@@ -1,4 +1,5 @@
 @extends('admin.authentication.master')
+@include('admin.authentication.register')
 
 @section('title')login
  {{ $title }}
@@ -6,6 +7,7 @@
 
 @push('css')
 	<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/sweetalert2.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/select2.css') }}">
 @endpush
 
 @section('content')
@@ -26,6 +28,14 @@
 	                    <p class="mb-3">AGEN EXPEDISI</p>
 
 	                    {{-- <h6>Selamat Datang! Silahkan Masuk Ke akun Anda.</h6> --}}
+
+						@if (session()->has('success'))
+							<div class="alert alert-success alert-dismissible fade show" role="alert">
+								<strong>Berhasil <i class="fa fa-info-circle"></i></strong> 
+								{{ session('success') }}
+								<button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+							</div>
+						@endif
 						
 						@if ($errors->has('login'))
                             {{-- <div class="alert alert-danger my-2" role="alert">
@@ -79,6 +89,13 @@
 								</div>
 							</div>
 	                    </div>
+						<div class="form-group my-4">
+							<div class="d-flex justify-content-center my-4">
+								<div>
+									<a class="btn text-light" style="background-color: rgb(52, 70, 234)" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalRegister"><i class="fa fa-users me-2"></i>Daftar Sebagai Customer</a>
+								</div>
+							</div>
+						</div>
 	                </form>
 	            </div>
 	        </div>
@@ -123,6 +140,26 @@
 
 
     @push('scripts')
+		<script src="{{ asset('assets/js/select2/select2.full.min.js') }}"></script>
+		<script src="{{ asset('assets/js/select2/select2-custom.js') }}"></script>
+		<script>
+			function toggleUserFields() {
+				var addUserCheckbox = document.getElementById('addUser');
+				var usernameField = document.getElementById('usernameField');
+				var passwordField = document.getElementById('passwordField');
+				if (addUserCheckbox.checked) {
+					usernameField.style.display = 'block';
+					passwordField.style.display = 'block';
+				} else {
+					usernameField.style.display = 'none';
+					passwordField.style.display = 'none';
+				}
+			}
+
+			document.getElementById('addUser').addEventListener('change', toggleUserFields);
+
+			document.addEventListener('DOMContentLoaded', toggleUserFields);
+		</script>
     @endpush
 
 @endsection

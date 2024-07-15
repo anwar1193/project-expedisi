@@ -60,7 +60,7 @@
 
 								<div class="col-md-6">
 									<label class="form-label" for="no_wa">No Whatsapp</label>
-									<input class="form-control @error('no_wa') is-invalid @enderror" id="no_wa" type="text" name="no_wa" value="{{ old('no_wa') }}" autocomplete="off"/>
+									<input class="form-control @error('no_wa') is-invalid @enderror" id="no_wa" placeholder="08xxxxxxxx" type="text" name="no_wa" value="{{ old('no_wa') }}" autocomplete="off"/>
 
 									@error('no_wa')
 										<div class="text-danger">

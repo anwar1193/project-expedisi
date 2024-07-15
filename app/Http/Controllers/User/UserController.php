@@ -85,11 +85,19 @@ class UserController extends Controller
             'nomor_telepon' => 'required',
             'user_level' => 'required',
             'status' => 'required',
+            'password_lama' => 'required',
+            'password_baru' => 'required|confirmed'
         ]);
 
         $foto = $request->file('foto');
 
         $getImage = User::find($request->id);
+
+        $passwordLama = $request->password_lama;
+
+        if(Hash::check($passwordLama, $getImage->password) === FALSE) {
+            return back()->with('error', 'Password lama yang anda masukan salah!');
+        }
 
         if($foto != ''){
             Storage::delete('public/foto_profil/'.$getImage->foto);
@@ -105,7 +113,8 @@ class UserController extends Controller
             'nomor_telepon' => $request->nomor_telepon,
             'user_level' => $request->user_level,
             'status' => $request->status,
-            'foto' => ($foto != '' ? $foto->hashName() : $request->old_foto)
+            'foto' => ($foto != '' ? $foto->hashName() : $request->old_foto),
+            'password' => Hash::make($request->password_baru)
         ]);
 
         Helper::logActivity('Update data pengguna dengan username : '.$request->username);

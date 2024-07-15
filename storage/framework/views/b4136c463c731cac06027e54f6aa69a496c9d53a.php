@@ -1,4 +1,4 @@
-<div class="modal fade modal-bookmark" id="modalSupplier{{ $data->id }}" tabindex="-1" role="dialog"
+<div class="modal fade modal-bookmark" id="modalSupplier<?php echo e($data->id); ?>" tabindex="-1" role="dialog"
     aria-labelledby="modalSupplierLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content justify-content-start">
@@ -16,22 +16,22 @@
                                     <div class="row d-flex py-1 text-start justify-content-start">
                                         <div class="col-6">Nama Supplier</div>
                                         <div class="col-2">:</div>
-                                        <div class="col-4">{{ $data->nama_supplier}}</div>
+                                        <div class="col-4"><?php echo e($data->nama_supplier); ?></div>
                                     </div>
                                     <div class="row d-flex py-1 text-start justify-content-start">
                                         <div class="col-6">No Hp</div>
                                         <div class="col-2">:</div>
-                                        <div class="col-4">{{ $data->nomor_hp }}</div>
+                                        <div class="col-4"><?php echo e($data->nomor_hp); ?></div>
                                     </div>
                                     <div class="row d-flex py-1 text-start justify-content-start">
                                         <div class="col-6">Alamat</div>
                                         <div class="col-2">:</div>
-                                        <div class="col-4">{{ $data->alamat }}</div>
+                                        <div class="col-4"><?php echo e($data->alamat); ?></div>
                                     </div>
                                     <div class="row d-flex py-1 text-start justify-content-start">
                                         <div class="col-6">Note</div>
                                         <div class="col-2">:</div>
-                                        <div class="col-4">{{ $data->note }}</div>
+                                        <div class="col-4"><?php echo e($data->note); ?></div>
                                     </div>
                                 </div>
                             </div>
@@ -41,4 +41,4 @@
             </div>
         </div>
     </div>
-</div>
+</div><?php /**PATH /Applications/MAMP/htdocs/project-expedisi/resources/views/supplier/detail.blade.php ENDPATH**/ ?>
