@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content" style="background-color: #202938">
             <div class="modal-header">
-                <h5 class="modal-title text-white" id="exampleModalLabel">Form Register</h5>
+                <h5 class="modal-title text-white" id="exampleModalLabel">Form Daftar Sebagai Customer</h5>
                 <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body d-flex justify-content-center">
