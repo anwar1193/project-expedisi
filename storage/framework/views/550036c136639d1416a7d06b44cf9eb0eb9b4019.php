@@ -63,11 +63,12 @@
                             
                             <div class="table-responsive">
                                 <p class="mb-4">Jika Sudah Sesuai Silahkan Klik Simpan</p>
-                                <table class="display" id="basic-1">
+                                <table class="table table-bordered" id="">
                                     <thead>
                                         <tr>
                                             <th>No Resi</th>
                                             <th>Tgl Transaksi</th>
+                                            <th>Diinput Oleh</th>
                                             <th>Kode Customer</th>
                                             <th>Nama Pengirim</th>
                                             <th>Nama Penerima</th>
@@ -95,19 +96,40 @@
                                                 <td>
                                                     <input type="date" name="tgl_transaksi[]" value="<?php echo e($row['tgl_transaksi']); ?>">
                                                 </td>
+
                                                 <td>
-                                                    <select name="kode_customer[]" class="form-control <?php $__errorArgs = ['kode_customer'];
+                                                    <select name="input_by[]" class="form-control <?php $__errorArgs = ['input_by'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>">
-                                                        <option value="general" <?php echo e($row['kode_customer'] == 'general' ? 'selected' : ''); ?>> General </option>
+unset($__errorArgs, $__bag); ?> js-example-basic-single" required="">
+                                                        <option value="">-Pilih-</option>
+                                                        <?php $__currentLoopData = $kasir; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                            <option value="<?php echo e($item->nama); ?>">
+                                                                <?php echo e($item->nama); ?>
+
+                                                            </option>
+                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                    </select>
+                                                </td>
+
+                                                <td>
+                                                    <select name="kode_customer[]" class="form-select <?php $__errorArgs = ['kode_customer'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?> js-example-basic-single" required="">
+                                                        <option value="">-Pilih-</option>
+                                                        <option value="General" <?php echo e($row['kode_customer'] == 'General' ? 'selected' : ''); ?>> General </option>
                                                         <?php $__currentLoopData = $customer; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                             <option value="<?php echo e($item->kode_customer); ?>" <?php echo e($row['kode_customer']== $item->kode_customer ? 'selected' : ''); ?>>
-                                                                <?php echo e($item->kode_customer); ?>
+                                                                <?php echo e($item->kode_customer); ?> : <?php echo e($item->nama); ?> - <?php echo e($item->perusahaan); ?>
 
                                                             </option>
                                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -145,32 +167,34 @@ if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>">
-                                                        <option value="Transfer" <?php echo e($row['metode_pembayaran'] == 'Transfer' ? 'selected' : ''); ?>> Transfer </option>
-                                                        <option value="Tunai" <?php echo e($row['metode_pembayaran'] == 'Tunai' ? 'selected' : ''); ?>> Tunai </option>
-                                                        <option value="Kredit" <?php echo e($row['metode_pembayaran'] == 'Kredit' ? 'selected' : ''); ?>> Kredit </option>
+unset($__errorArgs, $__bag); ?> js-example-basic-single" id="metodePembayaran">
+                                                        <?php $__currentLoopData = $metode; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                            <option value="<?php echo e($item->metode); ?>" <?php echo e($row['metode_pembayaran']== $item->metode ? 'selected' : ''); ?>>
+                                                                <?php echo e($item->metode); ?> 
+                                                            </option>
+                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                     </select>
                                                 </td>
                                                 <td>
-                                                        <select name="bank[]" class="form-control <?php $__errorArgs = ['bank'];
+                                                    <select name="bank[]" class="form-control <?php $__errorArgs = ['bank'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>">
-                                                            <?php if($row['metode_pembayaran'] != 'Transfer'): ?>
-                                                                <option value="">-</option>
-                                                            <?php else: ?>
-                                                                <?php $__currentLoopData = $bank; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                                    <option value="<?php echo e($item->bank); ?>" <?php echo e($row['bank']== $item->bank ? 'selected' : ''); ?>>
-                                                                        <?php echo e($item->bank); ?>
+unset($__errorArgs, $__bag); ?> js-example-basic-single" id="bankSelect">
+                                                        <?php if($row['metode_pembayaran'] != 'Transfer'): ?>
+                                                            <option value="">-</option>
+                                                        <?php else: ?>
+                                                            <?php $__currentLoopData = $bank; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                <option value="<?php echo e($item->bank); ?>" <?php echo e($row['bank']== $item->bank ? 'selected' : ''); ?>>
+                                                                    <?php echo e($item->bank); ?>
 
-                                                                    </option>
-                                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                                            <?php endif; ?>
-                                                        </select>
+                                                                </option>
+                                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                        <?php endif; ?>
+                                                    </select>
                                                 </td>
                                                 <td>
                                                     <input type="text" name="bukti_pembayaran[]" value="<?php echo e($row['bukti_pembayaran']); ?>" <?php echo e($row['metode_pembayaran'] != 'Transfer' ? 'readonly' : ''); ?>> 
@@ -186,17 +210,32 @@ if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>">
+unset($__errorArgs, $__bag); ?> js-example-basic-single">
                                                         <option value="Ya" <?php echo e($row['bawa_sendiri'] == 'Ya' ? 'selected' : ''); ?>> Ya </option>
                                                         <option value="Di jemput" <?php echo e($row['bawa_sendiri'] == 'Di jemput' ? 'selected' : ''); ?>> Di jemput </option>
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <input type="text" name="status_pengiriman[]" value="<?php echo e($row['status_pengiriman']); ?>"> 
+                                                    <select name="status_pengiriman[]" class="form-control <?php $__errorArgs = ['status_pengiriman'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?> js-example-basic-single">
+                                                        <?php $__currentLoopData = $status; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                            <option value="<?php echo e($item->status_pengiriman); ?>" <?php echo e($row['status_pengiriman']== $item->status_pengiriman ? 'selected' : ''); ?>>
+                                                                <?php echo e($item->status_pengiriman); ?> 
+                                                            </option>
+                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                    </select>
+                                                    
                                                 </td>
                                                 <td>
                                                     <input type="text" name="keterangan[]" value="<?php echo e($row['keterangan']); ?>"> 
                                                 </td>
+
                                             </tr>
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </tbody>
@@ -241,6 +280,20 @@ unset($__errorArgs, $__bag); ?>">
                 scrollX: true,
                 searching: false,
 			});
+
+            $('#metodePembayaran').on('change', function() {
+            var selectedMethod = $(this).val();
+            var bankSelect = $('#bankSelect');
+            bankSelect.empty(); // Kosongkan opsi bank
+
+            if (selectedMethod === 'Transfer') {
+                <?php $__currentLoopData = $bank; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    bankSelect.append(new Option('<?php echo e($item->bank); ?>', '<?php echo e($item->bank); ?>', false, false));
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            } else {
+                bankSelect.append(new Option('-', '', false, false));
+            }
+        }).trigger('change');
 		})
 	</script>	
 	<?php $__env->stopPush(); ?>

@@ -92,7 +92,7 @@
 								<div class="col-3">
 									<div class="mb-3">
 										<label class="form-label" for="">User Level</label>
-										<select name="user_level" id="user_level" class="form-select @error('user_level') is-invalid @enderror">
+										<select name="user_level" id="user_level" class="form-control @error('user_level') is-invalid @enderror js-example-basic-single">
 											<option value="">- Pilih Level -</option>
 											@foreach ($levels as $item)
 												<option value="{{ $item->id }}" {{ old('user_level') == $item->id ? 'selected' : '' }}>

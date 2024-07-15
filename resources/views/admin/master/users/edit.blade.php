@@ -88,7 +88,7 @@
 								<div class="col">
 									<div class="mb-3">
 										<label class="form-label" for="">Nomor Telepon</label>
-										<input class="form-control @error('nomor_telepon') is-invalid @enderror" type="text" type="text" name="nomor_telepon" autocomplete="off" value="{{ old('nomor_telepon', $user->nomor_telepon) }}"/>
+										<input class="form-control @error('nomor_telepon') is-invalid @enderror" type="text" placeholder="08xxxxxxxx" type="text" name="nomor_telepon" autocomplete="off" value="{{ old('nomor_telepon', $user->nomor_telepon) }}"/>
 
 										@error('email')
 										<div class="text-danger">
@@ -100,10 +100,10 @@
 							</div>
 
 							<div class="row">
-								<div class="col">
+								<div class="col-3">
 									<div class="mb-3">
 										<label class="form-label" for="">User Level</label>
-										<select name="user_level" id="user_level" class="form-control @error('user_level') is-invalid @enderror">
+										<select name="user_level" id="user_level" class="form-control @error('user_level') is-invalid @enderror js-example-basic-single">
 											<option value="">- Pilih Level -</option>
 											@foreach ($levels as $item)
 												<option value="{{ $item->id }}" {{ $user->user_level == $item->id ? 'selected' : NULL }}>
@@ -122,10 +122,10 @@
 							</div>
 
 							<div class="row">
-								<div class="col">
+								<div class="col-3">
 									<div class="mb-3">
 										<label class="form-label" for="">Status</label>
-										<select name="status" id="status" class="form-control @error('status') is-invalid @enderror">
+										<select name="status" id="status" class="form-control @error('status') is-invalid @enderror js-example-basic-single">
 											<option value="1" {{ $user->status == 1 ? 'selected' : NULL }}>Aktif</option>
 											<option value="0" {{ $user->status == 0 ? 'selected' : NULL }}>Non-Aktif</option>
 										</select>

@@ -89,7 +89,7 @@
 								<div class="col">
 									<div class="mb-3">
 										<label class="form-label" for="">Modal</label>
-										<input class="form-control @error('modal') is-invalid @enderror" type="number" name="modal" autocomplete="off" value="{{ old('modal', $datas->modal) }}"/>
+										<input class="form-control @error('modal') is-invalid @enderror" type="text" name="modal" autocomplete="off" value="{{ old('modal', $datas->modal) }}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"/>
 
 										@error('modal')
 										<div class="text-danger">
@@ -119,7 +119,7 @@
 								<div class="col">
 									<div class="mb-3">
 										<label class="form-label" for="">Jumlah Pemasukan</label>
-										<input class="form-control @error('jumlah_pemasukkan') is-invalid @enderror" type="number" name="jumlah_pemasukkan" autocomplete="off" value="{{ old('jumlah_pemasukkan', $datas->jumlah_pemasukkan) }}"/>
+										<input class="form-control @error('jumlah_pemasukkan') is-invalid @enderror" type="text" name="jumlah_pemasukkan" autocomplete="off" value="{{ old('jumlah_pemasukkan', $datas->jumlah_pemasukkan) }}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"/>
 
 										@error('jumlah_pemasukkan')
 										<div class="text-danger">

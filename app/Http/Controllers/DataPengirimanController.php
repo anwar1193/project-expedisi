@@ -9,6 +9,7 @@ use App\Models\Bank;
 use App\Models\Customer;
 use App\Models\DataPengiriman;
 use App\Models\KonversiPoint;
+use App\Models\MetodePembayaran;
 use App\Models\StatusPengiriman;
 use App\Models\User;
 use Dflydev\DotAccessData\Data;
@@ -243,48 +244,50 @@ class DataPengirimanController extends Controller
         $bank = Bank::all();
         $customer = Customer::all();
         $kasir = User::where('user_level', 4)->get();
+        $metode = MetodePembayaran::all();
+        $status = StatusPengiriman::all();
     
         $data = Excel::toArray(new DataPengirimanImport, $request->file('file'));
     
         $formattedData = (new DataPengirimanImport)->array($data[0]);
 
-        $rules = [
-            '*.no_resi' => 'required|unique:data_pengirimen',
-            '*.tgl_transaksi' => 'required',
-            '*.nama_pengirim' => 'required',
-            '*.nama_penerima' => 'required',
-            '*.kota_tujuan' => 'required',
-            '*.no_hp_pengirim' => 'required',
-            '*.no_hp_penerima' => 'required',
-            '*.berat_barang' => 'required',
-            '*.ongkir' => 'required',
-            '*.komisi' => 'required',
-            '*.metode_pembayaran' => function($attribute, $value, $onFailure) {
-                if($value !== NULL){
-                    if ($value !== 'Transfer' && $value !== 'Tunai' && $value !== 'Kredit') {
-                        $onFailure('Metode Pembayaran Harus Transfer, Tunai, Kredit, atau Dikosongkan');
-                   }
-                }
-            },
+        // $rules = [
+        //     '*.no_resi' => 'required|unique:data_pengirimen',
+        //     '*.tgl_transaksi' => 'required',
+        //     '*.nama_pengirim' => 'required',
+        //     '*.nama_penerima' => 'required',
+        //     '*.kota_tujuan' => 'required',
+        //     '*.no_hp_pengirim' => 'required',
+        //     '*.no_hp_penerima' => 'required',
+        //     '*.berat_barang' => 'required',
+        //     '*.ongkir' => 'required',
+        //     '*.komisi' => 'required',
+        //     '*.metode_pembayaran' => function($attribute, $value, $onFailure) {
+        //         if($value !== NULL){
+        //             if ($value !== 'Transfer' && $value !== 'Tunai' && $value !== 'Kredit') {
+        //                 $onFailure('Metode Pembayaran Harus Transfer, Tunai, Kredit, atau Dikosongkan');
+        //            }
+        //         }
+        //     },
 
-            '*.jenis_pengiriman' => 'required',
-            '*.bawa_sendiri' => 'required',
-            '*.status_pengiriman' => 'required',
-        ];
+        //     '*.jenis_pengiriman' => 'required',
+        //     '*.bawa_sendiri' => 'required',
+        //     '*.status_pengiriman' => 'required',
+        // ];
 
-        $validator = Helper::validateFormattedData($formattedData);
+        // $validator = Helper::validateFormattedData($formattedData);
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
+        // if ($validator->fails()) {
+        //     return redirect()->back()->withErrors($validator)->withInput();
+        // }
 
-        $validationResult = Helper::customValidasi($formattedData);
+        // $validationResult = Helper::customValidasi($formattedData);
 
-        if ($validationResult !== null) {
-            return $validationResult;
-        }
+        // if ($validationResult !== null) {
+        //     return $validationResult;
+        // }
     
-        return view('data-pengiriman.konfirmasi-data', compact('bank', 'customer','formattedData', 'kasir'));
+        return view('data-pengiriman.konfirmasi-data', compact('bank', 'customer','formattedData', 'kasir', 'metode', 'status'));
     }
 
     public function proses_hasil_import(Request $request)

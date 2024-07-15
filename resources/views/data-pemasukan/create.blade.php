@@ -92,7 +92,7 @@
 								<div class="col">
 									<div class="mb-3">
 										<label class="form-label" for="">Modal</label>
-										<input class="form-control @error('modal') is-invalid @enderror" type="number" name="modal" autocomplete="off" value="{{ old('modal') }}"/>
+										<input class="form-control @error('modal') is-invalid @enderror" type="text" name="modal" autocomplete="off" value="{{ old('modal') }}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"/>
 
 										@error('modal')
 										<div class="text-danger">
@@ -122,7 +122,7 @@
 								<div class="col">
 									<div class="mb-3">
 										<label class="form-label" for="">Jumlah Pemasukan</label>
-										<input class="form-control @error('jumlah_pemasukkan') is-invalid @enderror" type="number" name="jumlah_pemasukkan" autocomplete="off" value="{{ old('jumlah_pemasukkan') }}"/>
+										<input class="form-control @error('jumlah_pemasukkan') is-invalid @enderror" type="text" name="jumlah_pemasukkan" autocomplete="off" value="{{ old('jumlah_pemasukkan') }}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"/>
 
 										@error('jumlah_pemasukkan')
 										<div class="text-danger">
@@ -268,6 +268,21 @@
 	<script>
 		document.addEventListener('input', function (e) {
 			if (e.target.name === 'jumlah_pemasukkan') {
+				const typedValue = e.target.value;
+				const formattedValue = new Intl.NumberFormat('id-ID').format(typedValue);
+				const displayElement = e.target.parentNode.querySelector('.typed-value');
+				
+				if (displayElement) {
+					displayElement.innerHTML = 'Number Format: <strong>RP. ' + formattedValue + '</strong>';
+				} else {
+					const newDisplayElement = document.createElement('div');
+					newDisplayElement.className = 'typed-value';
+					newDisplayElement.innerHTML = 'Number Format: <strong>RP. ' + formattedValue + '</strong>';
+					e.target.parentNode.appendChild(newDisplayElement);
+				}
+			}
+			
+			if (e.target.name === 'modal') {
 				const typedValue = e.target.value;
 				const formattedValue = new Intl.NumberFormat('id-ID').format(typedValue);
 				const displayElement = e.target.parentNode.querySelector('.typed-value');

@@ -23,6 +23,11 @@
 	@endcomponent
 	
 	<div class="container-fluid">
+		<div class="d-flex justify-content-end">
+			<div class="px-1 mb-3">
+				<a href="{{ route('invoices.index') }}" class="btn btn-md btn-secondary" title="Kembali">Kembali</a>
+			</div>
+		</div>
         <div class="row">
         </div>
 	    <div class="row">

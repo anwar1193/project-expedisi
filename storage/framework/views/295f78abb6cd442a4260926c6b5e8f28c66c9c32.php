@@ -151,14 +151,14 @@ unset($__errorArgs, $__bag); ?>
 								<div class="col-3">
 									<div class="mb-3">
 										<label class="form-label" for="">User Level</label>
-										<select name="user_level" id="user_level" class="form-select <?php $__errorArgs = ['user_level'];
+										<select name="user_level" id="user_level" class="form-control <?php $__errorArgs = ['user_level'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>">
+unset($__errorArgs, $__bag); ?> js-example-basic-single">
 											<option value="">- Pilih Level -</option>
 											<?php $__currentLoopData = $levels; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 												<option value="<?php echo e($item->id); ?>" <?php echo e(old('user_level') == $item->id ? 'selected' : ''); ?>>

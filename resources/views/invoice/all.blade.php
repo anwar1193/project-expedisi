@@ -103,7 +103,11 @@
 	                                @foreach ($data as $data)
 										<tr>
 											<td>{{ $loop->iteration; }}</td>
-											<td>{{ $data->invoice_no }}</td>
+											<td>
+												<a class="text-light" href="{{ route('invoice.hasil-transaksi', ['id' => $data->id, 'invoiceId' => $data->invoiceId]) }}">
+													{{ $data->invoice_no }}
+												</a>
+											</td>
 											<td>Rp {{ number_format($data->totalBersih, 0, '.', '.') }}</td>
 											<td>Rp {{ number_format($data->sisa, 0, '.', '.') }}</td>
 											<td>{{ formatTanggalIndonesia($data->created_at) }}</td>
@@ -159,16 +163,21 @@
 	<script src="{{ asset('assets/js/datatable/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('assets/js/datatable/datatables/datatable.custom.js') }}"></script>
 	<script>
-		document.addEventListener('DOMContentLoaded', function() {
-			const jumlahPembayaranInput = document.querySelector('input[name="nominal"]');
-			const displayElement = document.createElement('div');
-			displayElement.innerHTML = '<strong>RP. ' + new Intl.NumberFormat('id-ID').format(jumlahPembayaranInput.value) + '</strong>';
-			jumlahPembayaranInput.parentNode.appendChild(displayElement);
-
-			jumlahPembayaranInput.addEventListener('input', function() {
-				const typedValue = jumlahPembayaranInput.value;
-				displayElement.innerHTML = '<strong>RP. ' + new Intl.NumberFormat('id-ID').format(typedValue) + '</strong>';
-			});
+		document.addEventListener('input', function (e) {
+			if (e.target.name === 'nominal') {
+				const typedValue = e.target.value;
+				const formattedValue = new Intl.NumberFormat('id-ID').format(typedValue);
+				const displayElement = e.target.parentNode.querySelector('.typed-value');
+				
+				if (displayElement) {
+					displayElement.innerHTML = '<strong>RP. ' + formattedValue + '</strong>';
+				} else {
+					const newDisplayElement = document.createElement('div');
+					newDisplayElement.className = 'typed-value';
+					newDisplayElement.innerHTML = '<strong>RP. ' + formattedValue + '</strong>';
+					e.target.parentNode.appendChild(newDisplayElement);
+				}
+			}
 		});
 	</script>
 	@endpush

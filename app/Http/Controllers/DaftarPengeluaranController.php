@@ -27,9 +27,15 @@ class DaftarPengeluaranController extends Controller
     }
     public  function index()
     {
+        $kategori = request('kategori');
         $datas = DaftarPengeluaran::select('daftar_pengeluarans.id', 'daftar_pengeluarans.tgl_pengeluaran', 'daftar_pengeluarans.keterangan', 'daftar_pengeluarans.jumlah_pembayaran', 'daftar_pengeluarans.yang_membayar', 'daftar_pengeluarans.yang_menerima', 'daftar_pengeluarans.metode_pembayaran', 'daftar_pengeluarans.bukti_pembayaran', 'daftar_pengeluarans.status_pengeluaran', 'jenis_pengeluarans.jenis_pengeluaran')
                 ->leftJoin('jenis_pengeluarans', 'jenis_pengeluarans.id', '=', 'daftar_pengeluarans.jenis_pengeluaran')
+                ->when($kategori, function ($query, $kategori) {
+                    return $query->where('daftar_pengeluarans.jenis_pengeluaran', $kategori);
+                })
                 ->orderBy('daftar_pengeluarans.id', 'DESC')->get();
+
+        $data['jenis_pengeluaran'] = JenisPengeluaran::all();
 
         $data['datas'] = $datas;
 

@@ -72,7 +72,7 @@
 								<div class="col">
 									<div class="mb-3">
 										<label class="form-label" for="">Jumlah</label>
-										<input class="form-control @error('jumlah') is-invalid @enderror" type="number" name="jumlah" autocomplete="off" value="{{ old('jumlah', $pembelian->jumlah) }}"/>
+										<input class="form-control @error('jumlah') is-invalid @enderror" type="number" name="jumlah" autocomplete="off" value="{{ old('jumlah', $pembelian->jumlah) }}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
 
 										@error('jumlah')
 										<div class="text-danger">
@@ -87,7 +87,7 @@
 								<div class="col">
 									<div class="mb-3">
 										<label class="form-label" for="">Harga Total</label>
-										<input class="form-control @error('harga') is-invalid @enderror" type="number" name="harga" autocomplete="off" value="{{ old('harga', $pembelian->harga) }}"/>
+										<input class="form-control @error('harga') is-invalid @enderror" type="number" name="harga" autocomplete="off" value="{{ old('harga', $pembelian->harga) }}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
 
 										@error('harga')
 										<div class="text-danger">
@@ -142,6 +142,19 @@
 	@push('scripts')
     <script src="{{ asset('assets/js/select2/select2.full.min.js') }}"></script>
     <script src="{{ asset('assets/js/select2/select2-custom.js') }}"></script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			const hargaInput = document.querySelector('input[name="harga"]');
+			const displayElement = document.createElement('div');
+			displayElement.innerHTML = 'Number Format: <strong>RP. ' + new Intl.NumberFormat('id-ID').format(hargaInput.value) + '</strong>';
+			hargaInput.parentNode.appendChild(displayElement);
+
+			hargaInput.addEventListener('input', function() {
+				const typedValue = hargaInput.value;
+				displayElement.innerHTML = 'Number Format: <strong>RP. ' + new Intl.NumberFormat('id-ID').format(typedValue) + '</strong>';
+			});
+		});
+	</script>
 	@endpush
 
 @endsection

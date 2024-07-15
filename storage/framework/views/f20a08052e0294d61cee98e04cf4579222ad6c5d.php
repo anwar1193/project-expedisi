@@ -160,7 +160,7 @@ unset($__errorArgs, $__bag); ?>
 							</div>
 
 							<div class="row">
-								<div class="col">
+								<div class="col-3">
 									<div class="mb-3">
 										<label class="form-label" for="">User Level</label>
 										<select name="user_level" id="user_level" class="form-control <?php $__errorArgs = ['user_level'];
@@ -170,7 +170,7 @@ if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>">
+unset($__errorArgs, $__bag); ?> js-example-basic-single">
 											<option value="">- Pilih Level -</option>
 											<?php $__currentLoopData = $levels; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 												<option value="<?php echo e($item->id); ?>" <?php echo e($user->user_level == $item->id ? 'selected' : NULL); ?>>
@@ -198,7 +198,7 @@ unset($__errorArgs, $__bag); ?>
 							</div>
 
 							<div class="row">
-								<div class="col">
+								<div class="col-3">
 									<div class="mb-3">
 										<label class="form-label" for="">Status</label>
 										<select name="status" id="status" class="form-control <?php $__errorArgs = ['status'];
@@ -208,7 +208,7 @@ if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>">
+unset($__errorArgs, $__bag); ?> js-example-basic-single">
 											<option value="1" <?php echo e($user->status == 1 ? 'selected' : NULL); ?>>Aktif</option>
 											<option value="0" <?php echo e($user->status == 0 ? 'selected' : NULL); ?>>Non-Aktif</option>
 										</select>

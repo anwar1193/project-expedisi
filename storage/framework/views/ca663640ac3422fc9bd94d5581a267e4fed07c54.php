@@ -22,6 +22,11 @@
 	<?php echo $__env->renderComponent(); ?>
 	
 	<div class="container-fluid">
+		<div class="d-flex justify-content-end">
+			<div class="px-1 mb-3">
+				<a href="<?php echo e(route('invoices.index')); ?>" class="btn btn-md btn-secondary" title="Kembali">Kembali</a>
+			</div>
+		</div>
         <div class="row">
         </div>
 	    <div class="row">

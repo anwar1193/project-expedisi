@@ -6,6 +6,11 @@
 
 @push('css')
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/datatables.css') }}">
+<style>
+    .dataTables_wrapper {
+        overflow-x: auto;
+    }
+</style>
 @endpush
 
 @section('content')
@@ -40,6 +45,24 @@
     </nav>
 	
 	<div class="container-fluid">
+		<form class="d-flex flex-column col-12" role="search" action="" method="GET">
+			<div class="d-flex justify-content-end">
+                <div id="customer_id" class="px-2">
+                    <select name="kategori" class="form-control js-example-basic-single py-2">
+                        <option value="">Pilih Kategori</option>
+                        @foreach($jenis_pengeluaran as $item)
+                            <option value="{{ $item->id }}" {{ request('kategori') == $item->id ? 'selected' : '' }}>{{ $item->jenis_pengeluaran }}</option>
+                        @endforeach
+                    </select>
+                </div>
+				<div class="px-1">
+					<button type="submit" class="btn btn-primary" title="Cari"><i class="fa fa-search"></i> Cari</button>
+				</div>
+				<div class="px-1">
+					<a href="{{ route('daftar-pengeluaran') }}" class="btn btn-md btn-secondary" title="Reset"><i class="fa fa-refresh"></i> Reset</a>
+				</div>
+			</div>
+		</form>
         <div class="row">
         </div>
 	    <div class="row">
@@ -82,6 +105,9 @@
 										<th>Keterangan</th>
 	                                    <th>Jumlah Pembayaran</th>
 	                                    <th>Yang Menerima Pembayaran</th>
+										<th>Metode Pembayaran</th>
+	                                    <th>Yang Melakukan Pembayaran</th>
+
 	                                    <th>Status Pengeluaran</th>
 	                                    <th>Bukti Pembayaran</th>
 
@@ -100,6 +126,8 @@
 											<td>{{ $data->keterangan }}</td>
 											<td>{{ number_format($data->jumlah_pembayaran, 0, '.', ',') }}</td>
 											<td>{{ $data->yang_menerima }}</td>
+											<td>{{ $data->metode_pembayaran }}</td>
+											<td>{{ $data->yang_membayar }}</td>
 											<td>
 												<span class="badge {{ $data->status_pengeluaran == 1 ? 'badge-primary' : 'badge-warning' }}">
 													<i class="fa {{ $data->status_pengeluaran == 1 ? 'fa-check' : 'fa-warning' }}"></i>
@@ -165,8 +193,32 @@
 	</div>
 	
 	@push('scripts')
+	<script>
+		$(document).ready(function() {
+			$('#basic-1').DataTable({
+				language: {
+					"emptyTable": "Tidak ada data yang tersedia pada tabel ini",
+					"info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+					"infoEmpty": "Menampilkan 0 sampai 0 dari 0 entri",
+					"infoFiltered": " (disaring dari _MAX_ entri keseluruhan)",
+					"lengthMenu": "Tampilkan _MENU_ entri",
+					"loadingRecords": "Sedang memuat...",
+					"processing": "Sedang memproses...",
+					"search": "Cari:",
+					"zeroRecords": "Tidak ditemukan data yang sesuai",
+					"paginate": {
+					"first": "Pertama",
+					"last": "Terakhir",
+					"next": "Selanjutnya",
+					"previous": "Sebelumnya"
+					},
+				},
+                scrollX: true,
+			});
+		})
+	</script>	
 	<script src="{{ asset('assets/js/datatable/datatables/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('assets/js/datatable/datatables/datatable.custom.js') }}"></script>
+    {{-- <script src="{{ asset('assets/js/datatable/datatables/datatable.custom.js') }}"></script> --}}
 	@foreach ($datas as $data)
 		<script>
 			$('#view-bukti'+{{ $data->id }}).hide();

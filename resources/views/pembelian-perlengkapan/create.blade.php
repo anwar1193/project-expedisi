@@ -72,7 +72,7 @@
 								<div class="col">
 									<div class="mb-3">
 										<label class="form-label" for="">Jumlah</label>
-										<input class="form-control @error('jumlah') is-invalid @enderror" type="number" name="jumlah" autocomplete="off" value="{{ old('jumlah') }}"/>
+										<input class="form-control @error('jumlah') is-invalid @enderror" type="text" name="jumlah" autocomplete="off" value="{{ old('jumlah') }}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
 
 										@error('jumlah')
 										<div class="text-danger">
@@ -87,7 +87,7 @@
 								<div class="col">
 									<div class="mb-3">
 										<label class="form-label" for="">Harga Total</label>
-										<input class="form-control @error('harga') is-invalid @enderror" type="number" name="harga" autocomplete="off" value="{{ old('harga') }}"/>
+										<input class="form-control @error('harga') is-invalid @enderror" type="text" name="harga" autocomplete="off" value="{{ old('harga') }}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
 
 										@error('harga')
 										<div class="text-danger">
@@ -142,6 +142,24 @@
 	@push('scripts')
     <script src="{{ asset('assets/js/select2/select2.full.min.js') }}"></script>
     <script src="{{ asset('assets/js/select2/select2-custom.js') }}"></script>
+	<script>
+		document.addEventListener('input', function (e) {
+			if (e.target.name === 'harga') {
+				const typedValue = e.target.value;
+				const formattedValue = new Intl.NumberFormat('id-ID').format(typedValue);
+				const displayElement = e.target.parentNode.querySelector('.typed-value');
+				
+				if (displayElement) {
+					displayElement.innerHTML = 'Number Format: <strong>RP. ' + formattedValue + '</strong>';
+				} else {
+					const newDisplayElement = document.createElement('div');
+					newDisplayElement.className = 'typed-value';
+					newDisplayElement.innerHTML = 'Number Format: <strong>RP. ' + formattedValue + '</strong>';
+					e.target.parentNode.appendChild(newDisplayElement);
+				}
+			}
+		});
+	</script>
 	@endpush
 
 @endsection

@@ -94,6 +94,11 @@
                                         <div class="col-2">:</div>
                                         <div class="col-4"><?php echo e($data->status_pengiriman); ?></div>
                                     </div>
+                                    <div class="row d-flex py-1 text-start justify-content-start">
+                                        <div class="col-6">Diinput Oleh</div>
+                                        <div class="col-2">:</div>
+                                        <div class="col-4"><?php echo e($data->input_by); ?></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
