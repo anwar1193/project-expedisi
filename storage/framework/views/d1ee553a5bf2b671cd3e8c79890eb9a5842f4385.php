@@ -115,7 +115,9 @@
 
 															<a class="dropdown-item" href="<?php echo e(route('customers.delete', $data->id)); ?>" onclick="return confirm('Apakah Anda Yakin?')"><span><i class="pt-2 pe-2" data-feather="delete"></i> Delete</span></a>
 
-															<a class="dropdown-item" href="<?php echo e(route('customers.approval', $data->id)); ?>" onclick="return confirm('Approve Data Customer Ini?')"><span><i data-feather="check-square"></i> Approve</span></a>
+															<?php if($data->status == false && isAdmin()): ?>
+																<a class="dropdown-item" href="<?php echo e(route('customers.approval', $data->id)); ?>" onclick="return confirm('Approve Data Customer Ini?')"><span><i data-feather="check-square"></i> Approve</span></a>
+															<?php endif; ?>
 															
 														</div>
 														<?php echo $__env->make('customers.detail', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
