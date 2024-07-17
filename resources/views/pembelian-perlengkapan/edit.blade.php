@@ -124,6 +124,10 @@
 											{{ $message }}
 										</div>
 										@enderror
+										<a class="btn btn-primary" href="{{ $pembelian->nota }}" target="_blank" title="View Full Image">
+											<img src="{{ $pembelian->view_nota }}" alt="" width="300px" class="img-fluid mt-2">
+										</a>
+
 									</div>
 								</div>
 							</div>

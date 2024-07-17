@@ -213,6 +213,10 @@ $message = $__bag->first($__errorArgs[0]); ?>
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
+										<a class="btn btn-primary" href="<?php echo e($pembelian->nota); ?>" target="_blank" title="View Full Image">
+											<img src="<?php echo e($pembelian->view_nota); ?>" alt="" width="300px" class="img-fluid mt-2">
+										</a>
+
 									</div>
 								</div>
 							</div>

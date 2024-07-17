@@ -65,6 +65,9 @@ class PembelianPerlengkapanController extends Controller
     public function edit($id)
     {
         $pembelian = PembelianPerlengkapan::findOrFail($id);
+        $explode = explode("/", $pembelian->nota);
+        $bukti_pembayaran_view = 'https://'.$explode[2].'/thumbnail?id='.$explode[5];
+        $pembelian->view_nota = $bukti_pembayaran_view;
         $perlengkapans = Perlengkapan::orderBy('id', 'DESC')->get();
         $suppliers = Supplier::orderBy('id', 'DESC')->get();
 
