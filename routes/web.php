@@ -180,7 +180,8 @@ Route::middleware("auth")->group(function() {
         Route::post('/approve-selected', [DataPengirimanController::class, 'approveSelected'])->name('data-pengiriman.approve-selected');
         Route::post('/status-pengiriman/import-excel', [DataPengirimanController::class, 'import_status_pengiriman'])->name('status-pengiriman.import_excel');
         Route::post('/konfimasi-excel', [DataPengirimanController::class, 'konfimasiExcel'])->name('data-pengiriman.konfimasi-excel');
-        Route::post('/prose-konfirmasi-excel', [DataPengirimanController::class, 'proses_hasil_import'])->name('data-pengiriman.proses-konfimasi-excel');
+        Route::post('/proses-konfirmasi-excel', [DataPengirimanController::class, 'proses_hasil_import'])->name('data-pengiriman.proses-konfimasi-excel');
+        Route::get('/download-resi', [DataPengirimanController::class, 'download_resi'])->name('data-pengiriman.download-resi');
     });
     
     Route::prefix('daftar-pengeluaran')->group(function () {

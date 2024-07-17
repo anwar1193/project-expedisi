@@ -26,7 +26,7 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-light  text-white" type="button" data-bs-dismiss="modal">Kembali</button>
-                    <a href="excel_format/StatusPengiriman.xlsx" class="btn btn-warning">Download Format</a>
+                    <a href="{{ route('data-pengiriman.download-resi') }}" class="btn btn-warning">Download Data Resi</a>
                     <button class="btn btn-primary text-white" type="submit">Update</button>
                 </div>
             </form>

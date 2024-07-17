@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\StatusPengirimanExport;
 use App\Helpers\Helper;
 use App\Imports\DataPengirimanImport;
 use App\Imports\StatusPengirimanImport;
@@ -373,6 +374,11 @@ class DataPengirimanController extends Controller
         }
     
         return redirect()->route('data-pengiriman')->with('success', 'Data Pengiriman Berhasil Disimpan');
+    }
+
+    public function download_resi()
+    {
+        return Excel::download(new StatusPengirimanExport, 'StatusPengiriman.xlsx');
     }
 }
 
