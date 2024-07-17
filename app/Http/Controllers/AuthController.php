@@ -39,6 +39,10 @@ class AuthController extends Controller
             return back()->withErrors(["login" => "Username tidak ditemukan"])->withInput();
         }
 
+        if ($user->status == 2) {
+            return back()->withErrors(["login" => "Akun pengguna tidak aktif, silahkan hubungi admin."])->withInput();
+        }
+
         if(Hash::check($request->password, $user->password) === FALSE) {
             return back()->withErrors(["login" => "Password salah"])->withInput();
         }
@@ -119,7 +123,7 @@ class AuthController extends Controller
                     'nomor_telepon' => $request->no_wa,
                     'user_level' => 3,
                     'password' => Hash::make($request->password),
-                    'status' => 0
+                    'status' => 2
                 ]);
             }
 
