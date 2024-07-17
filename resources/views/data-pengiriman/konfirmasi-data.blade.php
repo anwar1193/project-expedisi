@@ -216,6 +216,7 @@
                                                 </td>
                                                 <td>
                                                     <select name="metode_pembayaran[]" class="form-control @error('metode_pembayaran') is-invalid @enderror js-example-basic-single" id="metodePembayaran">
+                                                        <option value="">-Pilih-</option>
                                                         @foreach ($metode as $item)
                                                             <option value="{{ $item->metode }}" {{ strtolower($row['metode_pembayaran']) == strtolower($item->metode) ? 'selected' : '' }}>
                                                                 {{ $item->metode }} 
@@ -231,15 +232,12 @@
                                                 </td>
                                                 <td>
                                                     <select name="bank[]" class="form-control @error('bank') is-invalid @enderror js-example-basic-single" id="bankSelect">
-                                                        @if ($row['metode_pembayaran'] != 'Transfer')
-                                                            <option value="">-</option>
-                                                        @else
-                                                            @foreach ($bank as $item)
-                                                                <option value="{{ $item->bank }}" {{ $row['bank']== $item->bank ? 'selected' : '' }}>
-                                                                    {{ $item->bank }}
-                                                                </option>
-                                                            @endforeach
-                                                        @endif
+                                                        <option value="">-Pilih-</option>
+                                                        @foreach ($bank as $item)
+                                                            <option value="{{ $item->bank }}" {{ $row['bank']== $item->bank ? 'selected' : '' }}>
+                                                                {{ $item->bank }}
+                                                            </option>
+                                                        @endforeach
                                                     </select>
 
                                                     @error('bank[]')
@@ -249,7 +247,7 @@
                                                     @enderror
                                                 </td>
                                                 <td>
-                                                    <input class="@error('bukti_pembayaran') is-invalid @enderror" type="text" name="bukti_pembayaran[]" value="{{ $row['bukti_pembayaran'] }}" {{ $row['metode_pembayaran'] != 'Transfer' ? 'readonly' : '' }}> 
+                                                    <input id="bukti_pembayaran" class="@error('bukti_pembayaran') is-invalid @enderror" type="text" name="bukti_pembayaran[]" value="{{ $row['bukti_pembayaran'] }}"> 
 
                                                     @error('bukti_pembayaran[]')
                                                         <div class="text-danger">
@@ -350,18 +348,19 @@
 			});
 
             $('#metodePembayaran').on('change', function() {
-            var selectedMethod = $(this).val();
-            var bankSelect = $('#bankSelect');
-            bankSelect.empty(); // Kosongkan opsi bank
+                var selectedMethod = $(this).val();
+                var bankSelect = $('#bankSelect');
+                var buktiPembayaran = $('#bukti_pembayaran');
+                bankSelect.empty();
 
-            if (selectedMethod === 'Transfer') {
-                @foreach ($bank as $item)
-                    bankSelect.append(new Option('{{ $item->bank }}', '{{ $item->bank }}', false, false));
-                @endforeach
-            } else {
-                bankSelect.append(new Option('-', '', false, false));
-            }
-        }).trigger('change');
+                if (selectedMethod === 'Transfer') {
+                    @foreach ($bank as $item)
+                        bankSelect.append(new Option('{{ $item->bank }}', '{{ $item->bank }}', false, false));
+                    @endforeach
+                } else {
+                    bankSelect.append(new Option('-', '', false, false));
+                }
+            }).trigger('change');
 		})
 	</script>	
 	@endpush

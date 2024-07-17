@@ -406,6 +406,7 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?> js-example-basic-single" id="metodePembayaran">
+                                                        <option value="">-Pilih-</option>
                                                         <?php $__currentLoopData = $metode; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                             <option value="<?php echo e($item->metode); ?>" <?php echo e(strtolower($row['metode_pembayaran']) == strtolower($item->metode) ? 'selected' : ''); ?>>
                                                                 <?php echo e($item->metode); ?> 
@@ -436,16 +437,13 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?> js-example-basic-single" id="bankSelect">
-                                                        <?php if($row['metode_pembayaran'] != 'Transfer'): ?>
-                                                            <option value="">-</option>
-                                                        <?php else: ?>
-                                                            <?php $__currentLoopData = $bank; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                                <option value="<?php echo e($item->bank); ?>" <?php echo e($row['bank']== $item->bank ? 'selected' : ''); ?>>
-                                                                    <?php echo e($item->bank); ?>
+                                                        <option value="">-Pilih-</option>
+                                                        <?php $__currentLoopData = $bank; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                            <option value="<?php echo e($item->bank); ?>" <?php echo e($row['bank']== $item->bank ? 'selected' : ''); ?>>
+                                                                <?php echo e($item->bank); ?>
 
-                                                                </option>
-                                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                                        <?php endif; ?>
+                                                            </option>
+                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                     </select>
 
                                                     <?php $__errorArgs = ['bank[]'];
@@ -463,14 +461,14 @@ endif;
 unset($__errorArgs, $__bag); ?>
                                                 </td>
                                                 <td>
-                                                    <input class="<?php $__errorArgs = ['bukti_pembayaran'];
+                                                    <input id="bukti_pembayaran" class="<?php $__errorArgs = ['bukti_pembayaran'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>" type="text" name="bukti_pembayaran[]" value="<?php echo e($row['bukti_pembayaran']); ?>" <?php echo e($row['metode_pembayaran'] != 'Transfer' ? 'readonly' : ''); ?>> 
+unset($__errorArgs, $__bag); ?>" type="text" name="bukti_pembayaran[]" value="<?php echo e($row['bukti_pembayaran']); ?>"> 
 
                                                     <?php $__errorArgs = ['bukti_pembayaran[]'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -639,18 +637,22 @@ unset($__errorArgs, $__bag); ?>
 			});
 
             $('#metodePembayaran').on('change', function() {
-            var selectedMethod = $(this).val();
-            var bankSelect = $('#bankSelect');
-            bankSelect.empty(); // Kosongkan opsi bank
+                var selectedMethod = $(this).val();
+                var bankSelect = $('#bankSelect');
+                var buktiPembayaran = $('#bukti_pembayaran');
+                bankSelect.empty();
 
-            if (selectedMethod === 'Transfer') {
-                <?php $__currentLoopData = $bank; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    bankSelect.append(new Option('<?php echo e($item->bank); ?>', '<?php echo e($item->bank); ?>', false, false));
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-            } else {
-                bankSelect.append(new Option('-', '', false, false));
-            }
-        }).trigger('change');
+                if (selectedMethod === 'Transfer') {
+                    <?php $__currentLoopData = $bank; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        bankSelect.append(new Option('<?php echo e($item->bank); ?>', '<?php echo e($item->bank); ?>', false, false));
+                        buktiPembayaran.attr('readonly', false);
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                } else {
+                    bankSelect.append(new Option('-', '', false, false));
+                    buktiPembayaran.val('');
+                    buktiPembayaran.attr('readonly', true);
+                }
+            }).trigger('change');
 		})
 	</script>	
 	<?php $__env->stopPush(); ?>
