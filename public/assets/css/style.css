@@ -20350,7 +20350,8 @@ body.dark-only {
     background-color: #202938;
     border: 1px solid rgba(36, 105, 92, 0.2); }
   body.dark-only .select2-container--default .select2-selection--multiple, body.dark-only .select2-container--default .select2-selection--single {
-    background-color: #202938;
+    background-color: black;
+    /* background-color: #202938; */
     border: 1px solid rgba(36, 105, 92, 0.2) !important; }
   body.dark-only .select2-container--default .select2-search--inline .select2-search__field {
     color: rgba(255, 255, 255, 0.7); }

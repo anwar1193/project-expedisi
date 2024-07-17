@@ -645,12 +645,9 @@ unset($__errorArgs, $__bag); ?>
                 if (selectedMethod === 'Transfer') {
                     <?php $__currentLoopData = $bank; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         bankSelect.append(new Option('<?php echo e($item->bank); ?>', '<?php echo e($item->bank); ?>', false, false));
-                        buktiPembayaran.attr('readonly', false);
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 } else {
                     bankSelect.append(new Option('-', '', false, false));
-                    buktiPembayaran.val('');
-                    buktiPembayaran.attr('readonly', true);
                 }
             }).trigger('change');
 		})

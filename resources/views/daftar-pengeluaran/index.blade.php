@@ -10,6 +10,9 @@
     .dataTables_wrapper {
         overflow-x: auto;
     }
+	.select2-container--default .select2-selection--single .select2-selection__rendered {
+		background-color: black;
+	}
 </style>
 @endpush
 
@@ -45,7 +48,7 @@
     </nav>
 	
 	<div class="container-fluid">
-		<form class="d-flex flex-column col-12" role="search" action="" method="GET">
+		<form class="d-flex flex-column col-12 mb-2" role="search" action="" method="GET">
 			<div class="d-flex justify-content-end">
                 <div id="customer_id" class="px-2">
                     <select name="kategori" class="form-control js-example-basic-single py-2">
