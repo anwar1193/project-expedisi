@@ -12,8 +12,8 @@ class PembelianPerlengkapanController extends Controller
 {
     public function index()
     {
-        $pembelians = PembelianPerlengkapan::join('perlengkapans', 'pembelian_perlengkapans.id_perlengkapan', '=', 'perlengkapans.id')
-            ->join('suppliers', 'pembelian_perlengkapans.id_supplier', '=', 'suppliers.id')
+        $pembelians = PembelianPerlengkapan::leftjoin('perlengkapans', 'pembelian_perlengkapans.id_perlengkapan', '=', 'perlengkapans.id')
+            ->leftjoin('suppliers', 'pembelian_perlengkapans.id_supplier', '=', 'suppliers.id')
             ->select(
                 'pembelian_perlengkapans.id', 
                 'pembelian_perlengkapans.tanggal_pembelian', 
