@@ -112,7 +112,7 @@
                                                     <select name="input_by[]" class="form-control @error('input_by') is-invalid @enderror js-example-basic-single" required="">
                                                         <option value="">-Pilih-</option>
                                                         @foreach ($kasir as $item)
-                                                            <option value="{{ $item->nama }}">
+                                                            <option value="{{ $item->nama }}" {{ strtolower($row['diinput_oleh']) == strtolower($item->nama) ? 'selected' : '' }}>
                                                                 {{ $item->nama }}
                                                             </option>
                                                         @endforeach
@@ -217,7 +217,7 @@
                                                 <td>
                                                     <select name="metode_pembayaran[]" class="form-control @error('metode_pembayaran') is-invalid @enderror js-example-basic-single" id="metodePembayaran">
                                                         @foreach ($metode as $item)
-                                                            <option value="{{ $item->metode }}" {{ $row['metode_pembayaran']== $item->metode ? 'selected' : '' }}>
+                                                            <option value="{{ $item->metode }}" {{ strtolower($row['metode_pembayaran']) == strtolower($item->metode) ? 'selected' : '' }}>
                                                                 {{ $item->metode }} 
                                                             </option>
                                                         @endforeach

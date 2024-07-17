@@ -150,7 +150,7 @@ endif;
 unset($__errorArgs, $__bag); ?> js-example-basic-single" required="">
                                                         <option value="">-Pilih-</option>
                                                         <?php $__currentLoopData = $kasir; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                            <option value="<?php echo e($item->nama); ?>">
+                                                            <option value="<?php echo e($item->nama); ?>" <?php echo e(strtolower($row['diinput_oleh']) == strtolower($item->nama) ? 'selected' : ''); ?>>
                                                                 <?php echo e($item->nama); ?>
 
                                                             </option>
@@ -407,7 +407,7 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?> js-example-basic-single" id="metodePembayaran">
                                                         <?php $__currentLoopData = $metode; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                            <option value="<?php echo e($item->metode); ?>" <?php echo e($row['metode_pembayaran']== $item->metode ? 'selected' : ''); ?>>
+                                                            <option value="<?php echo e($item->metode); ?>" <?php echo e(strtolower($row['metode_pembayaran']) == strtolower($item->metode) ? 'selected' : ''); ?>>
                                                                 <?php echo e($item->metode); ?> 
                                                             </option>
                                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>

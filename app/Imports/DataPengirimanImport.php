@@ -55,6 +55,7 @@ class DataPengirimanImport implements ToArray, WithValidation, WithHeadingRow
             $formattedData[] = [
                 'no_resi' => $row['no_resi'],
                 'tgl_transaksi' => Date::excelToDateTimeObject($row['tgl_transaksi'])->format('Y-m-d'), // Assuming tgl_transaksi is in the row data
+                'diinput_oleh' => $row['diinput_oleh'],
                 'kode_customer' => $row['kode_customer'],
                 'nama_pengirim' => $row['nama_pengirim'],
                 'nama_penerima' => $row['nama_penerima'],
