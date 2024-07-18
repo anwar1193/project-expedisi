@@ -88,7 +88,7 @@
 								<div class="col">
 									<div class="mb-3">
 										<label class="form-label" for="">Nomor Telepon</label>
-										<input class="form-control @error('nomor_telepon') is-invalid @enderror" type="text" placeholder="08xxxxxxxx" type="text" name="nomor_telepon" autocomplete="off" value="{{ old('nomor_telepon', $user->nomor_telepon) }}"/>
+										<input class="form-control @error('nomor_telepon') is-invalid @enderror" type="text" placeholder="Contoh: 08xxxxxxxx" type="text" name="nomor_telepon" autocomplete="off" value="{{ old('nomor_telepon', $user->nomor_telepon) }}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
 
 										@error('email')
 										<div class="text-danger">
@@ -100,7 +100,7 @@
 							</div>
 
 							<div class="row">
-								<div class="col-3">
+								<div class="col">
 									<div class="mb-3">
 										<label class="form-label" for="">User Level</label>
 										<select name="user_level" id="user_level" class="form-control @error('user_level') is-invalid @enderror js-example-basic-single">
@@ -122,7 +122,7 @@
 							</div>
 
 							<div class="row">
-								<div class="col-3">
+								<div class="col">
 									<div class="mb-3">
 										<label class="form-label" for="">Status</label>
 										<select name="status" id="status" class="form-control @error('status') is-invalid @enderror js-example-basic-single">
