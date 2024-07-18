@@ -77,7 +77,7 @@ if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>" type="text" placeholder="08xxxxxxxx" name="nomor_hp" autocomplete="off" value="<?php echo e(old('nomor_hp')); ?>"/>
+unset($__errorArgs, $__bag); ?>" type="text" placeholder="Contoh: 08xxxxxxxx" name="nomor_hp" autocomplete="off" value="<?php echo e(old('nomor_hp')); ?>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
 
 										<?php $__errorArgs = ['nomor_hp'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');

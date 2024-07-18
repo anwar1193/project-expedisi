@@ -128,7 +128,7 @@ if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>" type="text" type="text" placeholder="08xxxxxxxxxx" name="nomor_telepon" autocomplete="off" value="<?php echo e(old('nomor_telepon')); ?>"/>
+unset($__errorArgs, $__bag); ?>" type="text" type="text" placeholder="Contoh: 08xxxxxxxxxx" name="nomor_telepon" autocomplete="off" value="<?php echo e(old('nomor_telepon')); ?>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
 
 										<?php $__errorArgs = ['nomor_telepon'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -148,7 +148,7 @@ unset($__errorArgs, $__bag); ?>
 							</div>
 
 							<div class="row">
-								<div class="col-3">
+								<div class="col">
 									<div class="mb-3">
 										<label class="form-label" for="">User Level</label>
 										<select name="user_level" id="user_level" class="form-control <?php $__errorArgs = ['user_level'];
