@@ -58,7 +58,8 @@ class GoogleAuthController extends Controller
                     'email' => $auth->getEmail(),
                     'no_wa' => "0801010101010",
                     'alamat' => 'Indonesia',
-                    'username' => $auth->getName()
+                    'username' => $auth->getName(),
+                    'status' => 1
                 ]);
 
                 $new_user = User::create([
