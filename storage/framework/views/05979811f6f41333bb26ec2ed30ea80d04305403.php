@@ -83,7 +83,7 @@ if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>" id="no_wa" type="text" name="no_wa" value="<?php echo e(old('no_wa', $customer->no_wa)); ?>" />
+unset($__errorArgs, $__bag); ?>" id="no_wa" type="text" name="no_wa" value="<?php echo e(old('no_wa', $customer->no_wa)); ?>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
 
 									<?php $__errorArgs = ['no_wa'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
