@@ -25,7 +25,8 @@ class GoogleAuthController extends Controller
         // $next_year = date('Y-m-d H:i:s', strtotime('+1 year'));
 
         $auth = Socialite::driver('google')->stateless()->user();
-        $user = User::where('google_id', $auth->getId())->first();
+        // $user = User::where('google_id', $auth->getId())->first();
+        $user = User::where('email', $auth->getEmail())->first();
 
         Session::regenerate();
         // Session::put('id', $user->id ?? $auth->getId());
