@@ -61,6 +61,7 @@ class CustomerController extends Controller
             ]);
 
             $request['kode_customer'] = $kode_customer;
+            $request['status'] = 1;
 
             Customer::create($request->all());
 
