@@ -12,6 +12,7 @@ use App\Helpers\Helper;
 use Illuminate\Support\Facades\Session;
 use PDF;
 use App\Exports\UserExport;
+use App\Models\Customer;
 use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
@@ -204,11 +205,21 @@ class UserController extends Controller
 
     public function update_profile(Request $request)
     {
+        $user = User::where('id', '=', $request->id)->first();
+        $customer = Customer::where('username', $user->username)->first();
+
         User::where('id', '=', $request->id)->update([
             'nama' => $request->nama,
             'username' => $request->username,
             'email' => $request->email
         ]);
+        
+        if ($customer) {
+            $customer->nama = $request->nama;
+            $customer->username = $request->username;
+            $customer->email = $request->email;
+            $customer->save();
+        }
 
         Helper::logActivity('Ubah profile pengguna dengan username : '.$request->username);
 
