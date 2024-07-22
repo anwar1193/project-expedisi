@@ -1,6 +1,7 @@
 @if (Session::get('user_level') != 3)
     @php
         $notificationData = getNotification();
+        $notificationPengeluaran = getNotifPengeluaran();
         $tema = Session::get("tema");
     @endphp
 @endif
@@ -11,7 +12,42 @@
         document.addEventListener("DOMContentLoaded", function() {
             swal({
                 title: "You have notification!",
-                text: "{{ $notificationData['text_notif'] }}",
+                text: "{{ $notificationData['text_notif'] }} dan {{ $notificationPengeluaran['text_notif'] }}",
+                icon: "info",
+                buttons: {
+                          confirm: {
+                              text: "Lihat Data",
+                              value: true,
+                              name: 'notif',
+                              visible: true,
+                              className: "bg-danger",
+                              closeModal: true
+                          },
+                          cancel: {
+                              text: "Tutup",
+                              value: null,
+                              visible: true,
+                              className: "",
+                              closeModal: true,
+                          }
+                        }
+            }).then((value) => {
+              console.log(value);
+                if (value) {
+                    window.location.href = "{{ route('data-pengiriman', ['notif' => 1]) }}";
+                }
+            });
+        });
+    </script>
+@endif
+
+{{-- @if (Session::get('user_level') != 3 && isset($notificationPengeluaran) && $notificationPengeluaran['jumlah'] != 0)
+    <script src="{{ asset('assets/js/sweet-alert/sweetalert.min.js') }}"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            swal({
+                title: "You have notification!",
+                text: "{{ $notificationPengeluaran['text_notif'] }}",
                 icon: "info",
                 buttons: {
                           confirm: {
@@ -32,12 +68,12 @@
                         }
             }).then((value) => {
                 if (value) {
-                    window.location.href = "{{ route('data-pengiriman', ['notif' => 1]) }}";
+                    window.location.href = "{{ route('pengeluaran-cash') }}";
                 }
             });
         });
     </script>
-@endif
+@endif --}}
 
 @extends('layouts.admin.master')
 

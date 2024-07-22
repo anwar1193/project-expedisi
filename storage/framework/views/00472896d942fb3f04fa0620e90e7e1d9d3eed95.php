@@ -1,6 +1,7 @@
 <?php if(Session::get('user_level') != 3): ?>
     <?php
         $notificationData = getNotification();
+        $notificationPengeluaran = getNotifPengeluaran();
         $tema = Session::get("tema");
     ?>
 <?php endif; ?>
@@ -11,7 +12,7 @@
         document.addEventListener("DOMContentLoaded", function() {
             swal({
                 title: "You have notification!",
-                text: "<?php echo e($notificationData['text_notif']); ?>",
+                text: "<?php echo e($notificationData['text_notif']); ?> dan <?php echo e($notificationPengeluaran['text_notif']); ?>",
                 icon: "info",
                 buttons: {
                           confirm: {
@@ -31,6 +32,7 @@
                           }
                         }
             }).then((value) => {
+              console.log(value);
                 if (value) {
                     window.location.href = "<?php echo e(route('data-pengiriman', ['notif' => 1])); ?>";
                 }
@@ -38,6 +40,8 @@
         });
     </script>
 <?php endif; ?>
+
+
 
 
 

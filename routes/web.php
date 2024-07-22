@@ -301,8 +301,21 @@ Route::middleware("auth")->group(function() {
 
     Route::prefix('posisi-cash')->group(function() {
         Route::get('/', [CashController::class, 'index'])->name('posisi-cash');
+        Route::get('/history-pengeluaran', [CashController::class, 'history_pengeluaran'])->name('posisi-cash.history-pengeluaran');
+        Route::get('/export/history-pengeluaran', [CashController::class, 'export_pengeluaran'])->name('posisi-cash.export-pengeluaran');
+        Route::get('/history-pemasukan', [CashController::class, 'history_pemasukan'])->name('posisi-cash.history-pemasukan');
+        Route::get('/export/history-pemasukan', [CashController::class, 'export_pemasukan'])->name('posisi-cash.export-pemasukan');
+        Route::get('/history-saldo', [CashController::class, 'history_saldo'])->name('posisi-cash.history-saldo');
+        Route::get('/export/history-saldo', [CashController::class, 'export_saldo'])->name('posisi-cash.export-saldo');
         Route::post('/pemasukan', [CashController::class, 'pemasukan_cash'])->name('posisi-cash.pemasukan');
         Route::post('/pengeluaran', [CashController::class, 'pengeluaran_cash'])->name('posisi-cash.pengeluaran');
+        Route::post('/closing-saldo', [CashController::class, 'closing_cash'])->name('posisi-cash.closing');
+        Route::get('/approve/{id}', [CashController::class, 'approve'])->name('posisi-cash.approve');
+        Route::post('/approve-selected', [CashController::class, 'approveSelected'])->name('posisi-cash.approveSelected');
+    });
+
+    Route::prefix('pengeluaran-cash')->group(function() {
+        Route::get('/', [CashController::class, 'data_pengeluaran_cash'])->name('pengeluaran-cash');
     });
 
     Route::get('user-level', [UserController::class, 'listLevel'])->name('level');

@@ -23,7 +23,7 @@
                     <div class="card-header">
                         <h5>Silahkan Periksa Data Yang Diimport Terlebih Dahulu</h5>
                     </div>
-                    <form method="POST" action="<?php echo e(route('data-pengiriman.proses-konfimasi-excel')); ?>">
+                    <form id="myForm" method="POST" action="<?php echo e(route('data-pengiriman.proses-konfimasi-excel')); ?>">
                         <?php echo csrf_field(); ?>
                         <div class="card-body">
                             <?php if(session()->has('error') && is_string(session('error'))): ?>
@@ -414,6 +414,27 @@ unset($__errorArgs, $__bag); ?> js-example-basic-single" id="metodePembayaran">
                                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                     </select>
 
+                                                    <input class="form-check-input" id="tambahPembayaran[]" type="checkbox" name="tambahPembayaran[]" />
+												    <label class="form-check-label" for="tambahPembayaran[]">Tambah</label>
+
+                                                    <div id="additionalPaymentOptions" style="display: none;">
+                                                        <select name="metode_pembayaran2[]" class="form-control <?php $__errorArgs = ['metode_pembayaran'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?> js-example-basic-single" id="metodePembayaran2">
+                                                            <option value="">-Pilih-</option>
+                                                            <?php $__currentLoopData = $metode; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                <option value="<?php echo e($item->metode); ?>" <?php echo e(strtolower($row['metode_pembayaran']) == strtolower($item->metode) ? 'selected' : ''); ?>>
+                                                                    <?php echo e($item->metode); ?> 
+                                                                </option>
+                                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                        </select>
+                                                    </div>
+
                                                     <?php $__errorArgs = ['metode_pembayaran[]'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -437,6 +458,23 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?> js-example-basic-single" id="bankSelect">
+                                                        <option value="">-Pilih-</option>
+                                                        <?php $__currentLoopData = $bank; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                            <option value="<?php echo e($item->bank); ?>" <?php echo e($row['bank']== $item->bank ? 'selected' : ''); ?>>
+                                                                <?php echo e($item->bank); ?>
+
+                                                            </option>
+                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                    </select>
+                                                    
+                                                    <select name="bank2[]" class="form-control <?php $__errorArgs = ['bank'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?> js-example-basic-single" id="bankSelect2">
                                                         <option value="">-Pilih-</option>
                                                         <?php $__currentLoopData = $bank; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                             <option value="<?php echo e($item->bank); ?>" <?php echo e($row['bank']== $item->bank ? 'selected' : ''); ?>>
@@ -469,6 +507,14 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>" type="text" name="bukti_pembayaran[]" value="<?php echo e($row['bukti_pembayaran']); ?>"> 
+                                                    <input id="bukti_pembayaran2" class="<?php $__errorArgs = ['bukti_pembayaran'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" type="text" name="bukti_pembayaran2[]" value="<?php echo e($row['bukti_pembayaran']); ?>"> 
 
                                                     <?php $__errorArgs = ['bukti_pembayaran[]'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -650,8 +696,18 @@ unset($__errorArgs, $__bag); ?>
                     bankSelect.append(new Option('-', '', false, false));
                 }
             }).trigger('change');
+
+            $('#tambahPembayaran').change(function() {
+                if ($(this).is(':checked')) {
+                    $('#additionalPaymentOptions').show();
+                } else {
+                    $('#additionalPaymentOptions').hide();
+                }
+            });
+
 		})
 	</script>	
+    <?php echo $__env->make('data-pengiriman.partial.form-validation', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 	<?php $__env->stopPush(); ?>
 
 <?php $__env->stopSection(); ?>
