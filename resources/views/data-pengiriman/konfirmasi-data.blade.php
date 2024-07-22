@@ -24,7 +24,7 @@
                     <div class="card-header">
                         <h5>Silahkan Periksa Data Yang Diimport Terlebih Dahulu</h5>
                     </div>
-                    <form method="POST" action="{{ route('data-pengiriman.proses-konfimasi-excel') }}">
+                    <form id="myForm" method="POST" action="{{ route('data-pengiriman.proses-konfimasi-excel') }}">
                         @csrf
                         <div class="card-body">
                             @if (session()->has('error') && is_string(session('error')))
@@ -224,6 +224,20 @@
                                                         @endforeach
                                                     </select>
 
+                                                    <input class="form-check-input" id="tambahPembayaran[]" type="checkbox" name="tambahPembayaran[]" />
+												    <label class="form-check-label" for="tambahPembayaran[]">Tambah</label>
+
+                                                    <div id="additionalPaymentOptions" style="display: none;">
+                                                        <select name="metode_pembayaran2[]" class="form-control @error('metode_pembayaran') is-invalid @enderror js-example-basic-single" id="metodePembayaran2">
+                                                            <option value="">-Pilih-</option>
+                                                            @foreach ($metode as $item)
+                                                                <option value="{{ $item->metode }}" {{ strtolower($row['metode_pembayaran']) == strtolower($item->metode) ? 'selected' : '' }}>
+                                                                    {{ $item->metode }} 
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+
                                                     @error('metode_pembayaran[]')
                                                         <div class="text-danger">
                                                             {{ $message }}
@@ -232,6 +246,15 @@
                                                 </td>
                                                 <td>
                                                     <select name="bank[]" class="form-control @error('bank') is-invalid @enderror js-example-basic-single" id="bankSelect">
+                                                        <option value="">-Pilih-</option>
+                                                        @foreach ($bank as $item)
+                                                            <option value="{{ $item->bank }}" {{ $row['bank']== $item->bank ? 'selected' : '' }}>
+                                                                {{ $item->bank }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                    
+                                                    <select name="bank2[]" class="form-control @error('bank') is-invalid @enderror js-example-basic-single" id="bankSelect2">
                                                         <option value="">-Pilih-</option>
                                                         @foreach ($bank as $item)
                                                             <option value="{{ $item->bank }}" {{ $row['bank']== $item->bank ? 'selected' : '' }}>
@@ -248,6 +271,7 @@
                                                 </td>
                                                 <td>
                                                     <input id="bukti_pembayaran" class="@error('bukti_pembayaran') is-invalid @enderror" type="text" name="bukti_pembayaran[]" value="{{ $row['bukti_pembayaran'] }}"> 
+                                                    <input id="bukti_pembayaran2" class="@error('bukti_pembayaran') is-invalid @enderror" type="text" name="bukti_pembayaran2[]" value="{{ $row['bukti_pembayaran'] }}"> 
 
                                                     @error('bukti_pembayaran[]')
                                                         <div class="text-danger">
@@ -361,8 +385,18 @@
                     bankSelect.append(new Option('-', '', false, false));
                 }
             }).trigger('change');
+
+            $('#tambahPembayaran').change(function() {
+                if ($(this).is(':checked')) {
+                    $('#additionalPaymentOptions').show();
+                } else {
+                    $('#additionalPaymentOptions').hide();
+                }
+            });
+
 		})
 	</script>	
+    @include('data-pengiriman.partial.form-validation')
 	@endpush
 
 @endsection
