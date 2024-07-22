@@ -228,19 +228,29 @@
                                                         @endforeach
                                                     </select>
 
-                                                    <input class="form-check-input" id="tambahPembayaran[]" type="checkbox" name="tambahPembayaran[]" />
-												    <label class="form-check-label" for="tambahPembayaran[]">Tambah</label>
+                                                    <div class="py-1">
+                                                        <input class="form-check-input tambahPembayaran" id="tambahPembayaran[]" type="checkbox" name="tambahPembayaran[]" />
+                                                        <label class="form-check-label" for="">Tambah</label>
+                                                    </div>
 
-                                                    <div id="additionalPaymentOptions" style="display: none;">
-                                                        <select name="metode_pembayaran2[]" class="form-control @error('metode_pembayaran')  @enderror js-example-basic-single" id="metodePembayaran2">
+                                                    <div class="additionalPaymentOptions pt-2" style="display: none;">
+                                                        <select name="metode_pembayaran_2[]" class="form-control js-example-basic-single metodePembayaran2">
                                                             <option value="">-Pilih-</option>
                                                             @foreach ($metode as $item)
-                                                                <option value="{{ $item->metode }}" {{ strtolower($row['metode_pembayaran']) == strtolower($item->metode) ? 'selected' : '' }}>
-                                                                    {{ $item->metode }} 
-                                                                </option>
+                                                            <option value="{{ $item->metode }}">
+                                                                {{ $item->metode }}
+                                                            </option>
                                                             @endforeach
                                                         </select>
                                                     </div>
+                                                    {{-- <select name="metode_pembayaran2[]" class="form-control @error('metode_pembayaran')  @enderror js-example-basic-single" id="metodePembayaran2">
+                                                        <option value="">-Pilih-</option>
+                                                        @foreach ($metode as $item)
+                                                            <option value="{{ $item->metode }}" {{ strtolower($row['metode_pembayaran']) == strtolower($item->metode) ? 'selected' : '' }}>
+                                                                {{ $item->metode }} 
+                                                            </option>
+                                                        @endforeach
+                                                    </select> --}}
 
                                                     @error('metode_pembayaran[]')
                                                         <div class="text-danger">
@@ -257,15 +267,26 @@
                                                             </option>
                                                         @endforeach
                                                     </select>
+
+                                                    <div class="additionalBankOptions pt-2" style="display: none;">
+                                                        <select name="bank_2[]" class="form-control js-example-basic-single bankSelect2">
+                                                            <option value="">-Pilih-</option>
+                                                            @foreach ($bank as $item)
+                                                            <option value="{{ $item->bank }}">
+                                                                {{ $item->bank }}
+                                                            </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
                                                     
-                                                    <select name="bank2[]" class="form-control @error('bank')  @enderror js-example-basic-single" id="bankSelect2">
+                                                    {{-- <select name="bank2[]" class="form-control @error('bank')  @enderror js-example-basic-single" id="bankSelect2">
                                                         <option value="">-Pilih-</option>
                                                         @foreach ($bank as $item)
                                                             <option value="{{ $item->bank }}" {{ $row['bank']== $item->bank ? 'selected' : '' }}>
                                                                 {{ $item->bank }}
                                                             </option>
                                                         @endforeach
-                                                    </select>
+                                                    </select> --}}
 
                                                     @error('bank[]')
                                                         <div class="text-danger">
@@ -275,8 +296,10 @@
                                                 </td>
                                                 <td>
                                                     <input id="bukti_pembayaran" class="@error('bukti_pembayaran')  @enderror" type="text" name="bukti_pembayaran[]" value="{{ $row['bukti_pembayaran'] }}"> 
-                                                    <input id="bukti_pembayaran2" class="@error('bukti_pembayaran')  @enderror" type="text" name="bukti_pembayaran2[]" value="{{ $row['bukti_pembayaran'] }}"> 
-
+                                                    
+                                                    <div class="additionalBuktiOptions pt-2" style="display: none;">
+                                                        <input id="bukti_pembayaran_2" class="@error('bukti_pembayaran')  @enderror" type="text" name="bukti_pembayaran_2[]" value="{{ old('bukti_pembayaran_2[]') }}"> 
+                                                    </div>
                                                     @error('bukti_pembayaran[]')
                                                         <div class="text-danger">
                                                             {{ $message }}
@@ -390,11 +413,16 @@
                 }
             }).trigger('change');
 
-            $('#tambahPembayaran').change(function() {
+            $('body').on('change', '.tambahPembayaran', function() {
+                var $row = $(this).closest('tr');
                 if ($(this).is(':checked')) {
-                    $('#additionalPaymentOptions').show();
+                    $row.find('.additionalPaymentOptions').show();
+                    $row.find('.additionalBankOptions').show();
+                    $row.find('.additionalBuktiOptions').show();
                 } else {
-                    $('#additionalPaymentOptions').hide();
+                    $row.find('.additionalPaymentOptions').hide();
+                    $row.find('.additionalBankOptions').hide();
+                    $row.find('.additionalBuktiOptions').hide();
                 }
             });
 
