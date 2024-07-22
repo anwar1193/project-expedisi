@@ -10,6 +10,10 @@
     .dataTables_wrapper {
         overflow-x: auto;
     }
+
+    .is-invalid {
+        border: 2px solid red;
+    }
 </style>
 @endpush
 
@@ -90,7 +94,7 @@
                                         @foreach ($formattedData as $row)
                                             <tr>
                                                 <td>
-                                                    <input class="@error('no_resi') is-invalid @enderror" type="text" name="no_resi[]" value="{{ $row['no_resi'] }}">
+                                                    <input class="@error('no_resi')  @enderror" type="text" name="no_resi[]" value="{{ $row['no_resi'] }}">
 
                                                     @error('no_resi[]')
                                                     <div class="text-danger">
@@ -99,7 +103,7 @@
                                                     @enderror
                                                 </td>
                                                 <td>
-                                                    <input class="@error('tgl_transaksi') is-invalid @enderror" type="date" name="tgl_transaksi[]" value="{{ $row['tgl_transaksi'] }}">
+                                                    <input class="@error('tgl_transaksi')  @enderror" type="date" name="tgl_transaksi[]" value="{{ $row['tgl_transaksi'] }}">
 
                                                     @error('tgl_transaksi[]')
                                                     <div class="text-danger">
@@ -109,7 +113,7 @@
                                                 </td>
 
                                                 <td>
-                                                    <select name="input_by[]" class="form-control @error('input_by') is-invalid @enderror js-example-basic-single" required="">
+                                                    <select name="input_by[]" class="form-control @error('input_by')  @enderror js-example-basic-single" required="">
                                                         <option value="">-Pilih-</option>
                                                         @foreach ($kasir as $item)
                                                             <option value="{{ $item->nama }}" {{ strtolower($row['diinput_oleh']) == strtolower($item->nama) ? 'selected' : '' }}>
@@ -126,7 +130,7 @@
                                                 </td>
 
                                                 <td>
-                                                    <select name="kode_customer[]" class="form-select @error('kode_customer') is-invalid @enderror js-example-basic-single" required="">
+                                                    <select name="kode_customer[]" class="form-select @error('kode_customer')  @enderror js-example-basic-single" required="">
                                                         <option value="">-Pilih-</option>
                                                         <option value="General" {{ $row['kode_customer'] == 'General' ? 'selected' : '' }}> General </option>
                                                         @foreach ($customer as $item)
@@ -143,7 +147,7 @@
                                                     @enderror
                                                 </td>
                                                 <td>
-                                                    <input class="@error('nama_pengirim') is-invalid @enderror" type="text" name="nama_pengirim[]" value="{{ $row['nama_pengirim'] }}">
+                                                    <input class="" type="text" name="nama_pengirim[]" value="{{ $row['nama_pengirim'] }}">
 
                                                     @error('nama_pengirim[]')
                                                         <div class="text-danger">
@@ -152,7 +156,7 @@
                                                     @enderror
                                                 </td>
                                                 <td>
-                                                    <input class="@error('nama_penerima') is-invalid @enderror" type="text" name="nama_penerima[]" value="{{ $row['nama_penerima'] }}">
+                                                    <input class="@error('nama_penerima')  @enderror" type="text" name="nama_penerima[]" value="{{ $row['nama_penerima'] }}">
 
                                                     @error('nama_penerima[]')
                                                         <div class="text-danger">
@@ -161,7 +165,7 @@
                                                     @enderror
                                                 </td>
                                                 <td>
-                                                    <input class="@error('kota_tujuan') is-invalid @enderror" type="text" name="kota_tujuan[]" value="{{ $row['kota_tujuan'] }}">
+                                                    <input class="@error('kota_tujuan')  @enderror" type="text" name="kota_tujuan[]" value="{{ $row['kota_tujuan'] }}">
 
                                                     @error('kota_tujuan[]')
                                                         <div class="text-danger">
@@ -170,7 +174,7 @@
                                                     @enderror
                                                 </td>
                                                 <td>
-                                                    <input class="@error('no_rno_hp_pengirimesi') is-invalid @enderror" type="text" name="no_hp_pengirim[]" value="{{ $row['no_hp_pengirim'] }}">
+                                                    <input class="@error('no_rno_hp_pengirimesi')  @enderror" type="text" name="no_hp_pengirim[]" value="{{ $row['no_hp_pengirim'] }}">
 
                                                     @error('no_hp_pengirim[]')
                                                         <div class="text-danger">
@@ -179,7 +183,7 @@
                                                     @enderror
                                                 </td>
                                                 <td>
-                                                    <input class="@error('no_hp_penerima') is-invalid @enderror" type="text" name="no_hp_penerima[]" value="{{ $row['no_hp_penerima'] }}">
+                                                    <input class="@error('no_hp_penerima')  @enderror" type="text" name="no_hp_penerima[]" value="{{ $row['no_hp_penerima'] }}">
                                                     
                                                     @error('no_hp_penerima[]')
                                                         <div class="text-danger">
@@ -188,7 +192,7 @@
                                                     @enderror
                                                 </td>
                                                 <td>
-                                                    <input class="@error('berat_barang') is-invalid @enderror" type="number" name="berat_barang[]" value="{{ $row['berat_barang'] }}">
+                                                    <input class="@error('berat_barang')  @enderror" type="number" name="berat_barang[]" value="{{ $row['berat_barang'] }}">
 
                                                     @error('berat_barang[]')
                                                         <div class="text-danger">
@@ -197,7 +201,7 @@
                                                     @enderror
                                                 </td>
                                                 <td>
-                                                    <input class="@error('ongkir') is-invalid @enderror" type="number" name="ongkir[]" value="{{ $row['ongkir'] }}">
+                                                    <input class="@error('ongkir')  @enderror" type="number" name="ongkir[]" value="{{ $row['ongkir'] }}">
 
                                                     @error('ongkir[]')
                                                         <div class="text-danger">
@@ -206,7 +210,7 @@
                                                     @enderror
                                                 </td>
                                                 <td>
-                                                    <input class="@error('komisi') is-invalid @enderror" type="number" name="komisi[]" value="{{ $row['komisi'] }}">
+                                                    <input class="@error('komisi')  @enderror" type="number" name="komisi[]" value="{{ $row['komisi'] }}">
 
                                                     @error('komisi[]')
                                                         <div class="text-danger">
@@ -215,7 +219,7 @@
                                                     @enderror
                                                 </td>
                                                 <td>
-                                                    <select name="metode_pembayaran[]" class="form-control @error('metode_pembayaran') is-invalid @enderror js-example-basic-single" id="metodePembayaran">
+                                                    <select name="metode_pembayaran[]" class="form-control @error('metode_pembayaran')  @enderror js-example-basic-single" id="metodePembayaran">
                                                         <option value="">-Pilih-</option>
                                                         @foreach ($metode as $item)
                                                             <option value="{{ $item->metode }}" {{ strtolower($row['metode_pembayaran']) == strtolower($item->metode) ? 'selected' : '' }}>
@@ -228,7 +232,7 @@
 												    <label class="form-check-label" for="tambahPembayaran[]">Tambah</label>
 
                                                     <div id="additionalPaymentOptions" style="display: none;">
-                                                        <select name="metode_pembayaran2[]" class="form-control @error('metode_pembayaran') is-invalid @enderror js-example-basic-single" id="metodePembayaran2">
+                                                        <select name="metode_pembayaran2[]" class="form-control @error('metode_pembayaran')  @enderror js-example-basic-single" id="metodePembayaran2">
                                                             <option value="">-Pilih-</option>
                                                             @foreach ($metode as $item)
                                                                 <option value="{{ $item->metode }}" {{ strtolower($row['metode_pembayaran']) == strtolower($item->metode) ? 'selected' : '' }}>
@@ -245,7 +249,7 @@
                                                     @enderror
                                                 </td>
                                                 <td>
-                                                    <select name="bank[]" class="form-control @error('bank') is-invalid @enderror js-example-basic-single" id="bankSelect">
+                                                    <select name="bank[]" class="form-control @error('bank')  @enderror js-example-basic-single" id="bankSelect">
                                                         <option value="">-Pilih-</option>
                                                         @foreach ($bank as $item)
                                                             <option value="{{ $item->bank }}" {{ $row['bank']== $item->bank ? 'selected' : '' }}>
@@ -254,7 +258,7 @@
                                                         @endforeach
                                                     </select>
                                                     
-                                                    <select name="bank2[]" class="form-control @error('bank') is-invalid @enderror js-example-basic-single" id="bankSelect2">
+                                                    <select name="bank2[]" class="form-control @error('bank')  @enderror js-example-basic-single" id="bankSelect2">
                                                         <option value="">-Pilih-</option>
                                                         @foreach ($bank as $item)
                                                             <option value="{{ $item->bank }}" {{ $row['bank']== $item->bank ? 'selected' : '' }}>
@@ -270,8 +274,8 @@
                                                     @enderror
                                                 </td>
                                                 <td>
-                                                    <input id="bukti_pembayaran" class="@error('bukti_pembayaran') is-invalid @enderror" type="text" name="bukti_pembayaran[]" value="{{ $row['bukti_pembayaran'] }}"> 
-                                                    <input id="bukti_pembayaran2" class="@error('bukti_pembayaran') is-invalid @enderror" type="text" name="bukti_pembayaran2[]" value="{{ $row['bukti_pembayaran'] }}"> 
+                                                    <input id="bukti_pembayaran" class="@error('bukti_pembayaran')  @enderror" type="text" name="bukti_pembayaran[]" value="{{ $row['bukti_pembayaran'] }}"> 
+                                                    <input id="bukti_pembayaran2" class="@error('bukti_pembayaran')  @enderror" type="text" name="bukti_pembayaran2[]" value="{{ $row['bukti_pembayaran'] }}"> 
 
                                                     @error('bukti_pembayaran[]')
                                                         <div class="text-danger">
@@ -280,7 +284,7 @@
                                                     @enderror
                                                 </td>
                                                 <td>
-                                                    <input class="@error('jenis_pengiriman') is-invalid @enderror" type="text" name="jenis_pengiriman[]" value="{{ $row['jenis_pengiriman'] }}"> 
+                                                    <input class="@error('jenis_pengiriman')  @enderror" type="text" name="jenis_pengiriman[]" value="{{ $row['jenis_pengiriman'] }}"> 
 
                                                     @error('jenis_pengiriman[]')
                                                         <div class="text-danger">
@@ -289,7 +293,7 @@
                                                     @enderror
                                                 </td>
                                                 <td>
-                                                    <select name="bawa_sendiri[]" class="form-control @error('metode_pembayaran') is-invalid @enderror js-example-basic-single">
+                                                    <select name="bawa_sendiri[]" class="form-control @error('metode_pembayaran')  @enderror js-example-basic-single">
                                                         <option value="Ya" {{ $row['bawa_sendiri'] == 'Ya' ? 'selected' : '' }}> Ya </option>
                                                         <option value="Di jemput" {{ $row['bawa_sendiri'] == 'Di jemput' ? 'selected' : '' }}> Di jemput </option>
                                                     </select>
@@ -301,7 +305,7 @@
                                                     @enderror
                                                 </td>
                                                 <td>
-                                                    <select name="status_pengiriman[]" class="form-control @error('status_pengiriman') is-invalid @enderror js-example-basic-single">
+                                                    <select name="status_pengiriman[]" class="form-control @error('status_pengiriman')  @enderror js-example-basic-single">
                                                         @foreach ($status as $item)
                                                             <option value="{{ $item->status_pengiriman }}" {{ $row['status_pengiriman']== $item->status_pengiriman ? 'selected' : '' }}>
                                                                 {{ $item->status_pengiriman }} 
@@ -317,7 +321,7 @@
                                                     {{-- <input type="text" name="status_pengiriman[]" value="{{ $row['status_pengiriman'] }}">  --}}
                                                 </td>
                                                 <td>
-                                                    <input class="@error('keterangan') is-invalid @enderror" type="text" name="keterangan[]" value="{{ $row['keterangan'] }}"> 
+                                                    <input class="@error('keterangan')  @enderror" type="text" name="keterangan[]" value="{{ $row['keterangan'] }}"> 
 
                                                     @error('keterangan[]')
                                                         <div class="text-danger">
