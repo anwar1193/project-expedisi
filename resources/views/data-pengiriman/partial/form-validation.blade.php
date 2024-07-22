@@ -80,11 +80,25 @@
                     return false;
                 }
             });
-            $('input[name="metode_pembayaran[]"]').each(function() {
+            $('select[name="metode_pembayaran[]"]').each(function(index) {
                 if ($(this).val() == "") {
                     alert("Metode Pembayaran harus diisi");
                     isValid = false;
-                    return false;
+                    return false; // 
+                }
+
+                if ($(this).val().toLowerCase() == "transfer") {
+                    let correspondingBuktiInput = $('input[name="bukti_pembayaran[]"]').eq(index);
+                    let correspondingBankInput = $('select[name="bank[]"]').eq(index);
+                    if (correspondingBankInput.val() == "") {
+                        alert("Bank harus diisi jika metode pembayaran adalah transfer");
+                        isValid = false;
+                        return false; 
+                    } else if (correspondingBuktiInput.val() == "") {
+                        alert("Bukti Pembayaran harus diisi jika metode pembayaran adalah transfer");
+                        isValid = false;
+                        return false; 
+                    }
                 }
             });
             $('input[name="jenis_pengiriman[]"]').each(function() {
