@@ -68,7 +68,7 @@ class UserController extends Controller
 
     public function edit($id)
     {
-        $levels = Level::where('level', '!=', 'user')->get();
+        $levels = Level::all();
         $user = User::find($id);
 
         $data['levels'] = $levels;
@@ -84,21 +84,14 @@ class UserController extends Controller
             'username' => 'required',
             'email' => 'required',
             'nomor_telepon' => 'required',
-            'user_level' => 'required',
+            // 'user_level' => 'required',
             'status' => 'required',
-            'password_lama' => 'required',
-            'password_baru' => 'required|confirmed'
+            'password_baru' => 'confirmed'
         ]);
 
         $foto = $request->file('foto');
 
         $getImage = User::find($request->id);
-
-        $passwordLama = $request->password_lama;
-
-        if(Hash::check($passwordLama, $getImage->password) === FALSE) {
-            return back()->with('error', 'Password lama yang anda masukan salah!');
-        }
 
         if($foto != ''){
             Storage::delete('public/foto_profil/'.$getImage->foto);

@@ -99,40 +99,20 @@
 								</div>
 							</div>
 
-							@if ($user->user_level != 3)
-								<div class="row">
-									<div class="col">
-										<div class="mb-3">
-											<label class="form-label" for="">User Level</label>
-											<select name="user_level" id="user_level" class="form-control @error('user_level') is-invalid @enderror js-example-basic-single">
-												<option value="">- Pilih Level -</option>
-												@foreach ($levels as $item)
-													<option value="{{ $item->id }}" {{ $user->user_level == $item->id ? 'selected' : NULL }}>
-														{{ $item->level }}
-													</option>
-												@endforeach
-											</select>
-
-											@error('user_level')
-											<div class="text-danger">
-												{{ $message }}
-											</div>
-											@enderror
-										</div>
-									</div>
-								</div>
-							@endif
-
-							<div class="row">
+							<div class="row" style="display: {{ $user->user_level != 3 ? 'block' : 'none' }}">
 								<div class="col">
 									<div class="mb-3">
-										<label class="form-label" for="">Status</label>
-										<select name="status" id="status" class="form-control @error('status') is-invalid @enderror js-example-basic-single">
-											<option value="1" {{ $user->status == 1 ? 'selected' : NULL }}>Aktif</option>
-											<option value="0" {{ $user->status == 0 ? 'selected' : NULL }}>Non-Aktif</option>
+										<label class="form-label" for="">User Level</label>
+										<select name="user_level" id="user_level" class="form-control @error('user_level') is-invalid @enderror js-example-basic-single">
+											<option value="">- Pilih Level -</option>
+											@foreach ($levels as $item)
+												<option value="{{ $item->id }}" {{ $user->user_level == $item->id ? 'selected' : NULL }}>
+													{{ $item->level }}
+												</option>
+											@endforeach
 										</select>
 
-										@error('status')
+										@error('user_level')
 										<div class="text-danger">
 											{{ $message }}
 										</div>
@@ -144,10 +124,13 @@
 							<div class="row">
 								<div class="col">
 									<div class="mb-3">
-										<label class="form-label" for="">Password Lama</label>
-										<input name="password_lama" class="form-control @error('password_lama') is-invalid @enderror" type="password" autocomplete="off" value="{{ old('password_lama') }}"/>
+										<label class="form-label" for="">Status</label>
+										<select name="status" id="status" class="form-control @error('status') is-invalid @enderror js-example-basic-single">
+											<option value="1" {{ $user->status == 1 ? 'selected' : NULL }}>Aktif</option>
+											<option value="0" {{ $user->status == 0 ? 'selected' : NULL }}>Non-Aktif</option>
+										</select>
 
-										@error('password')
+										@error('status')
 										<div class="text-danger">
 											{{ $message }}
 										</div>
