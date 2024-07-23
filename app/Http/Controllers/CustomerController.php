@@ -99,7 +99,6 @@ class CustomerController extends Controller
         
             $customer = Customer::findOrFail($id);
             $user = User::where('username', $customer->username)->first();
-            $passwordLama = $request->password_lama;
 
             $this->validate($request, [
                 'nama' => 'required',
@@ -107,13 +106,8 @@ class CustomerController extends Controller
                 'no_wa' => 'required',
                 // 'no_wa' => 'required|regex:/^\+?[0-9]+$/|unique:customers,no_wa,' . $id.'|unique:users,nomor_telepon,' . $id,
                 'alamat' => 'required',
-                'password_lama' => 'required',
-                'password_baru' => 'required|confirmed'
+                'password_baru' => 'confirmed'
             ]);
-
-            if(Hash::check($passwordLama, $user->password) === FALSE) {
-                return back()->with('error', 'Password lama yang anda masukan salah!');
-            }
 
             $fieldsToUpdate = ['nama', 'username', 'email', 'no_wa'];
 
@@ -207,5 +201,23 @@ class CustomerController extends Controller
         }
 
         return redirect()->route('customers.index')->with('success', 'Data Customer Berhasil Diapprove');
+    }
+    
+    public function nonaktif_customer($id)
+    {
+        $status = 0;
+
+        $customer = Customer::where('id', $id)->first();
+        $user = User::where('username', $customer->username)->first();
+
+        $customer->status = $status;
+        $customer->save();
+
+        if ($user) {
+            $user->status = $status;
+            $user->save();
+        }
+
+        return redirect()->route('customers.index')->with('success', 'Customer berhasil dinonaktifkan');
     }
 }

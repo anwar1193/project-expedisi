@@ -59,7 +59,7 @@
 								</div>
 
 								<div class="col-md-6">
-									<label class="form-label" for="no_wa">No Whatsapp</label>
+									<label class="form-label" for="no_wa">No Whatsapp (Contoh: 08xxxxxxxxx)</label>
 									<input class="form-control @error('no_wa') is-invalid @enderror" id="no_wa" placeholder="Contoh: 08xxxxxxxx" type="text" name="no_wa" value="{{ old('no_wa') }}" autocomplete="off" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
 
 									@error('no_wa')

@@ -344,15 +344,31 @@ class DataPengirimanController extends Controller
             $customer = Customer::where('kode_customer', $request->kode_customer[$i]);
             $rcustomer = $customer->first();
 
-            if($rcustomer != NULL){
-                $pointOld = $rcustomer->point;
-                $kreditOld = $rcustomer->limit_credit;
+            // if($rcustomer != NULL){
+            //     $pointOld = $rcustomer->point;
+            //     $kreditOld = $rcustomer->limit_credit;
                 
-                // Update Point & Credit
-                $customer->update([
-                    'point' => $pointOld + ($request->ongkir[$i] / $konversi_point->nominal),
-                    'limit_credit' => $kreditOld - $request->ongkir[$i]
-                ]);
+            //     // Update Point & Credit
+            //     $customer->update([
+            //         'point' => $pointOld + ($request->ongkir[$i] / $konversi_point->nominal),
+            //         'limit_credit' => $kreditOld - $request->ongkir[$i]
+            //     ]);
+            // }
+
+            $metode_pembayaran_2 = '';
+            $bank_2 = '';
+            $bukti_pembayaran_2 = '';
+
+            if ($request->tambahPembayaran[$i] == 'on') {
+                if ($request->metode_pembayaran_2[$i]) {
+                    $metode_pembayaran_2 = $request->metode_pembayaran_2[$i];
+                }
+                if ($request->bank_2[$i]) {
+                    $bank_2 = $request->bank_2[$i];
+                }
+                if ($request->bukti_pembayaran_2[$i]) {
+                    $bukti_pembayaran_2 = $request->bukti_pembayaran_2[$i];
+                }
             }
 
             DataPengiriman::create([
@@ -371,6 +387,9 @@ class DataPengirimanController extends Controller
                 'metode_pembayaran' => $request->metode_pembayaran[$i],
                 'bank' => $request->bank[$i] ?? '',
                 'bukti_pembayaran' => $request->bukti_pembayaran[$i] ?? '',
+                'metode_pembayaran_2' => $request->tambahPembayaran[$i] == "on" && $request->metode_pembayaran_2[$i] ? $request->metode_pembayaran_2[$i] : "",
+                'bank_2' => $request->tambahPembayaran[$i] == "on" && $request->bank_2[$i] ? $request->bank_2[$i] : "",
+                'bukti_pembayaran_2' => $request->tambahPembayaran[$i] == "on" && $request->bukti_pembayaran_2[$i] ? $request->bukti_pembayaran_2 : "",
                 'jenis_pengiriman' => $request->jenis_pengiriman[$i],
                 'bawa_sendiri' => $request->bawa_sendiri[$i],
                 'status_pengiriman' => $request->status_pengiriman[$i],

@@ -99,27 +99,29 @@
 								</div>
 							</div>
 
-							<div class="row">
-								<div class="col">
-									<div class="mb-3">
-										<label class="form-label" for="">User Level</label>
-										<select name="user_level" id="user_level" class="form-control @error('user_level') is-invalid @enderror js-example-basic-single">
-											<option value="">- Pilih Level -</option>
-											@foreach ($levels as $item)
-												<option value="{{ $item->id }}" {{ $user->user_level == $item->id ? 'selected' : NULL }}>
-													{{ $item->level }}
-												</option>
-											@endforeach
-										</select>
+							@if ($user->user_level != 3)
+								<div class="row">
+									<div class="col">
+										<div class="mb-3">
+											<label class="form-label" for="">User Level</label>
+											<select name="user_level" id="user_level" class="form-control @error('user_level') is-invalid @enderror js-example-basic-single">
+												<option value="">- Pilih Level -</option>
+												@foreach ($levels as $item)
+													<option value="{{ $item->id }}" {{ $user->user_level == $item->id ? 'selected' : NULL }}>
+														{{ $item->level }}
+													</option>
+												@endforeach
+											</select>
 
-										@error('user_level')
-										<div class="text-danger">
-											{{ $message }}
+											@error('user_level')
+											<div class="text-danger">
+												{{ $message }}
+											</div>
+											@enderror
 										</div>
-										@enderror
 									</div>
 								</div>
-							</div>
+							@endif
 
 							<div class="row">
 								<div class="col">

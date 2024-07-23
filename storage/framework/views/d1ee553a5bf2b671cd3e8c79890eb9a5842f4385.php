@@ -115,8 +115,13 @@
 
 															<a class="dropdown-item" href="<?php echo e(route('customers.delete', $data->id)); ?>" onclick="return confirm('Apakah Anda Yakin?')"><span><i class="pt-2 pe-2" data-feather="delete"></i> Delete</span></a>
 
-															<?php if($data->status == false && isAdmin()): ?>
-																<a class="dropdown-item" href="<?php echo e(route('customers.approval', $data->id)); ?>" onclick="return confirm('Approve Data Customer Ini?')"><span><i data-feather="check-square"></i> Approve</span></a>
+															<?php if(isAdmin()): ?>
+																<?php if($data->status == true): ?>
+																	<a class="dropdown-item" href="<?php echo e(route('customers.non-aktif', $data->id)); ?>" onclick="return confirm('Menonaktifkan Customer Ini?')"><span><i data-feather="check-square"></i> Nonaktifkan</span></a>
+																<?php else: ?>
+																	<a class="dropdown-item" href="<?php echo e(route('customers.approval', $data->id)); ?>" onclick="return confirm('Approve Data Customer Ini?')"><span><i data-feather="check-square"></i> Approve</span></a>
+																<?php endif; ?>
+
 															<?php endif; ?>
 															
 														</div>
@@ -128,7 +133,7 @@
 											</td>
 											
 											<td><?php echo e($data->kode_customer); ?></td>
-											<td><?php echo e($data->status == true ? "Altif" : "Tidak Aktif"); ?></td>
+											<td><?php echo e($data->status == true ? "Aktif" : "Tidak Aktif"); ?></td>
 											<td><?php echo e($data->nama); ?></td>
 											<td><?php echo e($data->perusahaan == NULL ? '-' : $data->perusahaan); ?></td>
 											<td><?php echo e($data->no_wa); ?></td>

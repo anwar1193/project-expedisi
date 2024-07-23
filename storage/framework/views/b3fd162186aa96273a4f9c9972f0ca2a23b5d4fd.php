@@ -37,6 +37,7 @@
         <?php if(Session::get('user_level') != 3): ?>
             <?php
                 $notificationData = getNotification();
+                $notificationPengeluaran = getNotifPengeluaran();
                 $tema = Session::get("tema");
             ?>
         <?php endif; ?>
@@ -49,21 +50,36 @@
                 <?php endif; ?>
             </div>
             <ul class="notification-dropdown onhover-show-div">
-              <?php if(Session::get('user_level') != 3 && isset($notificationData) && $notificationData['jumlah'] != 0): ?>
+              <?php if(Session::get('user_level') != 3 && (isset($notificationData) && $notificationData['jumlah'] != 0) || (isset($notificationPengeluaran) && $notificationPengeluaran['jumlah'] != 0)): ?>
                     <li>
                         <p class="f-w-700 mb-0">You have Notification</p>
                     </li>
-                    <li class="noti-success">
-                        <div class="media">
-                            <span class="notification-bg bg-light-success"><i data-feather="file-text"></i></span>
-                            <div class="media-body">
-                                <a class="<?php echo e($tema == 'dark' ? 'text-light' : 'text-black'); ?>" href="<?php echo e(route('data-pengiriman', ['notif' => 1])); ?>">
-                                    <?php echo e($notificationData['text_notif'] ?? $notificationData['text_owner']); ?>
+                    <?php if($notificationData['jumlah'] != 0): ?>
+                      <li class="noti-success">
+                          <div class="media">
+                              <span class="notification-bg bg-light-success"><i data-feather="file-text"></i></span>
+                              <div class="media-body">
+                                  <a class="<?php echo e($tema == 'dark' ? 'text-light' : 'text-black'); ?>" href="<?php echo e(route('data-pengiriman', ['notif' => 1])); ?>">
+                                      <?php echo e($notificationData['text_notif'] ?? $notificationData['text_owner']); ?>
 
-                                </a>
-                            </div>
-                        </div>
-                    </li>
+                                  </a>
+                              </div>
+                          </div>
+                      </li>
+                    <?php endif; ?>
+                    <?php if($notificationPengeluaran['jumlah'] != 0): ?>
+                      <li class="noti-success">
+                          <div class="media">
+                              <span class="notification-bg bg-light-success"><i data-feather="file-text"></i></span>
+                              <div class="media-body">
+                                  <a class="<?php echo e($tema == 'dark' ? 'text-light' : 'text-black'); ?>" href="<?php echo e(route('pengeluaran-cash')); ?>">
+                                      <?php echo e($notificationPengeluaran['text_notif'] ?? $notificationPengeluaran['text_owner']); ?>
+
+                                  </a>
+                              </div>
+                          </div>
+                      </li>
+                    <?php endif; ?>
                 <?php else: ?>
                     <li>
                         <p class="f-w-700 mb-0">You Don't have Notification</p>

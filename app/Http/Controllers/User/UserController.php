@@ -29,7 +29,7 @@ class UserController extends Controller
     }
 
     public function create(Request $request) {
-        $levels = Level::all();
+        $levels = Level::where('level', '!=', 'user')->get();
         $data['levels'] = $levels;
 
         return isAdmin() ? view("admin.master.users.create", $data) : back()->with('error', 'Anda Tidak Memiliki Akses'); 
@@ -68,7 +68,7 @@ class UserController extends Controller
 
     public function edit($id)
     {
-        $levels = Level::all();
+        $levels = Level::where('level', '!=', 'user')->get();
         $user = User::find($id);
 
         $data['levels'] = $levels;

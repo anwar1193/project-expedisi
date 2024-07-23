@@ -55,6 +55,7 @@
         @if (Session::get('user_level') != 3)
             @php
                 $notificationData = getNotification();
+                $notificationPengeluaran = getNotifPengeluaran();
                 $tema = Session::get("tema");
             @endphp
         @endif
@@ -67,20 +68,34 @@
                 @endif
             </div>
             <ul class="notification-dropdown onhover-show-div">
-              @if (Session::get('user_level') != 3 && isset($notificationData) && $notificationData['jumlah'] != 0)
+              @if (Session::get('user_level') != 3 && (isset($notificationData) && $notificationData['jumlah'] != 0) || (isset($notificationPengeluaran) && $notificationPengeluaran['jumlah'] != 0))
                     <li>
                         <p class="f-w-700 mb-0">You have Notification</p>
                     </li>
-                    <li class="noti-success">
-                        <div class="media">
-                            <span class="notification-bg bg-light-success"><i data-feather="file-text"></i></span>
-                            <div class="media-body">
-                                <a class="{{ $tema == 'dark' ? 'text-light' : 'text-black' }}" href="{{ route('data-pengiriman', ['notif' => 1]) }}">
-                                    {{ $notificationData['text_notif'] ?? $notificationData['text_owner'] }}
-                                </a>
-                            </div>
-                        </div>
-                    </li>
+                    @if ($notificationData['jumlah'] != 0)
+                      <li class="noti-success">
+                          <div class="media">
+                              <span class="notification-bg bg-light-success"><i data-feather="file-text"></i></span>
+                              <div class="media-body">
+                                  <a class="{{ $tema == 'dark' ? 'text-light' : 'text-black' }}" href="{{ route('data-pengiriman', ['notif' => 1]) }}">
+                                      {{ $notificationData['text_notif'] ?? $notificationData['text_owner'] }}
+                                  </a>
+                              </div>
+                          </div>
+                      </li>
+                    @endif
+                    @if ($notificationPengeluaran['jumlah'] != 0)
+                      <li class="noti-success">
+                          <div class="media">
+                              <span class="notification-bg bg-light-success"><i data-feather="file-text"></i></span>
+                              <div class="media-body">
+                                  <a class="{{ $tema == 'dark' ? 'text-light' : 'text-black' }}" href="{{ route('pengeluaran-cash') }}">
+                                      {{ $notificationPengeluaran['text_notif'] ?? $notificationPengeluaran['text_owner'] }}
+                                  </a>
+                              </div>
+                          </div>
+                      </li>
+                    @endif
                 @else
                     <li>
                         <p class="f-w-700 mb-0">You Don't have Notification</p>

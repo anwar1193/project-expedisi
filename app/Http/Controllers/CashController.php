@@ -4,14 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\PemasukanCash;
 use App\Models\PengeluaranCash;
+use App\Models\SaldoCash;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
 class CashController extends Controller
 {
     public function index() 
     {
-        $data['pemasukan'] = PemasukanCash::selectRaw('SUM(jumlah) AS total')->first();
-        $data['pengeluaran'] = PengeluaranCash::selectRaw('SUM(jumlah) AS total')->first();
+        $data['tanggal'] = request('tanggal') ?? date('Y-m-d');
+        $data['pemasukan'] = PemasukanCash::selectRaw('SUM(jumlah) AS total')
+                            ->where('tanggal', $data['tanggal'])
+                            ->first();
+        $data['pengeluaran'] = PengeluaranCash::selectRaw('SUM(jumlah) AS total')
+                            ->where('tanggal', $data['tanggal'])
+                            ->first();
         $data['saldo'] = round($data['pemasukan']->total - $data['pengeluaran']->total);
 
         return view('posisi-cash.index', $data);
@@ -44,6 +51,111 @@ class CashController extends Controller
             'tanggal' => $request->tanggal,
         ]);
 
-        return redirect()->route('posisi-cash')->with('success', 'Pemasukan cash berhasil ditambahkan');
+        return redirect()->route('posisi-cash')->with('success', 'Pengeluaran cash berhasil ditambahkan');
+    }
+
+    public function closing_cash(Request $request)
+    {
+        date_default_timezone_set("Asia/Jakarta");
+
+        $request->validate([
+            'saldo' => 'required|numeric'
+        ]);
+
+        $today = date('Y-m-d');
+        $inputSaldo = $request->saldo;
+        $saldo = SaldoCash::orderBy('id', 'DESC')->first();
+
+        if (($saldo && $saldo->tanggal == $today)) {
+            $saldo->saldo = $inputSaldo;
+            $saldo->save();
+
+            return redirect()->route('posisi-cash')->with('success', 'Saldo cash berhasil ditutup');
+        } else {
+            SaldoCash::create([
+                'saldo' => $inputSaldo,
+                'tanggal' => $today
+            ]);
+
+            return redirect()->route('posisi-cash')->with('success', 'Saldo cash berhasil ditambahkan');
+        }
+    }
+
+    public function approve($id)
+    {
+        PengeluaranCash::find($id)->update([
+            'status' => 1
+        ]);
+
+        return back()->with('success', 'Pengeluaran Cash Telah Di Approve');
+    }
+
+    public function approveSelected(Request $request)
+    {
+        $id_pengeluaran = $request->id_pengeluaran;
+
+        if($id_pengeluaran == NULL){
+            return back()->with('error', 'Belum Ada Data Dipilih');
+        }
+
+        for($i=0; $i<sizeof($id_pengeluaran); $i++){
+            PengeluaranCash::find($id_pengeluaran[$i])->update([
+                'status' => 1
+            ]);
+        }
+
+        return back()->with('success', 'Pengeluaran Cash Telah Di Approve');
+    }
+
+    public function data_pengeluaran_cash()
+    {
+        $data['pengeluaran'] = PengeluaranCash::where('status', false)->orderBy('id', 'DESC')->get();
+
+        return view('posisi-cash.pengeluaran-cash', $data);
+    }
+    
+    public function history_pengeluaran()
+    {
+        $data['pengeluaran'] = PengeluaranCash::orderBy('id', 'DESC')->get();
+
+        return view('posisi-cash.history-pengeluaran', $data);
+    }
+
+    public function history_pemasukan()
+    {
+        $data['pemasukan'] = PemasukanCash::orderBy('id', 'DESC')->get();
+
+        return view('posisi-cash.history-pemasukan', $data);
+    }
+
+    public function history_saldo()
+    {
+        $data['saldo'] = SaldoCash::orderBy('id', 'DESC')->get();
+
+        return view('posisi-cash.history-saldo', $data);
+    }
+
+    public function export_pengeluaran()
+    {
+        $data['pengeluaran'] = PengeluaranCash::orderBy('id', 'DESC')->get();;
+
+        $pdf = Pdf::loadView('posisi-cash.export.history-pengeluaran-pdf', $data);
+        return $pdf->download('History-Pengeluaran-Cash.pdf');
+    }
+    
+    public function export_pemasukan()
+    {
+        $data['pemasukan'] = PemasukanCash::orderBy('id', 'DESC')->get();;
+
+        $pdf = Pdf::loadView('posisi-cash.export.history-pemasukan-pdf', $data);
+        return $pdf->download('History-Pemasukan-Cash.pdf');
+    }
+    
+    public function export_saldo()
+    {
+        $data['saldo'] = SaldoCash::orderBy('id', 'DESC')->get();;
+
+        $pdf = Pdf::loadView('posisi-cash.export.history-saldo-pdf', $data);
+        return $pdf->download('History-Saldo-Cash.pdf');
     }
 }
