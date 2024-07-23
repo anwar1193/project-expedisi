@@ -65,6 +65,10 @@ class CashController extends Controller
         $today = date('Y-m-d');
         $inputSaldo = $request->saldo;
         $saldo = SaldoCash::orderBy('id', 'DESC')->first();
+        
+        if ($request->tanggal != $today) {
+            return back()->with('error', 'Tanggal Closing Saldo Harus Sama Dengan Tanggal Hari ini');
+        }
 
         if (($saldo && $saldo->tanggal == $today)) {
             $saldo->saldo = $inputSaldo;

@@ -117,11 +117,14 @@
 	                </div>
                     <div class="card-footer">
                         <div class="d-flex justify-content-evenly">
-							<form action="{{ route('posisi-cash.closing') }}" method="POST">
-								@csrf
-								<input type="hidden" name="saldo" value="{{ $saldo }}">
-								<button class="btn btn-secondary" type="submit" onclick="return confirm('Apakah Anda Yakin?')">Closing</button>
-							</form>
+							@if ($tanggal == date('Y-m-d'))
+								<form action="{{ route('posisi-cash.closing') }}" method="POST">
+									@csrf
+									<input type="hidden" name="saldo" value="{{ $saldo }}">
+									<input type="hidden" name="tanggal" value="{{ $tanggal }}">
+									<button class="btn btn-secondary" type="submit" onclick="return confirm('Apakah Anda Yakin?')">Closing</button>
+								</form>
+							@endif
                             <button class="btn btn-secondary" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#pemasukan">Input Pemasukan</button>
                             <button class="btn btn-secondary" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#pengeluaran">Input Pengeluaran</button>
                         </div>
