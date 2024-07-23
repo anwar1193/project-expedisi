@@ -16,8 +16,8 @@
     }
 
     .content {
-            flex: 1;
-            overflow: hidden;
+        flex: 1;
+        overflow: hidden;
         display: flex;
         flex-direction: column;
     }
@@ -64,6 +64,10 @@
 
     .custom-select2 + .select2-container--default .select2-selection--single .select2-selection__rendered {
         background-color: red;
+    }
+
+    .scrollbar-container::-webkit-scrollbar {
+        height: 20px;
     }
 </style>
 @endpush
@@ -504,6 +508,9 @@
 
             // Set the width of the scrollbar to match the table content width
             scrollbar.style.width = tableContainer.scrollWidth + 'px';
+
+            // Ensure scrollbar is always visible
+            scrollbarContainer.style.overflowX = 'scroll';
         });
     </script>
     @include('data-pengiriman.partial.form-validation')
