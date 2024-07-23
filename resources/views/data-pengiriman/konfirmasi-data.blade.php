@@ -318,7 +318,7 @@
                                                         <select name="bank[]" class="form-control @error('bank')  @enderror js-example-basic-single" id="bankSelect">
                                                             <option value="">-Pilih-</option>
                                                             @foreach ($bank as $item)
-                                                                <option value="{{ $item->bank }}" {{ $row['bank']== $item->bank ? 'selected' : '' }}>
+                                                                <option value="{{ $item->bank }}" {{ strtolower($row['bank']) == strtolower($item->bank) ? 'selected' : '' }}>
                                                                     {{ $item->bank }}
                                                                 </option>
                                                             @endforeach
@@ -386,7 +386,7 @@
                                                     <td>
                                                         <select name="status_pengiriman[]" class="form-control @error('status_pengiriman')  @enderror js-example-basic-single">
                                                             @foreach ($status as $item)
-                                                                <option value="{{ $item->status_pengiriman }}" {{ $row['status_pengiriman']== $item->status_pengiriman ? 'selected' : '' }}>
+                                                                <option value="{{ $item->status_pengiriman }}" {{ strtolower($row['status_pengiriman']) == strtolower($item->status_pengiriman) ? 'selected' : '' }}>
                                                                     {{ $item->status_pengiriman }} 
                                                                 </option>
                                                             @endforeach

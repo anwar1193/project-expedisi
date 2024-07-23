@@ -510,7 +510,7 @@ endif;
 unset($__errorArgs, $__bag); ?> js-example-basic-single" id="bankSelect">
                                                             <option value="">-Pilih-</option>
                                                             <?php $__currentLoopData = $bank; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                                <option value="<?php echo e($item->bank); ?>" <?php echo e($row['bank']== $item->bank ? 'selected' : ''); ?>>
+                                                                <option value="<?php echo e($item->bank); ?>" <?php echo e(strtolower($row['bank']) == strtolower($item->bank) ? 'selected' : ''); ?>>
                                                                     <?php echo e($item->bank); ?>
 
                                                                 </option>
@@ -640,7 +640,7 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?> js-example-basic-single">
                                                             <?php $__currentLoopData = $status; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                                <option value="<?php echo e($item->status_pengiriman); ?>" <?php echo e($row['status_pengiriman']== $item->status_pengiriman ? 'selected' : ''); ?>>
+                                                                <option value="<?php echo e($item->status_pengiriman); ?>" <?php echo e(strtolower($row['status_pengiriman']) == strtolower($item->status_pengiriman) ? 'selected' : ''); ?>>
                                                                     <?php echo e($item->status_pengiriman); ?> 
                                                                 </option>
                                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
