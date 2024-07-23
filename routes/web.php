@@ -270,6 +270,7 @@ Route::middleware("auth")->group(function() {
         Route::get('/history-credit/{id}', [CustomerController::class, 'history_limit'])->name('customers.historyLimit');
         Route::post('/add-diskon', [CustomerController::class, 'addDiskon'])->name('customers.addDiskon');
         Route::get('/approval/{id}', [CustomerController::class, 'approval_customer'])->name('customers.approval');
+        Route::get('/non-aktif/{id}', [CustomerController::class, 'nonaktif_customer'])->name('customers.non-aktif');
     });
    
     Route::prefix('invoice')->group(function () {
