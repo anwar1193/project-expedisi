@@ -61,6 +61,10 @@
         height: 1px; /* Invisible but allows scrolling */
         width: 100%;
     }
+
+    .custom-select2 + .select2-container--default .select2-selection--single .select2-selection__rendered {
+        background-color: red;
+    }
 </style>
 @endpush
 
@@ -161,7 +165,7 @@
                                                     </td>
 
                                                     <td>
-                                                        <select name="input_by[]" class="form-control @error('input_by')  @enderror js-example-basic-single" required="">
+                                                        <select name="input_by[]" class="form-control @error('input_by')  @enderror js-example-basic-single">
                                                             <option value="">-Pilih-</option>
                                                             @foreach ($kasir as $item)
                                                                 <option value="{{ $item->nama }}" {{ strtolower($row['diinput_oleh']) == strtolower($item->nama) ? 'selected' : '' }}>
@@ -178,7 +182,7 @@
                                                     </td>
 
                                                     <td>
-                                                        <select name="kode_customer[]" class="form-select @error('kode_customer')  @enderror js-example-basic-single" required="">
+                                                        <select name="kode_customer[]" class="form-select @error('kode_customer')  @enderror js-example-basic-single">
                                                             <option value="">-Pilih-</option>
                                                             <option value="General" {{ $row['kode_customer'] == 'General' ? 'selected' : '' }}> General </option>
                                                             @foreach ($customer as $item)
@@ -451,6 +455,8 @@
                 searching: false,
 			});
 
+            $('.custom-select2').select2();
+            
             $('#metodePembayaran').on('change', function() {
                 var selectedMethod = $(this).val();
                 var bankSelect = $('#bankSelect');

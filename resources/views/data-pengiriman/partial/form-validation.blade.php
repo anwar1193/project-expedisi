@@ -19,10 +19,18 @@
                     return false;
                 }
             });
-            $('input[name="input_by[]"]').each(function() {
+            $('select[name="input_by[]"]').each(function() {
                 if ($(this).val() == "") {
-                    $(this).addClass('is-invalid');
+                    $(this).addClass('custom-select2');
                     alert("Diinput Oleh harus diisi");
+                    isValid = false;
+                    return false;
+                }
+            });
+            $('select[name="kode_customer[]"]').each(function() {
+                if ($(this).val() == "") {
+                    $(this).addClass('custom-select2');
+                    alert("Kode Customer harus diisi");
                     isValid = false;
                     return false;
                 }
@@ -103,7 +111,7 @@
                     let correspondingBuktiInput = $('input[name="bukti_pembayaran[]"]').eq(index);
                     let correspondingBankInput = $('select[name="bank[]"]').eq(index);
                     if (correspondingBankInput.val() == "") {
-                        correspondingBankInput.addClass('is-invalid');
+                        correspondingBankInput.addClass('custom-select2');
                         alert("Bank harus diisi jika metode pembayaran adalah transfer");
                         isValid = false;
                         return false; 
@@ -128,17 +136,17 @@
                     return false;
                 }
             });
-            $('input[name="bawa_sendiri[]"]').each(function() {
+            $('select[name="bawa_sendiri[]"]').each(function() {
                 if ($(this).val() == "") {
-                    $(this).addClass('is-invalid');
+                    $(this).addClass('custom-select2');
                     alert("Bawa Sendiri harus diisi");
                     isValid = false;
                     return false;
                 }
             });
-            $('input[name="status_pengiriman[]"]').each(function() {
+            $('select[name="status_pengiriman[]"]').each(function() {
                 if ($(this).val() == "") {
-                    $(this).addClass('is-invalid');
+                    $(this).addClass('custom-select2');
                     alert("Status Pengiriman harus diisi");
                     isValid = false;
                     return false;
