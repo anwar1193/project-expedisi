@@ -74,6 +74,7 @@
 	                                    <th width="5%">No</th>
 	                                    <th>Jumlah Saldo</th>
 										<th>Tanggal</th>
+										<th>Status</th>
 										@if (isOwner())
                                             <th>Pilih</th>
 										    <th width="20%">Action</th>
@@ -86,6 +87,12 @@
 											<td>{{ $loop->iteration; }}</td>
 											<td>{{ 'Rp '.number_format($data->jumlah, 0, '.', '.') }} </td>
 											<td>{{ $data->tanggal }}</td>
+											<td>
+												<span class="badge {{ $data->status_pengeluaran == 1 ? 'badge-primary' : 'badge-warning' }}">
+													<i class="fa {{ $data->status_pengeluaran == 1 ? 'fa-check' : 'fa-warning' }}"></i>
+													{{ $data->status == true ? 'Disetujui' : 'Pending'; }}
+												</span>
+											</td>
 											@if (isOwner())
                                             <td>
                                                 <input type="checkbox" name="id_pengeluaran[]" id="flexCheckDefault" onclick="ceklis({{ $data->id }})">
