@@ -1,3 +1,5 @@
+<?php echo $__env->make('admin.authentication.register', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
 <?php $__env->startSection('title'); ?>login
  <?php echo e($title); ?>
 
@@ -5,6 +7,7 @@
 
 <?php $__env->startPush('css'); ?>
 	<link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/sweetalert2.css')); ?>">
+	<link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/select2.css')); ?>">
 <?php $__env->stopPush(); ?>
 
 <?php $__env->startSection('content'); ?>
@@ -18,13 +21,22 @@
 						<?php echo csrf_field(); ?>
 
 						<div class="logo mb-3" style="text-align: center">
+							<img src="/assets/logo-kejaksaan.png" width="100px" alt="">
 							
-							<img src="/assets/lionparcel.png" width="250px" alt="">
 						</div>
 
 	                    <p class="mb-3">AGEN EXPEDISI</p>
 
 	                    
+
+						<?php if(session()->has('success')): ?>
+							<div class="alert alert-success alert-dismissible fade show" role="alert">
+								<strong>Berhasil <i class="fa fa-info-circle"></i></strong> 
+								<?php echo e(session('success')); ?>
+
+								<button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+							</div>
+						<?php endif; ?>
 						
 						<?php if($errors->has('login')): ?>
                             
@@ -76,6 +88,13 @@
 								</div>
 							</div>
 	                    </div>
+						<div class="form-group my-4">
+							<div class="d-flex justify-content-center my-4">
+								<div>
+									<a class="btn text-light" style="background-color: rgb(52, 70, 234)" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalRegister"><i class="fa fa-users me-2"></i>Daftar Sebagai Customer</a>
+								</div>
+							</div>
+						</div>
 	                </form>
 	            </div>
 	        </div>
@@ -120,6 +139,26 @@
 
 
     <?php $__env->startPush('scripts'); ?>
+		<script src="<?php echo e(asset('assets/js/select2/select2.full.min.js')); ?>"></script>
+		<script src="<?php echo e(asset('assets/js/select2/select2-custom.js')); ?>"></script>
+		<script>
+			function toggleUserFields() {
+				var addUserCheckbox = document.getElementById('addUser');
+				var usernameField = document.getElementById('usernameField');
+				var passwordField = document.getElementById('passwordField');
+				if (addUserCheckbox.checked) {
+					usernameField.style.display = 'block';
+					passwordField.style.display = 'block';
+				} else {
+					usernameField.style.display = 'none';
+					passwordField.style.display = 'none';
+				}
+			}
+
+			document.getElementById('addUser').addEventListener('change', toggleUserFields);
+
+			document.addEventListener('DOMContentLoaded', toggleUserFields);
+		</script>
     <?php $__env->stopPush(); ?>
 
 <?php $__env->stopSection(); ?>

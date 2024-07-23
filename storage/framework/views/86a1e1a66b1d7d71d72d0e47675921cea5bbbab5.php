@@ -91,10 +91,52 @@
                                         <?php $__currentLoopData = $formattedData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $row): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                             <tr>
                                                 <td>
-                                                    <input type="text" name="no_resi[]" value="<?php echo e($row['no_resi']); ?>">
+                                                    <input class="<?php $__errorArgs = ['no_resi'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" type="text" name="no_resi[]" value="<?php echo e($row['no_resi']); ?>">
+
+                                                    <?php $__errorArgs = ['no_resi[]'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                    <div class="text-danger">
+                                                        <?php echo e($message); ?>
+
+                                                    </div>
+                                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                 </td>
                                                 <td>
-                                                    <input type="date" name="tgl_transaksi[]" value="<?php echo e($row['tgl_transaksi']); ?>">
+                                                    <input class="<?php $__errorArgs = ['tgl_transaksi'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" type="date" name="tgl_transaksi[]" value="<?php echo e($row['tgl_transaksi']); ?>">
+
+                                                    <?php $__errorArgs = ['tgl_transaksi[]'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                    <div class="text-danger">
+                                                        <?php echo e($message); ?>
+
+                                                    </div>
+                                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                 </td>
 
                                                 <td>
@@ -108,16 +150,30 @@ endif;
 unset($__errorArgs, $__bag); ?> js-example-basic-single" required="">
                                                         <option value="">-Pilih-</option>
                                                         <?php $__currentLoopData = $kasir; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                            <option value="<?php echo e($item->nama); ?>">
+                                                            <option value="<?php echo e($item->nama); ?>" <?php echo e(strtolower($row['diinput_oleh']) == strtolower($item->nama) ? 'selected' : ''); ?>>
                                                                 <?php echo e($item->nama); ?>
 
                                                             </option>
                                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                     </select>
+
+                                                    <?php $__errorArgs = ['input_by[]'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                    <div class="text-danger">
+                                                        <?php echo e($message); ?>
+
+                                                    </div>
+                                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                 </td>
 
                                                 <td>
-                                                    <select name="kode_customer[]" class="form-control <?php $__errorArgs = ['kode_customer'];
+                                                    <select name="kode_customer[]" class="form-select <?php $__errorArgs = ['kode_customer'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -129,35 +185,217 @@ unset($__errorArgs, $__bag); ?> js-example-basic-single" required="">
                                                         <option value="General" <?php echo e($row['kode_customer'] == 'General' ? 'selected' : ''); ?>> General </option>
                                                         <?php $__currentLoopData = $customer; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                             <option value="<?php echo e($item->kode_customer); ?>" <?php echo e($row['kode_customer']== $item->kode_customer ? 'selected' : ''); ?>>
-                                                                <?php echo e($item->kode_customer); ?>
+                                                                <?php echo e($item->kode_customer); ?> : <?php echo e($item->nama); ?> - <?php echo e($item->perusahaan); ?>
 
                                                             </option>
                                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                     </select>
+
+                                                    <?php $__errorArgs = ['kode_customer[]'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                        <div class="text-danger">
+                                                            <?php echo e($message); ?>
+
+                                                        </div>
+                                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                 </td>
                                                 <td>
-                                                    <input type="text" name="nama_pengirim[]" value="<?php echo e($row['nama_pengirim']); ?>">
+                                                    <input class="<?php $__errorArgs = ['nama_pengirim'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" type="text" name="nama_pengirim[]" value="<?php echo e($row['nama_pengirim']); ?>">
+
+                                                    <?php $__errorArgs = ['nama_pengirim[]'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                        <div class="text-danger">
+                                                            <?php echo e($message); ?>
+
+                                                        </div>
+                                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                 </td>
                                                 <td>
-                                                    <input type="text" name="nama_penerima[]" value="<?php echo e($row['nama_penerima']); ?>">
+                                                    <input class="<?php $__errorArgs = ['nama_penerima'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" type="text" name="nama_penerima[]" value="<?php echo e($row['nama_penerima']); ?>">
+
+                                                    <?php $__errorArgs = ['nama_penerima[]'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                        <div class="text-danger">
+                                                            <?php echo e($message); ?>
+
+                                                        </div>
+                                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                 </td>
                                                 <td>
-                                                    <input type="text" name="kota_tujuan[]" value="<?php echo e($row['kota_tujuan']); ?>">
+                                                    <input class="<?php $__errorArgs = ['kota_tujuan'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" type="text" name="kota_tujuan[]" value="<?php echo e($row['kota_tujuan']); ?>">
+
+                                                    <?php $__errorArgs = ['kota_tujuan[]'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                        <div class="text-danger">
+                                                            <?php echo e($message); ?>
+
+                                                        </div>
+                                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                 </td>
                                                 <td>
-                                                    <input type="text" name="no_hp_pengirim[]" value="<?php echo e($row['no_hp_pengirim']); ?>">
+                                                    <input class="<?php $__errorArgs = ['no_rno_hp_pengirimesi'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" type="text" name="no_hp_pengirim[]" value="<?php echo e($row['no_hp_pengirim']); ?>">
+
+                                                    <?php $__errorArgs = ['no_hp_pengirim[]'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                        <div class="text-danger">
+                                                            <?php echo e($message); ?>
+
+                                                        </div>
+                                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                 </td>
                                                 <td>
-                                                    <input type="text" name="no_hp_penerima[]" value="<?php echo e($row['no_hp_penerima']); ?>">
+                                                    <input class="<?php $__errorArgs = ['no_hp_penerima'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" type="text" name="no_hp_penerima[]" value="<?php echo e($row['no_hp_penerima']); ?>">
+                                                    
+                                                    <?php $__errorArgs = ['no_hp_penerima[]'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                        <div class="text-danger">
+                                                            <?php echo e($message); ?>
+
+                                                        </div>
+                                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                 </td>
                                                 <td>
-                                                    <input type="number" name="berat_barang[]" value="<?php echo e($row['berat_barang']); ?>">
+                                                    <input class="<?php $__errorArgs = ['berat_barang'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" type="number" name="berat_barang[]" value="<?php echo e($row['berat_barang']); ?>">
+
+                                                    <?php $__errorArgs = ['berat_barang[]'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                        <div class="text-danger">
+                                                            <?php echo e($message); ?>
+
+                                                        </div>
+                                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                 </td>
                                                 <td>
-                                                    <input type="number" name="ongkir[]" value="<?php echo e($row['ongkir']); ?>">
+                                                    <input class="<?php $__errorArgs = ['ongkir'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" type="number" name="ongkir[]" value="<?php echo e($row['ongkir']); ?>">
+
+                                                    <?php $__errorArgs = ['ongkir[]'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                        <div class="text-danger">
+                                                            <?php echo e($message); ?>
+
+                                                        </div>
+                                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                 </td>
                                                 <td>
-                                                    <input type="number" name="komisi[]" value="<?php echo e($row['komisi']); ?>">
+                                                    <input class="<?php $__errorArgs = ['komisi'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" type="number" name="komisi[]" value="<?php echo e($row['komisi']); ?>">
+
+                                                    <?php $__errorArgs = ['komisi[]'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                        <div class="text-danger">
+                                                            <?php echo e($message); ?>
+
+                                                        </div>
+                                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                 </td>
                                                 <td>
                                                     <select name="metode_pembayaran[]" class="form-control <?php $__errorArgs = ['metode_pembayaran'];
@@ -167,38 +405,108 @@ if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>">
-                                                        <option value="Transfer" <?php echo e($row['metode_pembayaran'] == 'Transfer' ? 'selected' : ''); ?>> Transfer </option>
-                                                        <option value="Tunai" <?php echo e($row['metode_pembayaran'] == 'Tunai' ? 'selected' : ''); ?>> Tunai </option>
-                                                        <option value="Kredit" <?php echo e($row['metode_pembayaran'] == 'Kredit' ? 'selected' : ''); ?>> Kredit </option>
+unset($__errorArgs, $__bag); ?> js-example-basic-single" id="metodePembayaran">
+                                                        <option value="">-Pilih-</option>
+                                                        <?php $__currentLoopData = $metode; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                            <option value="<?php echo e($item->metode); ?>" <?php echo e(strtolower($row['metode_pembayaran']) == strtolower($item->metode) ? 'selected' : ''); ?>>
+                                                                <?php echo e($item->metode); ?> 
+                                                            </option>
+                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                     </select>
+
+                                                    <?php $__errorArgs = ['metode_pembayaran[]'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                        <div class="text-danger">
+                                                            <?php echo e($message); ?>
+
+                                                        </div>
+                                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                 </td>
                                                 <td>
-                                                        <select name="bank[]" class="form-control <?php $__errorArgs = ['bank'];
+                                                    <select name="bank[]" class="form-control <?php $__errorArgs = ['bank'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>">
-                                                            <?php if($row['metode_pembayaran'] != 'Transfer'): ?>
-                                                                <option value="">-</option>
-                                                            <?php else: ?>
-                                                                <?php $__currentLoopData = $bank; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                                    <option value="<?php echo e($item->bank); ?>" <?php echo e($row['bank']== $item->bank ? 'selected' : ''); ?>>
-                                                                        <?php echo e($item->bank); ?>
+unset($__errorArgs, $__bag); ?> js-example-basic-single" id="bankSelect">
+                                                        <option value="">-Pilih-</option>
+                                                        <?php $__currentLoopData = $bank; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                            <option value="<?php echo e($item->bank); ?>" <?php echo e($row['bank']== $item->bank ? 'selected' : ''); ?>>
+                                                                <?php echo e($item->bank); ?>
 
-                                                                    </option>
-                                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                                            <?php endif; ?>
-                                                        </select>
+                                                            </option>
+                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                    </select>
+
+                                                    <?php $__errorArgs = ['bank[]'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                        <div class="text-danger">
+                                                            <?php echo e($message); ?>
+
+                                                        </div>
+                                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                 </td>
                                                 <td>
-                                                    <input type="text" name="bukti_pembayaran[]" value="<?php echo e($row['bukti_pembayaran']); ?>" <?php echo e($row['metode_pembayaran'] != 'Transfer' ? 'readonly' : ''); ?>> 
+                                                    <input id="bukti_pembayaran" class="<?php $__errorArgs = ['bukti_pembayaran'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" type="text" name="bukti_pembayaran[]" value="<?php echo e($row['bukti_pembayaran']); ?>"> 
+
+                                                    <?php $__errorArgs = ['bukti_pembayaran[]'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                        <div class="text-danger">
+                                                            <?php echo e($message); ?>
+
+                                                        </div>
+                                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                 </td>
                                                 <td>
-                                                    <input type="text" name="jenis_pengiriman[]" value="<?php echo e($row['jenis_pengiriman']); ?>"> 
+                                                    <input class="<?php $__errorArgs = ['jenis_pengiriman'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" type="text" name="jenis_pengiriman[]" value="<?php echo e($row['jenis_pengiriman']); ?>"> 
+
+                                                    <?php $__errorArgs = ['jenis_pengiriman[]'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                        <div class="text-danger">
+                                                            <?php echo e($message); ?>
+
+                                                        </div>
+                                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                 </td>
                                                 <td>
                                                     <select name="bawa_sendiri[]" class="form-control <?php $__errorArgs = ['metode_pembayaran'];
@@ -208,16 +516,79 @@ if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>">
+unset($__errorArgs, $__bag); ?> js-example-basic-single">
                                                         <option value="Ya" <?php echo e($row['bawa_sendiri'] == 'Ya' ? 'selected' : ''); ?>> Ya </option>
                                                         <option value="Di jemput" <?php echo e($row['bawa_sendiri'] == 'Di jemput' ? 'selected' : ''); ?>> Di jemput </option>
                                                     </select>
+
+                                                    <?php $__errorArgs = ['bawa_sendiri[]'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                        <div class="text-danger">
+                                                            <?php echo e($message); ?>
+
+                                                        </div>
+                                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                 </td>
                                                 <td>
-                                                    <input type="text" name="status_pengiriman[]" value="<?php echo e($row['status_pengiriman']); ?>"> 
+                                                    <select name="status_pengiriman[]" class="form-control <?php $__errorArgs = ['status_pengiriman'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?> js-example-basic-single">
+                                                        <?php $__currentLoopData = $status; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                            <option value="<?php echo e($item->status_pengiriman); ?>" <?php echo e($row['status_pengiriman']== $item->status_pengiriman ? 'selected' : ''); ?>>
+                                                                <?php echo e($item->status_pengiriman); ?> 
+                                                            </option>
+                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                    </select>
+
+                                                    <?php $__errorArgs = ['status_pengiriman[]'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                        <div class="text-danger">
+                                                            <?php echo e($message); ?>
+
+                                                        </div>
+                                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                                                    
                                                 </td>
                                                 <td>
-                                                    <input type="text" name="keterangan[]" value="<?php echo e($row['keterangan']); ?>"> 
+                                                    <input class="<?php $__errorArgs = ['keterangan'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" type="text" name="keterangan[]" value="<?php echo e($row['keterangan']); ?>"> 
+
+                                                    <?php $__errorArgs = ['keterangan[]'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                        <div class="text-danger">
+                                                            <?php echo e($message); ?>
+
+                                                        </div>
+                                                    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                 </td>
 
                                             </tr>
@@ -264,6 +635,21 @@ unset($__errorArgs, $__bag); ?>">
                 scrollX: true,
                 searching: false,
 			});
+
+            $('#metodePembayaran').on('change', function() {
+                var selectedMethod = $(this).val();
+                var bankSelect = $('#bankSelect');
+                var buktiPembayaran = $('#bukti_pembayaran');
+                bankSelect.empty();
+
+                if (selectedMethod === 'Transfer') {
+                    <?php $__currentLoopData = $bank; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        bankSelect.append(new Option('<?php echo e($item->bank); ?>', '<?php echo e($item->bank); ?>', false, false));
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                } else {
+                    bankSelect.append(new Option('-', '', false, false));
+                }
+            }).trigger('change');
 		})
 	</script>	
 	<?php $__env->stopPush(); ?>

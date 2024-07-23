@@ -31,6 +31,29 @@
 							<div class="row">
 								<div class="col">
 									<div class="mb-3">
+										<label class="form-label" for="">No Resi Pengiriman</label>
+										
+										<select name="no_resi_pengiriman" id="no_resi_pengiriman" class="form-control @error('no_resi_pengiriman') is-invalid @enderror js-example-basic-single">
+											<option value="" selected>- Pilih Resi -</option>
+											@foreach ($resi as $item)
+												<option value="{{ $item->no_resi }}">
+													{{ $item->no_resi }} - {{ $item->nama_pengirim }} To {{ $item->nama_penerima }}
+												</option>
+											@endforeach
+										</select>
+
+										@error('no_resi_pengiriman')
+										<div class="text-danger">
+											{{ $message }}
+										</div>
+										@enderror
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col">
+									<div class="mb-3">
 										<label class="form-label" for="">Kategori</label>
 										<select name="kategori" id="kategori" class="form-control @error('kategori') is-invalid @enderror">
 											<option value="">- Pilih Kategori -</option>
@@ -195,21 +218,6 @@
 
 							<div class="row">
 								<div class="col">
-									<div class="mb-3">
-										<label class="form-label" for="">Keterangan Tambahan</label>
-										<input class="form-control @error('keterangan_tambahan') is-invalid @enderror" type="text" name="keterangan_tambahan" autocomplete="off" value="{{ old('keterangan_tambahan') }}" maxlength="255"/>
-
-										@error('keterangan_tambahan')
-										<div class="text-danger">
-											{{ $message }}
-										</div>
-										@enderror
-									</div>
-								</div>
-							</div>
-
-							<div class="row">
-								<div class="col">
 									<div class="mb-2">
 										<label class="form-label" for="">Bukti Pembayaran</label>
 										<input class="form-control @error('bukti_pembayaran') is-invalid @enderror" id="buktiBayar" style="display: block" type="file" width="48" height="48" name="bukti_pembayaran" />
@@ -234,6 +242,32 @@
 										</div>
 
 										@error('bukti_pembayaran')
+										<div class="text-danger">
+											{{ $message }}
+										</div>
+										@enderror
+									</div>
+								</div>
+							</div>
+
+							<div class="row mt-2">
+								<div class="col">
+									<input class="form-check-input" id="multi_payment" type="checkbox" name="multi_payment" />
+									<label class="form-check-label" for="multi_payment">Multi Payment</label>
+								</div>
+							</div>
+
+							<div id="pembayaran2" style="display: none">
+								PEMBAYARAN 2
+							</div>
+
+							<div class="row mt-2">
+								<div class="col">
+									<div class="mb-3">
+										<label class="form-label" for="">Keterangan Tambahan</label>
+										<input class="form-control @error('keterangan_tambahan') is-invalid @enderror" type="text" name="keterangan_tambahan" autocomplete="off" value="{{ old('keterangan_tambahan') }}" maxlength="255"/>
+
+										@error('keterangan_tambahan')
 										<div class="text-danger">
 											{{ $message }}
 										</div>
@@ -300,6 +334,8 @@
 	</script>
 
 	<script>
+
+
 		function toggleUserFields() {
 			var takeImageCheckbox = document.getElementById('takeImage');
 			var image = document.getElementById('image');
@@ -442,6 +478,7 @@
         toggleCustomerSelect();
 		toggleCategorySelect();
 		toggleBarangSelect();
+		toggleMultiPayment();
     });
 	</script>
 	@endpush

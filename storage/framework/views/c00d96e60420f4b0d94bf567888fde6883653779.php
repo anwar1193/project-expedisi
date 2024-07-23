@@ -30,6 +30,45 @@
 							<div class="row">
 								<div class="col">
 									<div class="mb-3">
+										<label class="form-label" for="">No Resi Pengiriman</label>
+										
+										<select name="no_resi_pengiriman" id="no_resi_pengiriman" class="form-control <?php $__errorArgs = ['no_resi_pengiriman'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?> js-example-basic-single">
+											<option value="" selected>- Pilih Resi -</option>
+											<?php $__currentLoopData = $resi; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+												<option value="<?php echo e($item->no_resi); ?>">
+													<?php echo e($item->no_resi); ?> - <?php echo e($item->nama_pengirim); ?> To <?php echo e($item->nama_penerima); ?>
+
+												</option>
+											<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+										</select>
+
+										<?php $__errorArgs = ['no_resi_pengiriman'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+										<div class="text-danger">
+											<?php echo e($message); ?>
+
+										</div>
+										<?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col">
+									<div class="mb-3">
 										<label class="form-label" for="">Kategori</label>
 										<select name="kategori" id="kategori" class="form-control <?php $__errorArgs = ['kategori'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -145,7 +184,7 @@ if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>" type="number" name="modal" autocomplete="off" value="<?php echo e(old('modal')); ?>"/>
+unset($__errorArgs, $__bag); ?>" type="text" name="modal" autocomplete="off" value="<?php echo e(old('modal')); ?>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"/>
 
 										<?php $__errorArgs = ['modal'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -205,7 +244,7 @@ if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>" type="number" name="jumlah_pemasukkan" autocomplete="off" value="<?php echo e(old('jumlah_pemasukkan')); ?>"/>
+unset($__errorArgs, $__bag); ?>" type="text" name="jumlah_pemasukkan" autocomplete="off" value="<?php echo e(old('jumlah_pemasukkan')); ?>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"/>
 
 										<?php $__errorArgs = ['jumlah_pemasukkan'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -332,36 +371,6 @@ unset($__errorArgs, $__bag); ?>
 
 							<div class="row">
 								<div class="col">
-									<div class="mb-3">
-										<label class="form-label" for="">Keterangan Tambahan</label>
-										<input class="form-control <?php $__errorArgs = ['keterangan_tambahan'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>" type="text" name="keterangan_tambahan" autocomplete="off" value="<?php echo e(old('keterangan_tambahan')); ?>" maxlength="255"/>
-
-										<?php $__errorArgs = ['keterangan_tambahan'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-										<div class="text-danger">
-											<?php echo e($message); ?>
-
-										</div>
-										<?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-									</div>
-								</div>
-							</div>
-
-							<div class="row">
-								<div class="col">
 									<div class="mb-2">
 										<label class="form-label" for="">Bukti Pembayaran</label>
 										<input class="form-control <?php $__errorArgs = ['bukti_pembayaran'];
@@ -417,6 +426,47 @@ unset($__errorArgs, $__bag); ?>
 								</div>
 							</div>
 
+							<div class="row mt-2">
+								<div class="col">
+									<input class="form-check-input" id="multi_payment" type="checkbox" name="multi_payment" />
+									<label class="form-check-label" for="multi_payment">Multi Payment</label>
+								</div>
+							</div>
+
+							<div id="pembayaran2" style="display: none">
+								PEMBAYARAN 2
+							</div>
+
+							<div class="row mt-2">
+								<div class="col">
+									<div class="mb-3">
+										<label class="form-label" for="">Keterangan Tambahan</label>
+										<input class="form-control <?php $__errorArgs = ['keterangan_tambahan'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" type="text" name="keterangan_tambahan" autocomplete="off" value="<?php echo e(old('keterangan_tambahan')); ?>" maxlength="255"/>
+
+										<?php $__errorArgs = ['keterangan_tambahan'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+										<div class="text-danger">
+											<?php echo e($message); ?>
+
+										</div>
+										<?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+									</div>
+								</div>
+							</div>
+
 						</div>
 						<div class="card-footer text-end">
 							<button class="btn btn-primary" type="submit">Simpan Data</button>
@@ -456,10 +506,27 @@ unset($__errorArgs, $__bag); ?>
 					e.target.parentNode.appendChild(newDisplayElement);
 				}
 			}
+			
+			if (e.target.name === 'modal') {
+				const typedValue = e.target.value;
+				const formattedValue = new Intl.NumberFormat('id-ID').format(typedValue);
+				const displayElement = e.target.parentNode.querySelector('.typed-value');
+				
+				if (displayElement) {
+					displayElement.innerHTML = 'Number Format: <strong>RP. ' + formattedValue + '</strong>';
+				} else {
+					const newDisplayElement = document.createElement('div');
+					newDisplayElement.className = 'typed-value';
+					newDisplayElement.innerHTML = 'Number Format: <strong>RP. ' + formattedValue + '</strong>';
+					e.target.parentNode.appendChild(newDisplayElement);
+				}
+			}
 		});
 	</script>
 
 	<script>
+
+
 		function toggleUserFields() {
 			var takeImageCheckbox = document.getElementById('takeImage');
 			var image = document.getElementById('image');
@@ -602,6 +669,7 @@ unset($__errorArgs, $__bag); ?>
         toggleCustomerSelect();
 		toggleCategorySelect();
 		toggleBarangSelect();
+		toggleMultiPayment();
     });
 	</script>
 	<?php $__env->stopPush(); ?>

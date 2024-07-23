@@ -94,6 +94,7 @@
 	                                    <th>Jumlah Pemasukan</th>
 	                                    <th>Sumber Pemasukan</th>
 	                                    <th>Bukti Pembayaran</th>
+	                                    <th>No Resi Pengiriman</th>
 										<th width="35%" class="text-center">Action</th>
 	                                </tr>
 	                            </thead>
@@ -125,6 +126,9 @@
 											</div>
 											
 										</td>
+
+										<td>{{ $data->no_resi_pengiriman }}</td>
+
 										<td class="text-center">
 
 											<div class="btn-group" role="group" aria-label="Button group with nested dropdown">

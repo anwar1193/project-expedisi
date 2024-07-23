@@ -13,6 +13,9 @@ use App\Models\KonversiPoint;
 use App\Models\MetodePembayaran;
 use App\Models\StatusPengiriman;
 use App\Models\User;
+use App\Models\Invoice;
+use App\Models\TransaksiInvoice;
+use App\Models\TransaksiPembayaran;
 use Dflydev\DotAccessData\Data;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -184,6 +187,9 @@ class DataPengirimanController extends Controller
     public function truncate()
     {
         DataPengiriman::truncate();
+        Invoice::truncate();
+        TransaksiInvoice::truncate();
+        TransaksiPembayaran::truncate();
         return back()->with('success', 'Truncate Success');
     }
 

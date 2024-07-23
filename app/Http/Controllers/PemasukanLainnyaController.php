@@ -7,6 +7,7 @@ use App\Models\Barang;
 use App\Models\Customer;
 use App\Models\Jasa;
 use App\Models\PemasukanLainnya;
+use App\Models\DataPengiriman;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -43,14 +44,16 @@ class PemasukanLainnyaController extends Controller
         $customer = Customer::orderBy('kode_customer', 'ASC')->get();
         $barangs = Barang::all();
         $jasas = Jasa::all();
+        $resi = DataPengiriman::all();
 
-        return view('data-pemasukan.create', compact('customer', 'barangs', 'jasas'));
+        return view('data-pemasukan.create', compact('customer', 'barangs', 'jasas', 'resi'));
     }
 
     public function store(Request $request)
     { 
         $today = date('Y-m-d');
         $validateData = $request->validate([
+            'no_resi_pengiriman' => 'required',
             'kategori' => 'required',
             'modal' => 'required',
             'keterangan' => 'required',
