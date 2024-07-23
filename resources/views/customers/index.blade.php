@@ -126,7 +126,7 @@
 											</td>
 											
 											<td>{{ $data->kode_customer }}</td>
-											<td>{{ $data->status == true ? "Altif" : "Tidak Aktif" }}</td>
+											<td>{{ $data->status == true ? "Aktif" : "Tidak Aktif" }}</td>
 											<td>{{ $data->nama }}</td>
 											<td>{{ $data->perusahaan == NULL ? '-' : $data->perusahaan }}</td>
 											<td>{{ $data->no_wa }}</td>
