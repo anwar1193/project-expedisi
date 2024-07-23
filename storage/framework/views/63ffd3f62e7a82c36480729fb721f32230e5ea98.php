@@ -75,7 +75,7 @@ unset($__errorArgs, $__bag); ?>
 								</div>
 
 								<div class="col-md-6">
-									<label class="form-label" for="no_wa">No Whatsapp</label>
+									<label class="form-label" for="no_wa">No Whatsapp (Contoh: 08xxxxxxxxx)</label>
 									<input class="form-control <?php $__errorArgs = ['no_wa'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -86,6 +86,60 @@ endif;
 unset($__errorArgs, $__bag); ?>" id="no_wa" placeholder="Contoh: 08xxxxxxxx" type="text" name="no_wa" value="<?php echo e(old('no_wa')); ?>" autocomplete="off" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
 
 									<?php $__errorArgs = ['no_wa'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+										<div class="text-danger">
+											<?php echo e($message); ?>
+
+										</div>
+									<?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+								</div>
+							</div>
+							
+							<div class="row g-3 py-2">
+								<div class="col-md-6">
+									<label class="form-label" for="nama">No Whatsapp 2 (Contoh: 08xxxxxxxxx) <span class="text-danger">*opsional</span></</label>
+									<input class="form-control <?php $__errorArgs = ['no_wa_2'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" id="no_wa" placeholder="Contoh: 08xxxxxxxx" type="text" name="no_wa_2" value="<?php echo e(old('no_wa_2')); ?>" autocomplete="off" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+
+									<?php $__errorArgs = ['no_wa_2'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+										<div class="text-danger">
+											<?php echo e($message); ?>
+
+										</div>
+									<?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+								</div>
+
+								<div class="col-md-6">
+									<label class="form-label" for="no_wa">No Whatsapp 3 (Contoh: 08xxxxxxxxx) <span class="text-danger">*opsional</span></label>
+									<input class="form-control <?php $__errorArgs = ['no_wa_3'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" id="no_wa" placeholder="Contoh: 08xxxxxxxx" type="text" name="no_wa_3" value="<?php echo e(old('no_wa_3')); ?>" autocomplete="off" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+
+									<?php $__errorArgs = ['no_wa_3'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
