@@ -41,7 +41,7 @@ class UserController extends Controller
             'nama' => 'required',
             'username' => 'required',
             'email' => 'required',
-            'nomor_telepon' => 'required',
+            'nomor_telepon' => 'required|regex:/^0[0-9]{9,12}$/',
             'user_level' => 'required',
             'password' => 'required|confirmed',
             // 'password_confirmation' => 'required',
@@ -83,7 +83,7 @@ class UserController extends Controller
             'nama' => 'required',
             'username' => 'required',
             'email' => 'required',
-            'nomor_telepon' => 'required',
+            'nomor_telepon' => 'required|regex:/^0[0-9]{9,12}$/',
             // 'user_level' => 'required',
             'status' => 'required',
             'password_baru' => 'confirmed'
