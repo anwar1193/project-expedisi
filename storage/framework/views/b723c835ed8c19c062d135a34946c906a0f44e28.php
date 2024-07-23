@@ -75,7 +75,7 @@
 												<div class="col-4 d-flex align-items-center"><h1><i class="icofont icofont-sale-discount"></i></h1></div>
 												<div class="col">
 													<div class="row"><h5 class="fw-bold">Total Saldo</h5></div>
-													<div class="row"><h5 class="fw-bold"><?php echo e('Rp '.number_format($saldo, 0, '.', '.')); ?></h5></div>
+													<div class="row"><h5 class="fw-bold"><?php echo e('Rp '.number_format($saldoToday->saldo, 0, '.', '.')); ?></h5></div>
 												</div>
 											</div>
 

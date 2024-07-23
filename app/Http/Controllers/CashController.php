@@ -19,6 +19,9 @@ class CashController extends Controller
         $data['pengeluaran'] = PengeluaranCash::selectRaw('SUM(jumlah) AS total')
                             ->where('tanggal', $data['tanggal'])
                             ->first();
+
+        $data['saldoToday'] = SaldoCash::where('tanggal', $data['tanggal'])
+                                ->first();
         $data['saldo'] = round($data['pemasukan']->total - $data['pengeluaran']->total);
 
         return view('posisi-cash.index', $data);
