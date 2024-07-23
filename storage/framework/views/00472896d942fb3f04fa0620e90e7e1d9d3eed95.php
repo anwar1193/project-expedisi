@@ -4,43 +4,102 @@
         $notificationPengeluaran = getNotifPengeluaran();
         $tema = Session::get("tema");
     ?>
-<?php endif; ?>
 
-<?php if(Session::get('user_level') != 3 && isset($notificationData) && $notificationData['jumlah'] != 0): ?>
-    <script src="<?php echo e(asset('assets/js/sweet-alert/sweetalert.min.js')); ?>"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            swal({
-                title: "You have notification!",
-                text: "<?php echo e($notificationData['text_notif']); ?> dan <?php echo e($notificationPengeluaran['text_notif']); ?>",
-                icon: "info",
-                buttons: {
-                          confirm: {
-                              text: "Lihat Data",
-                              value: true,
-                              name: 'notif',
-                              visible: true,
-                              className: "bg-danger",
-                              closeModal: true
-                          },
-                          cancel: {
-                              text: "Tutup",
-                              value: null,
-                              visible: true,
-                              className: "",
-                              closeModal: true,
-                          }
+    <?php if(isset($notificationData) && $notificationData['jumlah'] != 0): ?>
+        <script src="<?php echo e(asset('assets/js/sweet-alert/sweetalert.min.js')); ?>"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                swal({
+                    title: "You have notification!",
+                    text: "<?php echo e($notificationData['text_notif']); ?>",
+                    icon: "info",
+                    buttons: {
+                        confirm: {
+                            text: "Lihat Data",
+                            value: true,
+                            name: 'notif',
+                            visible: true,
+                            className: "bg-danger",
+                            closeModal: true
+                        },
+                        cancel: {
+                            text: "Tutup",
+                            value: null,
+                            visible: true,
+                            className: "",
+                            closeModal: true,
                         }
-            }).then((value) => {
-              console.log(value);
-                if (value) {
-                    window.location.href = "<?php echo e(route('data-pengiriman', ['notif' => 1])); ?>";
-                }
+                    }
+                }).then((value) => {
+                    if (value) {
+                        window.location.href = "<?php echo e(route('data-pengiriman', ['notif' => 1])); ?>";
+                    } else {
+                        <?php if(isset($notificationPengeluaran) && $notificationPengeluaran['jumlah'] != 0): ?>
+                            swal({
+                                title: "You have notification!",
+                                text: "<?php echo e($notificationPengeluaran['text_notif']); ?>",
+                                icon: "info",
+                                buttons: {
+                                    confirm: {
+                                        text: "Lihat Data",
+                                        value: true,
+                                        name: 'notif',
+                                        visible: true,
+                                        className: "bg-danger",
+                                        closeModal: true
+                                    },
+                                    cancel: {
+                                        text: "Tutup",
+                                        value: null,
+                                        visible: true,
+                                        className: "",
+                                        closeModal: true,
+                                    }
+                                }
+                            }).then((value) => {
+                                if (value) {
+                                    window.location.href = "<?php echo e(route('pengeluaran-cash')); ?>";
+                                }
+                            });
+                        <?php endif; ?>
+                    }
+                });
             });
-        });
-    </script>
+        </script>
+    <?php elseif(isset($notificationPengeluaran) && $notificationPengeluaran['jumlah'] != 0): ?>
+        <script src="<?php echo e(asset('assets/js/sweet-alert/sweetalert.min.js')); ?>"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                swal({
+                    title: "You have notification!",
+                    text: "<?php echo e($notificationPengeluaran['text_notif']); ?>",
+                    icon: "info",
+                    buttons: {
+                        confirm: {
+                            text: "Lihat Data",
+                            value: true,
+                            name: 'notif',
+                            visible: true,
+                            className: "bg-danger",
+                            closeModal: true
+                        },
+                        cancel: {
+                            text: "Tutup",
+                            value: null,
+                            visible: true,
+                            className: "",
+                            closeModal: true,
+                        }
+                    }
+                }).then((value) => {
+                    if (value) {
+                        window.location.href = "<?php echo e(route('pengeluaran-cash')); ?>";
+                    }
+                });
+            });
+        </script>
+    <?php endif; ?>
 <?php endif; ?>
-
 
 
 
