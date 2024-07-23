@@ -75,7 +75,7 @@ unset($__errorArgs, $__bag); ?>
 								</div>
 
 								<div class="col-md-6">
-									<label class="form-label" for="no_wa">No Whatsapp</label>
+									<label class="form-label" for="no_wa">No Whatsapp (Contoh: 08xxxxxxxxx)</label>
 									<input class="form-control <?php $__errorArgs = ['no_wa'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -210,37 +210,11 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
 									</div>
-
-									<div class="col-md-6">
-										<label class="form-label" for="username">Password Lama</label>
-										<input name="password_lama" class="form-control <?php $__errorArgs = ['password_lama'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>" type="password" autocomplete="off" value="<?php echo e(old('password_lama')); ?>"/>
-
-										<?php $__errorArgs = ['password_lama'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-											<div class="text-danger">
-												<?php echo e($message); ?>
-
-											</div>
-										<?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-									</div>
 								</div>
 								
 								<div class="row g-3 py-2">
 									<div class="col-md-6">
-										<label class="form-label" for="">Password Baru</label>
+										<label class="form-label" for="">Password</label>
 										<input name="password_baru" class="form-control <?php $__errorArgs = ['password_baru'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :

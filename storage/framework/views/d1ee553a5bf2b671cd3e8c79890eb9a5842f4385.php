@@ -128,7 +128,7 @@
 											</td>
 											
 											<td><?php echo e($data->kode_customer); ?></td>
-											<td><?php echo e($data->status == true ? "Altif" : "Tidak Aktif"); ?></td>
+											<td><?php echo e($data->status == true ? "Aktif" : "Tidak Aktif"); ?></td>
 											<td><?php echo e($data->nama); ?></td>
 											<td><?php echo e($data->perusahaan == NULL ? '-' : $data->perusahaan); ?></td>
 											<td><?php echo e($data->no_wa); ?></td>

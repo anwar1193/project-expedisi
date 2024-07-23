@@ -59,7 +59,7 @@
 								</div>
 
 								<div class="col-md-6">
-									<label class="form-label" for="no_wa">No Whatsapp</label>
+									<label class="form-label" for="no_wa">No Whatsapp (Contoh: 08xxxxxxxxx)</label>
 									<input class="form-control @error('no_wa') is-invalid @enderror" id="no_wa" type="text" name="no_wa" value="{{ old('no_wa', $customer->no_wa) }}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
 
 									@error('no_wa')
@@ -119,22 +119,11 @@
 											</div>
 										@enderror
 									</div>
-
-									<div class="col-md-6">
-										<label class="form-label" for="username">Password Lama</label>
-										<input name="password_lama" class="form-control @error('password_lama') is-invalid @enderror" type="password" autocomplete="off" value="{{ old('password_lama') }}"/>
-
-										@error('password_lama')
-											<div class="text-danger">
-												{{ $message }}
-											</div>
-										@enderror
-									</div>
 								</div>
 								
 								<div class="row g-3 py-2">
 									<div class="col-md-6">
-										<label class="form-label" for="">Password Baru</label>
+										<label class="form-label" for="">Password</label>
 										<input name="password_baru" class="form-control @error('password_baru') is-invalid @enderror" type="password" autocomplete="off" value="{{ old('password_baru') }}"/>
 
 										@error('password_baru')
