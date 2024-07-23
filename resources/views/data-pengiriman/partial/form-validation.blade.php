@@ -92,12 +92,12 @@
                 }
             });
             $('select[name="metode_pembayaran[]"]').each(function(index) {
-                if ($(this).val() == "") {
-                    $(this).addClass('is-invalid');
-                    alert("Metode Pembayaran harus diisi");
-                    isValid = false;
-                    return false; // 
-                }
+                // if ($(this).val() == "") {
+                //     $(this).addClass('is-invalid');
+                //     alert("Metode Pembayaran harus diisi");
+                //     isValid = false;
+                //     return false;
+                // }
 
                 if ($(this).val().toLowerCase() == "transfer") {
                     let correspondingBuktiInput = $('input[name="bukti_pembayaran[]"]').eq(index);
@@ -107,9 +107,14 @@
                         alert("Bank harus diisi jika metode pembayaran adalah transfer");
                         isValid = false;
                         return false; 
-                    } else if (correspondingBuktiInput.val() == "") {
+                    }
+                }
+                
+                if ($(this).val().toLowerCase() != "tunai") {
+                    let correspondingBuktiInput = $('input[name="bukti_pembayaran[]"]').eq(index);
+                    if (correspondingBuktiInput.val() == "") {
                         correspondingBuktiInput.addClass('is-invalid');
-                        alert("Bukti Pembayaran harus diisi jika metode pembayaran adalah transfer");
+                        alert("Bukti Pembayaran harus diisi jika metode pembayaran bukan tunai");
                         isValid = false;
                         return false; 
                     }

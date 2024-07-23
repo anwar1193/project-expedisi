@@ -162,7 +162,7 @@ class Helper
             '*.berat_barang' => 'required|numeric',
             '*.ongkir' => 'required|numeric',
             '*.komisi' => 'required|numeric',
-            '*.metode_pembayaran' => 'required',
+            // '*.metode_pembayaran' => 'required',
             '*.bank' => 'nullable',
             '*.bukti_pembayaran' => 'nullable',
             '*.jenis_pengiriman' => 'required',
@@ -191,19 +191,25 @@ class Helper
                 }
 
                 if ($data['metode_pembayaran'] == 'Transfer') {
-                    if (empty($data['bukti_pembayaran'])) {
-                        $errors[] = 'Bukti Pembayaran Wajib Diisi Ketika Metode Pembayaran = Transfer';
-                    }
+                    // if (empty($data['bukti_pembayaran'])) {
+                    //     $errors[] = 'Bukti Pembayaran Wajib Diisi Ketika Metode Pembayaran = Transfer';
+                    // }
 
                     $bankTerdaftar = Bank::where('bank', $data['bank'])->exists();
                     if (!$bankTerdaftar) {
                         $errors[] = 'Bank yang anda input tidak tersedia di sistem!';
                     }
                 }
-
-                if ($data['metode_pembayaran'] != 'Transfer' && !empty($data['bukti_pembayaran'])) {
-                    $errors[] = 'Kolom Bukti Pembayaran Harus Dikosongkan Ketika Metode Pembayaran Bukan Transfer';
+                
+                if ($data['metode_pembayaran'] != 'Tunai') {
+                    if (empty($data['bukti_pembayaran'])) {
+                        $errors[] = 'Bukti Pembayaran Wajib Diisi Ketika Metode Pembayaran Bukan Tunai';
+                    }
                 }
+
+                // if ($data['metode_pembayaran'] != 'Transfer' && !empty($data['bukti_pembayaran'])) {
+                //     $errors[] = 'Kolom Bukti Pembayaran Harus Dikosongkan Ketika Metode Pembayaran Bukan Transfer';
+                // }
 
                 if ($data['metode_pembayaran'] == 'Kredit') {
                     $customerTerdaftar = Customer::where('kode_customer', $data['kode_customer'])->exists();
