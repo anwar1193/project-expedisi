@@ -24,9 +24,35 @@
 
                             <div class="col-md-6">
                                 <label class="form-label text-white" for="no_wa">No Whatsapp</label>
-                                <input class="form-control @error('no_wa') is-invalid @enderror" id="no_wa" type="text" placeholder="08********" name="no_wa" value="{{ old('no_wa') }}" autocomplete="off"/>
+                                <input class="form-control @error('no_wa') is-invalid @enderror" id="no_wa" type="text" placeholder="Contoh: 08xxxxxxxx" name="no_wa" value="{{ old('no_wa') }}" autocomplete="off"/>
 
                                 @error('no_wa')
+                                    <div class="text-danger">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row g-3 py-2">
+                            <div class="col-md-6">
+                                <label class="form-label text-white" for="no_wa_2">No Whatsapp 2</label>
+                                <input class="form-control @error('no_wa_2') is-invalid @enderror" id="no_wa" placeholder="Contoh: 08xxxxxxxx" type="text" name="no_wa_2" value="{{ old('no_wa_2') }}" autocomplete="off" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+                                <span class="text-danger">* opsional</span>
+
+                                @error('no_wa_2')
+                                    <div class="text-danger">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label text-white" for="no_wa_3">No Whatsapp 3</label>
+                                <input class="form-control @error('no_wa_3') is-invalid @enderror" id="no_wa" placeholder="Contoh: 08xxxxxxxx" type="text" name="no_wa_3" value="{{ old('no_wa_3') }}" autocomplete="off" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
+                                <span class="text-danger">*opsional</span>
+
+                                @error('no_wa_3')
                                     <div class="text-danger">
                                         {{ $message }}
                                     </div>

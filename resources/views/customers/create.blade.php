@@ -72,7 +72,7 @@
 							
 							<div class="row g-3 py-2">
 								<div class="col-md-6">
-									<label class="form-label" for="nama">No Whatsapp 2 (Contoh: 08xxxxxxxxx) <span class="text-danger">*opsional</span></</label>
+									<label class="form-label" for="nama">No Whatsapp 2 (Contoh: 08xxxxxxxxx) <span class="text-danger">*opsional</span></label>
 									<input class="form-control @error('no_wa_2') is-invalid @enderror" id="no_wa" placeholder="Contoh: 08xxxxxxxx" type="text" name="no_wa_2" value="{{ old('no_wa_2') }}" autocomplete="off" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
 
 									@error('no_wa_2')
