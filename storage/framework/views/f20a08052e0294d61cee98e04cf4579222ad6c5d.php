@@ -132,7 +132,7 @@ unset($__errorArgs, $__bag); ?>
 							<div class="row">
 								<div class="col">
 									<div class="mb-3">
-										<label class="form-label" for="">Nomor Telepon</label>
+										<label class="form-label" for="">Nomor Telepon (Contoh: 08xxxxxxxxxx)</label>
 										<input class="form-control <?php $__errorArgs = ['nomor_telepon'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -159,51 +159,11 @@ unset($__errorArgs, $__bag); ?>
 								</div>
 							</div>
 
-							<?php if($user->user_level != 3): ?>
-								<div class="row">
-									<div class="col">
-										<div class="mb-3">
-											<label class="form-label" for="">User Level</label>
-											<select name="user_level" id="user_level" class="form-control <?php $__errorArgs = ['user_level'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?> js-example-basic-single">
-												<option value="">- Pilih Level -</option>
-												<?php $__currentLoopData = $levels; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-													<option value="<?php echo e($item->id); ?>" <?php echo e($user->user_level == $item->id ? 'selected' : NULL); ?>>
-														<?php echo e($item->level); ?>
-
-													</option>
-												<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-											</select>
-
-											<?php $__errorArgs = ['user_level'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-											<div class="text-danger">
-												<?php echo e($message); ?>
-
-											</div>
-											<?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-										</div>
-									</div>
-								</div>
-							<?php endif; ?>
-
-							<div class="row">
+							<div class="row" style="display: <?php echo e($user->user_level != 3 ? 'block' : 'none'); ?>">
 								<div class="col">
 									<div class="mb-3">
-										<label class="form-label" for="">Status</label>
-										<select name="status" id="status" class="form-control <?php $__errorArgs = ['status'];
+										<label class="form-label" for="">User Level</label>
+										<select name="user_level" id="user_level" class="form-control <?php $__errorArgs = ['user_level'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -211,11 +171,16 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?> js-example-basic-single">
-											<option value="1" <?php echo e($user->status == 1 ? 'selected' : NULL); ?>>Aktif</option>
-											<option value="0" <?php echo e($user->status == 0 ? 'selected' : NULL); ?>>Non-Aktif</option>
+											<option value="">- Pilih Level -</option>
+											<?php $__currentLoopData = $levels; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+												<option value="<?php echo e($item->id); ?>" <?php echo e($user->user_level == $item->id ? 'selected' : NULL); ?>>
+													<?php echo e($item->level); ?>
+
+												</option>
+											<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 										</select>
 
-										<?php $__errorArgs = ['status'];
+										<?php $__errorArgs = ['user_level'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -235,17 +200,20 @@ unset($__errorArgs, $__bag); ?>
 							<div class="row">
 								<div class="col">
 									<div class="mb-3">
-										<label class="form-label" for="">Password Lama</label>
-										<input name="password_lama" class="form-control <?php $__errorArgs = ['password_lama'];
+										<label class="form-label" for="">Status</label>
+										<select name="status" id="status" class="form-control <?php $__errorArgs = ['status'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>" type="password" autocomplete="off" value="<?php echo e(old('password_lama')); ?>"/>
+unset($__errorArgs, $__bag); ?> js-example-basic-single">
+											<option value="1" <?php echo e($user->status == 1 ? 'selected' : NULL); ?>>Aktif</option>
+											<option value="0" <?php echo e($user->status == 0 ? 'selected' : NULL); ?>>Non-Aktif</option>
+										</select>
 
-										<?php $__errorArgs = ['password'];
+										<?php $__errorArgs = ['status'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }

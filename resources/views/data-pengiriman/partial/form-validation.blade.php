@@ -19,10 +19,18 @@
                     return false;
                 }
             });
-            $('input[name="input_by[]"]').each(function() {
+            $('select[name="input_by[]"]').each(function() {
                 if ($(this).val() == "") {
-                    $(this).addClass('is-invalid');
+                    $(this).addClass('custom-select2');
                     alert("Diinput Oleh harus diisi");
+                    isValid = false;
+                    return false;
+                }
+            });
+            $('select[name="kode_customer[]"]').each(function() {
+                if ($(this).val() == "") {
+                    $(this).addClass('custom-select2');
+                    alert("Kode Customer harus diisi");
                     isValid = false;
                     return false;
                 }
@@ -92,24 +100,29 @@
                 }
             });
             $('select[name="metode_pembayaran[]"]').each(function(index) {
-                if ($(this).val() == "") {
-                    $(this).addClass('is-invalid');
-                    alert("Metode Pembayaran harus diisi");
-                    isValid = false;
-                    return false; // 
-                }
+                // if ($(this).val() == "") {
+                //     $(this).addClass('is-invalid');
+                //     alert("Metode Pembayaran harus diisi");
+                //     isValid = false;
+                //     return false;
+                // }
 
                 if ($(this).val().toLowerCase() == "transfer") {
                     let correspondingBuktiInput = $('input[name="bukti_pembayaran[]"]').eq(index);
                     let correspondingBankInput = $('select[name="bank[]"]').eq(index);
                     if (correspondingBankInput.val() == "") {
-                        correspondingBankInput.addClass('is-invalid');
+                        correspondingBankInput.addClass('custom-select2');
                         alert("Bank harus diisi jika metode pembayaran adalah transfer");
                         isValid = false;
                         return false; 
-                    } else if (correspondingBuktiInput.val() == "") {
+                    }
+                }
+                
+                if ($(this).val().toLowerCase() != "tunai") {
+                    let correspondingBuktiInput = $('input[name="bukti_pembayaran[]"]').eq(index);
+                    if (correspondingBuktiInput.val() == "") {
                         correspondingBuktiInput.addClass('is-invalid');
-                        alert("Bukti Pembayaran harus diisi jika metode pembayaran adalah transfer");
+                        alert("Bukti Pembayaran harus diisi jika metode pembayaran bukan tunai");
                         isValid = false;
                         return false; 
                     }
@@ -123,17 +136,17 @@
                     return false;
                 }
             });
-            $('input[name="bawa_sendiri[]"]').each(function() {
+            $('select[name="bawa_sendiri[]"]').each(function() {
                 if ($(this).val() == "") {
-                    $(this).addClass('is-invalid');
+                    $(this).addClass('custom-select2');
                     alert("Bawa Sendiri harus diisi");
                     isValid = false;
                     return false;
                 }
             });
-            $('input[name="status_pengiriman[]"]').each(function() {
+            $('select[name="status_pengiriman[]"]').each(function() {
                 if ($(this).val() == "") {
-                    $(this).addClass('is-invalid');
+                    $(this).addClass('custom-select2');
                     alert("Status Pengiriman harus diisi");
                     isValid = false;
                     return false;

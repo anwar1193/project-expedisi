@@ -19,6 +19,9 @@ class CashController extends Controller
         $data['pengeluaran'] = PengeluaranCash::selectRaw('SUM(jumlah) AS total')
                             ->where('tanggal', $data['tanggal'])
                             ->first();
+
+        $data['saldoToday'] = SaldoCash::where('tanggal', $data['tanggal'])
+                                ->first();
         $data['saldo'] = round($data['pemasukan']->total - $data['pengeluaran']->total);
 
         return view('posisi-cash.index', $data);
@@ -65,6 +68,10 @@ class CashController extends Controller
         $today = date('Y-m-d');
         $inputSaldo = $request->saldo;
         $saldo = SaldoCash::orderBy('id', 'DESC')->first();
+        
+        if ($request->tanggal != $today) {
+            return back()->with('error', 'Tanggal Closing Saldo Harus Sama Dengan Tanggal Hari ini');
+        }
 
         if (($saldo && $saldo->tanggal == $today)) {
             $saldo->saldo = $inputSaldo;

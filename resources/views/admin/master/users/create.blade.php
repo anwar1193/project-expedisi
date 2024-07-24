@@ -76,7 +76,7 @@
 							<div class="row">
 								<div class="col">
 									<div class="mb-3">
-										<label class="form-label" for="">Nomor Telepon</label>
+										<label class="form-label" for="">Nomor Telepon (Contoh: 08xxxxxxxx)</label>
 										<input class="form-control @error('nomor_telepon') is-invalid @enderror" type="text" type="text" placeholder="Contoh: 08xxxxxxxxxx" name="nomor_telepon" autocomplete="off" value="{{ old('nomor_telepon') }}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
 
 										@error('nomor_telepon')

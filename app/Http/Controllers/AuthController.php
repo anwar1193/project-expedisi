@@ -107,6 +107,8 @@ class AuthController extends Controller
                 'nama' => 'required',
                 'email' => 'required|email|unique:customers,email|unique:users,email',
                 'no_wa' => 'required|regex:/^\+?[0-9]+$/|unique:customers,no_wa|unique:users,nomor_telepon',
+                'no_wa_2' => 'regex:/^\+?[0-9]+$/|unique:customers,no_wa|unique:users,nomor_telepon',
+                'no_wa_3' => 'regex:/^\+?[0-9]+$/|unique:customers,no_wa|unique:users,nomor_telepon',
                 'alamat' => 'required',
             ]);
 

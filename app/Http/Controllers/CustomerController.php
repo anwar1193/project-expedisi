@@ -56,7 +56,9 @@ class CustomerController extends Controller
             $this->validate($request, [
                 'nama' => 'required',
                 'email' => 'required|email|unique:customers,email|unique:users,email',
-                'no_wa' => 'required|regex:/^\+?[0-9]+$/|unique:customers,no_wa|unique:users,nomor_telepon',
+                'no_wa' => 'required|regex:/^0[0-9]{9,14}$/|unique:customers,no_wa|unique:users,nomor_telepon',
+                'no_wa_2' => 'regex:/^0[0-9]{9,14}$/|unique:customers,no_wa|unique:users,nomor_telepon',
+                'no_wa_3' => 'regex:/^0[0-9]{9,14}$/|unique:customers,no_wa|unique:users,nomor_telepon',
                 'alamat' => 'required',
             ]);
 
@@ -103,8 +105,10 @@ class CustomerController extends Controller
             $this->validate($request, [
                 'nama' => 'required',
                 'email' => 'required',
-                'no_wa' => 'required',
-                // 'no_wa' => 'required|regex:/^\+?[0-9]+$/|unique:customers,no_wa,' . $id.'|unique:users,nomor_telepon,' . $id,
+                'no_wa' => 'required|regex:/^0[0-9]{9,14}$/',
+                'no_wa_2' => 'regex:/^0[0-9]{9,14}$/',
+                'no_wa_3' => 'regex:/^0[0-9]{9,14}$/',
+                // 'no_wa' => 'required|regex:/^0[0-9]{9,14}$/|unique:customers,no_wa,' . $id.'|unique:users,nomor_telepon,' . $id,
                 'alamat' => 'required',
                 'password_baru' => 'confirmed'
             ]);

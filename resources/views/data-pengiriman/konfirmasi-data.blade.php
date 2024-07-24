@@ -16,8 +16,8 @@
     }
 
     .content {
-            flex: 1;
-            overflow: hidden;
+        flex: 1;
+        overflow: hidden;
         display: flex;
         flex-direction: column;
     }
@@ -60,6 +60,14 @@
     .scrollbar {
         height: 1px; /* Invisible but allows scrolling */
         width: 100%;
+    }
+
+    .custom-select2 + .select2-container--default .select2-selection--single .select2-selection__rendered {
+        background-color: red;
+    }
+
+    .scrollbar-container::-webkit-scrollbar {
+        height: 20px;
     }
 </style>
 @endpush
@@ -161,7 +169,7 @@
                                                     </td>
 
                                                     <td>
-                                                        <select name="input_by[]" class="form-control @error('input_by')  @enderror js-example-basic-single" required="">
+                                                        <select name="input_by[]" class="form-control @error('input_by')  @enderror js-example-basic-single">
                                                             <option value="">-Pilih-</option>
                                                             @foreach ($kasir as $item)
                                                                 <option value="{{ $item->nama }}" {{ strtolower($row['diinput_oleh']) == strtolower($item->nama) ? 'selected' : '' }}>
@@ -178,7 +186,7 @@
                                                     </td>
 
                                                     <td>
-                                                        <select name="kode_customer[]" class="form-select @error('kode_customer')  @enderror js-example-basic-single" required="">
+                                                        <select name="kode_customer[]" class="form-select @error('kode_customer')  @enderror js-example-basic-single">
                                                             <option value="">-Pilih-</option>
                                                             <option value="General" {{ $row['kode_customer'] == 'General' ? 'selected' : '' }}> General </option>
                                                             @foreach ($customer as $item)
@@ -310,7 +318,7 @@
                                                         <select name="bank[]" class="form-control @error('bank')  @enderror js-example-basic-single" id="bankSelect">
                                                             <option value="">-Pilih-</option>
                                                             @foreach ($bank as $item)
-                                                                <option value="{{ $item->bank }}" {{ $row['bank']== $item->bank ? 'selected' : '' }}>
+                                                                <option value="{{ $item->bank }}" {{ strtolower($row['bank']) == strtolower($item->bank) ? 'selected' : '' }}>
                                                                     {{ $item->bank }}
                                                                 </option>
                                                             @endforeach
@@ -378,7 +386,7 @@
                                                     <td>
                                                         <select name="status_pengiriman[]" class="form-control @error('status_pengiriman')  @enderror js-example-basic-single">
                                                             @foreach ($status as $item)
-                                                                <option value="{{ $item->status_pengiriman }}" {{ $row['status_pengiriman']== $item->status_pengiriman ? 'selected' : '' }}>
+                                                                <option value="{{ $item->status_pengiriman }}" {{ strtolower($row['status_pengiriman']) == strtolower($item->status_pengiriman) ? 'selected' : '' }}>
                                                                     {{ $item->status_pengiriman }} 
                                                                 </option>
                                                             @endforeach
@@ -451,6 +459,8 @@
                 searching: false,
 			});
 
+            $('.custom-select2').select2();
+            
             $('#metodePembayaran').on('change', function() {
                 var selectedMethod = $(this).val();
                 var bankSelect = $('#bankSelect');
@@ -498,6 +508,9 @@
 
             // Set the width of the scrollbar to match the table content width
             scrollbar.style.width = tableContainer.scrollWidth + 'px';
+
+            // Ensure scrollbar is always visible
+            scrollbarContainer.style.overflowX = 'scroll';
         });
     </script>
     @include('data-pengiriman.partial.form-validation')

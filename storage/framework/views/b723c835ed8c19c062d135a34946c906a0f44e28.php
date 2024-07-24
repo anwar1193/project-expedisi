@@ -75,7 +75,7 @@
 												<div class="col-4 d-flex align-items-center"><h1><i class="icofont icofont-sale-discount"></i></h1></div>
 												<div class="col">
 													<div class="row"><h5 class="fw-bold">Total Saldo</h5></div>
-													<div class="row"><h5 class="fw-bold"><?php echo e('Rp '.number_format($saldo, 0, '.', '.')); ?></h5></div>
+													<div class="row"><h5 class="fw-bold"><?php echo e('Rp '.number_format($saldoToday->saldo, 0, '.', '.')); ?></h5></div>
 												</div>
 											</div>
 
@@ -118,11 +118,14 @@
 	                </div>
                     <div class="card-footer">
                         <div class="d-flex justify-content-evenly">
-							<form action="<?php echo e(route('posisi-cash.closing')); ?>" method="POST">
-								<?php echo csrf_field(); ?>
-								<input type="hidden" name="saldo" value="<?php echo e($saldo); ?>">
-								<button class="btn btn-secondary" type="submit" onclick="return confirm('Apakah Anda Yakin?')">Closing</button>
-							</form>
+							<?php if($tanggal == date('Y-m-d')): ?>
+								<form action="<?php echo e(route('posisi-cash.closing')); ?>" method="POST">
+									<?php echo csrf_field(); ?>
+									<input type="hidden" name="saldo" value="<?php echo e($saldo); ?>">
+									<input type="hidden" name="tanggal" value="<?php echo e($tanggal); ?>">
+									<button class="btn btn-secondary" type="submit" onclick="return confirm('Apakah Anda Yakin?')">Closing</button>
+								</form>
+							<?php endif; ?>
                             <button class="btn btn-secondary" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#pemasukan">Input Pemasukan</button>
                             <button class="btn btn-secondary" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#pengeluaran">Input Pengeluaran</button>
                         </div>
