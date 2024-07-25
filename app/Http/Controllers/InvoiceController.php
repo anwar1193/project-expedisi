@@ -14,6 +14,7 @@ use App\Models\Invoice;
 use App\Models\Pesan;
 use App\Models\TransaksiInvoice;
 use App\Models\TransaksiPembayaran;
+use App\Models\InvoiceBank;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
@@ -178,6 +179,8 @@ class InvoiceController extends Controller
     public function handleInvoiceTransactions(Request $request, $id, $invoiceId)
     {
         $id_pengiriman = $request->id_pengiriman;
+        $bank_id = $request->bank_id;
+
         $diskon = $request->diskon ?? 0;
         $customer = Customer::select('customers.id', 'customers.kode_customer', 'customers.nama', 'customers.alamat', 'invoices.invoice_no', 'invoices.id AS invoiceId', 'invoices.diskon')
                     ->join('invoices', 'invoices.customer_id', '=', 'customers.id')
@@ -198,6 +201,13 @@ class InvoiceController extends Controller
                         'data_pengiriman_id' => $pengiriman_id
                     ]);
                 }
+            }
+
+            foreach($bank_id as $id_bank){
+                InvoiceBank::create([
+                    'id_invoice' => $customer->invoiceId,
+                    'id_bank' => $id_bank
+                ]);
             }
     
             Invoice::find($customer->invoiceId)->update([
@@ -231,7 +241,10 @@ class InvoiceController extends Controller
 
         $totalBersih = round($total->total - $customer->diskon - $diskon);
 
-        $bank = Bank::orderBy('id')->get();
+        $bank = InvoiceBank::select('invoice_banks.*', 'banks.bank', 'banks.nomor_rekening', 'banks.atas_nama', 'banks.cabang')
+                ->join('banks', 'banks.id', '=', 'invoice_banks.id_bank')
+                ->where('invoice_banks.id_invoice', $invoiceId)
+                ->get();
 
         $notEmpty = $data->isNotEmpty();
         $waktuCetak = date('d-m-Y H:i:s');
@@ -241,7 +254,7 @@ class InvoiceController extends Controller
         ini_set('max_execution_time', 300);
         ini_set("memory_limit","512M");
         
-        $pdf = Pdf::loadView('invoice.hasil-pdf', compact('customer', 'data' ,'picture', 'waktuCetak', 'total', 'notEmpty', 'bank', 'diskon', 'totalBersih'));
+        $pdf = Pdf::loadView('invoice.hasil-pdf', compact('customer', 'data' ,'picture', 'waktuCetak', 'total', 'notEmpty', 'bank', 'diskon', 'totalBersih', 'bank'));
         $pdfContent = $pdf->output();
 
         if (!Storage::exists('public/invoices/Invoice-'.$customer->invoice_name.'.pdf')) {
@@ -339,7 +352,12 @@ class InvoiceController extends Controller
 
         $totalBersih = round($total->total - $customer->diskon - $diskon);
 
-        return view('invoice.hasil-transaksi', compact('customer', 'data', 'total', 'diskon', 'totalBersih'));
+        $bank = InvoiceBank::select('invoice_banks.*', 'banks.bank', 'banks.nomor_rekening', 'banks.atas_nama', 'banks.cabang')
+                ->join('banks', 'banks.id', '=', 'invoice_banks.id_bank')
+                ->where('invoice_banks.id_invoice', $invoiceId)
+                ->get();
+
+        return view('invoice.hasil-transaksi', compact('customer', 'data', 'total', 'diskon', 'totalBersih', 'bank'));
     }
 
     public function pembayaran_invoice(Request $request)

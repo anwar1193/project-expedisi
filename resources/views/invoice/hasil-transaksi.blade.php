@@ -165,6 +165,41 @@
 										@endif
 	                                </table>
 	                            </div>
+
+								{{-- Pilihan Bank --}}
+								<div class="pilihan-bank mt-3">
+									<p>Pembayaran dapat di transfer ke rekening :</p>
+
+									@foreach ($bank as $item)
+										<table width="40%">
+											<tr>
+												<th>Bank</th>
+												<th class="text-center">:</th>
+												<th>{{ $item->bank }}</th>
+											</tr>
+
+											<tr>
+												<th>Cabang</th>
+												<th class="text-center">:</th>
+												<th>{{ $item->cabang }}</th>
+											</tr>
+
+											<tr>
+												<th>Nomor Rekening</th>
+												<th class="text-center">:</th>
+												<th>{{ $item->nomor_rekening }}</th>
+											</tr>
+
+											<tr>
+												<th>Atas Nama</th>
+												<th class="text-center">:</th>
+												<th>{{ $item->atas_nama }}</th>
+											</tr>
+										</table>
+										<br>
+									@endforeach
+								</div>
+
 	                            <!-- End Table-->
 	                            <div class="text-center mt-3">
 									<p>Lion parcel - D Angel Express</p>

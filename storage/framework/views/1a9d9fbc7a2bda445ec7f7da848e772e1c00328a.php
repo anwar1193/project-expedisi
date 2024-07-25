@@ -171,6 +171,41 @@
 										<?php endif; ?>
 	                                </table>
 	                            </div>
+
+								
+								<div class="pilihan-bank mt-3">
+									<p>Pembayaran dapat di transfer ke rekening :</p>
+
+									<?php $__currentLoopData = $bank; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+										<table width="40%">
+											<tr>
+												<th>Bank</th>
+												<th class="text-center">:</th>
+												<th><?php echo e($item->bank); ?></th>
+											</tr>
+
+											<tr>
+												<th>Cabang</th>
+												<th class="text-center">:</th>
+												<th><?php echo e($item->cabang); ?></th>
+											</tr>
+
+											<tr>
+												<th>Nomor Rekening</th>
+												<th class="text-center">:</th>
+												<th><?php echo e($item->nomor_rekening); ?></th>
+											</tr>
+
+											<tr>
+												<th>Atas Nama</th>
+												<th class="text-center">:</th>
+												<th><?php echo e($item->atas_nama); ?></th>
+											</tr>
+										</table>
+										<br>
+									<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+								</div>
+
 	                            <!-- End Table-->
 	                            <div class="text-center mt-3">
 									<p>Lion parcel - D Angel Express</p>

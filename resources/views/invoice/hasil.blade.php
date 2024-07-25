@@ -198,8 +198,8 @@
 
 										  @foreach ($bank as $data)
 											<div class="checkbox checkbox-dark">
-												<input id="inline-1" type="checkbox" name="bank_id[]">
-												<label for="inline-1">{{ $data->bank }} ({{ $data->nomor_rekening }})</label>
+												<input id="inline-{{ $data->id }}" type="checkbox" name="bank_id[]" value="{{ $data->id }}">
+												<label for="inline-{{ $data->id }}">{{ $data->bank }} ({{ $data->nomor_rekening }})</label>
 											</div>  
 										  @endforeach
 						

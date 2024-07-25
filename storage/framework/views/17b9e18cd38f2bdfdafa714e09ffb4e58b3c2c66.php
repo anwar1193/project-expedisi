@@ -178,7 +178,7 @@
 														<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
 
 															<?php if($data->metode_pembayaran == 'Transfer' && $data->status_pembayaran != 1 && Session::get('user_level') == 2): ?>
-																<a class="dropdown-item" href="<?php echo e(route('data-pengiriman.approve', $data->id)); ?>" onclick="return confirm('Approve Data Pengiriman Ini?')"><span><i data-feather="check-square"></i> Approve</span></a>
+																<a class="dropdown-item" href="<?php echo e(route('data-pengiriman.approve', $data->id)); ?>" onclick="return confirm('Approve Data Pengiriman dan Update Status Menjadi Lunas?')"><span><i data-feather="check-square"></i> Approve</span></a>
 															<?php endif; ?>
 															
 															<a class="dropdown-item" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalDataPengiriman<?php echo e($data->id); ?>" title="Detail Data"><span><i data-feather="eye"></i> Detail</span></a>

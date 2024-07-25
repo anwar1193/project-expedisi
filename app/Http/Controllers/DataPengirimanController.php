@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use Yaza\LaravelGoogleDriveStorage\Gdrive;
+use Illuminate\Support\Facades\DB;
 
 class DataPengirimanController extends Controller
 {
@@ -195,11 +196,25 @@ class DataPengirimanController extends Controller
 
     public function approve($id)
     {
-        $proses = DataPengiriman::find($id)->update([
+        $data_pengiriman = DataPengiriman::find($id);
+        
+        $data_pengiriman->update([
             'status_pembayaran' => 1
         ]);
 
-        return back()->with('success', 'Data Pengiriman Telah Di Approve');
+        // Masukkan point ke customer
+        $kode_cust = $data_pengiriman->kode_customer;
+        $besar_transaksi = $data_pengiriman->ongkir;
+
+        $konversi_point = KonversiPoint::find(1);
+        $pembagi_point = $konversi_point->nominal;
+        $point_baru = $besar_transaksi / $pembagi_point;
+
+        Customer::where('kode_customer', $kode_cust)->update([
+            'point' => DB::raw("point + $point_baru")
+        ]);
+
+        return back()->with('success', 'Data Pengiriman Telah Di Approve & Status Transaksi Menjadi Lunas');
     }
 
     public function approveSelected(Request $request)
@@ -211,8 +226,22 @@ class DataPengirimanController extends Controller
         }
 
         for($i=0; $i<sizeof($id_pengiriman); $i++){
-            DataPengiriman::find($id_pengiriman[$i])->update([
+            $data_pengiriman = DataPengiriman::find($id_pengiriman[$i]);
+            
+            $data_pengiriman->update([
                 'status_pembayaran' => 1
+            ]);
+
+            // Masukkan point ke customer
+            $kode_cust = $data_pengiriman->kode_customer;
+            $besar_transaksi = $data_pengiriman->ongkir;
+
+            $konversi_point = KonversiPoint::find(1);
+            $pembagi_point = $konversi_point->nominal;
+            $point_baru = $besar_transaksi / $pembagi_point;
+
+            Customer::where('kode_customer', $kode_cust)->update([
+                'point' => DB::raw("point + $point_baru")
             ]);
         }
 

@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('invoice_banks', function (Blueprint $table) {
             $table->id();
-            $table->string('nomor_resi', 100)->nullable(false);
-            $table->integer('bank_id')->nullable(false);
+            $table->integer('id_invoice')->nullable(false);
+            $table->integer('id_bank')->nullable(false);
             $table->timestamps();
         });
     }

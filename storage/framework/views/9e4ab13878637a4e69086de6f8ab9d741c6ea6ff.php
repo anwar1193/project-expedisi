@@ -185,8 +185,8 @@
 
 										  <?php $__currentLoopData = $bank; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 											<div class="checkbox checkbox-dark">
-												<input id="inline-1" type="checkbox" name="bank_id[]">
-												<label for="inline-1"><?php echo e($data->bank); ?> (<?php echo e($data->nomor_rekening); ?>)</label>
+												<input id="inline-<?php echo e($data->id); ?>" type="checkbox" name="bank_id[]" value="<?php echo e($data->id); ?>">
+												<label for="inline-<?php echo e($data->id); ?>"><?php echo e($data->bank); ?> (<?php echo e($data->nomor_rekening); ?>)</label>
 											</div>  
 										  <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 						
