@@ -65,6 +65,7 @@ class DaftarPengeluaranController extends Controller
 
         $foto = $request->file('bukti_pembayaran');
         $img = $request->image;      
+        $link_img = $request->link;
 
         if($foto != ''){
             // Set Up Untuk Penyimopnan Image ke GDrive
@@ -94,6 +95,8 @@ class DaftarPengeluaranController extends Controller
             Storage::disk('google')->put($fileNamePath, File::get($path));
 
             $validateData['bukti_pembayaran'] = $fileName;
+        } elseif (($link_img != '') && ($request->addLink == 'on')) {
+            $validateData['bukti_pembayaran'] = $link_img;
         }
 
         $validateData['yang_membayar'] = Session::get('nama');
@@ -131,6 +134,7 @@ class DaftarPengeluaranController extends Controller
 
         $foto = $request->file('bukti_pembayaran');
         $img = $request->image;
+        $link_img = $request->link;
 
         $getImage = DaftarPengeluaran::find($id);
 
@@ -167,6 +171,8 @@ class DaftarPengeluaranController extends Controller
             Storage::disk('google')->put($namafile, File::get($path));
 
             $buktiPembayaran = $fileName;
+        } elseif (($link_img != '') && ($request->addLink == 'on')) {
+            $buktiPembayaran = $link_img;
         }
 
         DaftarPengeluaran::where('id', '=', $id)->update([
@@ -175,7 +181,7 @@ class DaftarPengeluaranController extends Controller
             'yang_menerima' => $request->yang_menerima,
             'metode_pembayaran' => $request->metode_pembayaran,
             'jenis_pengeluaran' => $request->jenis_pengeluaran,
-            'bukti_pembayaran' => ($foto || $img ? $buktiPembayaran : $getImage->bukti_pembayaran),
+            'bukti_pembayaran' => ($foto || $img || $link_img ? $buktiPembayaran : $getImage->bukti_pembayaran),
             'keterangan_tambahan' => $request->keterangan_tambahan
         ]);
 

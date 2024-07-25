@@ -123,6 +123,18 @@
 	                            </thead>
 	                            <tbody>                                        
                                     @foreach ($datas as $data)
+										@php
+											$bukti_pembayaran = $data->bukti_pembayaran;
+
+											if (strpos($bukti_pembayaran, 'https://drive.google.com/file/d/') !== false) {
+												$explode = explode("/", $bukti_pembayaran);
+												$bukti_pembayaran_view = 'https://' . $explode[2] . '/thumbnail?id=' . $explode[5];
+											} elseif (pathinfo($bukti_pembayaran, PATHINFO_EXTENSION) != '') {
+												$bukti_pembayaran_view = asset('storage/daftar-pengeluaran/'.$data->bukti_pembayaran);
+											} else {
+												$bukti_pembayaran_view = '#';
+											}
+										@endphp
 										<tr>
 											<td>{{ $loop->iteration; }}</td>
 											<td>{{ $data->tgl_pengeluaran }}</td>
@@ -140,8 +152,8 @@
 											<td onmouseover="showBukti({{ $data->id }})" onmouseout="hideBukti({{ $data->id }})">
 												@if ($data->bukti_pembayaran != '')
 													<div id="view-bukti{{ $data->id }}" class="mb-3">
-														<img src="{{ asset('storage/daftar-pengeluaran/'.$data->bukti_pembayaran) }}" alt="" width="200px" class="img-fluid mt-2">
-														<a class="btn btn-primary" href="{{ asset('storage/daftar-pengeluaran/'.$data->bukti_pembayaran)}}" target="_blank">View Image</a>
+														<img src="{{ $bukti_pembayaran_view }}" alt="" width="200px" class="img-fluid mt-2">
+														<a class="btn btn-primary" href="{{ $bukti_pembayaran_view }}" target="_blank">View Image</a>
 													</div>
 												@endif
 												<div id="icon-view{{ $data->id }}">

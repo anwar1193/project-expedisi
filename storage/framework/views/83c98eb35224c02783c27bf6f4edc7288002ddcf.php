@@ -125,6 +125,18 @@
 	                            </thead>
 	                            <tbody>                                        
                                     <?php $__currentLoopData = $datas; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+										<?php
+											$bukti_pembayaran = $data->bukti_pembayaran;
+
+											if (strpos($bukti_pembayaran, 'https://drive.google.com/file/d/') !== false) {
+												$explode = explode("/", $bukti_pembayaran);
+												$bukti_pembayaran_view = 'https://' . $explode[2] . '/thumbnail?id=' . $explode[5];
+											} elseif (pathinfo($bukti_pembayaran, PATHINFO_EXTENSION) != '') {
+												$bukti_pembayaran_view = asset('storage/daftar-pengeluaran/'.$data->bukti_pembayaran);
+											} else {
+												$bukti_pembayaran_view = '#';
+											}
+										?>
 										<tr>
 											<td><?php echo e($loop->iteration); ?></td>
 											<td><?php echo e($data->tgl_pengeluaran); ?></td>
@@ -143,8 +155,8 @@
 											<td onmouseover="showBukti(<?php echo e($data->id); ?>)" onmouseout="hideBukti(<?php echo e($data->id); ?>)">
 												<?php if($data->bukti_pembayaran != ''): ?>
 													<div id="view-bukti<?php echo e($data->id); ?>" class="mb-3">
-														<img src="<?php echo e(asset('storage/daftar-pengeluaran/'.$data->bukti_pembayaran)); ?>" alt="" width="200px" class="img-fluid mt-2">
-														<a class="btn btn-primary" href="<?php echo e(asset('storage/daftar-pengeluaran/'.$data->bukti_pembayaran)); ?>" target="_blank">View Image</a>
+														<img src="<?php echo e($bukti_pembayaran_view); ?>" alt="" width="200px" class="img-fluid mt-2">
+														<a class="btn btn-primary" href="<?php echo e($bukti_pembayaran_view); ?>" target="_blank">View Image</a>
 													</div>
 												<?php endif; ?>
 												<div id="icon-view<?php echo e($data->id); ?>">
