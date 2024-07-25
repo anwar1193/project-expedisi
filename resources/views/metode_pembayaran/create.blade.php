@@ -65,6 +65,28 @@
 									</div>
 								</div>
 							</div>
+							
+							<div class="row">
+								<div class="col">
+									<div class="mb-3">
+										<label class="form-label" for="">Wajib Melampirkan Bukti</label>
+										<div class="radio radio-primary">
+											<input id="wajibBukti1" type="radio" name="wajib_bukti" value="1">
+											<label for="wajibBukti1">Ya</label>
+										  </div>
+										  <div class="radio radio-primary">
+											<input id="wajibBukti2" type="radio" name="wajib_bukti" value="0" checked>
+											<label for="wajibBukti2">Tidak</label>
+										  </div>
+
+										@error('wajib_bukti')
+										<div class="text-danger">
+											{{ $message }}
+										</div>
+										@enderror
+									</div>
+								</div>
+							</div>
 
 						</div>
 						<div class="card-footer text-end">
