@@ -60,8 +60,6 @@ class DaftarPengeluaranController extends Controller
             'jumlah_pembayaran' => 'required',
             'yang_menerima' => 'required',
             'metode_pembayaran' => 'required',
-            'bukti_pembayaran' => 'required_without:image',
-            'image' => 'required_without:bukti_pembayaran', 
             'jenis_pengeluaran' => 'required'
         ]);
 
