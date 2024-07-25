@@ -25,6 +25,7 @@
     .table-container {
         flex: 1;
         overflow: auto;
+        max-height: 500px;
     }
 
     .table {
@@ -44,7 +45,6 @@
         top: 0;
         z-index: 1;
     }
-
 
     .scrollbar-container {
         position: fixed;
@@ -66,9 +66,9 @@
         background-color: red;
     }
 
-    .scrollbar-container::-webkit-scrollbar {
+    /* .scrollbar-container::-webkit-scrollbar {
         height: 20px;
-    }
+    } */
 </style>
 @endpush
 
@@ -80,9 +80,6 @@
 	        <!-- Server Side Processing start-->
 	        <div class="col-sm-12">
 	            <div class="card">
-                    <div class="card-header">
-                        <h5>Silahkan Periksa Data Yang Diimport Terlebih Dahulu</h5>
-                    </div>
                     <form id="myForm" method="POST" action="{{ route('data-pengiriman.proses-konfimasi-excel') }}">
                         @csrf
                         <div class="card-body">
@@ -121,7 +118,8 @@
                             {{-- Table --}}
                             <div class="content">
                                 <div class="table-responsive table-container" id="table-container">
-                                    <p class="mb-4">Jika Sudah Sesuai Silahkan Klik Simpan</p>
+                                    <h5>Silahkan Periksa Data Yang Diimport Terlebih Dahulu</h5>
+                                    <p class="mb-2">Jika Sudah Sesuai Silahkan Klik Simpan</p>
                                     <table class="table table-bordered" id="">
                                         <thead>
                                             <tr>
@@ -510,7 +508,7 @@
             scrollbar.style.width = tableContainer.scrollWidth + 'px';
 
             // Ensure scrollbar is always visible
-            scrollbarContainer.style.overflowX = 'scroll';
+            // scrollbarContainer.style.overflowX = 'scroll';
         });
     </script>
     @include('data-pengiriman.partial.form-validation')

@@ -68,7 +68,7 @@ if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>" type="number" name="jumlah_pembayaran" autocomplete="off" value="<?php echo e(old('jumlah_pembayaran', $datas->jumlah_pembayaran)); ?>"/>
+unset($__errorArgs, $__bag); ?>" type="text" name="jumlah_pembayaran" autocomplete="off" value="<?php echo e(old('jumlah_pembayaran', $datas->jumlah_pembayaran)); ?>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"/>
 
 										<?php $__errorArgs = ['jumlah_pembayaran'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -229,6 +229,15 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>" id="buktiBayar" type="file" width="48" height="48" name="bukti_pembayaran" />
+											<textarea class="form-control <?php $__errorArgs = ['nota'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" cols="100" rows="5" id="linkId" name="link"></textarea>
+
 
                                             <?php $__errorArgs = ['bukti_pembayaran'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -248,6 +257,11 @@ unset($__errorArgs, $__bag); ?>
 										<div>										
 											<input class="form-check-input" id="takeImage" type="checkbox" name="takeImage" />
 											<label class="form-check-label" for="takeImage">Ambil Gambar</label>
+
+											<div>										
+												<input class="form-check-input" id="addLink" type="checkbox" name="addLink" />
+												<label class="form-check-label" for="addLink">Sisipkan Link Gdrive</label>
+											</div>
 	
 											<div>
 												<img src="<?php echo e(asset('storage/daftar-pengeluaran/'.$datas->bukti_pembayaran)); ?>" alt="" width="200px" class="img-fluid mt-2">
@@ -322,7 +336,9 @@ unset($__errorArgs, $__bag); ?>
 	<script>
 		function toggleUserFields() {
 			var takeImageCheckbox = document.getElementById('takeImage');
+			var addLinkCheckbox = document.getElementById('addLink');
 			var image = document.getElementById('image');
+			var link = document.getElementById('linkId');
 			var buktiBayar = document.getElementById('buktiBayar');
 			const video = document.querySelector(`#videoElement`);
 			const canvas = document.getElementById('canvas');
@@ -354,17 +370,37 @@ unset($__errorArgs, $__bag); ?>
 				console.log(`Video element not found!`);
 			}
 
-			if (takeImageCheckbox.checked) {
-				image.style.display = 'block';
-				captureButton.style.display = 'block';
-				cancelButton.style.display = 'block';
-				buktiBayar.style.display = 'none';
-			} else {
-				image.style.display = 'none';
-				captureButton.style.display = 'none';
-				cancelButton.style.display = 'none';
-				buktiBayar.style.display = 'block';
+			takeImageCheckbox.addEventListener('change', function() {
+				updateVisibility();
+			});
+
+			addLinkCheckbox.addEventListener('change', function() {
+				updateVisibility();
+			});
+
+			function updateVisibility() {
+				if (takeImageCheckbox.checked) {
+					image.style.display = 'block';
+					captureButton.style.display = 'block';
+					cancelButton.style.display = 'block';
+					buktiBayar.style.display = 'none';
+					link.style.display = 'none';
+				} else if (addLinkCheckbox.checked) {
+					image.style.display = 'none';
+					captureButton.style.display = 'none';
+					cancelButton.style.display = 'none';
+					buktiBayar.style.display = 'none';
+					link.style.display = 'block';
+				} else {
+					image.style.display = 'none';
+					captureButton.style.display = 'none';
+					cancelButton.style.display = 'none';
+					buktiBayar.style.display = 'block';
+					link.style.display = 'none';
+				}
 			}
+
+			updateVisibility();
 		}
 
 		function cancelCapture() {

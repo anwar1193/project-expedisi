@@ -106,8 +106,8 @@ class CustomerController extends Controller
                 'nama' => 'required',
                 'email' => 'required',
                 'no_wa' => 'required|regex:/^0[0-9]{9,14}$/',
-                'no_wa_2' => 'regex:/^0[0-9]{9,14}$/',
-                'no_wa_3' => 'regex:/^0[0-9]{9,14}$/',
+                'no_wa_2' => 'nullable|regex:/^0[0-9]{9,14}$/',
+                'no_wa_3' => 'nullable|regex:/^0[0-9]{9,14}$/',
                 // 'no_wa' => 'required|regex:/^0[0-9]{9,14}$/|unique:customers,no_wa,' . $id.'|unique:users,nomor_telepon,' . $id,
                 'alamat' => 'required',
                 'password_baru' => 'confirmed'

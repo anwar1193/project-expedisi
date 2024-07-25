@@ -47,7 +47,7 @@
 								<div class="col">
 									<div class="mb-3">
 										<label class="form-label" for="">Jumlah Pembayaran</label>
-										<input class="form-control @error('jumlah_pembayaran') is-invalid @enderror" type="number" name="jumlah_pembayaran" autocomplete="off" value="{{ old('jumlah_pembayaran', $datas->jumlah_pembayaran) }}"/>
+										<input class="form-control @error('jumlah_pembayaran') is-invalid @enderror" type="text" name="jumlah_pembayaran" autocomplete="off" value="{{ old('jumlah_pembayaran', $datas->jumlah_pembayaran) }}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"/>
 
 										@error('jumlah_pembayaran')
 										<div class="text-danger">
@@ -149,6 +149,8 @@
                                         <div class="mb-3">
                                             <label class="form-label" for="">Bukti Pembayaran</label>
 											<input class="form-control @error('bukti_pembayaran') is-invalid @enderror" id="buktiBayar" type="file" width="48" height="48" name="bukti_pembayaran" />
+											<textarea class="form-control @error('nota') is-invalid @enderror" cols="100" rows="5" id="linkId" name="link"></textarea>
+
 
                                             @error('bukti_pembayaran')
                                             <div class="text-danger">
@@ -160,6 +162,11 @@
 										<div>										
 											<input class="form-check-input" id="takeImage" type="checkbox" name="takeImage" />
 											<label class="form-check-label" for="takeImage">Ambil Gambar</label>
+
+											<div>										
+												<input class="form-check-input" id="addLink" type="checkbox" name="addLink" />
+												<label class="form-check-label" for="addLink">Sisipkan Link Gdrive</label>
+											</div>
 	
 											<div>
 												<img src="{{ asset('storage/daftar-pengeluaran/'.$datas->bukti_pembayaran) }}" alt="" width="200px" class="img-fluid mt-2">
@@ -226,7 +233,9 @@
 	<script>
 		function toggleUserFields() {
 			var takeImageCheckbox = document.getElementById('takeImage');
+			var addLinkCheckbox = document.getElementById('addLink');
 			var image = document.getElementById('image');
+			var link = document.getElementById('linkId');
 			var buktiBayar = document.getElementById('buktiBayar');
 			const video = document.querySelector(`#videoElement`);
 			const canvas = document.getElementById('canvas');
@@ -258,17 +267,37 @@
 				console.log(`Video element not found!`);
 			}
 
-			if (takeImageCheckbox.checked) {
-				image.style.display = 'block';
-				captureButton.style.display = 'block';
-				cancelButton.style.display = 'block';
-				buktiBayar.style.display = 'none';
-			} else {
-				image.style.display = 'none';
-				captureButton.style.display = 'none';
-				cancelButton.style.display = 'none';
-				buktiBayar.style.display = 'block';
+			takeImageCheckbox.addEventListener('change', function() {
+				updateVisibility();
+			});
+
+			addLinkCheckbox.addEventListener('change', function() {
+				updateVisibility();
+			});
+
+			function updateVisibility() {
+				if (takeImageCheckbox.checked) {
+					image.style.display = 'block';
+					captureButton.style.display = 'block';
+					cancelButton.style.display = 'block';
+					buktiBayar.style.display = 'none';
+					link.style.display = 'none';
+				} else if (addLinkCheckbox.checked) {
+					image.style.display = 'none';
+					captureButton.style.display = 'none';
+					cancelButton.style.display = 'none';
+					buktiBayar.style.display = 'none';
+					link.style.display = 'block';
+				} else {
+					image.style.display = 'none';
+					captureButton.style.display = 'none';
+					cancelButton.style.display = 'none';
+					buktiBayar.style.display = 'block';
+					link.style.display = 'none';
+				}
 			}
+
+			updateVisibility();
 		}
 
 		function cancelCapture() {

@@ -23,6 +23,7 @@ class MetodePembayaranController extends Controller
     {
         $validatedData = $request->validate([
             'metode' => 'required',
+            'wajib_bukti' => 'required',
         ]);
 
         $validatedData['keterangan'] = $request->keterangan;
@@ -45,6 +46,7 @@ class MetodePembayaranController extends Controller
         $id = $request->id;
         $validatedData = $request->validate([
             'metode' => 'required',
+            'wajib_bukti' => 'required',
         ]);
 
         $validatedData['keterangan'] = $request->keterangan;

@@ -75,18 +75,39 @@
 	                                    <th>Nama Supplier</th>
 	                                    <th>Harga</th>
 	                                    <th>Jumlah</th>
+										<th>Nota</th>
 										<th width="20%" class="text-center">Action</th>
 	                                </tr>
 	                            </thead>
 	                            <tbody>                                        
-                                    <?php $__currentLoopData = $pembelians; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <?php $__currentLoopData = $datas; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+										<?php
+											$bukti_pembayaran = $data->nota;
+
+											if($bukti_pembayaran != ''){
+												$explode = explode("/", $bukti_pembayaran);
+												$bukti_pembayaran_view = 'https://'.$explode[2].'/thumbnail?id='.$explode[5];
+											}else{
+												$bukti_pembayaran_view = '#';
+											}
+										?>
 										<tr>
 											<td><?php echo e($loop->iteration); ?></td>
 											<td><?php echo e($data->tanggal_pembelian); ?></td>
 											<td><?php echo e($data->nama_perlengkapan); ?></td>
 											<td><?php echo e($data->nama_supplier); ?></td>
 											<td><?php echo e(number_format($data->harga, 0, '.', ',')); ?></td>
-											<td><?php echo e($data->jumlah); ?></td>								
+											<td><?php echo e($data->jumlah); ?></td>	
+											<td onmouseover="showBukti(<?php echo e($data->id); ?>)" onmouseout="hideBukti(<?php echo e($data->id); ?>)">
+												<?php if($bukti_pembayaran != ''): ?>
+													<div id="view-bukti<?php echo e($data->id); ?>" class="mb-3">
+														<img src="<?php echo e($bukti_pembayaran_view); ?>" alt="test" class="mb-2">
+														<a class="btn btn-primary" href="<?php echo e($bukti_pembayaran); ?>" target="_blank">View Full Image</a>
+													</div>
+												<?php endif; ?>
+
+												<i data-feather="link"></i> Gambar
+											</td>
 											<td class="text-center">
 
 												<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
@@ -123,6 +144,23 @@
 	<?php $__env->startPush('scripts'); ?>
 	<script src="<?php echo e(asset('assets/js/datatable/datatables/jquery.dataTables.min.js')); ?>"></script>
 	<script src="<?php echo e(asset('assets/js/datatable/datatables/datatable.custom.js')); ?>"></script>
+	<?php $__currentLoopData = $datas; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+		<script>
+			$('#view-bukti'+<?php echo e($data->id); ?>).hide();
+			$('#icon-view'+<?php echo e($data->id); ?>).show();
+		</script>
+	<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+	<script>
+		function showBukti(id) {
+			$('#view-bukti'+id).show();
+			$('#icon-view'+id).hide();
+		}
+
+		function hideBukti(id) {
+			$('#view-bukti'+id).hide();
+			$('#icon-view'+id).show();
+		}
+	</script>
 	<?php $__env->stopPush(); ?>
 
 <?php $__env->stopSection(); ?>
