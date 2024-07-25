@@ -118,15 +118,15 @@
                     }
                 }
                 
-                if ($(this).val().toLowerCase() != "tunai") {
-                    let correspondingBuktiInput = $('input[name="bukti_pembayaran[]"]').eq(index);
-                    if (correspondingBuktiInput.val() == "") {
-                        correspondingBuktiInput.addClass('is-invalid');
-                        alert("Bukti Pembayaran harus diisi jika metode pembayaran bukan tunai");
-                        isValid = false;
-                        return false; 
-                    }
-                }
+                // if ($(this).val().toLowerCase() != "tunai" && $(this).val().toLowerCase() != "kredit") {
+                //     let correspondingBuktiInput = $('input[name="bukti_pembayaran[]"]').eq(index);
+                //     if (correspondingBuktiInput.val() == "") {
+                //         correspondingBuktiInput.addClass('is-invalid');
+                //         alert("Bukti Pembayaran harus diisi jika metode pembayaran bukan tunai");
+                //         isValid = false;
+                //         return false; 
+                //     }
+                // }
             });
             $('input[name="jenis_pengiriman[]"]').each(function() {
                 if ($(this).val() == "") {
