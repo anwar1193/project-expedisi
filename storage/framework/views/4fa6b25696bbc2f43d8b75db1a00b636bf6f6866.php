@@ -68,7 +68,7 @@ if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>" type="number" name="jumlah_pembayaran" autocomplete="off" value="<?php echo e(old('jumlah_pembayaran')); ?>"/>
+unset($__errorArgs, $__bag); ?>" type="text" name="jumlah_pembayaran" autocomplete="off" value="<?php echo e(old('jumlah_pembayaran')); ?>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"/>
 
 										<?php $__errorArgs = ['jumlah_pembayaran'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');

@@ -12,7 +12,7 @@ class PembelianPerlengkapanController extends Controller
 {
     public function index()
     {
-        $pembelians = PembelianPerlengkapan::leftjoin('perlengkapans', 'pembelian_perlengkapans.id_perlengkapan', '=', 'perlengkapans.id')
+        $datas = PembelianPerlengkapan::leftjoin('perlengkapans', 'pembelian_perlengkapans.id_perlengkapan', '=', 'perlengkapans.id')
             ->leftjoin('suppliers', 'pembelian_perlengkapans.id_supplier', '=', 'suppliers.id')
             ->select(
                 'pembelian_perlengkapans.id', 
@@ -24,7 +24,7 @@ class PembelianPerlengkapanController extends Controller
                 'pembelian_perlengkapans.keterangan', 
                 'pembelian_perlengkapans.nota')
             ->orderBy('pembelian_perlengkapans.id', 'DESC')->get();
-        return view('pembelian-perlengkapan.index', compact('pembelians'));
+        return view('pembelian-perlengkapan.index', compact('datas'));
     }
 
     public function create()

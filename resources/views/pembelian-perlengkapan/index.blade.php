@@ -73,18 +73,39 @@
 	                                    <th>Nama Supplier</th>
 	                                    <th>Harga</th>
 	                                    <th>Jumlah</th>
+										<th>Nota</th>
 										<th width="20%" class="text-center">Action</th>
 	                                </tr>
 	                            </thead>
 	                            <tbody>                                        
-                                    @foreach ($pembelians as $data)
+                                    @foreach ($datas as $data)
+										@php
+											$bukti_pembayaran = $data->nota;
+
+											if($bukti_pembayaran != ''){
+												$explode = explode("/", $bukti_pembayaran);
+												$bukti_pembayaran_view = 'https://'.$explode[2].'/thumbnail?id='.$explode[5];
+											}else{
+												$bukti_pembayaran_view = '#';
+											}
+										@endphp
 										<tr>
 											<td>{{ $loop->iteration; }}</td>
 											<td>{{ $data->tanggal_pembelian }}</td>
 											<td>{{ $data->nama_perlengkapan }}</td>
 											<td>{{ $data->nama_supplier }}</td>
 											<td>{{ number_format($data->harga, 0, '.', ',') }}</td>
-											<td>{{ $data->jumlah }}</td>								
+											<td>{{ $data->jumlah }}</td>	
+											<td onmouseover="showBukti({{ $data->id }})" onmouseout="hideBukti({{ $data->id }})">
+												@if ($bukti_pembayaran != '')
+													<div id="view-bukti{{ $data->id }}" class="mb-3">
+														<img src="{{ $bukti_pembayaran_view }}" alt="test" class="mb-2">
+														<a class="btn btn-primary" href="{{ $bukti_pembayaran }}" target="_blank">View Full Image</a>
+													</div>
+												@endif
+
+												<i data-feather="link"></i> Gambar
+											</td>
 											<td class="text-center">
 
 												<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
@@ -121,6 +142,23 @@
 	@push('scripts')
 	<script src="{{ asset('assets/js/datatable/datatables/jquery.dataTables.min.js') }}"></script>
 	<script src="{{ asset('assets/js/datatable/datatables/datatable.custom.js') }}"></script>
+	@foreach ($datas as $data)
+		<script>
+			$('#view-bukti'+{{ $data->id }}).hide();
+			$('#icon-view'+{{ $data->id }}).show();
+		</script>
+	@endforeach
+	<script>
+		function showBukti(id) {
+			$('#view-bukti'+id).show();
+			$('#icon-view'+id).hide();
+		}
+
+		function hideBukti(id) {
+			$('#view-bukti'+id).hide();
+			$('#icon-view'+id).show();
+		}
+	</script>
 	@endpush
 
 @endsection
