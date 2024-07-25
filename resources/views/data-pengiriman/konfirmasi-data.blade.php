@@ -66,9 +66,9 @@
         background-color: red;
     }
 
-    .scrollbar-container::-webkit-scrollbar {
+    /* .scrollbar-container::-webkit-scrollbar {
         height: 20px;
-    }
+    } */
 </style>
 @endpush
 
@@ -508,7 +508,7 @@
             scrollbar.style.width = tableContainer.scrollWidth + 'px';
 
             // Ensure scrollbar is always visible
-            scrollbarContainer.style.overflowX = 'scroll';
+            // scrollbarContainer.style.overflowX = 'scroll';
         });
     </script>
     @include('data-pengiriman.partial.form-validation')
