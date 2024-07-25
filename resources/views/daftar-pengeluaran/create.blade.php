@@ -47,7 +47,7 @@
 								<div class="col">
 									<div class="mb-3">
 										<label class="form-label" for="">Jumlah Pembayaran</label>
-										<input class="form-control @error('jumlah_pembayaran') is-invalid @enderror" type="number" name="jumlah_pembayaran" autocomplete="off" value="{{ old('jumlah_pembayaran') }}"/>
+										<input class="form-control @error('jumlah_pembayaran') is-invalid @enderror" type="text" name="jumlah_pembayaran" autocomplete="off" value="{{ old('jumlah_pembayaran') }}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"/>
 
 										@error('jumlah_pembayaran')
 										<div class="text-danger">
