@@ -185,8 +185,16 @@ class Helper
                 if ($data['metode_pembayaran'] == 'Transfer' && empty($data['bank'])) {
                     $errors[] = 'Bank Wajib Diisi Ketika Metode Pembayaran = Transfer';
                 }
+                
+                if ($data['metode_pembayaran_2'] == 'Transfer' && empty($data['bank_2'])) {
+                    $errors[] = 'Bank Wajib Diisi Ketika Metode Pembayaran = Transfer';
+                }
 
                 if ($data['metode_pembayaran'] != 'Transfer' && !empty($data['bank'])) {
+                    $errors[] = 'Kolom Bank Harus Dikosongkan Ketika Metode Pembayaran Bukan Transfer';
+                }
+                
+                if ($data['metode_pembayaran_2'] != 'Transfer' && !empty($data['bank_2'])) {
                     $errors[] = 'Kolom Bank Harus Dikosongkan Ketika Metode Pembayaran Bukan Transfer';
                 }
 
@@ -201,9 +209,28 @@ class Helper
                     }
                 }
                 
-                if ($data['metode_pembayaran'] != 'Tunai') {
+                if ($data['metode_pembayaran_2'] && $data['metode_pembayaran_2'] == 'Transfer') {
+                    // if (empty($data['bukti_pembayaran'])) {
+                    //     $errors[] = 'Bukti Pembayaran Wajib Diisi Ketika Metode Pembayaran = Transfer';
+                    // }
+
+                    $bankTerdaftar = Bank::where('bank', $data['bank_2'])->exists();
+                    if (!$bankTerdaftar) {
+                        $errors[] = 'Bank yang anda input tidak tersedia di sistem!';
+                    }
+                }
+                
+                if ($data['metode_pembayaran'] != 'Tunai' && $data['metode_pembayaran'] != 'Kredit') {
                     if (empty($data['bukti_pembayaran'])) {
-                        $errors[] = 'Bukti Pembayaran Wajib Diisi Ketika Metode Pembayaran Bukan Tunai';
+                        $errors[] = 'Bukti Pembayaran 1 Wajib Diisi Ketika Metode Pembayaran Bukan Tunai Ataupun Kredit';
+                    }
+                }
+                
+                if($data['metode_pembayaran_2']){
+                    if ($data['metode_pembayaran_2'] != 'Tunai' && $data['metode_pembayaran_2'] != 'Kredit') {
+                        if (empty($data['bukti_pembayaran_2'])) {
+                            $errors[] = 'Bukti Pembayaran 2 Wajib Diisi Ketika Metode Pembayaran Bukan Tunai Ataupun Kredit';
+                        }
                     }
                 }
 
@@ -215,6 +242,15 @@ class Helper
                     $customerTerdaftar = Customer::where('kode_customer', $data['kode_customer'])->exists();
                     if (!$customerTerdaftar && $data['kode_customer'] != '') {
                         $errors[] = 'Metode pembayaran kredit hanya berlaku untuk customer terdaftar atau kosongkan kolom customer!';
+                    }
+                }
+                
+                if($data['metode_pembayaran_2']){
+                    if ($data['metode_pembayaran_2'] == 'Kredit') {
+                        $customerTerdaftar = Customer::where('kode_customer', $data['kode_customer'])->exists();
+                        if (!$customerTerdaftar && $data['kode_customer'] != '') {
+                            $errors[] = 'Metode pembayaran kredit hanya berlaku untuk customer terdaftar atau kosongkan kolom customer!';
+                        }
                     }
                 }
 
