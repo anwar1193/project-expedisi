@@ -115,7 +115,9 @@ class InvoiceController extends Controller
 
         $today = date('Y-m-d');
 
-        return view('invoice.hasil', compact('data', 'customer', 'today', 'total', 'invoice', 'exist'));
+        $bank = Bank::all();
+
+        return view('invoice.hasil', compact('data', 'customer', 'today', 'total', 'invoice', 'exist', 'bank'));
     }
 
     public function all_invoices(Request $request)
