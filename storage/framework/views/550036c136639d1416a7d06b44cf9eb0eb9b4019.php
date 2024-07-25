@@ -24,6 +24,7 @@
     .table-container {
         flex: 1;
         overflow: auto;
+        max-height: 500px;
     }
 
     .table {
@@ -43,7 +44,6 @@
         top: 0;
         z-index: 1;
     }
-
 
     .scrollbar-container {
         position: fixed;
@@ -79,9 +79,6 @@
 	        <!-- Server Side Processing start-->
 	        <div class="col-sm-12">
 	            <div class="card">
-                    <div class="card-header">
-                        <h5>Silahkan Periksa Data Yang Diimport Terlebih Dahulu</h5>
-                    </div>
                     <form id="myForm" method="POST" action="<?php echo e(route('data-pengiriman.proses-konfimasi-excel')); ?>">
                         <?php echo csrf_field(); ?>
                         <div class="card-body">
@@ -122,7 +119,8 @@
                             
                             <div class="content">
                                 <div class="table-responsive table-container" id="table-container">
-                                    <p class="mb-4">Jika Sudah Sesuai Silahkan Klik Simpan</p>
+                                    <h5>Silahkan Periksa Data Yang Diimport Terlebih Dahulu</h5>
+                                    <p class="mb-2">Jika Sudah Sesuai Silahkan Klik Simpan</p>
                                     <table class="table table-bordered" id="">
                                         <thead>
                                             <tr>
