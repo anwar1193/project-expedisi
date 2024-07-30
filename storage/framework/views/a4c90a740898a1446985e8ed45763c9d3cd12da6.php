@@ -180,7 +180,9 @@
 	                                    <th>No</th>
 										<th width="35%" class="text-center">Action</th>
 										<?php if(Session::get('user_level') == 2): ?>
-											<th>Pilih</th>
+											<th>
+												<input type="checkbox" id="checkAll">
+											</th>
 										<?php endif; ?>
 										<th>No Resi</th>
 										<th>Tanggal Transaksi</th>
@@ -246,7 +248,7 @@
 											<?php if(Session::get('user_level') == 2): ?>
 												
 												<td class="text-center">
-													<input type="checkbox" value="5" name="id_pengiriman[]" id="flexCheckDefault" onclick="ceklis(<?php echo e($data->id); ?>)">
+													<input type="checkbox" value="<?php echo e($data->id); ?>" class="checkbox-item" id="checkbox-<?php echo e($data->id); ?>" onclick="ceklis(<?php echo e($data->id); ?>)">
 												</td>
 											<?php endif; ?>
 
@@ -376,8 +378,48 @@
 		// 	$('#view-bukti'+id).hide();
 		// }
 
-		function ceklis(id){
-			$('.inner').append("<input type='hidden' value='"+id+"' name='id_pengiriman[]'>");
+		// function ceklis(id){
+		// 	$('.inner').append("<input type='hidden' value='"+id+"' name='id_pengiriman[]'>");
+		// }
+	</script>
+	<script>
+		$(document).ready(function() {
+			$('#checkAll').click(function() {
+				if ($(this).is(':checked')) {
+					$('.checkbox-item').prop('checked', true);
+					$('.checkbox-item').each(function() {
+						var id = $(this).val();
+						if (!$('.inner input[value="'+id+'"]').length) {
+							$('.inner').append("<input type='hidden' value='"+id+"' name='id_pengiriman[]'>");
+						}
+					});
+				} else {
+					$('.checkbox-item').prop('checked', false);
+					$('.inner').empty();
+				}
+			});
+
+			$('.checkbox-item').change(function() {
+				var id = $(this).val();
+				if ($(this).is(':checked')) {
+					if (!$('.inner input[value="'+id+'"]').length) {
+						$('.inner').append("<input type='hidden' value='"+id+"' name='id_pengiriman[]'>");
+					}
+				} else {
+					$('.inner input[value="'+id+'"]').remove();
+				}
+			});
+		});
+
+		function ceklis(id) {
+			var checkbox = $('#checkbox-' + id);
+			if (checkbox.is(':checked')) {
+				if (!$('.inner input[value="'+id+'"]').length) {
+					$('.inner').append("<input type='hidden' value='"+id+"' name='id_pengiriman[]'>");
+				}
+			} else {
+				$('.inner input[value="'+id+'"]').remove();
+			}
 		}
 	</script>
 	
