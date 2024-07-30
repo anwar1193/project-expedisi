@@ -29,30 +29,6 @@
         flex-direction: column;
     }
 
-    .table-container {
-        flex: 1;
-        overflow: auto;
-        max-height: 500px;
-    }
-
-    .table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    .table th, .table td {
-        padding: 8px 12px;
-        border: 1px solid #ccc;
-        text-align: left;
-    }
-
-    .table thead th {
-        background-color: #f2f2f2;
-        position: sticky;
-        top: 0;
-        z-index: 1;
-    }
-
     .scrollbar-container {
         position: fixed;
         bottom: 0;
