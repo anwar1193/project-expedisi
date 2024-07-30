@@ -5,6 +5,17 @@
 
 <?php $__env->startPush('css'); ?>
 <link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/datatables.css')); ?>">
+<style>
+	.tooltip-img {
+		display: none;
+		position: absolute;
+		z-index: 1000;
+		border: 1px solid #ccc;
+		background-color: #fff;
+		padding: 10px;
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	}
+</style>
 <?php $__env->stopPush(); ?>
 
 <?php $__env->startSection('content'); ?>
@@ -98,10 +109,10 @@
 											<td><?php echo e($data->nama_supplier); ?></td>
 											<td><?php echo e(number_format($data->harga, 0, '.', ',')); ?></td>
 											<td><?php echo e($data->jumlah); ?></td>	
-											<td onmouseover="showBukti(<?php echo e($data->id); ?>)" onmouseout="hideBukti(<?php echo e($data->id); ?>)">
+											<td onmouseover="showBukti(<?php echo e($data->id); ?>)" onmouseout="hideBukti(<?php echo e($data->id); ?>)" style="position: relative">
 												<?php if($bukti_pembayaran != ''): ?>
-													<div id="view-bukti<?php echo e($data->id); ?>" class="mb-3">
-														<img src="<?php echo e($bukti_pembayaran_view); ?>" alt="test" class="mb-2">
+													<div id="tooltip<?php echo e($data->id); ?>" class="tooltip-img">
+														<img src="<?php echo e($bukti_pembayaran_view); ?>" alt="test" width="200px" class="img-fluid mt-2">
 														<a class="btn btn-primary" href="<?php echo e($bukti_pembayaran); ?>" target="_blank">View Full Image</a>
 													</div>
 												<?php endif; ?>
@@ -152,13 +163,13 @@
 	<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 	<script>
 		function showBukti(id) {
-			$('#view-bukti'+id).show();
-			$('#icon-view'+id).hide();
+			var tooltip = document.getElementById('tooltip' + id);
+			tooltip.style.display = 'block';
 		}
 
 		function hideBukti(id) {
-			$('#view-bukti'+id).hide();
-			$('#icon-view'+id).show();
+			var tooltip = document.getElementById('tooltip' + id);
+			tooltip.style.display = 'none';
 		}
 	</script>
 	<?php $__env->stopPush(); ?>

@@ -13,6 +13,16 @@
 		background-color: black;
 	}
 
+	.tooltip-img {
+		display: none;
+		position: absolute;
+		z-index: 1000;
+		border: 1px solid #ccc;
+		background-color: #fff;
+		padding: 10px;
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	}
+
 	input[type="checkbox"] {
 		transform: scale(2);
 	}
@@ -44,13 +54,7 @@
 							<i class="fa fa-check-square"></i> Approve Selected
 						</button>
 					</form>
-					<form action="<?php echo e(route('data-pengeluaran.unapprove-selected')); ?>" method="post" style="display: inline-block">
-						<?php echo csrf_field(); ?>
-						<div class="inner"></div>
-						<button type="submit" class="btn btn-danger btn-sm" style="display: inline" onclick="return confirm('Approve semua data terpilih?')">
-							<i class="fa fa-check-square"></i>Cancel Approve Selected
-						</button>
-					</form>
+					
 				<?php endif; ?>
                 
             </div>
@@ -163,9 +167,9 @@
 
 												</span>
 											</td>
-											<td onmouseover="showBukti(<?php echo e($data->id); ?>)" onmouseout="hideBukti(<?php echo e($data->id); ?>)">
+											<td onmouseover="showBukti(<?php echo e($data->id); ?>)" onmouseout="hideBukti(<?php echo e($data->id); ?>)" style="position: relative;">
 												<?php if($data->bukti_pembayaran != ''): ?>
-													<div id="view-bukti<?php echo e($data->id); ?>" class="mb-3">
+													<div id="tooltip<?php echo e($data->id); ?>" class="tooltip-img">
 														<img src="<?php echo e($bukti_pembayaran_view); ?>" alt="" width="200px" class="img-fluid mt-2">
 														<a class="btn btn-primary" href="<?php echo e($bukti_pembayaran_view); ?>" target="_blank">View Image</a>
 													</div>
@@ -256,14 +260,23 @@
 	<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 	<script>
 		function showBukti(id) {
-			$('#view-bukti'+id).show();
-			$('#icon-view'+id).hide();
+			var tooltip = document.getElementById('tooltip' + id);
+			tooltip.style.display = 'block';
 		}
 
 		function hideBukti(id) {
-			$('#view-bukti'+id).hide();
-			$('#icon-view'+id).show();
+			var tooltip = document.getElementById('tooltip' + id);
+			tooltip.style.display = 'none';
 		}
+		// function showBukti(id) {
+		// 	$('#view-bukti'+id).show();
+		// 	$('#icon-view'+id).hide();
+		// }
+
+		// function hideBukti(id) {
+		// 	$('#view-bukti'+id).hide();
+		// 	$('#icon-view'+id).show();
+		// }
 
 		function ceklis(id){
 			$('.inner').append("<input type='hidden' value='"+id+"' name='id_pengeluaran[]'>");

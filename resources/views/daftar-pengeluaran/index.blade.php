@@ -14,6 +14,16 @@
 		background-color: black;
 	}
 
+	.tooltip-img {
+		display: none;
+		position: absolute;
+		z-index: 1000;
+		border: 1px solid #ccc;
+		background-color: #fff;
+		padding: 10px;
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	}
+
 	input[type="checkbox"] {
 		transform: scale(2);
 	}
@@ -160,9 +170,9 @@
 													{{ $data->status_pengeluaran == 1 ? 'Disetujui' : 'Pending'; }}
 												</span>
 											</td>
-											<td onmouseover="showBukti({{ $data->id }})" onmouseout="hideBukti({{ $data->id }})">
+											<td onmouseover="showBukti({{ $data->id }})" onmouseout="hideBukti({{ $data->id }})" style="position: relative;">
 												@if ($data->bukti_pembayaran != '')
-													<div id="view-bukti{{ $data->id }}" class="mb-3">
+													<div id="tooltip{{ $data->id }}" class="tooltip-img">
 														<img src="{{ $bukti_pembayaran_view }}" alt="" width="200px" class="img-fluid mt-2">
 														<a class="btn btn-primary" href="{{ $bukti_pembayaran_view }}" target="_blank">View Image</a>
 													</div>
@@ -253,14 +263,23 @@
 	@endforeach
 	<script>
 		function showBukti(id) {
-			$('#view-bukti'+id).show();
-			$('#icon-view'+id).hide();
+			var tooltip = document.getElementById('tooltip' + id);
+			tooltip.style.display = 'block';
 		}
 
 		function hideBukti(id) {
-			$('#view-bukti'+id).hide();
-			$('#icon-view'+id).show();
+			var tooltip = document.getElementById('tooltip' + id);
+			tooltip.style.display = 'none';
 		}
+		// function showBukti(id) {
+		// 	$('#view-bukti'+id).show();
+		// 	$('#icon-view'+id).hide();
+		// }
+
+		// function hideBukti(id) {
+		// 	$('#view-bukti'+id).hide();
+		// 	$('#icon-view'+id).show();
+		// }
 
 		function ceklis(id){
 			$('.inner').append("<input type='hidden' value='"+id+"' name='id_pengeluaran[]'>");

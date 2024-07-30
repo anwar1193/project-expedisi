@@ -18,11 +18,6 @@
 		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 	}
 
-	.tooltip-img img {
-		max-width: 200px;
-		height: auto;
-	}
-
 	input[type="checkbox"] {
 		transform: scale(2);
 	}
@@ -272,7 +267,8 @@
 											<td onmouseover="showBukti({{ $data->id }})" onmouseout="hideBukti({{ $data->id }})" style="position: relative;">
 												@if ($bukti_pembayaran != '')
 													<div id="tooltip{{ $data->id }}" class="tooltip-img">
-														<img src="{{ $bukti_pembayaran_view }}" alt="Bukti Pembayaran">
+														<img src="{{ $bukti_pembayaran_view }}" alt="Bukti Pembayaran" width="200px" class="img-fluid mt-2">
+														<a class="btn btn-primary" href="{{ $bukti_pembayaran }}" target="_blank">View Full Image</a>
 													</div>
 												@endif
 											
