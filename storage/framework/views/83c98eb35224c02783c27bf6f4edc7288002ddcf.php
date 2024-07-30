@@ -12,6 +12,10 @@
 	.select2-container--default .select2-selection--single .select2-selection__rendered {
 		background-color: black;
 	}
+
+	input[type="checkbox"] {
+		transform: scale(2);
+	}
 </style>
 <?php $__env->stopPush(); ?>
 
@@ -38,6 +42,13 @@
 						<div class="inner"></div>
 						<button type="submit" class="btn btn-success btn-sm" style="display: inline" onclick="return confirm('Approve semua data terpilih?')">
 							<i class="fa fa-check-square"></i> Approve Selected
+						</button>
+					</form>
+					<form action="<?php echo e(route('data-pengeluaran.unapprove-selected')); ?>" method="post" style="display: inline-block">
+						<?php echo csrf_field(); ?>
+						<div class="inner"></div>
+						<button type="submit" class="btn btn-danger btn-sm" style="display: inline" onclick="return confirm('Approve semua data terpilih?')">
+							<i class="fa fa-check-square"></i>Cancel Approve Selected
 						</button>
 					</form>
 				<?php endif; ?>

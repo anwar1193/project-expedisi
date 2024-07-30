@@ -13,6 +13,10 @@
 	.select2-container--default .select2-selection--single .select2-selection__rendered {
 		background-color: black;
 	}
+
+	input[type="checkbox"] {
+		transform: scale(2);
+	}
 </style>
 @endpush
 
@@ -41,6 +45,13 @@
 							<i class="fa fa-check-square"></i> Approve Selected
 						</button>
 					</form>
+					{{-- <form action="{{ route('data-pengeluaran.unapprove-selected') }}" method="post" style="display: inline-block">
+						@csrf
+						<div class="inner"></div>
+						<button type="submit" class="btn btn-danger btn-sm" style="display: inline" onclick="return confirm('Approve semua data terpilih?')">
+							<i class="fa fa-check-square"></i> Cancel Approve Selected
+						</button>
+					</form> --}}
 				@endif
                 {{-- @endif --}}
             </div>
