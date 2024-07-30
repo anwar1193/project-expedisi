@@ -55,7 +55,7 @@
                 <select name="search-metode-pengeluaran" id="search-metode-pengeluaran" class="form-control js-example-basic-single">
                     <option value="">- Pilih Metode Pembayaran -</option>
                     <?php $__currentLoopData = $metodePembayaran; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $metode): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                        <option value="<?php echo e($metode); ?>"><?php echo e($metode); ?></option>
+                        <option value="<?php echo e($metode->metode); ?>"><?php echo e($metode->metode); ?></option>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </select>
             </div>

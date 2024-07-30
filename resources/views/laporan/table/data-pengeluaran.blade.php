@@ -56,7 +56,7 @@
                 <select name="search-metode-pengeluaran" id="search-metode-pengeluaran" class="form-control js-example-basic-single">
                     <option value="">- Pilih Metode Pembayaran -</option>
                     @foreach ($metodePembayaran as $metode)
-                        <option value="{{ $metode }}">{{ $metode }}</option>
+                        <option value="{{ $metode->metode }}">{{ $metode->metode }}</option>
                     @endforeach
                 </select>
             </div>

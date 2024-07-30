@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use App\Models\DaftarPengeluaran;
 use App\Models\DataPengiriman;
+use App\Models\MetodePembayaran;
 use App\Models\PemasukanLainnya;
 use App\Models\StatusPengiriman;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -108,7 +109,7 @@ class LaporanController extends Controller
 
         $customer = Customer::all();
         $statusPengiriman = StatusPengiriman::all();
-        $metodePembayaran = ['Transfer', 'Tunai', 'Kredit'];
+        $metodePembayaran = MetodePembayaran::all();
         $statusPembayaran = [
             ['id' => 1, 'name' => 'Lunas'],
             ['id' => 2, 'name' => 'Pending'],
