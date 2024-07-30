@@ -251,7 +251,7 @@
 															<button class="btn btn-secondary btn-sm dropdown-toggle" id="btnGroupDrop1" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
 															<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
 	
-																@if ($data->metode_pembayaran == 'Transfer' && $data->status_pembayaran != 1 && Session::get('user_level') == 2)
+																@if ($data->status_pembayaran != 1 && Session::get('user_level') == 2)
 																	<a class="dropdown-item" href="{{ route('data-pengiriman.approve', $data->id) }}" onclick="return confirm('Approve Data Pengiriman dan Update Status Menjadi Lunas?')"><span><i data-feather="check-square"></i> Approve</span></a>
 																@endif
 																
@@ -397,6 +397,7 @@
 
 	<script>
 		function showBukti(id) {
+			console.log(id);
 			var tooltip = document.getElementById('tooltip' + id);
 			tooltip.style.display = 'block';
 		}

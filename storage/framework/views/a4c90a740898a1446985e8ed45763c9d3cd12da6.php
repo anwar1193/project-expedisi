@@ -391,6 +391,7 @@
 
 	<script>
 		function showBukti(id) {
+			console.log(id);
 			var tooltip = document.getElementById('tooltip' + id);
 			tooltip.style.display = 'block';
 		}
