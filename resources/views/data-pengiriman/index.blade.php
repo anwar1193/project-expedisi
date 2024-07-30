@@ -6,8 +6,19 @@
 
 @push('css')
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/datatables.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/fixedHeader-datatable.css') }}">
+{{-- <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/fixedHeader-datatable.css') }}"> --}}
+{{-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css"> --}}
+<!-- Link to jQuery UI CSS for styling -->
+{{-- <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> --}}
+<!-- Link to FixedHeader CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/fixedheader/3.1.8/css/fixedHeader.dataTables.css">
 <style>
+	body {
+		margin: 0;
+		padding: 0;
+		font-family: Arial, sans-serif;
+	}
+
 	.tooltip-img {
 		display: none;
 		position: absolute;
@@ -29,21 +40,61 @@
         flex-direction: column;
     }
 
-    .scrollbar-container {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 20px; /* Adjust height as needed */
-        overflow-x: auto;
-        background: #f1f1f1;
-        z-index: 2; /* Ensure it appears above other content */
+	table.dataTable thead th, table.dataTable thead td {
+		padding: 10px 18px;
+		border-bottom: 1px solid #111;
+	}
+
+	.table-container {
+        flex: 1;
+        overflow: auto;
+        max-height: 500px;
     }
 
-    .scrollbar {
-        height: 1px; /* Invisible but allows scrolling */
+    .table {
         width: 100%;
+        border-collapse: collapse;
     }
+
+    .table th, .table td {
+        padding: 8px 12px;
+        border: 1px solid #ccc;
+        text-align: left;
+    }
+
+	.table thead th {
+        background-color: #f2f2f2;
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+
+	#table-wrapper {
+		position: relative;
+		margin-bottom: 20px;
+	}
+
+    #table-container {
+		width: 100%;
+		overflow-x: auto;
+		white-space: nowrap;
+	}
+
+	.scrollbar-container {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 20px;
+		overflow-x: auto;
+		background: #f1f1f1;
+		z-index: 1;
+	}
+
+	.scrollbar {
+		height: 1px;
+		width: 100%;
+	}
 </style>
 @endpush
 
@@ -165,8 +216,8 @@
 						@endif
 	                    
 						{{-- Table --}}
-						<div class="content">
-							<div class="table-responsive table-container" id="table-container">
+						<div class="" id="table-wrapper">
+							<div class="table-responsive" id="table-container">
 								<form class="d-flex flex-column col-12" role="search" action="" method="GET">
 									<div class="d-flex justify-content-end">
 										<div id="tanggal">
@@ -197,7 +248,7 @@
 										</div>
 									</div>
 								</form>
-								<table class="display table" id="basic-1">
+								<table class="display nowrap" id="basic-1" style="width:100%">
 									<thead>
 										<tr>
 											<th>No</th>
@@ -341,7 +392,6 @@
 						<div class="scrollbar-container" id="scrollbar-container">
 							<div class="scrollbar"></div>
 						</div>
-
 	                </div>
 	            </div>
 	        </div>
@@ -350,14 +400,18 @@
 	</div>
 	
 	@push('scripts')
-	<script src="{{ asset('assets/js/jquery-3.7.1.js') }}"></script>
-	<script src="{{ asset('assets/js/datatable/datatables/jquery.dataTables.min.js') }}"></script>
-	<script src="{{ asset('assets/js/datatable/datatables/dataTable.fixHeader.js') }}"></script>
-	<script src="{{ asset('assets/js/datatable/datatables/fixedHeader.dataTable.js') }}"></script>
+	{{-- <script src="{{ asset('assets/js/jquery-3.7.1.js') }}"></script> --}}
+	 <!-- Link to DataTables JS -->
+	 {{-- <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script> --}}
+	 <!-- Link to DataTables FixedHeader JS -->
+	 <script src="{{ asset('assets/js/datatable/datatables/jquery.dataTables.min.js') }}"></script>
+	 <script src="{{ asset('assets/js/datatable/datatables/dataTable.fixHeader.js') }}"></script>
+	 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/fixedheader/3.1.8/js/dataTables.fixedHeader.js"></script>	 
+	{{-- <script src="{{ asset('assets/js/datatable/datatables/fixedHeader.dataTable.js') }}"></script> --}}
 	<script src="{{asset('assets/js/tooltip-init.js')}}"></script>
     <script>
 		$(document).ready(function() {
-			$('#basic-1').DataTable({
+			var table = $('#basic-1').DataTable({
 				language: {
 					"emptyTable": "Tidak ada data yang tersedia pada tabel ini",
 					"info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
@@ -383,11 +437,32 @@
 					header: true,
 					footer: true
 				},
-				// scrollX: true,
 				searching: false
 			});
 		})
 	</script>
+	<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tableContainer = document.getElementById('table-container');
+            const scrollbarContainer = document.getElementById('scrollbar-container');
+            const scrollbar = document.querySelector('.scrollbar');
+
+            // Synchronize scroll positions
+            scrollbarContainer.addEventListener('scroll', function() {
+                tableContainer.scrollLeft = scrollbarContainer.scrollLeft;
+            });
+
+            tableContainer.addEventListener('scroll', function() {
+                scrollbarContainer.scrollLeft = tableContainer.scrollLeft;
+            });
+
+            // Set the width of the scrollbar to match the table content width
+            scrollbar.style.width = tableContainer.scrollWidth + 'px';
+
+            // Ensure scrollbar is always visible
+            // scrollbarContainer.style.overflowX = 'scroll';
+        });
+    </script>
 	
 	@foreach ($datas as $data)
 		<script>
@@ -418,28 +493,6 @@
 		// 	$('.inner').append("<input type='hidden' value='"+id+"' name='id_pengiriman[]'>");
 		// }
 	</script>
-	<script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const tableContainer = document.getElementById('table-container');
-            const scrollbarContainer = document.getElementById('scrollbar-container');
-            const scrollbar = document.querySelector('.scrollbar');
-
-            // Synchronize scroll positions
-            scrollbarContainer.addEventListener('scroll', function() {
-                tableContainer.scrollLeft = scrollbarContainer.scrollLeft;
-            });
-
-            tableContainer.addEventListener('scroll', function() {
-                scrollbarContainer.scrollLeft = tableContainer.scrollLeft;
-            });
-
-            // Set the width of the scrollbar to match the table content width
-            scrollbar.style.width = tableContainer.scrollWidth + 'px';
-
-            // Ensure scrollbar is always visible
-            // scrollbarContainer.style.overflowX = 'scroll';
-        });
-    </script>
 	<script>
 		$(document).ready(function() {
 			$('#checkAll').click(function() {
