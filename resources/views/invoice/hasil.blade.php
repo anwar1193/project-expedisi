@@ -186,7 +186,30 @@
 	                                </table>
 	                            </div>
 	                            <!-- End Table-->
-	                            <div class="text-center mt-3">
+
+								<hr>
+								{{-- Pilihan Bank --}}
+								<div class="pilihan-bank">
+									<div class="col-sm-12">
+										<p>Pilih Bank yang Ditampilkan</p>
+									  </div>
+									  <div class="col">
+										<div class="form-group m-t-15 m-checkbox-inline mb-0">
+
+										  @foreach ($bank as $data)
+											<div class="checkbox checkbox-dark">
+												<input id="inline-{{ $data->id }}" type="checkbox" name="bank_id[]" value="{{ $data->id }}">
+												<label for="inline-{{ $data->id }}">{{ $data->bank }} ({{ $data->nomor_rekening }})</label>
+											</div>  
+										  @endforeach
+						
+										</div>
+									  </div>
+								</div>
+
+								<hr>
+
+	                            <div class="text-center mt-5">
 									<p>Lion parcel - D Angel Express</p>
 									<p>Jl. Onta Baru no 51, Kelurahan Mandala, Kecamatan Mamajang, Kota Makassar – 90135, Sulawesi Selatan</p>
 									<p>Telp : 0411 – 8918311 , 082110071565</p>

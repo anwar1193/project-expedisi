@@ -173,7 +173,30 @@
 	                                </table>
 	                            </div>
 	                            <!-- End Table-->
-	                            <div class="text-center mt-3">
+
+								<hr>
+								
+								<div class="pilihan-bank">
+									<div class="col-sm-12">
+										<p>Pilih Bank yang Ditampilkan</p>
+									  </div>
+									  <div class="col">
+										<div class="form-group m-t-15 m-checkbox-inline mb-0">
+
+										  <?php $__currentLoopData = $bank; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+											<div class="checkbox checkbox-dark">
+												<input id="inline-<?php echo e($data->id); ?>" type="checkbox" name="bank_id[]" value="<?php echo e($data->id); ?>">
+												<label for="inline-<?php echo e($data->id); ?>"><?php echo e($data->bank); ?> (<?php echo e($data->nomor_rekening); ?>)</label>
+											</div>  
+										  <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+						
+										</div>
+									  </div>
+								</div>
+
+								<hr>
+
+	                            <div class="text-center mt-5">
 									<p>Lion parcel - D Angel Express</p>
 									<p>Jl. Onta Baru no 51, Kelurahan Mandala, Kecamatan Mamajang, Kota Makassar – 90135, Sulawesi Selatan</p>
 									<p>Telp : 0411 – 8918311 , 082110071565</p>
