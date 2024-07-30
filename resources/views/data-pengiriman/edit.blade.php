@@ -207,13 +207,31 @@
 									<div class="mb-3">
 										<label class="form-label" for="">Metode Pembayaran</label>
                                         <select name="metode_pembayaran" id="metode_pembayaran" class="form-control @error('metode_pembayaran') is-invalid @enderror js-example-basic-single">
-											<option value="">- Pilih -</option>
-											<option value="Tunai" {{ $datas->metode_pembayaran == 'Tunai' ? 'selected' : NULL }}>Tunai</option>
-											<option value="Transfer" {{ $datas->metode_pembayaran == 'Transfer' ? 'selected' : NULL }}>Transfer</option>
-											<option value="Kredit" {{ $datas->metode_pembayaran == 'Kredit' ? 'selected' : NULL }}>Kredit</option>
+											@foreach ($metode as $item)
+												<option value="{{ $item->metode }}" {{ $datas->metode_pembayaran == $item->metode ? 'selected' : NULL }}>{{ $item->metode }}</option>
+											@endforeach
 										</select>
 
 										@error('metode_pembayaran')
+										<div class="text-danger">
+											{{ $message }}
+										</div>
+										@enderror
+									</div>
+								</div>
+							</div>
+							
+							<div class="row" id="bank-row">
+								<div class="col">
+									<div class="mb-3">
+										<label class="form-label" for="">Bank</label>
+                                        <select name="bank" id="bank" class="form-control @error('bank') is-invalid @enderror js-example-basic-single">
+											@foreach ($bank as $item)
+												<option value="{{ $item->bank }}" {{ $datas->bank == $item->bank ? 'selected' : NULL }}>{{ $item->bank }}</option>
+											@endforeach
+										</select>
+
+										@error('bank')
 										<div class="text-danger">
 											{{ $message }}
 										</div>
@@ -256,6 +274,23 @@
 	@push('scripts')
     <script src="{{ asset('assets/js/select2/select2.full.min.js') }}"></script>
     <script src="{{ asset('assets/js/select2/select2-custom.js') }}"></script>
+	<script>
+		$(document).ready(function() {
+			function toggleBankVisibility() {
+				if ($('#metode_pembayaran').val() === 'Transfer') {
+					$('#bank').closest('.row').show();
+				} else {
+					$('#bank').closest('.row').hide();
+				}
+			}
+
+			toggleBankVisibility();
+
+			$('#metode_pembayaran').change(function() {
+				toggleBankVisibility();
+			});
+		});
+	</script>
 	@endpush
 
 @endsection
