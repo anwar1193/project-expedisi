@@ -5,6 +5,7 @@
 
 <?php $__env->startPush('css'); ?>
 <link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/datatables.css')); ?>">
+<link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/fixedHeader-datatable.css')); ?>">
 <style>
 	.tooltip-img {
 		display: none;
@@ -19,6 +20,10 @@
 	.tooltip-img img {
 		max-width: 200px;
 		height: auto;
+	}
+
+	input[type="checkbox"] {
+		transform: scale(2);
 	}
 </style>
 <?php $__env->stopPush(); ?>
@@ -179,6 +184,9 @@
 	                                <tr>
 	                                    <th>No</th>
 										<th width="35%" class="text-center">Action</th>
+										<?php if(Session::get('user_level') == 2): ?>
+											<th>Pilih</th>
+										<?php endif; ?>
 										<th>No Resi</th>
 										<th>Tanggal Transaksi</th>
 	                                    <th>Customer</th>
@@ -193,10 +201,6 @@
 										<?php endif; ?>
 	                                    <th>Ongkir</th>
 	                                    <th>Diinput Oleh</th>
-										
-										<?php if(Session::get('user_level') == 2): ?>
-											<th>Pilih</th>
-										<?php endif; ?>
 	                                </tr>
 	                            </thead>
 	                            <tbody>
@@ -244,6 +248,13 @@
 												<?php echo $__env->make('data-pengiriman.status-pembayaran', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 											</td>
 
+											<?php if(Session::get('user_level') == 2): ?>
+												
+												<td class="text-center">
+													<input type="checkbox" value="5" name="id_pengiriman[]" id="flexCheckDefault" onclick="ceklis(<?php echo e($data->id); ?>)">
+												</td>
+											<?php endif; ?>
+
 											<td>
 												<span class="badge badge-danger">
 													<?php echo e($data->no_resi); ?>
@@ -290,13 +301,6 @@
 											<td><?php echo e(number_format($data->ongkir, 0, '.', ',')); ?></td>
 
 											<td><?php echo e($data->input_by); ?></td>
-
-											<?php if(Session::get('user_level') == 2): ?>
-												
-												<td class="text-center">
-													<input type="checkbox" value="5" name="id_pengiriman[]" id="flexCheckDefault" onclick="ceklis(<?php echo e($data->id); ?>)">
-												</td>
-											<?php endif; ?>
 										</tr>
 									<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 									
@@ -313,7 +317,10 @@
 	</div>
 	
 	<?php $__env->startPush('scripts'); ?>
+	<script src="<?php echo e(asset('assets/js/jquery-3.7.1.js')); ?>"></script>
 	<script src="<?php echo e(asset('assets/js/datatable/datatables/jquery.dataTables.min.js')); ?>"></script>
+	<script src="<?php echo e(asset('assets/js/datatable/datatables/dataTable.fixHeader.js')); ?>"></script>
+	<script src="<?php echo e(asset('assets/js/datatable/datatables/fixedHeader.dataTable.js')); ?>"></script>
 	<script src="<?php echo e(asset('assets/js/tooltip-init.js')); ?>"></script>
     <script>
 		$(document).ready(function() {
@@ -339,7 +346,11 @@
 					[10, 25, 50, -1],
 					[10, 25, 50, 'All']
 				],
-				scrollX: true,
+				fixedHeader: {
+					header: true,
+					footer: true
+				},
+				// scrollX: true,
 				searching: false
 			});
 		})

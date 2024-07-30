@@ -6,6 +6,7 @@
 
 @push('css')
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/datatables.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/fixedHeader-datatable.css') }}">
 <style>
 	.tooltip-img {
 		display: none;
@@ -20,6 +21,10 @@
 	.tooltip-img img {
 		max-width: 200px;
 		height: auto;
+	}
+
+	input[type="checkbox"] {
+		transform: scale(2);
 	}
 </style>
 @endpush
@@ -178,6 +183,9 @@
 	                                <tr>
 	                                    <th>No</th>
 										<th width="35%" class="text-center">Action</th>
+										@if (Session::get('user_level') == 2)
+											<th>Pilih</th>
+										@endif
 										<th>No Resi</th>
 										<th>Tanggal Transaksi</th>
 	                                    <th>Customer</th>
@@ -192,10 +200,6 @@
 										@endif
 	                                    <th>Ongkir</th>
 	                                    <th>Diinput Oleh</th>
-										
-										@if (Session::get('user_level') == 2)
-											<th>Pilih</th>
-										@endif
 	                                </tr>
 	                            </thead>
 	                            <tbody>
@@ -244,6 +248,13 @@
 												@include('data-pengiriman.detail')
 												@include('data-pengiriman.status-pembayaran')
 											</td>
+
+											@if (Session::get('user_level') == 2)
+												{{-- Select/Pilih --}}
+												<td class="text-center">
+													<input type="checkbox" value="5" name="id_pengiriman[]" id="flexCheckDefault" onclick="ceklis({{ $data->id }})">
+												</td>
+											@endif
 
 											<td>
 												<span class="badge badge-danger">
@@ -296,13 +307,6 @@
 											<td>{{ number_format($data->ongkir, 0, '.', ',') }}</td>
 
 											<td>{{ $data->input_by }}</td>
-
-											@if (Session::get('user_level') == 2)
-												{{-- Select/Pilih --}}
-												<td class="text-center">
-													<input type="checkbox" value="5" name="id_pengiriman[]" id="flexCheckDefault" onclick="ceklis({{ $data->id }})">
-												</td>
-											@endif
 										</tr>
 									@endforeach
 									
@@ -319,7 +323,10 @@
 	</div>
 	
 	@push('scripts')
+	<script src="{{ asset('assets/js/jquery-3.7.1.js') }}"></script>
 	<script src="{{ asset('assets/js/datatable/datatables/jquery.dataTables.min.js') }}"></script>
+	<script src="{{ asset('assets/js/datatable/datatables/dataTable.fixHeader.js') }}"></script>
+	<script src="{{ asset('assets/js/datatable/datatables/fixedHeader.dataTable.js') }}"></script>
 	<script src="{{asset('assets/js/tooltip-init.js')}}"></script>
     <script>
 		$(document).ready(function() {
@@ -345,7 +352,11 @@
 					[10, 25, 50, -1],
 					[10, 25, 50, 'All']
 				],
-				scrollX: true,
+				fixedHeader: {
+					header: true,
+					footer: true
+				},
+				// scrollX: true,
 				searching: false
 			});
 		})
