@@ -28,10 +28,14 @@ class DaftarPengeluaranController extends Controller
     public  function index()
     {
         $kategori = request('kategori');
+        $owner = isOwner();
         $datas = DaftarPengeluaran::select('daftar_pengeluarans.id', 'daftar_pengeluarans.tgl_pengeluaran', 'daftar_pengeluarans.keterangan', 'daftar_pengeluarans.jumlah_pembayaran', 'daftar_pengeluarans.yang_membayar', 'daftar_pengeluarans.yang_menerima', 'daftar_pengeluarans.metode_pembayaran', 'daftar_pengeluarans.bukti_pembayaran', 'daftar_pengeluarans.status_pengeluaran', 'jenis_pengeluarans.jenis_pengeluaran')
                 ->leftJoin('jenis_pengeluarans', 'jenis_pengeluarans.id', '=', 'daftar_pengeluarans.jenis_pengeluaran')
                 ->when($kategori, function ($query, $kategori) {
                     return $query->where('daftar_pengeluarans.jenis_pengeluaran', $kategori);
+                })->when($owner, function ($query) {
+                    $pending = 2;
+                    return $query->where('daftar_pengeluarans.status_pengeluaran', $pending);
                 })
                 ->orderBy('daftar_pengeluarans.id', 'DESC')->get();
 
@@ -231,5 +235,31 @@ class DaftarPengeluaranController extends Controller
         }
 
         return back()->with('success', 'Data Pengeluaran Telah Di Approve');
+    }
+    
+    public function cancelApprove($id)
+    {
+        $proses = DaftarPengeluaran::find($id)->update([
+            'status_pengeluaran' => 2
+        ]);
+
+        return back()->with('success', 'Approval Data Pengeluaran Telah Dibatalkan');
+    }
+
+    public function cancelApproveSelected(Request $request)
+    {
+        $id_pengeluaran = $request->id_pengeluaran;
+
+        if($id_pengeluaran == NULL){
+            return back()->with('error', 'Belum Ada Data Dipilih');
+        }
+
+        for($i=0; $i<sizeof($id_pengeluaran); $i++){
+            DaftarPengeluaran::find($id_pengeluaran[$i])->update([
+                'status_pengeluaran' => 2
+            ]);
+        }
+
+        return back()->with('success', 'Approval Data Pengeluaran Telah Dibatalkan');
     }
 }
