@@ -12,6 +12,21 @@
                 }
             });
             $('input[name="tgl_transaksi[]"]').each(function() {
+                const tanggalSekarang = new Date().toISOString().split('T')[0];
+
+                const tglTransaksi = $(this).val();
+
+                const diff = new Date(tanggalSekarang) - new Date(tglTransaksi);
+
+                const jarakHari = Math.abs(Math.round(diff / (1000 * 60 * 60 * 24)));
+
+                if (jarakHari > 7) {
+                    $(this).addClass('is-invalid');
+                    alert("Tanggal transaksi tidak boleh mundur lebih dari 7 hari!");
+                    isValid = false;
+                    return false;
+                }
+
                 if ($(this).val() == "") {
                     $(this).addClass('is-invalid');
                     alert("Tanggal Transaksi harus diisi");
@@ -118,6 +133,16 @@
                     }
                 }
                 
+                if ($(this).val().toLowerCase() == "kredit") {
+                    let correspondingKodeInput = $('select[name="kode_customer[]"]').eq(index);
+                    if (correspondingKodeInput.val() == "General") {
+                        correspondingKodeInput.addClass('custom-select2');
+                        alert("Metode pembayaran kredit hanya berlaku untuk customer terdaftar atau kosongkan kolom customer!");
+                        isValid = false;
+                        return false; 
+                    }
+                }
+                
                 // if ($(this).val().toLowerCase() != "tunai" && $(this).val().toLowerCase() != "kredit") {
                 //     let correspondingBuktiInput = $('input[name="bukti_pembayaran[]"]').eq(index);
                 //     if (correspondingBuktiInput.val() == "") {
@@ -128,6 +153,30 @@
                 //     }
                 // }
             });
+            
+            $('select[name="metode_pembayaran_2[]"]').each(function(index) {
+
+                if ($(this).val().toLowerCase() == "transfer") {
+                    let correspondingBankInput = $('select[name="bank_2[]"]').eq(index);
+                    if (correspondingBankInput.val() == "") {
+                        correspondingBankInput.addClass('custom-select2');
+                        alert("Bank harus diisi jika metode pembayaran adalah transfer");
+                        isValid = false;
+                        return false; 
+                    }
+                }
+                
+                if ($(this).val().toLowerCase() == "kredit") {
+                    let correspondingKodeInput = $('select[name="kode_customer[]"]').eq(index);
+                    if (correspondingKodeInput.val() == "General") {
+                        correspondingKodeInput.addClass('custom-select2');
+                        alert("Metode pembayaran kredit hanya berlaku untuk customer terdaftar atau kosongkan kolom customer!");
+                        isValid = false;
+                        return false; 
+                    }
+                }
+            });
+
             $('input[name="jenis_pengiriman[]"]').each(function() {
                 if ($(this).val() == "") {
                     $(this).addClass('is-invalid');
