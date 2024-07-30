@@ -21,6 +21,53 @@
 	input[type="checkbox"] {
 		transform: scale(2);
 	}
+
+	.content {
+        flex: 1;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .table-container {
+        flex: 1;
+        overflow: auto;
+        max-height: 500px;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .table th, .table td {
+        padding: 8px 12px;
+        border: 1px solid #ccc;
+        text-align: left;
+    }
+
+    .table thead th {
+        background-color: #f2f2f2;
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+
+    .scrollbar-container {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 20px; /* Adjust height as needed */
+        overflow-x: auto;
+        background: #f1f1f1;
+        z-index: 2; /* Ensure it appears above other content */
+    }
+
+    .scrollbar {
+        height: 1px; /* Invisible but allows scrolling */
+        width: 100%;
+    }
 </style>
 @endpush
 
@@ -142,176 +189,182 @@
 						@endif
 	                    
 						{{-- Table --}}
-						<div class="table-responsive">
-							<form class="d-flex flex-column col-12" role="search" action="" method="GET">
-								<div class="d-flex justify-content-end">
-									<div id="tanggal">
-										<input class="form-control" type="date" name="tanggal" value="{{ request('tanggal') }}" />
+						<div class="content">
+							<div class="table-responsive table-container" id="table-container">
+								<form class="d-flex flex-column col-12" role="search" action="" method="GET">
+									<div class="d-flex justify-content-end">
+										<div id="tanggal">
+											<input class="form-control" type="date" name="tanggal" value="{{ request('tanggal') }}" />
+										</div>
+										<div id="customer_id" class="px-2">
+											<select name="customer" class="form-control js-example-basic-single py-2">
+												<option value="">- Pilih Customer -</option>
+												<option value="General" {{ request('customer') == 'General' ? 'selected' : '' }}>General</option>
+												@foreach($customer as $customer)
+													<option value="{{ $customer->kode_customer }}" {{ request('customer') == $customer->kode_customer ? 'selected' : '' }}>{{ $customer->kode_customer }} - {{ $customer->nama }}</option>
+												@endforeach
+											</select>
+										</div>
+										<div id="customer_id" class="px-2">
+											<select name="metode" class="form-control js-example-basic-single py-2">
+												<option value="">- Pilih Metode -</option>
+												@foreach($metode as $item)
+													<option value="{{ $item->metode }}" {{ request('metode') == $item->metode ? 'selected' : '' }}>{{ $item->metode }}</option>
+												@endforeach
+											</select>
+										</div>
+										<div class="px-1">
+											<button type="submit" class="btn btn-primary" title="Cari"><i class="fa fa-search"></i> Cari</button>
+										</div>
+										<div class="px-1">
+											<a href="{{ route('data-pengiriman') }}" class="btn btn-md btn-secondary" title="Reset"><i class="fa fa-refresh"></i> Reset</a>
+										</div>
 									</div>
-									<div id="customer_id" class="px-2">
-										<select name="customer" class="form-control js-example-basic-single py-2">
-											<option value="">- Pilih Customer -</option>
-											<option value="General" {{ request('customer') == 'General' ? 'selected' : '' }}>General</option>
-											@foreach($customer as $customer)
-												<option value="{{ $customer->kode_customer }}" {{ request('customer') == $customer->kode_customer ? 'selected' : '' }}>{{ $customer->kode_customer }} - {{ $customer->nama }}</option>
-											@endforeach
-										</select>
-									</div>
-									<div id="customer_id" class="px-2">
-										<select name="metode" class="form-control js-example-basic-single py-2">
-											<option value="">- Pilih Metode -</option>
-											@foreach($metode as $item)
-												<option value="{{ $item->metode }}" {{ request('metode') == $item->metode ? 'selected' : '' }}>{{ $item->metode }}</option>
-											@endforeach
-										</select>
-									</div>
-									<div class="px-1">
-										<button type="submit" class="btn btn-primary" title="Cari"><i class="fa fa-search"></i> Cari</button>
-									</div>
-									<div class="px-1">
-										<a href="{{ route('data-pengiriman') }}" class="btn btn-md btn-secondary" title="Reset"><i class="fa fa-refresh"></i> Reset</a>
-									</div>
-								</div>
-							</form>
-	                        <table class="display" id="basic-1">
-	                            <thead>
-	                                <tr>
-	                                    <th>No</th>
-										<th width="35%" class="text-center">Action</th>
-										@if (Session::get('user_level') == 2)
-											<th>
-												<input type="checkbox" id="checkAll" title="Pilih Semua">
-											</th>
-										@endif
-										<th>No Resi</th>
-										<th>Tanggal Transaksi</th>
-	                                    <th>Customer</th>
-										<th>Metode Pembayaran</th>
-	                                    <th>Status Pembayaran</th>
-	                                    <th>Pengirim</th>
-										@if (!isOwner())
-											<th>Penerima</th>
-											<th>Kota Tujuan</th>
-											<th>Bawa Sendiri</th>
-	                                    	<th>Status Pengiriman</th>
-										@endif
-	                                    <th>Ongkir</th>
-	                                    <th>Diinput Oleh</th>
-	                                </tr>
-	                            </thead>
-	                            <tbody>
-									
-                                    @foreach ($datas as $data)
-										@php
-											$bukti_pembayaran = $data->bukti_pembayaran;
-
-											if($bukti_pembayaran != ''){
-												$explode = explode("/", $bukti_pembayaran);
-												$bukti_pembayaran_view = 'https://'.$explode[2].'/thumbnail?id='.$explode[5];
-											}else{
-												$bukti_pembayaran_view = '#';
-											}
-										@endphp
+								</form>
+								<table class="display table" id="basic-1">
+									<thead>
 										<tr>
-											<td>{{ $loop->iteration; }}</td>
-
-											{{-- Action --}}
-											<td class="text-center">
-
-												{{-- <a class="btn btn-square btn-warning btn-xs" type="button" data-bs-toggle="modal" data-original-title="test" data-bs-target="#statusPembayaran{{ $data->id }}" title="Edit Status Pembayaran">
-													<i class="fa fa-credit-card"></i>
-												</a> --}}
-
-												<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-													<div class="btn-group" role="group">
-														<button class="btn btn-secondary btn-sm dropdown-toggle" id="btnGroupDrop1" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
-														<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-
-															@if ($data->metode_pembayaran == 'Transfer' && $data->status_pembayaran != 1 && Session::get('user_level') == 2)
-																<a class="dropdown-item" href="{{ route('data-pengiriman.approve', $data->id) }}" onclick="return confirm('Approve Data Pengiriman dan Update Status Menjadi Lunas?')"><span><i data-feather="check-square"></i> Approve</span></a>
-															@endif
-															
-															<a class="dropdown-item" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalDataPengiriman{{ $data->id }}" title="Detail Data"><span><i data-feather="eye"></i> Detail</span></a>
-
-															@if ($data->status_pembayaran == 2 || Session::get('user_level') == 2)
-																<a class="dropdown-item" href="{{ route('data-pengiriman.edit', $data->id) }}"><span><i data-feather="edit"></i> Edit</span></a>
-															@endif
-
-															<a class="dropdown-item" href="{{ route('data-pengiriman.delete', $data->id) }}" onclick="return confirm('Apakah Anda Yakin?')"><span><i data-feather="delete"></i> Delete</span></a>
-															
+											<th>No</th>
+											<th width="35%" class="text-center">Action</th>
+											@if (Session::get('user_level') == 2)
+												<th>
+													<input type="checkbox" id="checkAll" title="Pilih Semua">
+												</th>
+											@endif
+											<th>No Resi</th>
+											<th>Tanggal Transaksi</th>
+											<th>Customer</th>
+											<th>Metode Pembayaran</th>
+											<th>Status Pembayaran</th>
+											<th>Pengirim</th>
+											@if (!isOwner())
+												<th>Penerima</th>
+												<th>Kota Tujuan</th>
+												<th>Bawa Sendiri</th>
+												<th>Status Pengiriman</th>
+											@endif
+											<th>Ongkir</th>
+											<th>Diinput Oleh</th>
+										</tr>
+									</thead>
+									<tbody>
+										
+										@foreach ($datas as $data)
+											@php
+												$bukti_pembayaran = $data->bukti_pembayaran;
+	
+												if($bukti_pembayaran != ''){
+													$explode = explode("/", $bukti_pembayaran);
+													$bukti_pembayaran_view = 'https://'.$explode[2].'/thumbnail?id='.$explode[5];
+												}else{
+													$bukti_pembayaran_view = '#';
+												}
+											@endphp
+											<tr>
+												<td>{{ $loop->iteration; }}</td>
+	
+												{{-- Action --}}
+												<td class="text-center">
+	
+													{{-- <a class="btn btn-square btn-warning btn-xs" type="button" data-bs-toggle="modal" data-original-title="test" data-bs-target="#statusPembayaran{{ $data->id }}" title="Edit Status Pembayaran">
+														<i class="fa fa-credit-card"></i>
+													</a> --}}
+	
+													<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+														<div class="btn-group" role="group">
+															<button class="btn btn-secondary btn-sm dropdown-toggle" id="btnGroupDrop1" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
+															<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+	
+																@if ($data->metode_pembayaran == 'Transfer' && $data->status_pembayaran != 1 && Session::get('user_level') == 2)
+																	<a class="dropdown-item" href="{{ route('data-pengiriman.approve', $data->id) }}" onclick="return confirm('Approve Data Pengiriman dan Update Status Menjadi Lunas?')"><span><i data-feather="check-square"></i> Approve</span></a>
+																@endif
+																
+																<a class="dropdown-item" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalDataPengiriman{{ $data->id }}" title="Detail Data"><span><i data-feather="eye"></i> Detail</span></a>
+	
+																@if ($data->status_pembayaran == 2 || Session::get('user_level') == 2)
+																	<a class="dropdown-item" href="{{ route('data-pengiriman.edit', $data->id) }}"><span><i data-feather="edit"></i> Edit</span></a>
+																@endif
+	
+																<a class="dropdown-item" href="{{ route('data-pengiriman.delete', $data->id) }}" onclick="return confirm('Apakah Anda Yakin?')"><span><i data-feather="delete"></i> Delete</span></a>
+																
+															</div>
 														</div>
 													</div>
-												</div>
-												@include('data-pengiriman.detail')
-												@include('data-pengiriman.status-pembayaran')
-											</td>
-
-											@if (Session::get('user_level') == 2)
-												{{-- Select/Pilih --}}
-												<td class="text-center">
-													<input type="checkbox" value="{{ $data->id }}" class="checkbox-item" id="checkbox-{{ $data->id }}" onclick="ceklis({{ $data->id }})">
+													@include('data-pengiriman.detail')
+													@include('data-pengiriman.status-pembayaran')
 												</td>
-											@endif
-
-											<td>
-												<span class="badge badge-danger">
-													{{ $data->no_resi }}
-												</span>
-											</td>
-											<td>{{ date('d-m-Y', strtotime($data->tgl_transaksi)) }}</td>
-											<td>
-												@if ($data->kode_customer == "General")
-													{{ $data->kode_customer }}
-												@else
-													{{ $data->kode_customer }} - {{ $data->nama }}
+	
+												@if (Session::get('user_level') == 2)
+													{{-- Select/Pilih --}}
+													<td class="text-center">
+														<input type="checkbox" value="{{ $data->id }}" class="checkbox-item" id="checkbox-{{ $data->id }}" onclick="ceklis({{ $data->id }})">
+													</td>
 												@endif
-											</td>
-											<td onmouseover="showBukti({{ $data->id }})" onmouseout="hideBukti({{ $data->id }})" style="position: relative;">
-												@if ($bukti_pembayaran != '')
-													<div id="tooltip{{ $data->id }}" class="tooltip-img">
-														<img src="{{ $bukti_pembayaran_view }}" alt="Bukti Pembayaran" width="200px" class="img-fluid mt-2">
-														<a class="btn btn-primary" href="{{ $bukti_pembayaran }}" target="_blank">View Full Image</a>
-													</div>
+	
+												<td>
+													<span class="badge badge-danger">
+														{{ $data->no_resi }}
+													</span>
+												</td>
+												<td>{{ date('d-m-Y', strtotime($data->tgl_transaksi)) }}</td>
+												<td>
+													@if ($data->kode_customer == "General")
+														{{ $data->kode_customer }}
+													@else
+														{{ $data->kode_customer }} - {{ $data->nama }}
+													@endif
+												</td>
+												<td onmouseover="showBukti({{ $data->id }})" onmouseout="hideBukti({{ $data->id }})" style="position: relative;">
+													@if ($bukti_pembayaran != '')
+														<div id="tooltip{{ $data->id }}" class="tooltip-img">
+															<img src="{{ $bukti_pembayaran_view }}" alt="Bukti Pembayaran" width="200px" class="img-fluid mt-2">
+															<a class="btn btn-primary" href="{{ $bukti_pembayaran }}" target="_blank">View Full Image</a>
+														</div>
+													@endif
+												
+													{{ $data->metode_pembayaran }} <i class="{{ $data->metode_pembayaran == 'Transfer' ? 'fa fa-eye' : '' }}"></i>
+												</td>
+												{{-- <td onmouseover="showBukti({{ $data->id }})" onmouseout="hideBukti({{ $data->id }})">
+													@if ($bukti_pembayaran != '')
+														<div id="view-bukti{{ $data->id }}" class="mb-3">
+															<img src="{{ $bukti_pembayaran_view }}" alt="test" class="mb-2">
+															<a class="btn btn-primary" href="{{ $bukti_pembayaran }}" target="_blank">View Full Image</a>
+														</div>
+													@endif
+	
+													{{ $data->metode_pembayaran }} <i class="{{ $data->metode_pembayaran == 'Transfer' ? 'fa fa-eye' : '' }}"></i>
+												</td> --}}
+	
+												<td class="text-center">
+													<span class="badge {{ $data->status_pembayaran == 1 ? 'badge-primary' : 'badge-warning' }}">
+														<i class="fa {{ $data->status_pembayaran == 1 ? 'fa-check' : 'fa-warning' }}"></i>
+														{{ $data->status_pembayaran == 1 ? 'Lunas' : 'Pending'; }}
+													</span>
+												</td>
+	
+												
+												<td>{{ $data->nama_pengirim }}</td>
+												@if (!isOwner())
+													<td>{{ $data->nama_penerima }}</td>
+													<td>{{ $data->kota_tujuan }}</td>
+													<td>{{ $data->bawa_sendiri }}</td>
+													<td>{{ $data->status_pengiriman }}</td>
 												@endif
-											
-												{{ $data->metode_pembayaran }} <i class="{{ $data->metode_pembayaran == 'Transfer' ? 'fa fa-eye' : '' }}"></i>
-											</td>
-											{{-- <td onmouseover="showBukti({{ $data->id }})" onmouseout="hideBukti({{ $data->id }})">
-												@if ($bukti_pembayaran != '')
-													<div id="view-bukti{{ $data->id }}" class="mb-3">
-														<img src="{{ $bukti_pembayaran_view }}" alt="test" class="mb-2">
-														<a class="btn btn-primary" href="{{ $bukti_pembayaran }}" target="_blank">View Full Image</a>
-													</div>
-												@endif
+												<td>{{ number_format($data->ongkir, 0, '.', ',') }}</td>
+	
+												<td>{{ $data->input_by }}</td>
+											</tr>
+										@endforeach
+										
+									</tbody>
+								</table>
+								
+							</div>
+						</div>
 
-												{{ $data->metode_pembayaran }} <i class="{{ $data->metode_pembayaran == 'Transfer' ? 'fa fa-eye' : '' }}"></i>
-											</td> --}}
-
-											<td class="text-center">
-												<span class="badge {{ $data->status_pembayaran == 1 ? 'badge-primary' : 'badge-warning' }}">
-													<i class="fa {{ $data->status_pembayaran == 1 ? 'fa-check' : 'fa-warning' }}"></i>
-													{{ $data->status_pembayaran == 1 ? 'Lunas' : 'Pending'; }}
-												</span>
-											</td>
-
-											
-											<td>{{ $data->nama_pengirim }}</td>
-											@if (!isOwner())
-												<td>{{ $data->nama_penerima }}</td>
-												<td>{{ $data->kota_tujuan }}</td>
-												<td>{{ $data->bawa_sendiri }}</td>
-												<td>{{ $data->status_pengiriman }}</td>
-											@endif
-											<td>{{ number_format($data->ongkir, 0, '.', ',') }}</td>
-
-											<td>{{ $data->input_by }}</td>
-										</tr>
-									@endforeach
-									
-	                            </tbody>
-	                        </table>
-							
-	                    </div>
+						<div class="scrollbar-container" id="scrollbar-container">
+							<div class="scrollbar"></div>
+						</div>
 
 	                </div>
 	            </div>
@@ -388,6 +441,28 @@
 		// 	$('.inner').append("<input type='hidden' value='"+id+"' name='id_pengiriman[]'>");
 		// }
 	</script>
+	<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tableContainer = document.getElementById('table-container');
+            const scrollbarContainer = document.getElementById('scrollbar-container');
+            const scrollbar = document.querySelector('.scrollbar');
+
+            // Synchronize scroll positions
+            scrollbarContainer.addEventListener('scroll', function() {
+                tableContainer.scrollLeft = scrollbarContainer.scrollLeft;
+            });
+
+            tableContainer.addEventListener('scroll', function() {
+                scrollbarContainer.scrollLeft = tableContainer.scrollLeft;
+            });
+
+            // Set the width of the scrollbar to match the table content width
+            scrollbar.style.width = tableContainer.scrollWidth + 'px';
+
+            // Ensure scrollbar is always visible
+            // scrollbarContainer.style.overflowX = 'scroll';
+        });
+    </script>
 	<script>
 		$(document).ready(function() {
 			$('#checkAll').click(function() {
