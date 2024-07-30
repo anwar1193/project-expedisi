@@ -69,19 +69,6 @@
     </nav>
 	
 	<div class="container-fluid">
-		<form class="d-flex flex-column col-12" role="search" action="" method="GET">
-			<div class="d-flex justify-content-end">
-                <div id="tanggal">
-                    <input class="form-control" type="date" name="tanggal" value="" />
-                </div>
-				<div class="px-1">
-					<button type="submit" class="btn btn-primary" title="Cari"><i class="fa fa-search"></i> Cari</button>
-				</div>
-				<div class="px-1">
-					<a href="<?php echo e(route('data-pengiriman')); ?>" class="btn btn-md btn-secondary" title="Reset"><i class="fa fa-refresh"></i> Reset</a>
-				</div>
-			</div>
-		</form>
         <div class="row">
         </div>
 	    <div class="row">
@@ -157,6 +144,36 @@
 	                    
 						
 						<div class="table-responsive">
+							<form class="d-flex flex-column col-12" role="search" action="" method="GET">
+								<div class="d-flex justify-content-end">
+									<div id="tanggal">
+										<input class="form-control" type="date" name="tanggal" value="<?php echo e(request('tanggal')); ?>" />
+									</div>
+									<div id="customer_id" class="px-2">
+										<select name="customer" class="form-control js-example-basic-single py-2">
+											<option value="">- Pilih Customer -</option>
+											<option value="General" <?php echo e(request('customer') == 'General' ? 'selected' : ''); ?>>General</option>
+											<?php $__currentLoopData = $customer; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $customer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+												<option value="<?php echo e($customer->kode_customer); ?>" <?php echo e(request('customer') == $customer->kode_customer ? 'selected' : ''); ?>><?php echo e($customer->kode_customer); ?> - <?php echo e($customer->nama); ?></option>
+											<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+										</select>
+									</div>
+									<div id="customer_id" class="px-2">
+										<select name="metode" class="form-control js-example-basic-single py-2">
+											<option value="">- Pilih Metode -</option>
+											<?php $__currentLoopData = $metode; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+												<option value="<?php echo e($item->metode); ?>" <?php echo e(request('metode') == $item->metode ? 'selected' : ''); ?>><?php echo e($item->metode); ?></option>
+											<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+										</select>
+									</div>
+									<div class="px-1">
+										<button type="submit" class="btn btn-primary" title="Cari"><i class="fa fa-search"></i> Cari</button>
+									</div>
+									<div class="px-1">
+										<a href="<?php echo e(route('data-pengiriman')); ?>" class="btn btn-md btn-secondary" title="Reset"><i class="fa fa-refresh"></i> Reset</a>
+									</div>
+								</div>
+							</form>
 	                        <table class="display" id="basic-1">
 	                            <thead>
 	                                <tr>
@@ -317,7 +334,8 @@
 				lengthMenu: [
 					[10, 25, 50, -1],
 					[10, 25, 50, 'All']
-				]
+				],
+				searching: false
 			});
 		})
 	</script>

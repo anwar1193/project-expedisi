@@ -72,19 +72,6 @@
     </nav>
 	
 	<div class="container-fluid">
-		<form class="d-flex flex-column col-12" role="search" action="" method="GET">
-			<div class="d-flex justify-content-end">
-                <div id="tanggal">
-                    <input class="form-control" type="date" name="tanggal" value="" />
-                </div>
-				<div class="px-1">
-					<button type="submit" class="btn btn-primary" title="Cari"><i class="fa fa-search"></i> Cari</button>
-				</div>
-				<div class="px-1">
-					<a href="{{ route('data-pengiriman') }}" class="btn btn-md btn-secondary" title="Reset"><i class="fa fa-refresh"></i> Reset</a>
-				</div>
-			</div>
-		</form>
         <div class="row">
         </div>
 	    <div class="row">
@@ -156,6 +143,36 @@
 	                    
 						{{-- Table --}}
 						<div class="table-responsive">
+							<form class="d-flex flex-column col-12" role="search" action="" method="GET">
+								<div class="d-flex justify-content-end">
+									<div id="tanggal">
+										<input class="form-control" type="date" name="tanggal" value="{{ request('tanggal') }}" />
+									</div>
+									<div id="customer_id" class="px-2">
+										<select name="customer" class="form-control js-example-basic-single py-2">
+											<option value="">- Pilih Customer -</option>
+											<option value="General" {{ request('customer') == 'General' ? 'selected' : '' }}>General</option>
+											@foreach($customer as $customer)
+												<option value="{{ $customer->kode_customer }}" {{ request('customer') == $customer->kode_customer ? 'selected' : '' }}>{{ $customer->kode_customer }} - {{ $customer->nama }}</option>
+											@endforeach
+										</select>
+									</div>
+									<div id="customer_id" class="px-2">
+										<select name="metode" class="form-control js-example-basic-single py-2">
+											<option value="">- Pilih Metode -</option>
+											@foreach($metode as $item)
+												<option value="{{ $item->metode }}" {{ request('metode') == $item->metode ? 'selected' : '' }}>{{ $item->metode }}</option>
+											@endforeach
+										</select>
+									</div>
+									<div class="px-1">
+										<button type="submit" class="btn btn-primary" title="Cari"><i class="fa fa-search"></i> Cari</button>
+									</div>
+									<div class="px-1">
+										<a href="{{ route('data-pengiriman') }}" class="btn btn-md btn-secondary" title="Reset"><i class="fa fa-refresh"></i> Reset</a>
+									</div>
+								</div>
+							</form>
 	                        <table class="display" id="basic-1">
 	                            <thead>
 	                                <tr>
@@ -323,7 +340,8 @@
 				lengthMenu: [
 					[10, 25, 50, -1],
 					[10, 25, 50, 'All']
-				]
+				],
+				searching: false
 			});
 		})
 	</script>
