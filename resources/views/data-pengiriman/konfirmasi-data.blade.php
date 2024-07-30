@@ -185,7 +185,6 @@
 
                                                     <td>
                                                         <select name="kode_customer[]" class="form-select @error('kode_customer')  @enderror js-example-basic-single">
-                                                            <option value="">-Pilih-</option>
                                                             <option value="General" {{ $row['kode_customer'] == 'General' ? 'selected' : '' }}> General </option>
                                                             @foreach ($customer as $item)
                                                                 <option value="{{ $item->kode_customer }}" {{ $row['kode_customer']== $item->kode_customer ? 'selected' : '' }}>

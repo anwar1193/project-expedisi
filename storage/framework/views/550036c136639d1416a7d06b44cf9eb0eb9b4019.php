@@ -239,7 +239,6 @@ $message = $__bag->first($__errorArgs[0]); ?>  <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?> js-example-basic-single">
-                                                            <option value="">-Pilih-</option>
                                                             <option value="General" <?php echo e($row['kode_customer'] == 'General' ? 'selected' : ''); ?>> General </option>
                                                             <?php $__currentLoopData = $customer; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                                 <option value="<?php echo e($item->kode_customer); ?>" <?php echo e($row['kode_customer']== $item->kode_customer ? 'selected' : ''); ?>>
