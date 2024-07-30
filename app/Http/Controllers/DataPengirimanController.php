@@ -126,9 +126,11 @@ class DataPengirimanController extends Controller
             'metode_pembayaran' => 'required'
         ]);
 
-        $customer_terdaftar = Customer::where('kode_customer', $request->kode_customer)->exists();
-        if(!$customer_terdaftar){
-            return redirect()->route('data-pengiriman')->with('error', 'Metode Pembayaran Kredit Hanya Untuk Customer Terdaftar!');
+        if(strtolower($request->metode_pembayaran) == "kredit") {
+            $customer_terdaftar = Customer::where('kode_customer', $request->kode_customer)->exists();
+            if(!$customer_terdaftar){
+                return redirect()->route('data-pengiriman')->with('error', 'Metode Pembayaran Kredit Hanya Untuk Customer Terdaftar!');
+            }
         }
 
         DataPengiriman::where('id', '=', $id)->update([
