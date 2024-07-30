@@ -50,12 +50,16 @@ class DataPengirimanController extends Controller
         })
         ->get();
         $status = StatusPengiriman::orderBy('id', 'ASC')->get();
+        $jumlahApprove = DataPengiriman::where('status_pembayaran', DataPengiriman::STATUS_PENDING)->count();
 
         $data['datas'] = $datas;
         $data['metode'] = MetodePembayaran::all();
         $data['customer'] = Customer::all();
         $data['status'] = $status;
 
+        if (isOwner() && $jumlahApprove == 0) {
+            return view('data-pengiriman.detail-lengkap-pengiriman', $data);
+        }
         return view('data-pengiriman.index', $data);
     }
 
