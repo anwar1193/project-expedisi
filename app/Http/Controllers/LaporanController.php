@@ -113,6 +113,7 @@ class LaporanController extends Controller
         $statusPembayaran = [
             ['id' => 1, 'name' => 'Lunas'],
             ['id' => 2, 'name' => 'Pending'],
+            ['id' => 3, 'name' => 'Lunas Sebagian'],
         ];
 
         return view('laporan.transaksi-harian', compact('pengiriman', 'pemasukkan', 'pengeluaran', 'start', 'end_date', 'periode', 'filter', 'customer', 'statusPengiriman', 'metodePembayaran', 'statusPembayaran'));
