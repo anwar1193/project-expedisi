@@ -204,7 +204,15 @@
 											</td>
 
 											<td><?php echo e(date('d-m-Y', strtotime($data->tgl_transaksi))); ?></td>
-											<td><?php echo e($data->kode_customer); ?></td>
+											<td>
+												<?php if($data->kode_customer == "General"): ?>
+													<?php echo e($data->kode_customer); ?>
+
+												<?php else: ?>
+													<?php echo e($data->kode_customer); ?> - <?php echo e($data->nama); ?>
+
+												<?php endif; ?>
+											</td>
 											<td onmouseover="showBukti(<?php echo e($data->id); ?>)" onmouseout="hideBukti(<?php echo e($data->id); ?>)">
 												<?php if($bukti_pembayaran != ''): ?>
 													<div id="view-bukti<?php echo e($data->id); ?>" class="mb-3">

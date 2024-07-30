@@ -204,7 +204,13 @@
 											</td>
 
 											<td>{{ date('d-m-Y', strtotime($data->tgl_transaksi)) }}</td>
-											<td>{{ $data->kode_customer }}</td>
+											<td>
+												@if ($data->kode_customer == "General")
+													{{ $data->kode_customer }}
+												@else
+													{{ $data->kode_customer }} - {{ $data->nama }}
+												@endif
+											</td>
 											<td onmouseover="showBukti({{ $data->id }})" onmouseout="hideBukti({{ $data->id }})">
 												@if ($bukti_pembayaran != '')
 													<div id="view-bukti{{ $data->id }}" class="mb-3">
