@@ -6,6 +6,22 @@
 
 @push('css')
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/datatables.css') }}">
+<style>
+	.tooltip-img {
+		display: none;
+		position: absolute;
+		z-index: 1000;
+		border: 1px solid #ccc;
+		background-color: #fff;
+		padding: 10px;
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	}
+
+	.tooltip-img img {
+		max-width: 200px;
+		height: auto;
+	}
+</style>
 @endpush
 
 @section('content')
@@ -56,6 +72,19 @@
     </nav>
 	
 	<div class="container-fluid">
+		<form class="d-flex flex-column col-12" role="search" action="" method="GET">
+			<div class="d-flex justify-content-end">
+                <div id="tanggal">
+                    <input class="form-control" type="date" name="tanggal" value="" />
+                </div>
+				<div class="px-1">
+					<button type="submit" class="btn btn-primary" title="Cari"><i class="fa fa-search"></i> Cari</button>
+				</div>
+				<div class="px-1">
+					<a href="{{ route('data-pengiriman') }}" class="btn btn-md btn-secondary" title="Reset"><i class="fa fa-refresh"></i> Reset</a>
+				</div>
+			</div>
+		</form>
         <div class="row">
         </div>
 	    <div class="row">
@@ -202,7 +231,6 @@
 													{{ $data->no_resi }}
 												</span>
 											</td>
-
 											<td>{{ date('d-m-Y', strtotime($data->tgl_transaksi)) }}</td>
 											<td>
 												@if ($data->kode_customer == "General")
@@ -211,7 +239,16 @@
 													{{ $data->kode_customer }} - {{ $data->nama }}
 												@endif
 											</td>
-											<td onmouseover="showBukti({{ $data->id }})" onmouseout="hideBukti({{ $data->id }})">
+											<td onmouseover="showBukti({{ $data->id }})" onmouseout="hideBukti({{ $data->id }})" style="position: relative;">
+												@if ($bukti_pembayaran != '')
+													<div id="tooltip{{ $data->id }}" class="tooltip-img">
+														<img src="{{ $bukti_pembayaran_view }}" alt="Bukti Pembayaran">
+													</div>
+												@endif
+											
+												{{ $data->metode_pembayaran }} <i class="{{ $data->metode_pembayaran == 'Transfer' ? 'fa fa-eye' : '' }}"></i>
+											</td>
+											{{-- <td onmouseover="showBukti({{ $data->id }})" onmouseout="hideBukti({{ $data->id }})">
 												@if ($bukti_pembayaran != '')
 													<div id="view-bukti{{ $data->id }}" class="mb-3">
 														<img src="{{ $bukti_pembayaran_view }}" alt="test" class="mb-2">
@@ -220,7 +257,7 @@
 												@endif
 
 												{{ $data->metode_pembayaran }} <i class="{{ $data->metode_pembayaran == 'Transfer' ? 'fa fa-eye' : '' }}"></i>
-											</td>
+											</td> --}}
 
 											<td class="text-center">
 												<span class="badge {{ $data->status_pembayaran == 1 ? 'badge-primary' : 'badge-warning' }}">
@@ -262,6 +299,7 @@
 	
 	@push('scripts')
 	<script src="{{ asset('assets/js/datatable/datatables/jquery.dataTables.min.js') }}"></script>
+	<script src="{{asset('assets/js/tooltip-init.js')}}"></script>
     <script>
 		$(document).ready(function() {
 			$('#basic-1').DataTable({
@@ -283,8 +321,8 @@
 					},
 				},
 				lengthMenu: [
-					[5, 10, 25, 50, -1],
-					[5, 10, 25, 50, 'All']
+					[10, 25, 50, -1],
+					[10, 25, 50, 'All']
 				]
 			});
 		})
@@ -298,12 +336,21 @@
 
 	<script>
 		function showBukti(id) {
-			$('#view-bukti'+id).show();
+			var tooltip = document.getElementById('tooltip' + id);
+			tooltip.style.display = 'block';
 		}
 
 		function hideBukti(id) {
-			$('#view-bukti'+id).hide();
+			var tooltip = document.getElementById('tooltip' + id);
+			tooltip.style.display = 'none';
 		}
+		// function showBukti(id) {
+		// 	$('#view-bukti'+id).show();
+		// }
+
+		// function hideBukti(id) {
+		// 	$('#view-bukti'+id).hide();
+		// }
 
 		function ceklis(id){
 			$('.inner').append("<input type='hidden' value='"+id+"' name='id_pengiriman[]'>");

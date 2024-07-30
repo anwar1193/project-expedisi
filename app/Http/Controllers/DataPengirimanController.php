@@ -31,6 +31,7 @@ class DataPengirimanController extends Controller
     {
         // $level = Session::get('user_level') == 2;
         $notif = request('notif');
+        $tanggal = request('tanggal');
 
         $datas = DataPengiriman::select('data_pengirimen.*', 'customers.nama')
         ->leftjoin('customers', 'customers.kode_customer', '=', 'data_pengirimen.kode_customer')
@@ -38,7 +39,10 @@ class DataPengirimanController extends Controller
             return $query->orderBy('tgl_transaksi', 'DESC');
         })->when($notif, function ($query) {
             return $query->where('status_pembayaran', DataPengiriman::STATUS_PENDING)->orderBy('tgl_transaksi', 'DESC');
-        })->get();
+        })->when($tanggal, function ($query, $tanggal) {
+            return $query->where('tgl_transaksi', $tanggal)->orderBy('tgl_transaksi', 'DESC');
+        })
+        ->get();
         $status = StatusPengiriman::orderBy('id', 'ASC')->get();
 
         $data['datas'] = $datas;

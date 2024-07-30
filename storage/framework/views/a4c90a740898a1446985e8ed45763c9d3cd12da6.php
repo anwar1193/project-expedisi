@@ -5,6 +5,22 @@
 
 <?php $__env->startPush('css'); ?>
 <link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/datatables.css')); ?>">
+<style>
+	.tooltip-img {
+		display: none;
+		position: absolute;
+		z-index: 1000;
+		border: 1px solid #ccc;
+		background-color: #fff;
+		padding: 10px;
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	}
+
+	.tooltip-img img {
+		max-width: 200px;
+		height: auto;
+	}
+</style>
 <?php $__env->stopPush(); ?>
 
 <?php $__env->startSection('content'); ?>
@@ -53,6 +69,19 @@
     </nav>
 	
 	<div class="container-fluid">
+		<form class="d-flex flex-column col-12" role="search" action="" method="GET">
+			<div class="d-flex justify-content-end">
+                <div id="tanggal">
+                    <input class="form-control" type="date" name="tanggal" value="" />
+                </div>
+				<div class="px-1">
+					<button type="submit" class="btn btn-primary" title="Cari"><i class="fa fa-search"></i> Cari</button>
+				</div>
+				<div class="px-1">
+					<a href="<?php echo e(route('data-pengiriman')); ?>" class="btn btn-md btn-secondary" title="Reset"><i class="fa fa-refresh"></i> Reset</a>
+				</div>
+			</div>
+		</form>
         <div class="row">
         </div>
 	    <div class="row">
@@ -202,7 +231,6 @@
 
 												</span>
 											</td>
-
 											<td><?php echo e(date('d-m-Y', strtotime($data->tgl_transaksi))); ?></td>
 											<td>
 												<?php if($data->kode_customer == "General"): ?>
@@ -213,16 +241,16 @@
 
 												<?php endif; ?>
 											</td>
-											<td onmouseover="showBukti(<?php echo e($data->id); ?>)" onmouseout="hideBukti(<?php echo e($data->id); ?>)">
+											<td onmouseover="showBukti(<?php echo e($data->id); ?>)" onmouseout="hideBukti(<?php echo e($data->id); ?>)" style="position: relative;">
 												<?php if($bukti_pembayaran != ''): ?>
-													<div id="view-bukti<?php echo e($data->id); ?>" class="mb-3">
-														<img src="<?php echo e($bukti_pembayaran_view); ?>" alt="test" class="mb-2">
-														<a class="btn btn-primary" href="<?php echo e($bukti_pembayaran); ?>" target="_blank">View Full Image</a>
+													<div id="tooltip<?php echo e($data->id); ?>" class="tooltip-img">
+														<img src="<?php echo e($bukti_pembayaran_view); ?>" alt="Bukti Pembayaran">
 													</div>
 												<?php endif; ?>
-
+											
 												<?php echo e($data->metode_pembayaran); ?> <i class="<?php echo e($data->metode_pembayaran == 'Transfer' ? 'fa fa-eye' : ''); ?>"></i>
 											</td>
+											
 
 											<td class="text-center">
 												<span class="badge <?php echo e($data->status_pembayaran == 1 ? 'badge-primary' : 'badge-warning'); ?>">
@@ -265,6 +293,7 @@
 	
 	<?php $__env->startPush('scripts'); ?>
 	<script src="<?php echo e(asset('assets/js/datatable/datatables/jquery.dataTables.min.js')); ?>"></script>
+	<script src="<?php echo e(asset('assets/js/tooltip-init.js')); ?>"></script>
     <script>
 		$(document).ready(function() {
 			$('#basic-1').DataTable({
@@ -286,8 +315,8 @@
 					},
 				},
 				lengthMenu: [
-					[5, 10, 25, 50, -1],
-					[5, 10, 25, 50, 'All']
+					[10, 25, 50, -1],
+					[10, 25, 50, 'All']
 				]
 			});
 		})
@@ -301,12 +330,21 @@
 
 	<script>
 		function showBukti(id) {
-			$('#view-bukti'+id).show();
+			var tooltip = document.getElementById('tooltip' + id);
+			tooltip.style.display = 'block';
 		}
 
 		function hideBukti(id) {
-			$('#view-bukti'+id).hide();
+			var tooltip = document.getElementById('tooltip' + id);
+			tooltip.style.display = 'none';
 		}
+		// function showBukti(id) {
+		// 	$('#view-bukti'+id).show();
+		// }
+
+		// function hideBukti(id) {
+		// 	$('#view-bukti'+id).hide();
+		// }
 
 		function ceklis(id){
 			$('.inner').append("<input type='hidden' value='"+id+"' name='id_pengiriman[]'>");
