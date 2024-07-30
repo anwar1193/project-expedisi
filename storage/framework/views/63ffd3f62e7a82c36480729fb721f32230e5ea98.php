@@ -103,7 +103,7 @@ unset($__errorArgs, $__bag); ?>
 							
 							<div class="row g-3 py-2">
 								<div class="col-md-6">
-									<label class="form-label" for="nama">No Whatsapp 2 (Contoh: 08xxxxxxxxx) <span class="text-danger">*opsional</span></</label>
+									<label class="form-label" for="nama">No Whatsapp 2 (Contoh: 08xxxxxxxxx) <span class="text-danger">*opsional</span></label>
 									<input class="form-control <?php $__errorArgs = ['no_wa_2'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
