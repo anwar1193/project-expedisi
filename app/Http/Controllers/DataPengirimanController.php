@@ -400,7 +400,7 @@ class DataPengirimanController extends Controller
                 'berat_barang' => $request->berat_barang[$i],
                 'ongkir' => $request->ongkir[$i],
                 'komisi' => $request->komisi[$i],
-                'status_pembayaran' => $request->metode_pembayaran[$i] == 'tunai' ? 1 : 2,
+                'status_pembayaran' => strtolower($request->metode_pembayaran[$i]) == 'tunai' ? 1 : 2,
                 'metode_pembayaran' => $request->metode_pembayaran[$i],
                 'bank' => $request->bank[$i] ?? '',
                 'bukti_pembayaran' => $request->bukti_pembayaran[$i] ?? '',
