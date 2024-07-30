@@ -193,6 +193,8 @@ Route::middleware("auth")->group(function() {
         Route::get('/delete/{id}', [DaftarPengeluaranController::class, 'delete'])->name('daftar-pengeluaran.delete');
         Route::get('/approve/{id}', [DaftarPengeluaranController::class, 'approve'])->name('daftar-pengeluaran.approve');
         Route::post('/approve-selected', [DaftarPengeluaranController::class, 'approveSelected'])->name('data-pengeluaran.approve-selected');
+        Route::get('/unapprove/{id}', [DaftarPengeluaranController::class, 'cancelApprove'])->name('daftar-pengeluaran.unapprove');
+        Route::post('/unapprove-selected', [DaftarPengeluaranController::class, 'cancelApproveSelected'])->name('data-pengeluaran.unapprove-selected');
     });
     
     Route::prefix('supplier')->group(function () {
