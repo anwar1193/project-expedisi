@@ -184,11 +184,13 @@
 	                                    <th>Customer</th>
 										<th>Metode Pembayaran</th>
 	                                    <th>Status Pembayaran</th>
-	                                    <th>Status Pengiriman</th>
 	                                    <th>Pengirim</th>
-	                                    <th>Penerima</th>
-	                                    <th>Kota Tujuan</th>
-	                                    <th>Bawa Sendiri</th>
+										<?php if(!isOwner()): ?>
+											<th>Penerima</th>
+											<th>Kota Tujuan</th>
+											<th>Bawa Sendiri</th>
+	                                    	<th>Status Pengiriman</th>
+										<?php endif; ?>
 	                                    <th>Ongkir</th>
 	                                    <th>Diinput Oleh</th>
 										
@@ -277,12 +279,14 @@
 												</span>
 											</td>
 
-											<td><?php echo e($data->status_pengiriman); ?></td>
 											
 											<td><?php echo e($data->nama_pengirim); ?></td>
-											<td><?php echo e($data->nama_penerima); ?></td>
-											<td><?php echo e($data->kota_tujuan); ?></td>
-											<td><?php echo e($data->bawa_sendiri); ?></td>
+											<?php if(!isOwner()): ?>
+												<td><?php echo e($data->nama_penerima); ?></td>
+												<td><?php echo e($data->kota_tujuan); ?></td>
+												<td><?php echo e($data->bawa_sendiri); ?></td>
+												<td><?php echo e($data->status_pengiriman); ?></td>
+											<?php endif; ?>
 											<td><?php echo e(number_format($data->ongkir, 0, '.', ',')); ?></td>
 
 											<td><?php echo e($data->input_by); ?></td>
@@ -335,6 +339,7 @@
 					[10, 25, 50, -1],
 					[10, 25, 50, 'All']
 				],
+				scrollX: true,
 				searching: false
 			});
 		})

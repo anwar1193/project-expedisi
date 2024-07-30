@@ -183,11 +183,13 @@
 	                                    <th>Customer</th>
 										<th>Metode Pembayaran</th>
 	                                    <th>Status Pembayaran</th>
-	                                    <th>Status Pengiriman</th>
 	                                    <th>Pengirim</th>
-	                                    <th>Penerima</th>
-	                                    <th>Kota Tujuan</th>
-	                                    <th>Bawa Sendiri</th>
+										@if (!isOwner())
+											<th>Penerima</th>
+											<th>Kota Tujuan</th>
+											<th>Bawa Sendiri</th>
+	                                    	<th>Status Pengiriman</th>
+										@endif
 	                                    <th>Ongkir</th>
 	                                    <th>Diinput Oleh</th>
 										
@@ -283,12 +285,14 @@
 												</span>
 											</td>
 
-											<td>{{ $data->status_pengiriman }}</td>
 											
 											<td>{{ $data->nama_pengirim }}</td>
-											<td>{{ $data->nama_penerima }}</td>
-											<td>{{ $data->kota_tujuan }}</td>
-											<td>{{ $data->bawa_sendiri }}</td>
+											@if (!isOwner())
+												<td>{{ $data->nama_penerima }}</td>
+												<td>{{ $data->kota_tujuan }}</td>
+												<td>{{ $data->bawa_sendiri }}</td>
+												<td>{{ $data->status_pengiriman }}</td>
+											@endif
 											<td>{{ number_format($data->ongkir, 0, '.', ',') }}</td>
 
 											<td>{{ $data->input_by }}</td>
@@ -341,6 +345,7 @@
 					[10, 25, 50, -1],
 					[10, 25, 50, 'All']
 				],
+				scrollX: true,
 				searching: false
 			});
 		})
