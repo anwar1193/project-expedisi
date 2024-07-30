@@ -181,7 +181,7 @@
 										<th width="35%" class="text-center">Action</th>
 										<?php if(Session::get('user_level') == 2): ?>
 											<th>
-												<input type="checkbox" id="checkAll">
+												<input type="checkbox" id="checkAll" title="Pilih Semua">
 											</th>
 										<?php endif; ?>
 										<th>No Resi</th>
