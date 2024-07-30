@@ -102,6 +102,8 @@ class DataPengirimanController extends Controller
     {
         $datas = DataPengiriman::find($id);
         $data['datas'] = $datas;
+        $data['bank'] = Bank::all();
+        $data['metode'] = MetodePembayaran::all();
         $data['customer'] = Customer::orderBy('id')->get();
 
         return view('data-pengiriman.edit', $data);
