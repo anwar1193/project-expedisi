@@ -160,7 +160,19 @@
 														<p class="fw-semibold">Diskon</p>
 													</td>
 													<td style="border: 1px solid; padding: 5px; text-align: center">
-														<input class="text-center form-control" type="number" name="diskon" id="diskon" value="{{ old('diskon', $invoice->diskon) }}">
+														<div class="radio radio-primary d-flex justify-content-evenly">
+															<input id="rupiahChecked" type="radio" name="option_diskon" checked>
+    														<label for="rupiahChecked">Opsi Rupiah</label>
+															<input id="persenChecked" type="radio" name="option_diskon">
+    														<label for="persenChecked">Opsi Persentase</label>
+														</div>
+														<div id="rupiah">
+															<input class="text-center form-control" type="number" name="diskon" id="diskon" value="{{ old('diskon', $invoice->diskon) }}">
+														</div>
+														<div  id="persen" style="display: none">
+															<input class="text-center form-control" type="text" name="diskon" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value !== '' && (this.value < 1 || this.value > 100)) this.value = this.value.slice(0, -1);">
+															<span>%</span>
+														</div>
 													</td>
 												</tr>
 												<tr>
@@ -294,7 +306,11 @@
 			const diskonInput = document.querySelector('input[name="diskon"]');
 			const totalInput = document.querySelector('input[name="total"]');
 			const displayElement = document.createElement('div');
-			const innerElement = document.querySelector('div[name="innerTotal"]');;
+			const innerElement = document.querySelector('div[name="innerTotal"]');
+			const rupiahChecked = document.getElementById('rupiahChecked');
+			const persenChecked = document.getElementById('persenChecked');
+			const rupiah = document.getElementById('rupiah');
+			const persen = document.getElementById('persen');
 			displayElement.innerHTML = '<strong>RP. ' + new Intl.NumberFormat('id-ID').format(diskonInput.value) + '</strong>';
 			diskonInput.parentNode.appendChild(displayElement);
 
@@ -332,8 +348,31 @@
 				}
 			}
 
-			checkAll.addEventListener('change', toggleCheckAllSelect);
+			function toggleDiskon() {
+				const isRupiahChecked = rupiahChecked.checked;
+				const isPersenChecked = persenChecked.checked;
 
+				if (isRupiahChecked) {
+					rupiah.style.display = 'block';
+					persen.style.display = 'none';
+					persenChecked.checked = false;
+				} else if (isPersenChecked) {
+					console.log(isRupiahChecked);
+					rupiah.style.display = 'none';
+					persen.style.display = 'block';
+					rupiahChecked.checked = false;
+				} else {
+					rupiah.style.display = 'none';
+					persen.style.display = 'none';
+				}
+			}
+
+			rupiahChecked.addEventListener('change', toggleDiskon);
+			persenChecked.addEventListener('change', toggleDiskon);
+			
+			checkAll.addEventListener('change', toggleCheckAllSelect);
+			
+			toggleDiskon();
 			toggleCheckAllSelect();
 		});
 	</script>
