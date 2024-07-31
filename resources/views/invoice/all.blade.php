@@ -128,7 +128,7 @@
 																<span><i class="pt-2 pe-2" data-feather="eye"></i> Detail</span>
 															</a>
 
-															@if ($data->sisa != 0)
+															@if ($data->sisa != 0 && isAdmin())
 																<a class="dropdown-item" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#pembayaranInvoice{{ $data->invoiceId }}">
 																	<span><i class="pt-2 pe-2" data-feather="dollar-sign"></i> Pembayaran</span>
 																</a>
