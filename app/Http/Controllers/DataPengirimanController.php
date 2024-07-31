@@ -236,6 +236,12 @@ class DataPengirimanController extends Controller
             'point' => DB::raw("point + $point_baru")
         ]);
 
+        $data = DataPengiriman::where('status_pembayaran', DataPengiriman::STATUS_PENDING)->count();
+
+        if ($data == 0) {
+            return redirect()->route('data-pengiriman')->with('success', 'Data Pengiriman Telah Di Approve & Status Transaksi Menjadi Lunas');
+        }
+
         return back()->with('success', 'Data Pengiriman Telah Di Approve & Status Transaksi Menjadi Lunas');
     }
 
@@ -265,6 +271,12 @@ class DataPengirimanController extends Controller
             Customer::where('kode_customer', $kode_cust)->update([
                 'point' => DB::raw("point + $point_baru")
             ]);
+        }
+
+        $data = DataPengiriman::where('status_pembayaran', DataPengiriman::STATUS_PENDING)->count();
+
+        if ($data == 0) {
+            return redirect()->route('data-pengiriman')->with('success', 'Data Pengiriman Telah Di Approve & Status Transaksi Menjadi Lunas');
         }
 
         return back()->with('success', 'Data Pengiriman Telah Di Approve');
