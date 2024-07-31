@@ -6,6 +6,11 @@
 
 @push('css')
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/datatables.css') }}">
+<style>
+	th {
+		background-color: rgb(200, 75, 75)
+	}
+</style>
 @endpush
 
 @section('content')	
