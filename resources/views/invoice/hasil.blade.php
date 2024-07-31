@@ -136,7 +136,7 @@
 										</tbody>
 										@if (!isCustomer())
 											<tfoot>
-												{{-- <tr>
+												<tr>
 													<td style="border: 1px solid; padding: 5px; text-align: center"></td>
 													<td colspan="6" style="border: 1px solid; padding: 5px; text-align: center">
 														<p class="fw-semibold">Sub Total</p>
@@ -144,7 +144,7 @@
 													<td style="border: 1px solid; padding: 5px; text-align: center">
 														Rp {{ number_format($total->total, 0, '.', '.') }}
 													</td>
-												</tr> --}}
+												</tr>
 												<tr>
 													<td style="border: 1px solid; padding: 5px; text-align: center"></td>
 													<td colspan="6" style="border: 1px solid; padding: 5px; text-align: center">
@@ -170,7 +170,7 @@
 													</td>
 													<td style="border: 1px solid; padding: 5px; text-align: center">
 														{{-- Rp {{ number_format($total->total, 0, '.', '.') }} --}}
-														<input class="text-center form-control" type="hidden" name="total" id="diskon" value="{{ $total->total }}">
+														<input class="text-center form-control" type="hidden" name="total" value="{{ $total->total - $totalBersih }}">
 														<div name="innerTotal"></div>
 													</td>
 												</tr>

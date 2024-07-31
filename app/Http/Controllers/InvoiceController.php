@@ -112,13 +112,15 @@ class InvoiceController extends Controller
                 ->whereNull('transaksi_invoices.invoice_id')
                 ->where('kode_customer', $customer->kode_customer)->first();
 
+        $totalBersih = round($total->total * $customer->diskon / 100);
+
         $exist = TransaksiInvoice::where('invoice_id', $invoice->id)->exists();
 
         $today = date('Y-m-d');
 
         $bank = Bank::all();
 
-        return view('invoice.hasil', compact('data', 'customer', 'today', 'total', 'invoice', 'exist', 'bank'));
+        return view('invoice.hasil', compact('data', 'customer', 'today', 'total', 'invoice', 'exist', 'bank', 'totalBersih'));
     }
 
     public function all_invoices(Request $request)
