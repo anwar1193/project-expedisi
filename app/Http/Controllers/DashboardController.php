@@ -89,4 +89,73 @@ class DashboardController extends Controller
 
         return view('customers.dashboard', compact('user', 'tagihan', 'totalTagihan', 'resi', 'data', 'customer', 'total', 'invoice'));
     }
+
+    public function tagihan() 
+    {
+        $status = 2;
+
+        $customer = $this->data_customer();
+
+        $data = DataPengiriman::where('status_pembayaran', DataPengiriman::STATUS_PENDING)
+                    ->where('kode_customer', '=', $customer->kode_customer)
+                    ->orderBy('id', 'DESC')->get();
+
+        $total = $data->sum('ongkir');
+
+        return view('tagihan-customer.index', compact('data', 'customer', 'total'));
+    }
+
+    public function lacak_resi()
+    {
+        $data['customer'] = $this->data_customer();
+        $no_resi = request('no_resi');
+        $data['data'] =  DataPengiriman::join('status_pengirimen AS status', 'status.status_pengiriman', '=', 'data_pengirimen.status_pengiriman')
+                ->where('no_resi', $no_resi)->first();
+
+        return view('lacak-resi.index', $data);
+    }
+
+    public function invoice()
+    {
+        $data['customer'] = $this->data_customer();
+
+        $data['data'] = DataPengiriman::join('transaksi_invoices', 'transaksi_invoices.data_pengiriman_id', '=', 'data_pengirimen.id')
+                ->where('kode_customer', $data['customer']->kode_customer)
+                ->orderByDesc('data_pengirimen.id')
+                ->get();
+
+        $total['total'] = $data['data']->sum('ongkir');
+
+        $data['invoice'] = Invoice::select('invoices.invoice_no', 'invoices.id AS invoiceId', 'invoices.created_at', 'customers.id', 'customers.kode_customer', 'customers.nama')
+                ->join('customers', 'customers.id', '=', 'invoices.customer_id')
+                ->where('customer_id', $data['customer']->id)
+                ->orderBy('invoices.id', 'DESC')
+                ->get();
+
+        return view('invoice.customer', $data);
+    }
+
+    public function point()
+    {
+        $data['customer'] = $this->data_customer();
+
+        $data['data'] = DataPengiriman::where('status_pembayaran', DataPengiriman::STATUS_PENDING)
+                    ->where('kode_customer', '=', $data['customer']->kode_customer)
+                    ->orderBy('id', 'DESC')
+                    ->count();
+
+        return view('point-customer.index', $data);
+    }
+
+    private function data_customer()
+    {
+        $id = Session::get('id');
+
+        $customer = Customer::select('customers.*')
+        ->join('users', 'users.username', '=', 'customers.username')
+        ->where('users.id', $id)
+        ->first();
+
+        return $customer;
+    }
 }

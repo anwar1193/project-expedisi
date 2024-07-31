@@ -320,6 +320,22 @@ Route::middleware("auth")->group(function() {
     Route::prefix('pengeluaran-cash')->group(function() {
         Route::get('/', [CashController::class, 'data_pengeluaran_cash'])->name('pengeluaran-cash');
     });
+    
+    Route::prefix('tagihan-customer')->group(function() {
+        Route::get('/', [DashboardController::class, 'tagihan'])->name('tagihan-customer');
+    });
+
+    Route::prefix('invoice-customer')->group(function() {
+        Route::get('/', [DashboardController::class, 'invoice'])->name('invoice-customer');
+    });
+
+    Route::prefix('resi-customer')->group(function() {
+        Route::get('/', [DashboardController::class, 'lacak_resi'])->name('resi-customer');
+    });
+
+    Route::prefix('point-customer')->group(function() {
+        Route::get('/', [DashboardController::class, 'point'])->name('point-customer');
+    });
 
     Route::get('user-level', [UserController::class, 'listLevel'])->name('level');
 
