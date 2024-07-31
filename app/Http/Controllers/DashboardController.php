@@ -44,7 +44,50 @@ class DashboardController extends Controller
             array_push($aktifitas, $jumlah);
         }
 
+        if (isCustomer()) {
+            return redirect()->route('dashboard.customer');
+        }
         return view("admin.dashboard.default", compact(["aktifitas", "pengiriman", "pemasukan", "pengeluaran"]));
+    }
+
+    public function customer(Request $request)
+    {
+        $tahun_terpilih = $request->input("tahun") ? $request->input("tahun") : Carbon::now()->year;
+        $data['statusLunas'] = DataPengiriman::STATUS_PENDING - 1;
+        $data['statusPending'] = DataPengiriman::STATUS_PENDING;
+
+        $data['customer'] = $this->data_customer();
+
+        $data['pending'] = DataPengiriman::where('status_pembayaran', DataPengiriman::STATUS_PENDING)
+                    ->where('kode_customer', '=', $data['customer']->kode_customer)
+                    ->whereYear('created_at', $tahun_terpilih)
+                    ->orderBy('id', 'DESC')
+                    ->count();
+
+        $data['lunas'] = DataPengiriman::where('status_pembayaran', '!=', DataPengiriman::STATUS_PENDING)
+                    ->where('kode_customer', '=', $data['customer']->kode_customer)
+                    ->whereYear('created_at', $tahun_terpilih)
+                    ->orderBy('id', 'DESC')
+                    ->count();
+
+        $data['invoice'] = Invoice::join('customers', 'customers.id', '=', 'invoices.customer_id')
+                    ->where('customer_id', $data['customer']->id)
+                    ->whereYear('invoices.created_at', $tahun_terpilih)
+                    ->orderBy('invoices.id', 'DESC')
+                    ->count();
+
+        $data['aktifitas'] = [];
+
+        for ($i = 1; $i <= 12; $i++) {
+            $data['jumlah'] = DataPengiriman::where('kode_customer', '=', $data['customer']->kode_customer)
+                        ->whereYear('created_at', $tahun_terpilih)
+                        ->whereMonth('created_at', $i)
+                        ->count();
+
+            array_push($data['aktifitas'], $data['jumlah']);
+        }
+
+        return view('dashboard-customer.index', $data);
     }
 
     public function dashboard_customer(Request $request) {
@@ -92,11 +135,11 @@ class DashboardController extends Controller
 
     public function tagihan() 
     {
-        $status = 2;
+        $status = request('status') ? request('status') : DataPengiriman::STATUS_PENDING;
 
         $customer = $this->data_customer();
 
-        $data = DataPengiriman::where('status_pembayaran', DataPengiriman::STATUS_PENDING)
+        $data = DataPengiriman::where('status_pembayaran', $status)
                     ->where('kode_customer', '=', $customer->kode_customer)
                     ->orderBy('id', 'DESC')->get();
 

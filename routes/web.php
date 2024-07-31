@@ -67,7 +67,7 @@ Route::middleware("auth")->group(function() {
     Route::prefix('/')->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('index');
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
-        Route::get('dashboard/customer', [DashboardController::class, 'dashboard_customer'])->name('dashboard.customer');
+        Route::get('dashboard/customer', [DashboardController::class, 'customer'])->name('dashboard.customer');
         Route::get('dashboard/log-perjalanan/{id}', [DashboardController::class, 'riwayatArmada'])->name('dashboard.log');
         Route::get('dashboard/location/{id}', [DashboardController::class, 'lokasiArmada'])->name('dashboard.location');
     });
