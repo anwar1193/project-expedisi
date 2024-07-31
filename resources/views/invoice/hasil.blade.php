@@ -169,7 +169,9 @@
 														<p class="fw-semibold">Total</p>
 													</td>
 													<td style="border: 1px solid; padding: 5px; text-align: center">
-														Rp {{ number_format($total->total, 0, '.', '.') }}
+														{{-- Rp {{ number_format($total->total, 0, '.', '.') }} --}}
+														<input class="text-center form-control" type="hidden" name="total" id="diskon" value="{{ $total->total }}">
+														<div name="innerTotal"></div>
 													</td>
 												</tr>
 												{{-- <tr>
@@ -290,14 +292,31 @@
 	<script>
 		document.addEventListener('DOMContentLoaded', function() {
 			const diskonInput = document.querySelector('input[name="diskon"]');
+			const totalInput = document.querySelector('input[name="total"]');
 			const displayElement = document.createElement('div');
+			const innerElement = document.querySelector('div[name="innerTotal"]');;
 			displayElement.innerHTML = '<strong>RP. ' + new Intl.NumberFormat('id-ID').format(diskonInput.value) + '</strong>';
 			diskonInput.parentNode.appendChild(displayElement);
+
+			function updateInnerElement() {
+                const diskonValue = parseFloat(diskonInput.value) || 0;
+                const totalValue = parseFloat(totalInput.value) || 0;
+                const finalValue = totalValue - diskonValue;
+                innerElement.innerHTML = 'RP. ' + new Intl.NumberFormat('id-ID').format(finalValue);
+            }
+
+            // Initial updates
+            updateInnerElement();
 
 			diskonInput.addEventListener('input', function() {
 				const typedValue = diskonInput.value;
 				displayElement.innerHTML = '<strong>RP. ' + new Intl.NumberFormat('id-ID').format(typedValue) + '</strong>';
+
+				updateInnerElement();
 			});
+
+
+			totalInput.addEventListener('input', updateInnerElement);
 
 			function toggleCheckAllSelect() {
 				const checkAll = document.getElementById('checkAll');
