@@ -170,7 +170,7 @@
 															<input class="text-center form-control" type="number" name="diskon" id="diskon" value="{{ old('diskon', $invoice->diskon) }}">
 														</div>
 														<div  id="persen" style="display: none">
-															<input class="text-center form-control" type="text" name="diskon" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value !== '' && (this.value < 1 || this.value > 100)) this.value = this.value.slice(0, -1);">
+															<input class="text-center form-control" type="text" name="diskon_persen" oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value !== '' && (this.value < 1 || this.value > 100)) this.value = this.value.slice(0, -1);">
 															<span>%</span>
 														</div>
 													</td>
@@ -304,6 +304,7 @@
 	<script>
 		document.addEventListener('DOMContentLoaded', function() {
 			const diskonInput = document.querySelector('input[name="diskon"]');
+			const diskonPersen = document.querySelector('input[name="diskon_persen"]');
 			const totalInput = document.querySelector('input[name="total"]');
 			const displayElement = document.createElement('div');
 			const innerElement = document.querySelector('div[name="innerTotal"]');
@@ -316,8 +317,17 @@
 
 			function updateInnerElement() {
                 const diskonValue = parseFloat(diskonInput.value) || 0;
+				const persenValue = parseFloat(diskonPersen.value) || 0;
                 const totalValue = parseFloat(totalInput.value) || 0;
-                const finalValue = totalValue - diskonValue;
+				let finalValue;
+
+				if (rupiahChecked.checked && diskonValue != 0) {
+					finalValue = totalValue - diskonValue;
+				} else if (persenChecked.checked && persenValue != 0) {
+					finalValue = totalValue - (totalValue * persenValue / 100);
+				} else {
+					finalValue = totalValue;
+				}
                 innerElement.innerHTML = 'RP. ' + new Intl.NumberFormat('id-ID').format(finalValue);
             }
 
@@ -330,7 +340,10 @@
 
 				updateInnerElement();
 			});
-
+			
+			diskonPersen.addEventListener('input', function() {
+				updateInnerElement();
+			});
 
 			totalInput.addEventListener('input', updateInnerElement);
 
@@ -353,11 +366,15 @@
 				const isPersenChecked = persenChecked.checked;
 
 				if (isRupiahChecked) {
+					diskonPersen.value = 0;
+					innerElement.innerHTML = '<strong>RP. ' + new Intl.NumberFormat('id-ID').format(parseFloat(totalInput.value)) + '</strong>';
 					rupiah.style.display = 'block';
 					persen.style.display = 'none';
 					persenChecked.checked = false;
 				} else if (isPersenChecked) {
-					console.log(isRupiahChecked);
+					diskonInput.value = 0;
+					displayElement.innerHTML = '<strong>RP. ' + new Intl.NumberFormat('id-ID').format(0) + '</strong>';
+					innerElement.innerHTML = '<strong>RP. ' + new Intl.NumberFormat('id-ID').format(parseFloat(totalInput.value)) + '</strong>';
 					rupiah.style.display = 'none';
 					persen.style.display = 'block';
 					rupiahChecked.checked = false;
