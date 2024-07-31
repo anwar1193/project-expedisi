@@ -152,9 +152,10 @@ class DashboardController extends Controller
     public function lacak_resi()
     {
         $data['customer'] = $this->data_customer();
-        $no_resi = request('no_resi');
+        // $no_resi = request('no_resi');
         $data['data'] =  DataPengiriman::join('status_pengirimen AS status', 'status.status_pengiriman', '=', 'data_pengirimen.status_pengiriman')
-                ->where('no_resi', $no_resi)->first();
+                        ->where('kode_customer', $data['customer']->kode_customer)
+                        ->get();
 
         return view('lacak-resi.index', $data);
     }
