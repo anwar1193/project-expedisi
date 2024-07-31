@@ -11,6 +11,7 @@ use App\Models\SurveilanceCar;
 use App\Models\Perangkat;
 use App\Models\LogActivity;
 use App\Models\PemasukanLainnya;
+use App\Models\TransaksiPembayaran;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -162,18 +163,35 @@ class DashboardController extends Controller
     {
         $data['customer'] = $this->data_customer();
 
-        $data['data'] = DataPengiriman::join('transaksi_invoices', 'transaksi_invoices.data_pengiriman_id', '=', 'data_pengirimen.id')
-                ->where('kode_customer', $data['customer']->kode_customer)
-                ->orderByDesc('data_pengirimen.id')
-                ->get();
-
-        $total['total'] = $data['data']->sum('ongkir');
-
-        $data['invoice'] = Invoice::select('invoices.invoice_no', 'invoices.id AS invoiceId', 'invoices.created_at', 'customers.id', 'customers.kode_customer', 'customers.nama')
+        $data['invoice'] = Invoice::select('invoices.invoice_no', 'invoices.created_at', 'invoices.id AS invoiceId', 'invoices.diskon', 'customers.id', 'customers.kode_customer', 'customers.nama', 'customers.diskon AS diskon_customer')
                 ->join('customers', 'customers.id', '=', 'invoices.customer_id')
                 ->where('customer_id', $data['customer']->id)
                 ->orderBy('invoices.id', 'DESC')
                 ->get();
+
+        foreach ($data['invoice'] as $item) {
+            $total = DataPengiriman::selectRaw('SUM(ongkir) AS total')
+            ->join('transaksi_invoices', 'transaksi_invoices.data_pengiriman_id', '=', 'data_pengirimen.id')
+            ->where('kode_customer', $item->kode_customer)
+            ->where('invoice_id', $item->invoiceId)
+            ->first();
+
+            $nominal = TransaksiPembayaran::selectRaw('SUM(nominal) AS total')
+                        ->where('invoice_id', $item->invoiceId)->first();
+
+            $diskon = round($total->total * $item->diskon_customer / 100);
+
+            $totalBersih = round($total->total - $item->diskon - $diskon);
+
+            if ($nominal) {
+                $item->sisa = round($totalBersih - $nominal->total);
+            } else {
+                $item->sisa = $totalBersih;
+            }
+
+            $item->status = ($item->sisa == 0) ? 'Lunas' : 'Belum Lunas';
+            $item->totalBersih = $totalBersih;
+        }
 
         return view('invoice.customer', $data);
     }

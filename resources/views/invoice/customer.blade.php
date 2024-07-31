@@ -53,7 +53,7 @@
                                             <td class="text-center">
                                                 <span class="badge {{ $data->sisa == 0 ? 'badge-primary' : 'badge-warning' }}">
                                                     <i class="fa {{ $data->sisa == 0 ? 'fa-check' : 'fa-warning' }}"></i>
-                                                    {{ $data->sisa == 0 ? 'Lunas' : 'Belum Lunas'; }}
+                                                    {{ $data->status }}
                                                 </span>
                                             </td>
                                             <td>
