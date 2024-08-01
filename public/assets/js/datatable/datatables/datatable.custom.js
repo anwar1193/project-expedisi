@@ -18,7 +18,11 @@ $(document).ready(function() {
               "next": "Selanjutnya",
               "previous": "Sebelumnya"
             },
-          }
+        },
+        lengthMenu: [
+        [10, 25, 50, -1],
+        [10, 25, 50, 'All']
+        ],
     });
     $('#basic-2').DataTable({
         "paging":   true,
