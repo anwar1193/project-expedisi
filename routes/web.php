@@ -296,6 +296,8 @@ Route::middleware("auth")->group(function() {
         Route::get('/detail/{invoiceId}/transaksi-pembayaran', [InvoiceController::class, 'detail_riwayat_invoices'])->name('invoice.transaksi-pembayaran.detail');
         Route::get('/approve/{id}', [InvoiceController::class, 'approve'])->name('invoice.approve');
         Route::post('/approve-selected', [InvoiceController::class, 'approveSelected'])->name('invoice.approve-selected');
+        Route::get('/unapprove/{id}', [InvoiceController::class, 'cancel_approve'])->name('invoice.unapprove');
+        Route::post('/unapprove-selected', [InvoiceController::class, 'cancel_approveSelected'])->name('invoice.unapprove-selected');
     });
     
     Route::prefix('penukaran-point')->group(function () {
