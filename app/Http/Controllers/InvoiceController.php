@@ -183,7 +183,15 @@ class InvoiceController extends Controller
         $id_pengiriman = $request->id_pengiriman;
         $bank_id = $request->bank_id;
 
-        $diskon = $request->diskon ?? 0;
+        // $diskon = $request->diskon ?? 0;
+        if ($request->diskon != 0) {
+            $diskon = $request->diskon;
+        } elseif ($request->diskon_persen != 0) {
+            $diskon = round(($request->total * $request->diskon_persen / 100));
+        } else {
+            $diskon = 0;
+        }
+
         $customer = Customer::select('customers.id', 'customers.kode_customer', 'customers.nama', 'customers.alamat', 'invoices.invoice_no', 'invoices.id AS invoiceId', 'invoices.diskon')
                     ->join('invoices', 'invoices.customer_id', '=', 'customers.id')
                     ->where('customers.id', $id)
@@ -193,6 +201,8 @@ class InvoiceController extends Controller
         if (!isCustomer()) {
             if ($id_pengiriman == NULL) {
                 return back()->with('error', 'Belum Ada Data Dipilih');
+            } elseif ($bank_id == NULL) {
+                return back()->with('error', 'Belum Ada Data Bank Yang Dipilih');
             }
     
             foreach ($id_pengiriman as $pengiriman_id) {
@@ -204,6 +214,7 @@ class InvoiceController extends Controller
                     ]);
                 }
             }
+            
 
             foreach($bank_id as $id_bank){
                 InvoiceBank::create([

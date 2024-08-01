@@ -160,7 +160,7 @@
 														<p class="fw-semibold">Diskon</p>
 													</td>
 													<td style="border: 1px solid; padding: 5px; text-align: center">
-														<div class="radio radio-primary d-flex justify-content-evenly">
+														<div class="radio radio-primary ps-2 pt-2 d-flex justify-content-evenly">
 															<input id="rupiahChecked" type="radio" name="option_diskon" checked>
     														<label for="rupiahChecked">Opsi Rupiah</label>
 															<input id="persenChecked" type="radio" name="option_diskon">
@@ -283,27 +283,6 @@
 	<script>
 		document.addEventListener('DOMContentLoaded', function() {
 			const diskonInput = document.querySelector('input[name="diskon"]');
-			const totalDisplay = document.getElementById('totalDisplay');
-			const totalAwal = {{ $total->total ?? 0 }};
-			
-			function updateTotal() {
-				const diskon = parseInt(diskonInput.value) || 0;
-				const totalAkhir = totalAwal - diskon;
-				totalDisplay.innerHTML = 'Rp ' + new Intl.NumberFormat('id-ID').format(totalAkhir);
-			}
-
-			// Tampilkan total awal
-			updateTotal();
-
-			// Event listener untuk perubahan diskon
-			diskonInput.addEventListener('input', function() {
-				updateTotal();
-			});
-		});
-	</script>
-	<script>
-		document.addEventListener('DOMContentLoaded', function() {
-			const diskonInput = document.querySelector('input[name="diskon"]');
 			const diskonPersen = document.querySelector('input[name="diskon_persen"]');
 			const totalInput = document.querySelector('input[name="total"]');
 			const displayElement = document.createElement('div');
@@ -316,9 +295,9 @@
 			diskonInput.parentNode.appendChild(displayElement);
 
 			function updateInnerElement() {
-                const diskonValue = parseFloat(diskonInput.value) || 0;
-				const persenValue = parseFloat(diskonPersen.value) || 0;
-                const totalValue = parseFloat(totalInput.value) || 0;
+                const diskonValue = parseInt(diskonInput.value) || 0;
+				const persenValue = parseInt(diskonPersen.value) || 0;
+                const totalValue = parseInt(totalInput.value) || 0;
 				let finalValue;
 
 				if (rupiahChecked.checked && diskonValue != 0) {
