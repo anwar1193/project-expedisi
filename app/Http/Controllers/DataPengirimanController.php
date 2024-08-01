@@ -35,12 +35,16 @@ class DataPengirimanController extends Controller
         $tanggal = request('tanggal');
         $metode = request('metode');
         $customer = request('customer');
+        $owner = isOwner();
+        $jumlahApprove = DataPengiriman::where('status_pembayaran', DataPengiriman::STATUS_PENDING)->count();
 
         $datas = DataPengiriman::select('data_pengirimen.*', 'customers.nama')
         ->leftjoin('customers', 'customers.kode_customer', '=', 'data_pengirimen.kode_customer')
         ->when(!$notif, function ($query) {
             return $query->orderBy('tgl_transaksi', 'DESC');
         })->when($notif, function ($query) {
+            return $query->where('status_pembayaran', DataPengiriman::STATUS_PENDING)->orderBy('tgl_transaksi', 'DESC');
+        })->when($owner && $jumlahApprove != 0, function ($query) {
             return $query->where('status_pembayaran', DataPengiriman::STATUS_PENDING)->orderBy('tgl_transaksi', 'DESC');
         })->when($tanggal, function ($query, $tanggal) {
             return $query->where('tgl_transaksi', $tanggal)->orderBy('tgl_transaksi', 'DESC');
@@ -51,7 +55,6 @@ class DataPengirimanController extends Controller
         })
         ->get();
         $status = StatusPengiriman::orderBy('id', 'ASC')->get();
-        $jumlahApprove = DataPengiriman::where('status_pembayaran', DataPengiriman::STATUS_PENDING)->count();
 
         $data['datas'] = $datas;
         $data['metode'] = MetodePembayaran::all();

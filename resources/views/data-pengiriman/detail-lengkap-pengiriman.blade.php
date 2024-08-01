@@ -135,6 +135,7 @@
 	                            <thead>
 	                                <tr>
 	                                    <th>No</th>
+										<th>Action</th>
 										<th>No Resi</th>
 										<th>Tanggal Transaksi</th>
 	                                    <th>Customer</th>
@@ -164,6 +165,15 @@
 										@endphp
 										<tr>
 											<td>{{ $loop->iteration; }}</td>
+											<td>
+												<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+													<div class="btn-group" role="group">
+														<button class="btn btn-secondary btn-sm" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalDataPengiriman{{ $data->id }}" title="Detail Data"> Detail</button>
+														</div>
+													</div>
+												</div>
+												@include('data-pengiriman.detail')
+											</td>
 											<td>
 												<span class="badge badge-danger">
 													{{ $data->no_resi }}
