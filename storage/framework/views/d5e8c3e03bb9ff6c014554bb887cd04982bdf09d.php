@@ -9,6 +9,10 @@
 	.dataTables_filter {
 		display: none;
 	}
+
+	input[type="checkbox"] {
+		transform: scale(2);
+	}
 </style>
 <?php $__env->stopPush(); ?>
 
@@ -20,6 +24,24 @@
 		<li class="breadcrumb-item active"><a href="<?php echo e(route('jenis-pengeluaran')); ?>">Invoices</a></li>
 		<li class="breadcrumb-item active">Table</li>
 	<?php echo $__env->renderComponent(); ?>
+
+	<nav class="page-breadcrumb">
+        <ol class="breadcrumb align-items-center">
+            <div class="d-grid gap-2 d-md-block mx-2">
+
+				<?php if(isOwner()): ?>
+					<form action="<?php echo e(route('invoice.approve-selected')); ?>" method="post" style="display: inline-block">
+						<?php echo csrf_field(); ?>
+						<div class="inner"></div>
+						<button type="submit" class="btn btn-success btn-sm" style="display: inline" onclick="return confirm('Approve semua data terpilih?')">
+							<i class="fa fa-check-square"></i> Approve Selected
+						</button>
+					</form>
+				<?php endif; ?>
+
+            </div>
+        </ol>
+    </nav>
 	
 	<div class="container-fluid">
         <form class="d-flex flex-column col-12" role="search" action="" method="GET">
@@ -97,7 +119,13 @@
 	                                    <th>Tanggal Cetak</th>
 										<th>Kode Customer</th>
 										<th>Nama Customer</th>
+										<th>Status Pembayaran</th>
 										<th>Status</th>
+										<?php if(isOwner()): ?>
+											<th class="text-center">
+												<input type="checkbox" id="checkAll" title="Pilih Semua">
+											</th>
+										<?php endif; ?>
 										<th width="20%">Action</th>
 	                                </tr>
 	                            </thead>
@@ -123,11 +151,27 @@
 
 												</span>
 											</td>
+											<td class="text-center">
+												<span class="badge <?php echo e($data->status == 1 ? 'badge-primary' : 'badge-warning'); ?>">
+													<i class="fa <?php echo e($data->status == 1 ? 'fa-check' : 'fa-warning'); ?>"></i>
+													<?php echo e($data->status == 1 ? 'Approved' : 'Pending'); ?>
+
+												</span>
+											</td>
+											<?php if(isOwner()): ?>
+												<td class="text-center">
+													<input type="checkbox" value="<?php echo e($data->invoiceId); ?>" class="checkbox-item" id="checkbox-<?php echo e($data->invoiceId); ?>" onclick="ceklis(<?php echo e($data->invoiceId); ?>)">
+												</td>
+											<?php endif; ?>
 											<td>
 												<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
 													<div class="btn-group" role="group">
 														<button class="btn btn-secondary btn-sm dropdown-toggle" id="btnGroupDrop1" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
 														<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+															<?php if($data->status != 1 && isOwner()): ?>
+																<a class="dropdown-item" href="<?php echo e(route('invoice.approve', $data->invoiceId)); ?>" onclick="return confirm('Approve Data Invoice?')"><span><i data-feather="check-square"></i> Approve</span></a>
+															<?php endif; ?>
+
 															<a class="dropdown-item" href="<?php echo e(route('invoice.hasil-transaksi', ['id' => $data->id, 'invoiceId' => $data->invoiceId])); ?>">
 																<span><i class="pt-2 pe-2" data-feather="eye"></i> Detail</span>
 															</a>
@@ -181,6 +225,46 @@
 				}
 			}
 		});
+	</script>
+	<script>
+		$(document).ready(function() {
+			$('#checkAll').click(function() {
+				if ($(this).is(':checked')) {
+					$('.checkbox-item').prop('checked', true);
+					$('.checkbox-item').each(function() {
+						var id = $(this).val();
+						if (!$('.inner input[value="'+id+'"]').length) {
+							$('.inner').append("<input type='hidden' value='"+id+"' name='id_invoice[]'>");
+						}
+					});
+				} else {
+					$('.checkbox-item').prop('checked', false);
+					$('.inner').empty();
+				}
+			});
+
+			$('.checkbox-item').change(function() {
+				var id = $(this).val();
+				if ($(this).is(':checked')) {
+					if (!$('.inner input[value="'+id+'"]').length) {
+						$('.inner').append("<input type='hidden' value='"+id+"' name='id_invoice[]'>");
+					}
+				} else {
+					$('.inner input[value="'+id+'"]').remove();
+				}
+			});
+		});
+
+		function ceklis(id) {
+			var checkbox = $('#checkbox-' + id);
+			if (checkbox.is(':checked')) {
+				if (!$('.inner input[value="'+id+'"]').length) {
+					$('.inner').append("<input type='hidden' value='"+id+"' name='id_invoice[]'>");
+				}
+			} else {
+				$('.inner input[value="'+id+'"]').remove();
+			}
+		}
 	</script>
 	<?php $__env->stopPush(); ?>
 

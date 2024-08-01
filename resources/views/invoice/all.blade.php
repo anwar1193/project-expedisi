@@ -10,6 +10,10 @@
 	.dataTables_filter {
 		display: none;
 	}
+
+	input[type="checkbox"] {
+		transform: scale(2);
+	}
 </style>
 @endpush
 
@@ -21,6 +25,24 @@
 		<li class="breadcrumb-item active"><a href="{{ route('jenis-pengeluaran') }}">Invoices</a></li>
 		<li class="breadcrumb-item active">Table</li>
 	@endcomponent
+
+	<nav class="page-breadcrumb">
+        <ol class="breadcrumb align-items-center">
+            <div class="d-grid gap-2 d-md-block mx-2">
+
+				@if (isOwner())
+					<form action="{{ route('invoice.approve-selected') }}" method="post" style="display: inline-block">
+						@csrf
+						<div class="inner"></div>
+						<button type="submit" class="btn btn-success btn-sm" style="display: inline" onclick="return confirm('Approve semua data terpilih?')">
+							<i class="fa fa-check-square"></i> Approve Selected
+						</button>
+					</form>
+				@endif
+
+            </div>
+        </ol>
+    </nav>
 	
 	<div class="container-fluid">
         <form class="d-flex flex-column col-12" role="search" action="" method="GET">
@@ -95,7 +117,13 @@
 	                                    <th>Tanggal Cetak</th>
 										<th>Kode Customer</th>
 										<th>Nama Customer</th>
+										<th>Status Pembayaran</th>
 										<th>Status</th>
+										@if (isOwner())
+											<th class="text-center">
+												<input type="checkbox" id="checkAll" title="Pilih Semua">
+											</th>
+										@endif
 										<th width="20%">Action</th>
 	                                </tr>
 	                            </thead>
@@ -119,11 +147,26 @@
 													{{ $data->sisa == 0 ? 'Lunas' : 'Belum Lunas'; }}
 												</span>
 											</td>
+											<td class="text-center">
+												<span class="badge {{ $data->status == 1 ? 'badge-primary' : 'badge-warning' }}">
+													<i class="fa {{ $data->status == 1 ? 'fa-check' : 'fa-warning' }}"></i>
+													{{ $data->status == 1 ? 'Approved' : 'Pending'; }}
+												</span>
+											</td>
+											@if (isOwner())
+												<td class="text-center">
+													<input type="checkbox" value="{{ $data->invoiceId }}" class="checkbox-item" id="checkbox-{{ $data->invoiceId }}" onclick="ceklis({{ $data->invoiceId }})">
+												</td>
+											@endif
 											<td>
 												<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
 													<div class="btn-group" role="group">
 														<button class="btn btn-secondary btn-sm dropdown-toggle" id="btnGroupDrop1" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
 														<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+															@if ($data->status != 1 && isOwner())
+																<a class="dropdown-item" href="{{ route('invoice.approve', $data->invoiceId) }}" onclick="return confirm('Approve Data Invoice?')"><span><i data-feather="check-square"></i> Approve</span></a>
+															@endif
+
 															<a class="dropdown-item" href="{{ route('invoice.hasil-transaksi', ['id' => $data->id, 'invoiceId' => $data->invoiceId]) }}">
 																<span><i class="pt-2 pe-2" data-feather="eye"></i> Detail</span>
 															</a>
@@ -179,6 +222,46 @@
 				}
 			}
 		});
+	</script>
+	<script>
+		$(document).ready(function() {
+			$('#checkAll').click(function() {
+				if ($(this).is(':checked')) {
+					$('.checkbox-item').prop('checked', true);
+					$('.checkbox-item').each(function() {
+						var id = $(this).val();
+						if (!$('.inner input[value="'+id+'"]').length) {
+							$('.inner').append("<input type='hidden' value='"+id+"' name='id_invoice[]'>");
+						}
+					});
+				} else {
+					$('.checkbox-item').prop('checked', false);
+					$('.inner').empty();
+				}
+			});
+
+			$('.checkbox-item').change(function() {
+				var id = $(this).val();
+				if ($(this).is(':checked')) {
+					if (!$('.inner input[value="'+id+'"]').length) {
+						$('.inner').append("<input type='hidden' value='"+id+"' name='id_invoice[]'>");
+					}
+				} else {
+					$('.inner input[value="'+id+'"]').remove();
+				}
+			});
+		});
+
+		function ceklis(id) {
+			var checkbox = $('#checkbox-' + id);
+			if (checkbox.is(':checked')) {
+				if (!$('.inner input[value="'+id+'"]').length) {
+					$('.inner').append("<input type='hidden' value='"+id+"' name='id_invoice[]'>");
+				}
+			} else {
+				$('.inner input[value="'+id+'"]').remove();
+			}
+		}
 	</script>
 	@endpush
 

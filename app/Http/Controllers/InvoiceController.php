@@ -130,7 +130,7 @@ class InvoiceController extends Controller
         $status = $request->status;
         $customers = Customer::all();
 
-        $data = Invoice::select('invoices.invoice_no', 'invoices.created_at', 'invoices.id AS invoiceId', 'invoices.diskon', 'customers.id', 'customers.kode_customer', 'customers.nama', 'customers.diskon AS diskon_customer')
+        $data = Invoice::select('invoices.invoice_no', 'invoices.created_at', 'invoices.id AS invoiceId', 'invoices.diskon', 'invoices.status', 'customers.id', 'customers.kode_customer', 'customers.nama', 'customers.diskon AS diskon_customer')
                 ->join('customers', 'customers.id', '=', 'invoices.customer_id')
                 ->when($customer, function ($query, $customer) {
                     return $query->where('customers.id', $customer);
@@ -233,7 +233,7 @@ class InvoiceController extends Controller
 
     public function generateInvoicePdf($id, $invoiceId)
     {
-        $customer = Customer::select('customers.id', 'customers.diskon AS diskon_customer', 'customers.kode_customer', 'customers.nama', 'customers.alamat', 'customers.perusahaan', 'invoices.invoice_no', 'invoices.invoice_name', 'invoices.id AS invoiceId', 'invoices.diskon', 'invoices.created_at')
+        $customer = Customer::select('customers.id', 'customers.diskon AS diskon_customer', 'customers.kode_customer', 'customers.nama', 'customers.alamat', 'customers.perusahaan', 'invoices.invoice_no', 'invoices.invoice_name', 'invoices.id AS invoiceId', 'invoices.diskon', 'invoices.created_at', 'invoices.status')
                     ->join('invoices', 'invoices.customer_id', '=', 'customers.id')
                     ->where('customers.id', $id)
                     ->where('invoices.id', $invoiceId)
@@ -258,6 +258,10 @@ class InvoiceController extends Controller
                 ->join('banks', 'banks.id', '=', 'invoice_banks.id_bank')
                 ->where('invoice_banks.id_invoice', $invoiceId)
                 ->get();
+
+        if ($customer->status == 0) {
+            return back()->with('error', 'Invoice Belum Diapprove Oleh Owner');
+        }
 
         $notEmpty = $data->isNotEmpty();
         $waktuCetak = date('d-m-Y H:i:s');
@@ -292,6 +296,10 @@ class InvoiceController extends Controller
         $customerName = str_replace(' ', '', $customer->nama);
         $pesan = Pesan::find(Pesan::INV);
 
+        if ($invoice->status == 0) {
+            return back()->with('error', 'Invoice Belum Diapprove Oleh Owner');
+        }
+
         if (!Storage::exists('public/invoices/Invoice-'.$invoice->invoice_name.'.pdf')) {
             return back()->with("error", "Silahkan Cetak invoice Terlebih Dahulu");
         }
@@ -325,11 +333,15 @@ class InvoiceController extends Controller
         $id = $request->id;
         $invoiceId = $request->invoice_id;
         $pesan = Pesan::find(Pesan::INV);
-        $invoice = Customer::select('customers.id', 'customers.diskon AS diskon_customer', 'customers.kode_customer', 'customers.nama', 'customers.email', 'customers.alamat', 'invoices.invoice_no', 'invoices.invoice_name', 'invoices.id AS invoiceId', 'invoices.diskon', 'invoices.created_at')
+        $invoice = Customer::select('customers.id', 'customers.diskon AS diskon_customer', 'customers.kode_customer', 'customers.nama', 'customers.email', 'customers.alamat', 'invoices.invoice_no', 'invoices.invoice_name', 'invoices.id AS invoiceId', 'invoices.diskon', 'invoices.created_at', 'invoices.status')
                     ->join('invoices', 'invoices.customer_id', '=', 'customers.id')
                     ->where('invoices.id', $invoiceId)
                     ->where('customers.id', $id)
                     ->first();
+
+        if ($invoice->status == 0) {
+            return back()->with('error', 'Invoice Belum Diapprove Oleh Owner');
+        }
 
         $invoice->customerName = str_replace(' ', '', $invoice->nama);
         $invoice->isi_pesan = $pesan->isi_pesan;
@@ -408,5 +420,57 @@ class InvoiceController extends Controller
                 ->get();
 
         return view('invoice.riwayat-pembayaran', compact('datas'));
+    }
+
+    public function approve($id)
+    {
+        Invoice::find($id)->update([
+            'status' => 1
+        ]);
+
+        return back()->with('success', 'Invoice Telah Di Approve');
+    }
+
+    public function approveSelected(Request $request)
+    {
+        $id_invoice = $request->id_invoice;
+
+        if($id_invoice == NULL){
+            return back()->with('error', 'Belum Ada Data Dipilih');
+        }
+
+        for($i=0; $i<sizeof($id_invoice); $i++){
+            Invoice::find($id_invoice[$i])->update([
+                'status' => 1
+            ]);
+        }
+
+        return back()->with('success', 'Invoice Telah Di Approve');
+    }
+
+    public function cancel_approve($id)
+    {
+        Invoice::find($id)->update([
+            'status' => 9
+        ]);
+
+        return back()->with('success', 'Invoice Telah Di Approve');
+    }
+
+    public function cancel_approveSelected(Request $request)
+    {
+        $id_invoice = $request->id_invoice;
+
+        if($id_invoice == NULL){
+            return back()->with('error', 'Belum Ada Data Dipilih');
+        }
+
+        for($i=0; $i<sizeof($id_invoice); $i++){
+            Invoice::find($id_invoice[$i])->update([
+                'status' => 0
+            ]);
+        }
+
+        return back()->with('success', 'Invoice Telah Di Approve');
     }
 }

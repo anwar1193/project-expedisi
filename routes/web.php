@@ -294,6 +294,8 @@ Route::middleware("auth")->group(function() {
         Route::get('/invoices/hasil-generate/{id}/{invoiceId}', [InvoiceController::class, 'hasil_transaksi'])->name('invoice.hasil-transaksi');
         Route::post('/all/transaksi-pembayaran', [InvoiceController::class, 'pembayaran_invoice'])->name('invoice.transaksi-pembayaran');
         Route::get('/detail/{invoiceId}/transaksi-pembayaran', [InvoiceController::class, 'detail_riwayat_invoices'])->name('invoice.transaksi-pembayaran.detail');
+        Route::get('/approve/{id}', [InvoiceController::class, 'approve'])->name('invoice.approve');
+        Route::post('/approve-selected', [InvoiceController::class, 'approveSelected'])->name('invoice.approve-selected');
     });
     
     Route::prefix('penukaran-point')->group(function () {
