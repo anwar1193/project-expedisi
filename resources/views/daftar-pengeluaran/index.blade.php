@@ -7,9 +7,6 @@
 @push('css')
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/datatables.css') }}">
 <style>
-    .dataTables_wrapper {
-        overflow-x: auto;
-    }
 	.select2-container--default .select2-selection--single .select2-selection__rendered {
 		background-color: black;
 	}
@@ -189,23 +186,20 @@
 									<thead>
 										<tr>
 											<th>No</th>
+											<th>Action</th>
+											@if (Session::get('user_level') == 2)
+												<th class="text-end">
+													<input type="checkbox" id="checkAll" title="Pilih Semua">
+												</th>
+											@endif
 											<th>Tanggal Pengeluaran</th>
 											<th>Keterangan</th>
 											<th>Jumlah Pembayaran</th>
 											<th>Yang Menerima Pembayaran</th>
 											<th>Metode Pembayaran</th>
 											<th>Yang Melakukan Pembayaran</th>
-
 											<th>Status Pengeluaran</th>
-											<th>Bukti Pembayaran</th>
-
-											@if (Session::get('user_level') == 2)
-												<th class="text-center">
-													<input type="checkbox" id="checkAll" title="Pilih Semua">
-												</th>
-											@endif
-
-											<th width="35%" class="text-center">Action</th>
+											<th>Bukti Pembayaran</th>										
 										</tr>
 									</thead>
 									<tbody>                                        
@@ -224,37 +218,6 @@
 											@endphp
 											<tr>
 												<td>{{ $loop->iteration; }}</td>
-												<td>{{ $data->tgl_pengeluaran }}</td>
-												<td>{{ $data->keterangan }}</td>
-												<td>{{ number_format($data->jumlah_pembayaran, 0, '.', ',') }}</td>
-												<td>{{ $data->yang_menerima }}</td>
-												<td>{{ $data->metode_pembayaran }}</td>
-												<td>{{ $data->yang_membayar }}</td>
-												<td>
-													<span class="badge {{ $data->status_pengeluaran == 1 ? 'badge-primary' : 'badge-warning' }}">
-														<i class="fa {{ $data->status_pengeluaran == 1 ? 'fa-check' : 'fa-warning' }}"></i>
-														{{ $data->status_pengeluaran == 1 ? 'Disetujui' : 'Pending'; }}
-													</span>
-												</td>
-												<td onmouseover="showBukti({{ $data->id }})" onmouseout="hideBukti({{ $data->id }})" style="position: relative;">
-													@if ($data->bukti_pembayaran != '')
-														<div id="tooltip{{ $data->id }}" class="tooltip-img">
-															<img src="{{ $bukti_pembayaran_view }}" alt="" width="200px" class="img-fluid mt-2">
-															<a class="btn btn-primary" href="{{ $bukti_pembayaran_view }}" target="_blank">View Image</a>
-														</div>
-													@endif
-													<div id="icon-view{{ $data->id }}">
-														<i data-feather="link"></i> Gambar
-													</div>
-													
-												</td>
-
-												@if (Session::get('user_level') == 2)
-													{{-- Select/Pilih --}}
-													<td class="text-center">
-														<input type="checkbox" value="{{ $data->id }}" class="checkbox-item" id="checkbox-{{ $data->id }}" onclick="ceklis({{ $data->id }})">
-													</td>
-												@endif
 												<td class="text-center">
 
 													<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
@@ -280,6 +243,36 @@
 														</div>
 													</div>
 													@include('daftar-pengeluaran.detail')
+												</td>
+												@if (Session::get('user_level') == 2)
+													{{-- Select/Pilih --}}
+													<td class="text-center">
+														<input type="checkbox" value="{{ $data->id }}" class="checkbox-item" id="checkbox-{{ $data->id }}" onclick="ceklis({{ $data->id }})">
+													</td>
+												@endif
+												<td>{{ $data->tgl_pengeluaran }}</td>
+												<td>{{ $data->keterangan }}</td>
+												<td>{{ number_format($data->jumlah_pembayaran, 0, '.', ',') }}</td>
+												<td>{{ $data->yang_menerima }}</td>
+												<td>{{ $data->metode_pembayaran }}</td>
+												<td>{{ $data->yang_membayar }}</td>
+												<td>
+													<span class="badge {{ $data->status_pengeluaran == 1 ? 'badge-primary' : 'badge-warning' }}">
+														<i class="fa {{ $data->status_pengeluaran == 1 ? 'fa-check' : 'fa-warning' }}"></i>
+														{{ $data->status_pengeluaran == 1 ? 'Disetujui' : 'Pending'; }}
+													</span>
+												</td>
+												<td onmouseover="showBukti({{ $data->id }})" onmouseout="hideBukti({{ $data->id }})" style="position: relative;">
+													@if ($data->bukti_pembayaran != '')
+														<div id="tooltip{{ $data->id }}" class="tooltip-img">
+															<img src="{{ $bukti_pembayaran_view }}" alt="" width="200px" class="img-fluid mt-2">
+															<a class="btn btn-primary" href="{{ $bukti_pembayaran_view }}" target="_blank">View Image</a>
+														</div>
+													@endif
+													<div id="icon-view{{ $data->id }}">
+														<i data-feather="link"></i> Gambar
+													</div>
+													
 												</td>
 											</tr>
 										@endforeach
@@ -324,7 +317,6 @@
 					[10, 25, 50, -1],
 					[10, 25, 50, 'All']
 				],
-                scrollX: true,
 			});
 		})
 	</script>	
