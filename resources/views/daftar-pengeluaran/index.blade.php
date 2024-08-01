@@ -27,6 +27,69 @@
 	input[type="checkbox"] {
 		transform: scale(2);
 	}
+
+	.content {
+        flex: 1;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+
+	table.dataTable thead th, table.dataTable thead td {
+		padding: 10px 18px;
+		border-bottom: 1px solid #111;
+	}
+
+	.table-container {
+        flex: 1;
+        overflow: auto;
+        max-height: 500px;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .table th, .table td {
+        padding: 8px 12px;
+        border: 1px solid #ccc;
+        text-align: left;
+    }
+
+	.table thead th {
+        background-color: #f2f2f2;
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+
+	#table-wrapper {
+		position: relative;
+		margin-bottom: 20px;
+	}
+
+    #table-container {
+		width: 100%;
+		overflow-x: auto;
+		white-space: nowrap;
+	}
+
+	.scrollbar-container {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 20px;
+		overflow-x: auto;
+		background: #f1f1f1;
+		z-index: 1;
+	}
+
+	.scrollbar {
+		height: 1px;
+		width: 100%;
+	}
 </style>
 @endpush
 
@@ -120,108 +183,114 @@
 						@endif
 	                    
 						{{-- Table --}}
-						<div class="table-responsive">
-	                        <table class="display" id="basic-1">
-	                            <thead>
-	                                <tr>
-	                                    <th>No</th>
-										<th>Tanggal Pengeluaran</th>
-										<th>Keterangan</th>
-	                                    <th>Jumlah Pembayaran</th>
-	                                    <th>Yang Menerima Pembayaran</th>
-										<th>Metode Pembayaran</th>
-	                                    <th>Yang Melakukan Pembayaran</th>
-
-	                                    <th>Status Pengeluaran</th>
-	                                    <th>Bukti Pembayaran</th>
-
-										@if (Session::get('user_level') == 2)
-											<th class="text-center">
-												<input type="checkbox" id="checkAll" title="Pilih Semua">
-											</th>
-										@endif
-
-										<th width="35%" class="text-center">Action</th>
-	                                </tr>
-	                            </thead>
-	                            <tbody>                                        
-                                    @foreach ($datas as $data)
-										@php
-											$bukti_pembayaran = $data->bukti_pembayaran;
-
-											if (strpos($bukti_pembayaran, 'https://drive.google.com/file/d/') !== false) {
-												$explode = explode("/", $bukti_pembayaran);
-												$bukti_pembayaran_view = 'https://' . $explode[2] . '/thumbnail?id=' . $explode[5];
-											} elseif (pathinfo($bukti_pembayaran, PATHINFO_EXTENSION) != '') {
-												$bukti_pembayaran_view = asset('storage/daftar-pengeluaran/'.$data->bukti_pembayaran);
-											} else {
-												$bukti_pembayaran_view = '#';
-											}
-										@endphp
+						<div class="" id="table-wrapper">
+							<div class="table-responsive" id="table-container">
+								<table class="display" id="basic-1">
+									<thead>
 										<tr>
-											<td>{{ $loop->iteration; }}</td>
-											<td>{{ $data->tgl_pengeluaran }}</td>
-											<td>{{ $data->keterangan }}</td>
-											<td>{{ number_format($data->jumlah_pembayaran, 0, '.', ',') }}</td>
-											<td>{{ $data->yang_menerima }}</td>
-											<td>{{ $data->metode_pembayaran }}</td>
-											<td>{{ $data->yang_membayar }}</td>
-											<td>
-												<span class="badge {{ $data->status_pengeluaran == 1 ? 'badge-primary' : 'badge-warning' }}">
-													<i class="fa {{ $data->status_pengeluaran == 1 ? 'fa-check' : 'fa-warning' }}"></i>
-													{{ $data->status_pengeluaran == 1 ? 'Disetujui' : 'Pending'; }}
-												</span>
-											</td>
-											<td onmouseover="showBukti({{ $data->id }})" onmouseout="hideBukti({{ $data->id }})" style="position: relative;">
-												@if ($data->bukti_pembayaran != '')
-													<div id="tooltip{{ $data->id }}" class="tooltip-img">
-														<img src="{{ $bukti_pembayaran_view }}" alt="" width="200px" class="img-fluid mt-2">
-														<a class="btn btn-primary" href="{{ $bukti_pembayaran_view }}" target="_blank">View Image</a>
-													</div>
-												@endif
-												<div id="icon-view{{ $data->id }}">
-													<i data-feather="link"></i> Gambar
-												</div>
-												
-											</td>
+											<th>No</th>
+											<th>Tanggal Pengeluaran</th>
+											<th>Keterangan</th>
+											<th>Jumlah Pembayaran</th>
+											<th>Yang Menerima Pembayaran</th>
+											<th>Metode Pembayaran</th>
+											<th>Yang Melakukan Pembayaran</th>
+
+											<th>Status Pengeluaran</th>
+											<th>Bukti Pembayaran</th>
 
 											@if (Session::get('user_level') == 2)
-												{{-- Select/Pilih --}}
-												<td class="text-center">
-													<input type="checkbox" value="{{ $data->id }}" class="checkbox-item" id="checkbox-{{ $data->id }}" onclick="ceklis({{ $data->id }})">
-												</td>
+												<th class="text-center">
+													<input type="checkbox" id="checkAll" title="Pilih Semua">
+												</th>
 											@endif
-											<td class="text-center">
 
-												<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-													<div class="btn-group" role="group">
-														<button class="btn btn-secondary btn-sm dropdown-toggle" id="btnGroupDrop1" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
-														<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+											<th width="35%" class="text-center">Action</th>
+										</tr>
+									</thead>
+									<tbody>                                        
+										@foreach ($datas as $data)
+											@php
+												$bukti_pembayaran = $data->bukti_pembayaran;
 
-															@if ($data->status_pengeluaran != 1 && Session::get('user_level') == 2)
-																<a class="dropdown-item" href="{{ route('daftar-pengeluaran.approve', $data->id) }}" onclick="return confirm('Approve Data Pengeluaran Ini?')"><span><i data-feather="check-square"></i> Approve</span></a>
-															@endif
+												if (strpos($bukti_pembayaran, 'https://drive.google.com/file/d/') !== false) {
+													$explode = explode("/", $bukti_pembayaran);
+													$bukti_pembayaran_view = 'https://' . $explode[2] . '/thumbnail?id=' . $explode[5];
+												} elseif (pathinfo($bukti_pembayaran, PATHINFO_EXTENSION) != '') {
+													$bukti_pembayaran_view = asset('storage/daftar-pengeluaran/'.$data->bukti_pembayaran);
+												} else {
+													$bukti_pembayaran_view = '#';
+												}
+											@endphp
+											<tr>
+												<td>{{ $loop->iteration; }}</td>
+												<td>{{ $data->tgl_pengeluaran }}</td>
+												<td>{{ $data->keterangan }}</td>
+												<td>{{ number_format($data->jumlah_pembayaran, 0, '.', ',') }}</td>
+												<td>{{ $data->yang_menerima }}</td>
+												<td>{{ $data->metode_pembayaran }}</td>
+												<td>{{ $data->yang_membayar }}</td>
+												<td>
+													<span class="badge {{ $data->status_pengeluaran == 1 ? 'badge-primary' : 'badge-warning' }}">
+														<i class="fa {{ $data->status_pengeluaran == 1 ? 'fa-check' : 'fa-warning' }}"></i>
+														{{ $data->status_pengeluaran == 1 ? 'Disetujui' : 'Pending'; }}
+													</span>
+												</td>
+												<td onmouseover="showBukti({{ $data->id }})" onmouseout="hideBukti({{ $data->id }})" style="position: relative;">
+													@if ($data->bukti_pembayaran != '')
+														<div id="tooltip{{ $data->id }}" class="tooltip-img">
+															<img src="{{ $bukti_pembayaran_view }}" alt="" width="200px" class="img-fluid mt-2">
+															<a class="btn btn-primary" href="{{ $bukti_pembayaran_view }}" target="_blank">View Image</a>
+														</div>
+													@endif
+													<div id="icon-view{{ $data->id }}">
+														<i data-feather="link"></i> Gambar
+													</div>
+													
+												</td>
 
-															<a class="dropdown-item" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalDataPengiriman{{ $data->id }}" title="Detail Data"><span><i data-feather="eye"></i> Detail</span></a>
+												@if (Session::get('user_level') == 2)
+													{{-- Select/Pilih --}}
+													<td class="text-center">
+														<input type="checkbox" value="{{ $data->id }}" class="checkbox-item" id="checkbox-{{ $data->id }}" onclick="ceklis({{ $data->id }})">
+													</td>
+												@endif
+												<td class="text-center">
 
-															@if ($data->status_pengeluaran != 1)
-																<a class="dropdown-item" href="{{ route('daftar-pengeluaran.edit', $data->id) }}" ><span><i data-feather="edit"></i> Edit</span></a>
-															@endif
+													<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+														<div class="btn-group" role="group">
+															<button class="btn btn-secondary btn-sm dropdown-toggle" id="btnGroupDrop1" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
+															<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
 
-															@if (Session::get('user_level') == 1)
-																<a class="dropdown-item" href="{{ route('daftar-pengeluaran.delete', $data->id) }}" onclick="return confirm('Apakah Anda Yakin?')"><span><i data-feather="delete"></i> Delete</span></a>
-															@endif
-															
+																@if ($data->status_pengeluaran != 1 && Session::get('user_level') == 2)
+																	<a class="dropdown-item" href="{{ route('daftar-pengeluaran.approve', $data->id) }}" onclick="return confirm('Approve Data Pengeluaran Ini?')"><span><i data-feather="check-square"></i> Approve</span></a>
+																@endif
+
+																<a class="dropdown-item" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalDataPengiriman{{ $data->id }}" title="Detail Data"><span><i data-feather="eye"></i> Detail</span></a>
+
+																@if ($data->status_pengeluaran != 1)
+																	<a class="dropdown-item" href="{{ route('daftar-pengeluaran.edit', $data->id) }}" ><span><i data-feather="edit"></i> Edit</span></a>
+																@endif
+
+																@if (Session::get('user_level') == 1)
+																	<a class="dropdown-item" href="{{ route('daftar-pengeluaran.delete', $data->id) }}" onclick="return confirm('Apakah Anda Yakin?')"><span><i data-feather="delete"></i> Delete</span></a>
+																@endif
+																
+															</div>
 														</div>
 													</div>
-												</div>
-												@include('daftar-pengeluaran.detail')
-											</td>
-										</tr>
-									@endforeach
-	                            </tbody>
-	                        </table>
-	                    </div>
+													@include('daftar-pengeluaran.detail')
+												</td>
+											</tr>
+										@endforeach
+									</tbody>
+								</table>
+							</div>
+						</div>
+
+						<div class="scrollbar-container" id="scrollbar-container">
+							<div class="scrollbar"></div>
+						</div>
 
 	                </div>
 	            </div>
@@ -259,6 +328,25 @@
 			});
 		})
 	</script>	
+	<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tableContainer = document.getElementById('table-container');
+            const scrollbarContainer = document.getElementById('scrollbar-container');
+            const scrollbar = document.querySelector('.scrollbar');
+
+            // Synchronize scroll positions
+            scrollbarContainer.addEventListener('scroll', function() {
+                tableContainer.scrollLeft = scrollbarContainer.scrollLeft;
+            });
+
+            tableContainer.addEventListener('scroll', function() {
+                scrollbarContainer.scrollLeft = tableContainer.scrollLeft;
+            });
+
+            // Set the width of the scrollbar to match the table content width
+            scrollbar.style.width = tableContainer.scrollWidth + 'px';
+        });
+    </script>
 	<script src="{{ asset('assets/js/datatable/datatables/jquery.dataTables.min.js') }}"></script>
     {{-- <script src="{{ asset('assets/js/datatable/datatables/datatable.custom.js') }}"></script> --}}
 	@foreach ($datas as $data)
