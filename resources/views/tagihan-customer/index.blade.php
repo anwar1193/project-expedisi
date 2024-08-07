@@ -104,6 +104,13 @@
                     <h3>Tagihan</h3>
                 </div>
             </div>
+            <div class="row pt-3">
+                <div class="col-lg-6">
+                    <a href="{{ route('dashboard.customer') }}" class="btn btn-secondary">
+                        Home
+                    </a>
+                </div>
+            </div>
         </div>
 	    <div class="row">
 	        <!-- Server Side Processing start-->
@@ -120,6 +127,7 @@
                                     <tr>
                                         <th>No</th>
                                         <th>No Resi</th>
+                                        <th>Tanggal Transaksi</th>
                                         <th>Nama Penerima</th>
                                         <th>Kota Tujuan</th>
                                         <th>Metode Pembayaran</th>
@@ -155,6 +163,7 @@
                                                     {{ $data->no_resi }}
                                                 </span>
                                             </td>
+                                            <td>{{ $data->tgl_transaksi }}</td>
                     
                                             <td>{{ $data->nama_penerima }}</td>
                                             <td>{{ $data->kota_tujuan }}</td>
