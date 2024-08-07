@@ -219,9 +219,9 @@
                                             </td>
                     
                                             <td class="text-center">
-                                                <span class="badge {{ $data->status_pembayaran == 1 ? 'badge-primary' : 'badge-warning' }}">
-                                                    <i class="fa {{ $data->status_pembayaran == 1 ? 'fa-check' : 'fa-warning' }}"></i>
-                                                    {{ $data->status_pembayaran == 1 ? 'Lunas' : 'Pending'; }}
+                                                <span class="badge {{ $data->sisa == 0 ? 'badge-primary' : 'badge-warning' }}">
+                                                    <i class="fa {{ $data->sisa == 0 ? 'fa-check' : 'fa-warning' }}"></i>
+                                                    {{ $data->status }}
                                                 </span>
                                             </td>
                     
@@ -244,10 +244,7 @@
                     
                                                 <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
                                                     <div class="btn-group" role="group">
-                                                        <button class="btn btn-secondary btn-sm dropdown-toggle" id="btnGroupDrop1" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
-                                                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalDataPengiriman{{ $data->id }}" title="Detail Data"><span><i data-feather="eye"></i> Detail</span></a>
-                                                        </div>
+                                                        <button class="btn btn-secondary btn-sm" id="" type="button" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalDataPengiriman{{ $data->id }}" title="Detail Data">Detail</button>
                                                     </div>
                                                 </div>
                                                 @include('customers.component.detail-tagihan')

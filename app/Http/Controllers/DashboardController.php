@@ -146,7 +146,10 @@ class DashboardController extends Controller
         $statusPengiriman = StatusPengiriman::all();
         $customer = $this->data_customer();
 
-        $data = DataPengiriman::where('kode_customer', '=', $customer->kode_customer)
+        $data = DataPengiriman::select('data_pengirimen.*', 'invoices.id AS invoiceId', 'invoices.diskon', 'customers.diskon AS diskon_customer')
+                    ->leftjoin('customers', 'customers.kode_customer', '=', 'data_pengirimen.kode_customer')
+                    ->leftjoin('invoices', 'invoices.customer_id', '=', 'customers.id')
+                    ->where('data_pengirimen.kode_customer', '=', $customer->kode_customer)
                     ->when($status, function ($query) use ($status) {
                         return $query->where('status_pembayaran', $status);
                     })->when($periode && $end, function ($query) use ($periode, $end) {
@@ -156,7 +159,29 @@ class DashboardController extends Controller
                     })->when($status_pengiriman, function($query, $status_pengiriman) {
                         return $query->where('status_pengiriman', 'LIKE', $status_pengiriman);
                     })
-                    ->orderBy('id', 'DESC')->get();
+                    ->orderBy('data_pengirimen.id', 'DESC')->get();
+                    foreach ($data as $item) {
+                        $total = DataPengiriman::selectRaw('SUM(ongkir) AS total')
+                                ->join('transaksi_invoices', 'transaksi_invoices.data_pengiriman_id', '=', 'data_pengirimen.id')
+                                ->where('kode_customer', $item->kode_customer)
+                                ->where('invoice_id', $item->invoiceId)
+                                ->first();
+
+                                $nominal = TransaksiPembayaran::selectRaw('SUM(nominal) AS total')
+                                            ->where('invoice_id', $item->invoiceId)->first();
+
+                                $diskon = round($total->total * $item->diskon_customer / 100);
+
+                                $totalBersih = round($total->total - $item->diskon - $diskon);
+
+                                if ($nominal) {
+                                    $item->sisa = round($totalBersih - $nominal->total);
+                                } else {
+                                    $item->sisa = $totalBersih;
+                                }
+
+                                $item->status = ($item->sisa == 0) ? 'Lunas' : 'Belum Lunas';
+                    }
 
         $total = $data->sum('ongkir');
 

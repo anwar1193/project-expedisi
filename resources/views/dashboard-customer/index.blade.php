@@ -44,7 +44,7 @@
       <a href="{{ route("tagihan-customer", ['status' => $statusPending]) }}">
         <div class="card income-card card-primary">
           <div class="card-body text-center">
-            <p class="fs-6">Tagihan Belum Lunas</p>
+            <p class="fs-6">Tagihan Belum Diapprove</p>
             <h5><i class="icofont icofont-police-car"></i> {{ $pending }}</h5>
             <div class="parrten">
               <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
@@ -74,7 +74,7 @@
       <a href="{{ route("tagihan-customer", ['status' => $statusLunas]) }}">
         <div class="card income-card card-primary">
           <div class="card-body text-center">
-            <p class="fs-6">Tagihan Lunas</p>
+            <p class="fs-6">Tagihan Telah Diapprove</p>
             <h5><i class="icofont icofont-ui-rss"></i> {{ $lunas }}</h5>
             <div class="parrten">
               <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
