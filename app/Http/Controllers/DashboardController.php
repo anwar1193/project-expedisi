@@ -11,6 +11,7 @@ use App\Models\SurveilanceCar;
 use App\Models\Perangkat;
 use App\Models\LogActivity;
 use App\Models\PemasukanLainnya;
+use App\Models\StatusPengiriman;
 use App\Models\TransaksiPembayaran;
 use App\Models\User;
 use Carbon\Carbon;
@@ -136,17 +137,29 @@ class DashboardController extends Controller
 
     public function tagihan() 
     {
+        $periode = request('periode');
+        $end = date('Y-m-d');
+        $no_resi = request('no_resi');
+        $status_pengiriman = request('status_pengiriman');
         $status = request('status') ? request('status') : DataPengiriman::STATUS_PENDING;
 
+        $statusPengiriman = StatusPengiriman::all();
         $customer = $this->data_customer();
 
         $data = DataPengiriman::where('status_pembayaran', $status)
                     ->where('kode_customer', '=', $customer->kode_customer)
+                    ->when($periode && $end, function ($query) use ($periode, $end) {
+                        return $query->whereBetween('tgl_transaksi', [$periode, $end]);
+                    })->when($no_resi, function($query, $no_resi) {
+                        return $query->where('no_resi', 'LIKE', $no_resi);
+                    })->when($status_pengiriman, function($query, $status_pengiriman) {
+                        return $query->where('status_pengiriman', 'LIKE', $status_pengiriman);
+                    })
                     ->orderBy('id', 'DESC')->get();
 
         $total = $data->sum('ongkir');
 
-        return view('tagihan-customer.index', compact('data', 'customer', 'total'));
+        return view('tagihan-customer.index', compact('data', 'customer', 'total', 'statusPengiriman'));
     }
 
     public function lacak_resi()
