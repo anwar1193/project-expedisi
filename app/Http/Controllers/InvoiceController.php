@@ -477,6 +477,9 @@ class InvoiceController extends Controller
 
     public function delete_invoice($id)
     {
+        if (!isOwner()) {
+            return back()->with('error', "Anda Tidak memiliki hak akses");
+        }
         $invoice = Invoice::find($id);
         $invoice_banks = InvoiceBank::where('id_invoice', $id)->get();
         $transaksi_invoices = TransaksiInvoice::where('invoice_id', $id)->get();
