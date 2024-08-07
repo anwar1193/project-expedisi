@@ -73,11 +73,13 @@
                                         <div class="col-2">:</div>
                                         <div class="col-4">{{ number_format($data->ongkir, 0, '.', ',') }}</div>
                                     </div>
-                                    <div class="row d-flex py-1 text-start justify-content-start">
-                                        <div class="col-6">Komisi</div>
-                                        <div class="col-2">:</div>
-                                        <div class="col-4">{{ number_format($data->komisi, 0, '.', ',') }}</div>
-                                    </div>
+                                    @if (!isCustomer())
+                                        <div class="row d-flex py-1 text-start justify-content-start">
+                                            <div class="col-6">Komisi</div>
+                                            <div class="col-2">:</div>
+                                            <div class="col-4">{{ number_format($data->komisi, 0, '.', ',') }}</div>
+                                        </div>                                    
+                                    @endif
                                     <div class="row d-flex py-1 text-start justify-content-start">
                                         <div class="col-6">Jenis Pengiriman</div>
                                         <div class="col-2">:</div>
