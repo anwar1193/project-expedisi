@@ -164,12 +164,18 @@
 														<button class="btn btn-secondary btn-sm dropdown-toggle" id="btnGroupDrop1" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
 														<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
 															@if ($data->status != 1 && isOwner())
-																<a class="dropdown-item" href="{{ route('invoice.approve', $data->invoiceId) }}" onclick="return confirm('Approve Data Invoice?')"><span><i data-feather="check-square"></i> Approve</span></a>
+																<a class="dropdown-item" href="{{ route('invoice.approve', $data->invoiceId) }}" onclick="return confirm('Approve Data Invoice?')"><span><i class="pt-2 pe-2" data-feather="check-square"></i> Approve</span></a>
 															@endif
-
+															
 															<a class="dropdown-item" href="{{ route('invoice.hasil-transaksi', ['id' => $data->id, 'invoiceId' => $data->invoiceId]) }}">
 																<span><i class="pt-2 pe-2" data-feather="eye"></i> Detail</span>
 															</a>
+
+															@if (isOwner())
+																<a class="dropdown-item" href="{{ route('invoice.delete', $data->invoiceId) }}" onclick="return confirm('Anda Yakin Ingin Menghapus Invoice?')">
+																	<span><i class="pt-2 pe-2" data-feather="delete"></i> Delete</span>
+																</a>
+															@endif
 
 															@if ($data->sisa != 0 && isAdmin())
 																<a class="dropdown-item" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#pembayaranInvoice{{ $data->invoiceId }}">

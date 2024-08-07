@@ -16,6 +16,7 @@ use App\Models\TransaksiInvoice;
 use App\Models\TransaksiPembayaran;
 use App\Models\InvoiceBank;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
@@ -472,5 +473,41 @@ class InvoiceController extends Controller
         }
 
         return back()->with('success', 'Invoice Telah Di Approve');
+    }
+
+    public function delete_invoice($id)
+    {
+        $invoice = Invoice::find($id);
+        $invoice_banks = InvoiceBank::where('id_invoice', $id)->get();
+        $transaksi_invoices = TransaksiInvoice::where('invoice_id', $id)->get();
+        $pembayarans = TransaksiPembayaran::where('invoice_id', $id)->get();
+
+        DB::beginTransaction();
+
+        try {
+            if ($invoice) {
+                $invoice->delete();
+            }
+        
+            foreach ($transaksi_invoices as $transaksi_invoice) {
+                Storage::delete('public/invoices/invoice-' . $transaksi_invoice->invoice_name . '.pdf');
+                $transaksi_invoice->delete();
+            }
+        
+            foreach ($invoice_banks as $invoice_bank) {
+                $invoice_bank->delete();
+            }
+        
+            foreach ($pembayarans as $pembayaran) {
+                $pembayaran->delete();
+            }
+        
+            DB::commit();
+            return back()->with('delete', 'Invoice Berhasil Dihapus');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Gagal Menghapus Data Invoice');
+        }
+
     }
 }
