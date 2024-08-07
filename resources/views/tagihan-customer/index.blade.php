@@ -1,6 +1,6 @@
 @extends('layouts.admin.master')
 
-@section('title')Tagihan Customer
+@section('title')Daftar Transaksi
  {{ $title }}
 @endsection
 
@@ -101,7 +101,7 @@
         <div class="page-header">
             <div class="row">
                 <div class="col-lg-6">
-                    <h3>Tagihan</h3>
+                    <h3>Daftar Transaksi</h3>
                 </div>
             </div>
             <div class="row pt-3">
