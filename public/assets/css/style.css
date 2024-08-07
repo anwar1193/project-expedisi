@@ -19863,7 +19863,7 @@ body.dark-only {
         body.dark-only .page-wrapper.horizontal-wrapper .page-body-wrapper .page-body .custom-card .card-footer > div + div, body.dark-only .compact-wrapper .page-body-wrapper .page-body .custom-card .card-footer > div + div {
           border-left: 1px solid rgba(36, 105, 92, 0.2); }
         body.dark-only .page-wrapper.horizontal-wrapper .page-body-wrapper .page-body .form-control, body.dark-only .page-wrapper.horizontal-wrapper .page-body-wrapper .page-body select, body.dark-only .compact-wrapper .page-body-wrapper .page-body .form-control, body.dark-only .compact-wrapper .page-body-wrapper .page-body select {
-          background-color: #111727;
+          background-color: #0d0e12;
           color: rgba(255, 255, 255, 0.7); }
         body.dark-only .page-wrapper.horizontal-wrapper .page-body-wrapper .page-body .checkbox label::before, body.dark-only .page-wrapper.horizontal-wrapper .page-body-wrapper .page-body .radio label::before, body.dark-only .compact-wrapper .page-body-wrapper .page-body .checkbox label::before, body.dark-only .compact-wrapper .page-body-wrapper .page-body .radio label::before {
           background-color: #202938;
