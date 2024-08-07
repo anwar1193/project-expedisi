@@ -13,8 +13,8 @@
 		z-index: 1000;
 		border: 1px solid #ccc;
 		background-color: #fff;
-		padding: 10px;
-		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		padding: 5px;
+		box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 	}
 </style>
 @endpush
@@ -110,8 +110,9 @@
 											<td onmouseover="showBukti({{ $data->id }})" onmouseout="hideBukti({{ $data->id }})" style="position: relative">
 												@if ($bukti_pembayaran != '')
 													<div id="tooltip{{ $data->id }}" class="tooltip-img">
-														<img src="{{ $bukti_pembayaran_view }}" alt="test" width="200px" class="img-fluid mt-2">
-														<a class="btn btn-primary" href="{{ $bukti_pembayaran }}" target="_blank">View Full Image</a>
+														<a href="{{ $bukti_pembayaran }}" target="_blank">
+															<img src="{{ $bukti_pembayaran_view }}" alt="test" width="200px">
+														</a>
 													</div>
 												@endif
 

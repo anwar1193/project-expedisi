@@ -262,8 +262,9 @@
 												<td onmouseover="showBukti(<?php echo e($data->id); ?>)" onmouseout="hideBukti(<?php echo e($data->id); ?>)" style="position: relative;">
 													<?php if($data->bukti_pembayaran != ''): ?>
 														<div id="tooltip<?php echo e($data->id); ?>" class="tooltip-img">
-															<img src="<?php echo e($bukti_pembayaran_view); ?>" alt="" width="200px" class="img-fluid mt-2">
-															<a class="btn btn-primary" href="<?php echo e($bukti_pembayaran_view); ?>" target="_blank">View Image</a>
+															<a href="<?php echo e($bukti_pembayaran_view); ?>" target="_blank">
+																<img src="<?php echo e($bukti_pembayaran_view); ?>" alt="" width="200px">
+															</a>
 														</div>
 													<?php endif; ?>
 													<div id="icon-view<?php echo e($data->id); ?>">

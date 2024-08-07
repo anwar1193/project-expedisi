@@ -128,8 +128,9 @@
 										<td onmouseover="showBukti({{ $data->id }})" onmouseout="hideBukti({{ $data->id }})" style="position: relative; ">
 											@if ($data->bukti_pembayaran != '')
 												<div id="tooltip{{ $data->id }}" class="tooltip-img">
-													<img src="{{ asset('storage/data-pemasukkan/'.$data->bukti_pembayaran) }}" alt="" width="200px" class="img-fluid mt-2">
-													<a class="btn btn-primary" href="{{ asset('storage/data-pemasukkan/'.$data->bukti_pembayaran)}}" target="_blank">View Image</a>
+													<a href="{{ asset('storage/data-pemasukkan/'.$data->bukti_pembayaran)}}" target="_blank">
+														<img src="{{ asset('storage/data-pemasukkan/'.$data->bukti_pembayaran) }}" alt="Bukti Pembayaran" width="200px" class="img-fluid mt-2">
+													</a>
 												</div>
 											@endif
 											<div id="icon-view{{ $data->id }}">
