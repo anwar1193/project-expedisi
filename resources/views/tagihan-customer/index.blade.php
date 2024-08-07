@@ -112,39 +112,44 @@
                 </div>
             </div>
         </div>
-        <form class="row g-3" role="search" action="" method="GET">
-            <div class="col-12 col-md-4">
-                <input type="text" name="no_resi" class="form-control" placeholder="Masukan Nomor Resi" value="{{ request('no_resi') }}">
-            </div>
-            <div class="col-12 col-md-4">
-                <select name="periode" class="form-control js-example-basic-single">
-                    <option value="">- Pilih Periode -</option>
-                    @foreach(getPastDates() as $date)
-                        <option value="{{ $date['value'] }}" {{ request('periode') == $date['value'] ? 'selected' : '' }}>{{ $date['name'] }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="col-12 col-md-4">
-                <select name="status_pengiriman" id="search-pengiriman" class="form-control js-example-basic-single">
-                    <option value="">- Pilih Status Pengiriman -</option>
-                    @foreach ($statusPengiriman as $status)
-                        <option value="{{ $status->status_pengiriman }}" {{ request('status_pengiriman') == $status->status_pengiriman ? 'selected' : '' }}>{{ $status->status_pengiriman }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="col-12 text-md-end">
-                <div class="row justify-content-md-end g-2">
-                    <div class="col-6 col-md-auto">
-                        <button type="submit" class="btn btn-primary w-100" title="Cari"><i class="fa fa-search"></i> Cari</button>
-                    </div>
-                    <div class="col-6 col-md-auto">
-                        <a href="{{ route('tagihan-customer') }}" class="btn btn-secondary w-100" title="Reset"><i class="fa fa-refresh"></i> Reset</a>
-                    </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card p-3">
+                    <form class="row g-3" role="search" action="" method="GET">
+                        <div class="col-12 col-md-4">
+                            <input type="text" name="no_resi" class="form-control" placeholder="Masukan Nomor Resi" value="{{ request('no_resi') }}">
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <select name="periode" class="form-control js-example-basic-single">
+                                <option value="">- Pilih Periode -</option>
+                                @foreach(getPastDates() as $date)
+                                    <option value="{{ $date['value'] }}" {{ request('periode') == $date['value'] ? 'selected' : '' }}>{{ $date['name'] }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <select name="status_pengiriman" id="search-pengiriman" class="form-control js-example-basic-single">
+                                <option value="">- Pilih Status Pengiriman -</option>
+                                @foreach ($statusPengiriman as $status)
+                                    <option value="{{ $status->status_pengiriman }}" {{ request('status_pengiriman') == $status->status_pengiriman ? 'selected' : '' }}>{{ $status->status_pengiriman }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-12 text-md-end">
+                            <div class="row justify-content-md-end g-2">
+                                <div class="col-6 col-md-auto">
+                                    <button type="submit" class="btn btn-primary w-100" title="Cari"><i class="fa fa-search"></i> Cari</button>
+                                </div>
+                                <div class="col-6 col-md-auto">
+                                    <a href="{{ route('tagihan-customer') }}" class="btn btn-secondary w-100" title="Reset"><i class="fa fa-refresh"></i> Reset</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
-        </form>
+        </div>
         
-        <br />
 	    <div class="row">
 	        <!-- Server Side Processing start-->
 	        <div class="col-sm-12">
