@@ -141,14 +141,15 @@ class DashboardController extends Controller
         $end = date('Y-m-d');
         $no_resi = request('no_resi');
         $status_pengiriman = request('status_pengiriman');
-        $status = request('status') ? request('status') : DataPengiriman::STATUS_PENDING;
+        $status = request('status');
 
         $statusPengiriman = StatusPengiriman::all();
         $customer = $this->data_customer();
 
-        $data = DataPengiriman::where('status_pembayaran', $status)
-                    ->where('kode_customer', '=', $customer->kode_customer)
-                    ->when($periode && $end, function ($query) use ($periode, $end) {
+        $data = DataPengiriman::where('kode_customer', '=', $customer->kode_customer)
+                    ->when($status, function ($query) use ($status) {
+                        return $query->where('status_pembayaran', $status);
+                    })->when($periode && $end, function ($query) use ($periode, $end) {
                         return $query->whereBetween('tgl_transaksi', [$periode, $end]);
                     })->when($no_resi, function($query, $no_resi) {
                         return $query->where('no_resi', 'LIKE', $no_resi);
