@@ -24,8 +24,8 @@
 		z-index: 1000;
 		border: 1px solid #ccc;
 		background-color: #fff;
-		padding: 10px;
-		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		padding: 2px;
+		box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
 	}
 
 	input[type="checkbox"] {
@@ -283,7 +283,8 @@
 	
 												if($bukti_pembayaran != ''){
 													$explode = explode("/", $bukti_pembayaran);
-													$bukti_pembayaran_view = 'https://'.$explode[2].'/thumbnail?id='.$explode[5];
+													$bukti_pembayaran_view = 'https://drive.google.com/file/d/'.$explode[5].'/preview';
+													// $bukti_pembayaran_view = 'https://'.$explode[2].'/thumbnail?id='.$explode[5];
 												}else{
 													$bukti_pembayaran_view = '#';
 												}
@@ -347,7 +348,8 @@
 													<?php if($bukti_pembayaran != ''): ?>
 														<div id="tooltip<?php echo e($data->id); ?>" class="tooltip-img">
 															<a href="<?php echo e($bukti_pembayaran); ?>" target="_blank">
-																<img src="<?php echo e($bukti_pembayaran_view); ?>" alt="Bukti Pembayaran" width="200px">
+																
+																<iframe src="<?php echo e($bukti_pembayaran_view); ?>" width="400" height="400" allow="autoplay"></iframe>
 															</a>
 														</div>
 													<?php endif; ?>
