@@ -60,7 +60,8 @@ class StatusPengirimanImport implements ToModel, WithValidation, WithHeadingRow
             $dataSending = sendWaText($data->no_hp_pengirim, $message);
             $response = Http::withHeaders([
                 'Content-Type' => 'application/json',
-            ])->post('https://api.watzap.id/v1/send_message', $dataSending);
+            ])->post('https://wa.rumahpintarinovasi.com/send-message', $dataSending);
+            // ])->post('https://api.watzap.id/v1/send_message', $dataSending);
         }
 //08172645362
         return null;

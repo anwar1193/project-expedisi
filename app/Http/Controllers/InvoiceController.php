@@ -311,7 +311,8 @@ class InvoiceController extends Controller
         try {
             $response = Http::withHeaders([
                 'Content-Type' => 'application/json',
-            ])->post('https://api.watzap.id/v1/send_message', $dataSending);
+            ])->post('https://wa.rumahpintarinovasi.com/send-message', $dataSending);
+            // ])->post('https://api.watzap.id/v1/send_message', $dataSending);
             
             $responses = Http::withHeaders([
                 'Content-Type' => 'application/json',
