@@ -304,7 +304,7 @@
 															<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
 	
 																@if ($data->status_pembayaran != 1 && Session::get('user_level') == 2)
-																	<a class="dropdown-item" href="{{ route('data-pengiriman.approve', $data->id) }}" onclick="return confirm('Approve Data Pengiriman dan Update Status Menjadi Lunas?')"><span><i data-feather="check-square"></i> Approve</span></a>
+																	<a class="dropdown-item" href="{{ route('data-pengiriman.approve', $data->id) }}" onclick="return confirm('Approve Data Pengiriman?')"><span><i data-feather="check-square"></i> Approve</span></a>
 																@endif
 																
 																<a class="dropdown-item" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalDataPengiriman{{ $data->id }}" title="Detail Data"><span><i data-feather="eye"></i> Detail</span></a>
@@ -366,9 +366,9 @@
 												</td> --}}
 	
 												<td class="text-center">
-													<span class="badge {{ $data->status_pembayaran == 1 ? 'badge-primary' : 'badge-warning' }}">
-														<i class="fa {{ $data->status_pembayaran == 1 ? 'fa-check' : 'fa-warning' }}"></i>
-														{{ $data->status_pembayaran == 1 ? 'Lunas' : 'Pending'; }}
+													<span class="badge {{ $data->status_pembayaran == $status_lunas ? 'badge-primary' : ($data->status_pembayaran == $status_approve ? 'badge-secondary' : 'badge-warning' ) }}">
+														<i class="fa {{ $data->status_pembayaran == $status_lunas ? 'fa-check' : ($data->status_pembayaran == $status_approve ? 'fa-check-circle' : 'fa-warning' ) }}"></i>
+														{{ $data->status_pembayaran == $status_lunas ? 'Lunas' : ($data->status_pembayaran == $status_approve ? 'Approved' : 'Pending' ) }}
 													</span>
 												</td>
 	
