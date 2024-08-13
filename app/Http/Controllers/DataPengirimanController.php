@@ -16,6 +16,7 @@ use App\Models\User;
 use App\Models\Invoice;
 use App\Models\TransaksiInvoice;
 use App\Models\TransaksiPembayaran;
+use App\Models\InvoiceBank;
 use Dflydev\DotAccessData\Data;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -219,6 +220,7 @@ class DataPengirimanController extends Controller
         Invoice::truncate();
         TransaksiInvoice::truncate();
         TransaksiPembayaran::truncate();
+        InvoiceBank::truncate();
         return back()->with('success', 'Truncate Success');
     }
 
