@@ -306,20 +306,15 @@ class InvoiceController extends Controller
         }
 
         $dataSending = sendWaText($customer->no_wa, $pesan->isi_pesan);
-        $dataSendings = sendWaUrl($customer->no_wa, URL::to('/'). "/storage/invoices/Invoice-".$invoice->invoice_name.".pdf");
+        $dataSendings = sendWaUrl($customer->no_wa, $pesan->isi_pesan,  URL::to('/'). "/storage/invoices/Invoice-".$invoice->invoice_name.".pdf");
     
         try {
-            $response = Http::withHeaders([
-                'Content-Type' => 'application/json',
-            ])->post('https://wa.rumahpintarinovasi.com/send-message', $dataSending);
-            // ])->post('https://api.watzap.id/v1/send_message', $dataSending);
-            
             $responses = Http::withHeaders([
                 'Content-Type' => 'application/json',
-            ])->post('https://api.watzap.id/v1/send_file_url', $dataSendings);
+            ])->post('https://wa.rumahpintarinovasi.com/send-media', $dataSendings);
+            // ])->post('https://api.watzap.id/v1/send_file_url', $dataSendings);
     
-            // if ($response->successful()) {
-            if ($response->successful() && $responses->successful()) {
+            if ($responses->successful()) {
                return redirect()->route("invoices.index")->with("success", "Invoice Berhasil Dikirim Ke WhatsApp " .$customer->nama);
             } else {
                 return redirect()->route("invoices.index")->with("error", "Invoice Gagal Dikirim Ke WhatsApp " .$customer->nama);

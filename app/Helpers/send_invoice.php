@@ -39,11 +39,13 @@ if (! function_exists('sendWaText')) {
 }
 
 if (! function_exists('sendWaUrl')) {
-    function sendWaUrl($number, $url) {
+    function sendWaUrl($number, $caption, $url) {
         $data = [
-            "api_key" => "TYBUL3W5VDXSUT9P",
-            "number_key" => "TAlgCr43YndCNG0g",
-            "phone_no" => $number,
+            "api_key" => "1EHXPGIu8cAaLxOnMsmWoZquvlJ1DP",
+            "sender" => "6285103064051",
+            "number" => $number,
+            "media_type" => 'document',
+            "caption" => $caption,
             "url" => $url
         ];
 
