@@ -64,7 +64,8 @@ class InvoiceController extends Controller
         $data = DataPengiriman::select('data_pengirimen.*')
                 ->leftJoin('transaksi_invoices', 'data_pengirimen.id', '=', 'transaksi_invoices.data_pengiriman_id')
                 ->where('data_pengirimen.kode_customer', $customer->kode_customer)
-                ->where('data_pengirimen.status_pembayaran', DataPengiriman::STATUS_PENDING)
+                // ->where('data_pengirimen.status_pembayaran', DataPengiriman::STATUS_PENDING)
+                ->whereNot('data_pengirimen.status_pembayaran', DataPengiriman::STATUS_LUNAS)
                 ->whereNull('transaksi_invoices.data_pengiriman_id')
                 ->orderBy('id', 'DESC')->get();
         foreach ($data as $item) {
@@ -96,7 +97,8 @@ class InvoiceController extends Controller
         $data = DataPengiriman::select('data_pengirimen.*')
                 ->leftJoin('transaksi_invoices', 'data_pengirimen.id', '=', 'transaksi_invoices.data_pengiriman_id')
                 ->where('data_pengirimen.kode_customer', $customer->kode_customer)
-                ->where('data_pengirimen.status_pembayaran', DataPengiriman::STATUS_PENDING)
+                // ->where('data_pengirimen.status_pembayaran', DataPengiriman::STATUS_PENDING)
+                ->whereNot('data_pengirimen.status_pembayaran', DataPengiriman::STATUS_LUNAS)
                 ->whereNull('transaksi_invoices.data_pengiriman_id')
                 ->orderBy('id', 'DESC')->get();
         foreach ($data as $item) {
