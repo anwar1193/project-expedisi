@@ -405,6 +405,42 @@ class InvoiceController extends Controller
 
         TransaksiPembayaran::create($validateData);
 
+        // Proses Pelunasan Data Pengiriman ----------------------------------------------------------
+            // 1. Cari Total Kotor Nominal Invoice
+            $transaksi_invoice = TransaksiInvoice::where('invoice_id', $request->invoice_id)->get();
+            $total_nominal_invoice = 0;
+            foreach($transaksi_invoice as $data){
+                $data_pengiriman_id = $data->data_pengiriman_id;
+                $data_pengiriman = DataPengiriman::find($data_pengiriman_id);
+                $total_nominal_invoice += $data_pengiriman->ongkir;
+            }
+
+            // 2. Cari Persentase Diskon Dari Customer
+            $invoice = Invoice::find($request->invoice_id);
+            $id_customer = $invoice->customer_id;
+            $customer = Customer::find($id_customer);
+            $persentase_diskon = $customer->diskon;
+
+            // 3. Total Bersih Nominal Invoice
+            $total_bersih_invoice = $total_nominal_invoice - ($total_nominal_invoice * $persentase_diskon / 100);
+
+            // 4. Cari Nominal yang Sudah Dibayar
+            $invoice_sudah_bayar = TransaksiPembayaran::where('invoice_id', $request->invoice_id)->sum('nominal');
+
+            // 5. Sisa Tagihan = Total Nominal - Nominal Sudah Dibayar
+            $sisa_tagihan = $total_bersih_invoice - $invoice_sudah_bayar;
+
+            // 6. Jika Sisa Tagihan = 0, maka looping data pengiriman dengan invoice_id diatas, lalu ubah status_pembayaran menjadi 1 (lunas)
+            if($sisa_tagihan <= 0){
+                foreach($transaksi_invoice as $data){
+                    $data_pengiriman_id = $data->data_pengiriman_id;
+                    DataPengiriman::find($data_pengiriman_id)->update([
+                        'status_pembayaran' => DataPengiriman::STATUS_LUNAS
+                    ]);
+                }
+            }
+        // End Proses Pelunasan Data Pengiriman --------------------------------------------------------
+
         return redirect()->route('invoices.index')->with('success', 'Pembayaran Invoice Berhasil Ditambahkan');
     }
 
