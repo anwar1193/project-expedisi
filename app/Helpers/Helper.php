@@ -183,6 +183,10 @@ class Helper
 
         foreach ($datas as $key => $data) {
             if (is_array($data)) {
+                if (!preg_match('/^62[0-9]{9,14}$/', $data['no_hp_pengirim']) || !preg_match('/^62[0-9]{9,14}$/', $data['no_hp_penerima'])) {
+                    $errors[] = 'Format No Hp Pengirim atau Penerima Tidak Sesuai';
+                }
+
                 if ($data['metode_pembayaran'] == 'Transfer' && empty($data['bank'])) {
                     $errors[] = 'Bank Wajib Diisi Ketika Metode Pembayaran = Transfer';
                 }
