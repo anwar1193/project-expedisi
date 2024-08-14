@@ -16,6 +16,7 @@ use App\Models\User;
 use App\Models\Invoice;
 use App\Models\TransaksiInvoice;
 use App\Models\TransaksiPembayaran;
+use App\Models\InvoiceBank;
 use Dflydev\DotAccessData\Data;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -60,6 +61,9 @@ class DataPengirimanController extends Controller
         $data['metode'] = MetodePembayaran::all();
         $data['customer'] = Customer::all();
         $data['status'] = $status;
+        $data['status_lunas'] = DataPengiriman::STATUS_LUNAS;
+        $data['status_approve'] = DataPengiriman::STATUS_APPROVE;
+        $data['status_pending'] = DataPengiriman::STATUS_PENDING;
 
         if (isOwner() && $jumlahApprove == 0) {
             return view('data-pengiriman.detail-lengkap-pengiriman', $data);
@@ -216,6 +220,7 @@ class DataPengirimanController extends Controller
         Invoice::truncate();
         TransaksiInvoice::truncate();
         TransaksiPembayaran::truncate();
+        InvoiceBank::truncate();
         return back()->with('success', 'Truncate Success');
     }
 
@@ -224,28 +229,28 @@ class DataPengirimanController extends Controller
         $data_pengiriman = DataPengiriman::find($id);
         
         $data_pengiriman->update([
-            'status_pembayaran' => 1
+            'status_pembayaran' => DataPengiriman::STATUS_APPROVE
         ]);
 
         // Masukkan point ke customer
-        $kode_cust = $data_pengiriman->kode_customer;
-        $besar_transaksi = $data_pengiriman->ongkir;
+        // $kode_cust = $data_pengiriman->kode_customer;
+        // $besar_transaksi = $data_pengiriman->ongkir;
 
-        $konversi_point = KonversiPoint::find(1);
-        $pembagi_point = $konversi_point->nominal;
-        $point_baru = $besar_transaksi / $pembagi_point;
+        // $konversi_point = KonversiPoint::find(1);
+        // $pembagi_point = $konversi_point->nominal;
+        // $point_baru = $besar_transaksi / $pembagi_point;
 
-        Customer::where('kode_customer', $kode_cust)->update([
-            'point' => DB::raw("point + $point_baru")
-        ]);
+        // Customer::where('kode_customer', $kode_cust)->update([
+        //     'point' => DB::raw("point + $point_baru")
+        // ]);
 
         $data = DataPengiriman::where('status_pembayaran', DataPengiriman::STATUS_PENDING)->count();
 
         if ($data == 0) {
-            return redirect()->route('data-pengiriman')->with('success', 'Data Pengiriman Telah Di Approve & Status Transaksi Menjadi Lunas');
+            return redirect()->route('data-pengiriman')->with('success', 'Data Pengiriman Telah Di Approve');
         }
 
-        return back()->with('success', 'Data Pengiriman Telah Di Approve & Status Transaksi Menjadi Lunas');
+        return back()->with('success', 'Data Pengiriman Telah Di Approve');
     }
 
     public function approveSelected(Request $request)
@@ -260,26 +265,26 @@ class DataPengirimanController extends Controller
             $data_pengiriman = DataPengiriman::find($id_pengiriman[$i]);
             
             $data_pengiriman->update([
-                'status_pembayaran' => 1
+                'status_pembayaran' => DataPengiriman::STATUS_APPROVE
             ]);
 
             // Masukkan point ke customer
-            $kode_cust = $data_pengiriman->kode_customer;
-            $besar_transaksi = $data_pengiriman->ongkir;
+            // $kode_cust = $data_pengiriman->kode_customer;
+            // $besar_transaksi = $data_pengiriman->ongkir;
 
-            $konversi_point = KonversiPoint::find(1);
-            $pembagi_point = $konversi_point->nominal;
-            $point_baru = $besar_transaksi / $pembagi_point;
+            // $konversi_point = KonversiPoint::find(1);
+            // $pembagi_point = $konversi_point->nominal;
+            // $point_baru = $besar_transaksi / $pembagi_point;
 
-            Customer::where('kode_customer', $kode_cust)->update([
-                'point' => DB::raw("point + $point_baru")
-            ]);
+            // Customer::where('kode_customer', $kode_cust)->update([
+            //     'point' => DB::raw("point + $point_baru")
+            // ]);
         }
 
         $data = DataPengiriman::where('status_pembayaran', DataPengiriman::STATUS_PENDING)->count();
 
         if ($data == 0) {
-            return redirect()->route('data-pengiriman')->with('success', 'Data Pengiriman Telah Di Approve & Status Transaksi Menjadi Lunas');
+            return redirect()->route('data-pengiriman')->with('success', 'Data Pengiriman Telah Di Approve');
         }
 
         return back()->with('success', 'Data Pengiriman Telah Di Approve');
@@ -380,7 +385,9 @@ class DataPengirimanController extends Controller
                 'berat_barang' => $request->berat_barang[$i],
                 'ongkir' => $request->ongkir[$i],
                 'komisi' => $request->komisi[$i],
-                'status_pembayaran' => $request->metode_pembayaran[$i] == "Tunai" ? 1 : 2,
+
+                'status_pembayaran' => $request->metode_pembayaran[$i] == "Tunai" ? DataPengiriman::STATUS_LUNAS : ($request->metode_pembayaran[$i] == "Transfer" ? DataPengiriman::STATUS_LUNAS :  DataPengiriman::STATUS_PENDING),
+
                 'metode_pembayaran' => $request->metode_pembayaran[$i],
                 'bank' => $request->bank[$i],
                 'bukti_pembayaran' => $request->bukti_pembayaran[$i] ?? "",
@@ -452,7 +459,9 @@ class DataPengirimanController extends Controller
                 'berat_barang' => $request->berat_barang[$i],
                 'ongkir' => $request->ongkir[$i],
                 'komisi' => $request->komisi[$i],
-                'status_pembayaran' => strtolower($request->metode_pembayaran[$i]) == 'tunai' ? 1 : 2,
+
+                'status_pembayaran' => strtolower($request->metode_pembayaran[$i]) == 'tunai' ? DataPengiriman::STATUS_LUNAS : (strtolower($request->metode_pembayaran[$i]) == 'transfer' ? DataPengiriman::STATUS_LUNAS : DataPengiriman::STATUS_PENDING ),
+
                 'metode_pembayaran' => $request->metode_pembayaran[$i],
                 'bank' => $request->bank[$i] ?? '',
                 'bukti_pembayaran' => $request->bukti_pembayaran[$i] ?? '',
