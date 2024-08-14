@@ -81,11 +81,23 @@
                     isValid = false;
                     return false;
                 }
+                if (!/^62[0-9]{9,14}$/.test($(this).val())) {
+                    $(this).addClass('is-invalid');
+                    alert("Format No Hp Pengirim Tidak Sesuai");
+                    isValid = false;
+                    return false;
+                }
             });
             $('input[name="no_hp_penerima[]"]').each(function() {
                 if ($(this).val() == "") {
                     $(this).addClass('is-invalid');
                     alert("Nomor HP penerima harus diisi");
+                    isValid = false;
+                    return false;
+                }
+                if (!/^62[0-9]{9,14}$/.test($(this).val())) {
+                    $(this).addClass('is-invalid');
+                    alert("Format No Hp Penerima Tidak Sesuai");
                     isValid = false;
                     return false;
                 }
