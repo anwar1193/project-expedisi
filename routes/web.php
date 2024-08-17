@@ -32,6 +32,7 @@ use App\Http\Controllers\MetodePembayaranController;
 use App\Http\Controllers\PemasukanLainnyaController;
 use App\Http\Controllers\DaftarPengeluaranController;
 use App\Http\Controllers\PembelianPerlengkapanController;
+use App\Http\Controllers\SettingWaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -340,6 +341,11 @@ Route::middleware("auth")->group(function() {
 
     Route::prefix('point-customer')->group(function() {
         Route::get('/', [DashboardController::class, 'point'])->name('point-customer');
+    });
+    
+    Route::prefix('konfigurasi-wa')->group(function() {
+        Route::get('/', [SettingWaController::class, 'index'])->name('setting-wa');
+        Route::post('/update', [SettingWaController::class, 'update'])->name('setting-wa.update');
     });
 
     Route::get('user-level', [UserController::class, 'listLevel'])->name('level');

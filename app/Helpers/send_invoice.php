@@ -25,11 +25,15 @@
 //         return $data;
 //     }
 // }
+
+use App\Models\SettingWa;
+
 if (! function_exists('sendWaText')) {
     function sendWaText($number, $message) {
+        $setting = SettingWa::orderBy('id', 'desc')->first();
         $data = [
-            "api_key" => "1EHXPGIu8cAaLxOnMsmWoZquvlJ1DP",
-            "sender" => "6285103064051",
+            "api_key" => $setting->api_key,
+            "sender" => $setting->sender,
             "number" => $number,
             "message" => $message,
         ];
@@ -40,9 +44,10 @@ if (! function_exists('sendWaText')) {
 
 if (! function_exists('sendWaUrl')) {
     function sendWaUrl($number, $caption, $url) {
+        $setting = SettingWa::orderBy('id', 'desc')->first();
         $data = [
-            "api_key" => "1EHXPGIu8cAaLxOnMsmWoZquvlJ1DP",
-            "sender" => "6285103064051",
+            "api_key" => $setting->api_key,
+            "sender" => $setting->sender,
             "number" => $number,
             "media_type" => 'document',
             "caption" => $caption,
