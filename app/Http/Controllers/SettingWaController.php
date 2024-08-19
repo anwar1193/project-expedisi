@@ -20,7 +20,9 @@ class SettingWaController extends Controller
 
         $validateData = $request->validate([
             'api_key' => 'required|',
-            'sender' => 'required'
+            'sender' => 'required',
+            'url_message' => 'required',
+            'url_media' => 'required'
         ]);
 
         $setting = SettingWa::findOrFail($id);
