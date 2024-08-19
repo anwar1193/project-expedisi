@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use App\Models\data;
 use App\Models\DataPengiriman;
 use App\Models\Pesan;
+use App\Models\SettingWa;
 use App\Models\StatusPengiriman;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\Rule;
@@ -57,10 +58,11 @@ class StatusPengirimanImport implements ToModel, WithValidation, WithHeadingRow
                 $pesan->isi_pesan
             );
             
+            $url = SettingWa::select('url_message AS url')->latest()->first();
             $dataSending = sendWaText($data->no_hp_pengirim, $message);
             $response = Http::withHeaders([
                 'Content-Type' => 'application/json',
-            ])->post('https://wa.rumahpintarinovasi.com/send-message', $dataSending);
+            ])->post($url->url, $dataSending);
             // ])->post('https://api.watzap.id/v1/send_message', $dataSending);
         }
 //08172645362

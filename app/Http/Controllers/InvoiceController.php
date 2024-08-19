@@ -15,6 +15,7 @@ use App\Models\Pesan;
 use App\Models\TransaksiInvoice;
 use App\Models\TransaksiPembayaran;
 use App\Models\InvoiceBank;
+use App\Models\SettingWa;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
@@ -307,13 +308,14 @@ class InvoiceController extends Controller
             return back()->with("error", "Silahkan Cetak invoice Terlebih Dahulu");
         }
 
-        $dataSending = sendWaText($customer->no_wa, $pesan->isi_pesan);
+        // $dataSending = sendWaText($customer->no_wa, $pesan->isi_pesan);
+        $url = SettingWa::select('url_media AS url')->latest()->first();
         $dataSendings = sendWaUrl($customer->no_wa, $pesan->isi_pesan,  URL::to('/'). "/storage/invoices/Invoice-".$invoice->invoice_name.".pdf");
     
         try {
             $responses = Http::withHeaders([
                 'Content-Type' => 'application/json',
-            ])->post('https://wa.rumahpintarinovasi.com/send-media', $dataSendings);
+            ])->post($url->url, $dataSendings);
             // ])->post('https://api.watzap.id/v1/send_file_url', $dataSendings);
     
             if ($responses->successful()) {

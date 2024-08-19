@@ -41,7 +41,7 @@
                                 </div>
                             @endif						
                             <input type="text" name="id" value="{{ $settings->id }}" hidden>
-                            <div class="row">
+                            <div class="row py-2">
                                 <div class="col-sm-12">
                                     <label class="form-label" for="api_key">API Key</label>
                                     <input class="form-control @error('api_key') is-invalid @enderror" type="text" name="api_key" value="{{ old('api_key', $settings->api_key) }}" />
@@ -53,12 +53,36 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row py-2">
                                 <div class="col-sm-12">
                                     <label class="form-label" for="sender">Sender</label>
                                     <input class="form-control @error('sender') is-invalid @enderror" type="text" name="sender" value="{{ old('sender', $settings->sender) }}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" />
 
                                     @error('sender')
+                                        <div class="text-danger">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="row py-2">
+                                <div class="col-sm-12">
+                                    <label class="form-label" for="sender">URL Send Message</label>
+                                    <input class="form-control @error('url_message') is-invalid @enderror" type="text" name="url_message" value="{{ old('url_message', $settings->url_message) }}" />
+
+                                    @error('url_message')
+                                        <div class="text-danger">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="row py-2">
+                                <div class="col-sm-12">
+                                    <label class="form-label" for="sender">URL Send Media</label>
+                                    <input class="form-control @error('url_media') is-invalid @enderror" type="text" name="url_media" value="{{ old('url_media', $settings->url_media) }}" />
+
+                                    @error('url_media')
                                         <div class="text-danger">
                                             {{ $message }}
                                         </div>

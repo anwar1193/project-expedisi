@@ -16,7 +16,9 @@ class SettingWaSeeder extends Seeder
     {
         SettingWa::create([
             'api_key' => "1EHXPGIu8cAaLxOnMsmWoZquvlJ1DP",
-            'sender' => "6285103064051"
+            'sender' => "6285103064051",
+            "url_message" => "https://wa.rumahpintarinovasi.com/send-message",
+            "url_media" => "https://wa.rumahpintarinovasi.com/send-media"
         ]);
     }
 }
