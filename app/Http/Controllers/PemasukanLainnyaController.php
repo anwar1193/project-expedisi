@@ -286,9 +286,14 @@ class PemasukanLainnyaController extends Controller
 
         if(Storage::exists('public/data-pemasukkan/'. $getImage->bukti_pembayaran)){
             Storage::delete('public/data-pemasukkan/'. $getImage->bukti_pembayaran);
+        } 
+
+        if(Storage::exists('public/data-pemasukkan/'. $getImage->bukti_pembayaran2)){
+            Storage::delete('public/data-pemasukkan/'. $getImage->bukti_pembayaran2);
         }
 
-        Gdrive::delete('data-pemasukkan/'.$getImage->bukti_pembayaran);
+        // Gdrive::delete('data-pemasukkan/'.$getImage->bukti_pembayaran);
+        // Gdrive::delete('data-pemasukkan/'.$getImage->bukti_pembayaran);
         PemasukanLainnya::where('id', $id)->delete();
         Helper::logActivity('Hapus data pemasukan dengan id : '.$id);
 
