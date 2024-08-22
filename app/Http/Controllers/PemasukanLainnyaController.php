@@ -62,12 +62,15 @@ class PemasukanLainnyaController extends Controller
             'customer' => 'required_without:sumber_pemasukkan',
             'metode_pembayaran' => 'required',
             'bukti_pembayaran' => 'required_without:image',
+            'metode_pembayaran2' => 'nullable',
             'image' => 'required_without:bukti_pembayaran', 
             'keterangan_tambahan' => 'required',
         ]);
 
         $foto = $request->file('bukti_pembayaran'); // take picture
         $img = $request->image;      
+        $foto2 = $request->file('bukti_pembayaran2'); // take picture
+        $img2 = $request->image2;     
 
         if($foto != ''){
             // Set Up Untuk Penyimopnan Image ke GDrive
@@ -98,10 +101,36 @@ class PemasukanLainnyaController extends Controller
 
             $validateData['bukti_pembayaran'] = $fileName;
         }
+        
+        if($foto2 != ''){
+            // Proses Simoan Storage
+            $namafile = 'data-pemasukkan/'.$foto2->hashName();
+
+            // Proses Simpan GDrive
+            // Storage::disk('google')->put($namafile, File::get($path));
+
+            $foto2->storeAs('public/data-pemasukkan', $foto2->hashName());
+            $validateData['bukti_pembayaran2'] = $foto2->hashName();
+        } elseif (($img2 != '') && ($request->takeImage2 == 'on')) {
+            // Proses Image Base64
+            // Pembayaran 2
+            $imageData2 = $this->saveBase64Image($img2);
+            $file2 = $imageData2['file'];
+            $fileName2 = $imageData2['fileName'];
+            $fileNamePath = 'data-pemasukkan/'.$imageData2['fileName'];
+            $image_base64_2 = $imageData2['image_base64'];
+            $path = public_path('storage/data-pemasukkan/' . $fileName2);
+
+            Storage::disk('local')->put($file2, $image_base64_2);
+            $validateData['bukti_pembayaran2'] = $fileName2;
+        }
 
         $barang = $request->barang;
         $jasa = $request->jasa;
 
+        if ($validateData['metode_pembayaran2'] != '' && $validateData['bukti_pembayaran2'] == '') {
+            return back()->with('error', 'Bukti Pembayaran 2 Wajib Diisi Jika Pilih Multi Pembayaran');
+        }
         $validateData['barang_jasa'] = $barang != '' ? $barang : $jasa;
         $validateData['diterima_oleh'] = Session::get('nama');
         $validateData['tgl_pemasukkan'] = $today;
@@ -149,17 +178,20 @@ class PemasukanLainnyaController extends Controller
             'sumber_pemasukkan' => 'required_without:customer',
             'customer' => 'required_without:sumber_pemasukkan',
             'metode_pembayaran' => 'required',
+            'metode_pembayaran2' => 'nullable',
             'keterangan_tambahan' => 'required',
         ]);
 
         $foto = $request->file('bukti_pembayaran');
         $img = $request->image;
+        $foto2 = $request->file('bukti_pembayaran2');
+        $img2 = $request->image2;
 
         $getImage = PemasukanLainnya::find($id);
 
         if($foto != ''){
             // Proses Simoan Storage
-            Storage::delete('public/data-pemasukkan/'.$getImage->foto);
+            Storage::delete('public/data-pemasukkan/'.$getImage->bukti_pembayaran);
             $foto->storeAs('public/data-pemasukkan', $foto->hashName());
 
             // Set Up Untuk Penyimopnan Image ke GDrive
@@ -178,7 +210,7 @@ class PemasukanLainnyaController extends Controller
             $image_base64 = $imageData['image_base64'];
 
             // Proses Simoan Storage
-            Storage::delete('public/data-pemasukkan/'.$getImage->foto);
+            Storage::delete('public/data-pemasukkan/'.$getImage->bukti_pembayaran);
             Storage::disk('local')->put($file, $image_base64);
 
             // Set Up Untuk Penyimopnan Image ke GDrive
@@ -190,6 +222,41 @@ class PemasukanLainnyaController extends Controller
             // Storage::disk('google')->put($namafile, File::get($path));
 
             $buktiPembayaran = $fileName;
+        }
+        
+        if($foto2 != ''){
+            // Proses Simoan Storage
+            Storage::delete('public/data-pemasukkan/'.$getImage->bukti_pembayaran2);
+            $foto2->storeAs('public/data-pemasukkan', $foto2->hashName());
+
+            // Set Up Untuk Penyimopnan Image ke GDrive
+            $namafile = 'data-pemasukkan/'.$foto2->hashName();
+            $path = public_path('storage/data-pemasukkan/' . $foto2->hashName());
+
+            // Proses Simoan GDrive
+            // Gdrive::delete('data-pemasukkan/'.$getImage->bukti_pembayaran);
+            // Storage::disk('google')->put($namafile, File::get($path));
+            $buktiPembayaran2 = $foto2->hashName();
+        } elseif (($img2 != '') && ($request->takeImage2 == 'on')) {
+            // Proses Image Base64
+            $imageData2 = $this->saveBase64Image($img2);
+            $file2 = $imageData2['file'];
+            $fileName2 = $imageData2['fileName'];
+            $image_base64_2 = $imageData2['image_base64'];
+
+            // Proses Simoan Storage
+            Storage::delete('public/data-pemasukkan/'.$getImage->bukti_pembayaran2);
+            Storage::disk('local')->put($file2, $image_base64_2);
+
+            // Set Up Untuk Penyimopnan Image ke GDrive
+            $namafile = 'data-pemasukkan/'.$fileName2;
+            $path = public_path('storage/data-pemasukkan/' . $fileName2);
+
+            // Proses Simoan GDrive
+            // Gdrive::delete('data-pemasukkan/'.$getImage->bukti_pembayaran);
+            // Storage::disk('google')->put($namafile, File::get($path));
+
+            $buktiPembayaran2 = $fileName2;
         }
 
         $sumber_pemasukkan = !$request->dataCustomer ? $request->sumber_pemasukkan : $request->customer;
@@ -203,6 +270,8 @@ class PemasukanLainnyaController extends Controller
             'sumber_pemasukkan' => $sumber_pemasukkan,
             'metode_pembayaran' => $request->metode_pembayaran,
             'bukti_pembayaran' => ($foto || $img ? $buktiPembayaran : $getImage->bukti_pembayaran),
+            'metode_pembayaran2' => $request->metode_pembayaran2,
+            'bukti_pembayaran2' => ($foto2 || $img2 ? $buktiPembayaran2 : $getImage->bukti_pembayaran2),
             'keterangan_tambahan' => $request->keterangan_tambahan,
         ]);
 

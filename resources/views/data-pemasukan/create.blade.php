@@ -258,7 +258,59 @@
 							</div>
 
 							<div id="pembayaran2" style="display: none">
-								PEMBAYARAN 2
+								<div class="row">
+									<div class="col">
+										<div class="mb-3">
+											<label class="form-label" for="">Metode Pembayaran 2</label>
+											<select name="metode_pembayaran2" id="metode_pembayaran" class="form-control @error('metode_pembayaran2') is-invalid @enderror">
+												<option value="">- Pilih Metode Pembayaran -</option>
+												<option value="tunai" {{ old('metode_pembayaran') == 'tunai' ? 'selected' : '' }}>Tunai</option>
+												<option value="transfer" {{ old('metode_pembayaran') == 'transfer' ? 'selected' : '' }}>Transfer</option>
+												<option style="display: block" id="kredit" value="kredit" {{ old('metode_pembayaran') == 'kredit' ? 'selected' : '' }}>Kredit</option>
+											</select>
+	
+											@error('metode_pembayaran2')
+											<div class="text-danger">
+												{{ $message }}
+											</div>
+											@enderror
+										</div>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col">
+										<div class="mb-2">
+											<label class="form-label" for="">Bukti Pembayaran 2</label>
+											<input class="form-control @error('bukti_pembayaran2') is-invalid @enderror" id="buktiBayar2" type="file" width="48" height="48" name="bukti_pembayaran2" />
+										
+											@error('bukti_pembayaran2')
+											<div class="text-danger">
+												{{ $message }}
+											</div>
+											@enderror
+										</div>
+										<div>										
+											<input class="form-check-input" id="takeImage2" type="checkbox" name="takeImage2" />
+											<label class="form-check-label" for="takeImage2">Ambil Gambar</label>
+	
+											<div id="image2" style="display:none">
+												<div>
+													<input type="hidden" id="bukti_pembayaran_2" name="image2">
+													<video width="250" height="200" autoplay="true" id="videoElement2">
+													</video>
+													<canvas width="250" height="200" id="canvas2"></canvas>
+												</div>
+											</div>
+	
+											@error('bukti_pembayaran')
+											<div class="text-danger">
+												{{ $message }}
+											</div>
+											@enderror
+										</div>
+									</div>
+								</div>
 							</div>
 
 							<div class="row mt-2">
@@ -289,6 +341,14 @@
 						</div>
 						<div>
 							<button class="btn btn-warning" id="cancelButton" onclick="cancelCapture()">Cancel Capture</button>
+						</div>
+					</div>
+					<div class="d-flex ps-3 pb-3 mb-3">
+						<div>
+							<button class="btn btn-success" id="captureButton2">Capture Image 2</button>
+						</div>
+						<div>
+							<button class="btn btn-warning" id="cancelButton2" onclick="cancelCapture()">Cancel Capture</button>
 						</div>
 					</div>
 				</div>
@@ -334,8 +394,6 @@
 	</script>
 
 	<script>
-
-
 		function toggleUserFields() {
 			var takeImageCheckbox = document.getElementById('takeImage');
 			var image = document.getElementById('image');
@@ -396,6 +454,55 @@
 				buktiBayar.style.display = 'block';
 			}
 		}
+		
+		function toggleUserFields2() {
+			var takeImageCheckbox = document.getElementById('takeImage2');
+			var image = document.getElementById('image2');
+			var buktiBayar = document.getElementById('buktiBayar2');
+			const video = document.querySelector(`#videoElement2`);
+			const canvas = document.getElementById('canvas2');
+            const captureButton = document.getElementById('captureButton2');
+            const cancelButton = document.getElementById('cancelButton2');
+            const imageInput = document.getElementById('bukti_pembayaran_2');
+		
+			if (video && takeImageCheckbox.checked) {
+				if (navigator.mediaDevices.getUserMedia) {
+					navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment'}  })
+					// navigator.mediaDevices.getUserMedia({ video: true })
+						.then(function (stream) {
+							video.srcObject = stream;
+						})
+						.catch(function (error) {
+							console.log("Something went wrong!", error);
+						});
+
+					captureButton.addEventListener('click', function() {
+						const context = canvas.getContext('2d');
+						context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+						const imgData = canvas.toDataURL('image/png');
+						imageInput.value = imgData;
+					});
+				} else {
+					console.log("getUserMedia not supported on your browser!");
+				}
+			} else {
+				video.srcObject = null;
+				console.log(`Video element not found!`);
+			}
+
+			if (takeImageCheckbox.checked) {
+				image.style.display = 'block';
+				captureButton.style.display = 'block';
+				cancelButton.style.display = 'block';
+				buktiBayar.style.display = 'none';
+			} else {
+				image.style.display = 'none';
+				captureButton.style.display = 'none';
+				cancelButton.style.display = 'none';
+				buktiBayar.style.display = 'block';
+			}
+		}
 
 		function cancelCapture() {
 			const video = document.querySelector(`#videoElement`);
@@ -413,10 +520,29 @@
 			const context = canvas.getContext('2d');
     		context.clearRect(0, 0, canvas.width, canvas.height);
 		}
+		
+		function cancelCapture2() {
+			const video = document.querySelector(`#videoElement2`);
+			const imageInput = document.getElementById('bukti_pembayaran2');
+			const image = document.getElementById('image2');
+			const captureButton = document.getElementById('captureButton2');
+			const buktiBayar = document.getElementById('buktiBayar2');
+			
+			video.srcObject = null;
+			imageInput.value = '';
+			image.style.display = 'none';
+			captureButton.style.display = 'none';
+			buktiBayar.style.display = 'block';
+
+			const context = canvas.getContext('2d');
+    		context.clearRect(0, 0, canvas.width, canvas.height);
+		}
 
 		document.getElementById('takeImage').addEventListener('change', toggleUserFields);
+		document.getElementById('takeImage2').addEventListener('change', toggleUserFields2);
 
 		document.addEventListener('DOMContentLoaded', toggleUserFields);
+		document.addEventListener('DOMContentLoaded', toggleUserFields2);
 	</script>
 
 	<script>
@@ -430,6 +556,8 @@
 		const barangs = document.getElementById('barangs');
 		const jasa = document.getElementById('jasa');
 		const modalInput = document.querySelector('input[name="modal"]');
+		const multiPaymentCheckbox = document.getElementById('multi_payment');
+		const pembayaranKeDua = document.getElementById('pembayaran2');
 
         // Fungsi untuk mengubah visibilitas elemen select
         function toggleCustomerSelect() {
@@ -468,11 +596,20 @@
 			modalInput.value = valueBarang.harga_jual;
 		}
 
+		function toggleMultiPayment() {
+			if (multiPaymentCheckbox.checked) {
+                pembayaranKeDua.style.display = 'block';
+            } else {
+                pembayaranKeDua.style.display = 'none';
+            }
+		}
+
 		barang.addEventListener('change', toggleBarangSelect);
 		kategori.addEventListener('change', toggleCategorySelect);
 
         // Tambahkan event listener ke checkbox
         dataCustomerCheckbox.addEventListener('change', toggleCustomerSelect);
+		multiPaymentCheckbox.addEventListener('change', toggleMultiPayment)
 		
         // Panggil fungsi saat halaman pertama kali dimuat
         toggleCustomerSelect();
