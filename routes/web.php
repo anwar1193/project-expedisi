@@ -321,6 +321,7 @@ Route::middleware("auth")->group(function() {
         Route::post('/closing-saldo', [CashController::class, 'closing_cash'])->name('posisi-cash.closing');
         Route::get('/approve/{id}', [CashController::class, 'approve'])->name('posisi-cash.approve');
         Route::post('/approve-selected', [CashController::class, 'approveSelected'])->name('posisi-cash.approveSelected');
+        Route::get('/truncate', [CashController::class, 'truncate'])->name('posisi-cash.truncate');
     });
 
     Route::prefix('pengeluaran-cash')->group(function() {

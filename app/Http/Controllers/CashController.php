@@ -27,6 +27,14 @@ class CashController extends Controller
         return view('posisi-cash.index', $data);
     }
 
+    public function truncate()
+    {
+        PemasukanCash::truncate();
+        PengeluaranCash::truncate();
+        SaldoCash::truncate();
+        return back()->with('success', 'Truncate Success');
+    }
+
     public function pemasukan_cash(Request $request)
     {
         $this->validate($request, [
@@ -34,10 +42,26 @@ class CashController extends Controller
             'tanggal' => 'required'
         ]);
 
+        $saldo_hari_ini = SaldoCash::where('tanggal', $request->tanggal);
+
+        if($saldo_hari_ini->count() > 0){
+            $saldo_lama = $saldo_hari_ini->first()->saldo;
+            SaldoCash::where('tanggal', $request->tanggal)->update([
+                'saldo' => $saldo_lama + $request->jumlah
+            ]);
+        }else{
+            SaldoCash::create([
+                'saldo' => $request->jumlah,
+                'tanggal' => $request->tanggal
+            ]);
+        }
+
         PemasukanCash::create([
             'jumlah' => $request->jumlah,
             'tanggal' => $request->tanggal,
         ]);
+
+        
 
         return redirect()->route('posisi-cash')->with('success', 'Pemasukan cash berhasil ditambahkan');
     }
@@ -48,6 +72,17 @@ class CashController extends Controller
             'jumlah' => 'required|numeric',
             'tanggal' => 'required'
         ]);
+
+        $saldo_hari_ini = SaldoCash::where('tanggal', $request->tanggal);
+
+        if($saldo_hari_ini->count() > 0){
+            $saldo_lama = $saldo_hari_ini->first()->saldo;
+            SaldoCash::where('tanggal', $request->tanggal)->update([
+                'saldo' => $saldo_lama - $request->jumlah
+            ]);
+        }else{
+            return redirect()->route('posisi-cash')->with('error', 'Saldo hari ini belum Ter-Generate');
+        }
 
         PengeluaranCash::create([
             'jumlah' => $request->jumlah,
