@@ -1,6 +1,6 @@
 @extends('layouts.admin.master')
 
-@section('title')Daftar Pengeluaran
+@section('title')Data Pengeluaran
  {{ $title }}
 @endsection
 
@@ -93,9 +93,9 @@
 @section('content')
 	@component('components.breadcrumb')
 		@slot('breadcrumb_title')
-			<h3>Daftar Pengeluaran</h3>
+			<h3>Data Pengeluaran</h3>
 		@endslot
-		<li class="breadcrumb-item active"><a href="{{ route('daftar-pengeluaran') }}">Daftar Pengeluaran</a></li>
+		<li class="breadcrumb-item active"><a href="{{ route('daftar-pengeluaran') }}">Data Pengeluaran</a></li>
 		<li class="breadcrumb-item active">Table</li>
 	@endcomponent
 
