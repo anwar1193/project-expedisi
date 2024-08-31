@@ -227,30 +227,35 @@ class DataPengirimanController extends Controller
     public function approve($id)
     {
         $data_pengiriman = DataPengiriman::find($id);
+        $new_status = $data_pengiriman->status_pembayaran == DataPengiriman::STATUS_APPROVE ? 
+                    DataPengiriman::STATUS_PENDING : DataPengiriman::STATUS_APPROVE;
         
         $data_pengiriman->update([
-            'status_pembayaran' => DataPengiriman::STATUS_APPROVE
+            'status_pembayaran' => $new_status
+
         ]);
 
         // Masukkan point ke customer
-        // $kode_cust = $data_pengiriman->kode_customer;
-        // $besar_transaksi = $data_pengiriman->ongkir;
+        $kode_cust = $data_pengiriman->kode_customer;
+        $besar_transaksi = $data_pengiriman->ongkir;
 
-        // $konversi_point = KonversiPoint::find(1);
-        // $pembagi_point = $konversi_point->nominal;
-        // $point_baru = $besar_transaksi / $pembagi_point;
+        $konversi_point = KonversiPoint::find(1);
+        $pembagi_point = $konversi_point->nominal;
+        $point_baru = $besar_transaksi / $pembagi_point;
 
-        // Customer::where('kode_customer', $kode_cust)->update([
-        //     'point' => DB::raw("point + $point_baru")
-        // ]);
+        Customer::where('kode_customer', $kode_cust)->update([
+            'point' => DB::raw("point + $point_baru")
+        ]);
 
         $data = DataPengiriman::where('status_pembayaran', DataPengiriman::STATUS_PENDING)->count();
+        $message = $new_status == 1 ? 'Data Pengiriman Telah Di Approve' : 'Approval Data Pengiriman Telah Dibatalkan';
 
-        if ($data == 0) {
-            return redirect()->route('data-pengiriman')->with('success', 'Data Pengiriman Telah Di Approve');
-        }
+        # Temporary Comment
+        // if ($data == 0) {
+        //     return redirect()->route('data-pengiriman')->with('success', 'Data Pengiriman Telah Di Approve');
+        // }
 
-        return back()->with('success', 'Data Pengiriman Telah Di Approve');
+        return back()->with('success', $message);
     }
 
     public function approveSelected(Request $request)
@@ -264,21 +269,25 @@ class DataPengirimanController extends Controller
         for($i=0; $i<sizeof($id_pengiriman); $i++){
             $data_pengiriman = DataPengiriman::find($id_pengiriman[$i]);
             
+            $new_status = $data_pengiriman->status_pembayaran == DataPengiriman::STATUS_APPROVE ? 
+                    DataPengiriman::STATUS_PENDING : DataPengiriman::STATUS_APPROVE;
+        
             $data_pengiriman->update([
-                'status_pembayaran' => DataPengiriman::STATUS_APPROVE
+                'status_pembayaran' => $new_status
+
             ]);
 
             // Masukkan point ke customer
-            // $kode_cust = $data_pengiriman->kode_customer;
-            // $besar_transaksi = $data_pengiriman->ongkir;
+            $kode_cust = $data_pengiriman->kode_customer;
+            $besar_transaksi = $data_pengiriman->ongkir;
 
-            // $konversi_point = KonversiPoint::find(1);
-            // $pembagi_point = $konversi_point->nominal;
-            // $point_baru = $besar_transaksi / $pembagi_point;
+            $konversi_point = KonversiPoint::find(1);
+            $pembagi_point = $konversi_point->nominal;
+            $point_baru = $besar_transaksi / $pembagi_point;
 
-            // Customer::where('kode_customer', $kode_cust)->update([
-            //     'point' => DB::raw("point + $point_baru")
-            // ]);
+            Customer::where('kode_customer', $kode_cust)->update([
+                'point' => DB::raw("point + $point_baru")
+            ]);
         }
 
         $data = DataPengiriman::where('status_pembayaran', DataPengiriman::STATUS_PENDING)->count();
@@ -287,7 +296,10 @@ class DataPengirimanController extends Controller
             return redirect()->route('data-pengiriman')->with('success', 'Data Pengiriman Telah Di Approve');
         }
 
-        return back()->with('success', 'Data Pengiriman Telah Di Approve');
+        if ($request->unapprove == 'unapprove') {
+            return back()->with('success', 'Approval Data Pengiriman Telah Dibatalkan');
+        }
+         return back()->with('success', 'Data Pengiriman Telah Di Approve');
     }
 
     public function import_status_pengiriman(Request $request)
