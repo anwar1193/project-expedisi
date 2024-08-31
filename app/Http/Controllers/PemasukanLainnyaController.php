@@ -8,6 +8,7 @@ use App\Models\Customer;
 use App\Models\Jasa;
 use App\Models\PemasukanLainnya;
 use App\Models\DataPengiriman;
+use App\Models\MetodePembayaran;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -45,8 +46,9 @@ class PemasukanLainnyaController extends Controller
         $barangs = Barang::all();
         $jasas = Jasa::all();
         $resi = DataPengiriman::all();
+        $metode = MetodePembayaran::all();
 
-        return view('data-pemasukan.create', compact('customer', 'barangs', 'jasas', 'resi'));
+        return view('data-pemasukan.create', compact('customer', 'barangs', 'jasas', 'resi', 'metode'));
     }
 
     public function store(Request $request)
@@ -164,6 +166,7 @@ class PemasukanLainnyaController extends Controller
         $data['barang'] = Barang::orderBy('id', 'ASC')->get();
         $data['jasa'] = Jasa::orderBy('id', 'ASC')->get();
         $data['datas'] = $datas;
+        $data['metode'] = MetodePembayaran::all();
 
         return view('data-pemasukan.edit', $data);
     }

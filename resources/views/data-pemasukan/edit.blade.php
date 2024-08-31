@@ -174,9 +174,11 @@
 									<div class="mb-3">
 										<label class="form-label" for="">Metode Pembayaran</label>
                                         <select name="metode_pembayaran" id="metode_pembayaran" class="form-control @error('metode_pembayaran') is-invalid @enderror">
-											<option value="tunai" {{ $datas->metode_pembayaran == 'tunai' ? 'selected' : NULL }}>Tunai</option>
-											<option value="transfer" {{ $datas->metode_pembayaran == 'transfer' ? 'selected' : NULL }}>Transfer</option>
-											<option style="display: block" id="kredit" value="kredit" {{ $datas->metode_pembayaran == 'kredit' ? 'selected' : NULL }}>Kredit</option>
+											@foreach ($metode as $item)
+												<option value="{{ $item->metode }}" {{ strtolower($datas->metode_pembayaran) == strtolower($item->metode) ? 'selected' : '' }}>
+													{{ $item->metode }}
+												</option>
+											@endforeach
 										</select>
 
 										@error('metode_pembayaran')

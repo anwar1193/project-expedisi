@@ -202,10 +202,11 @@
 										<label class="form-label" for="">Metode Pembayaran</label>
 										<select name="metode_pembayaran" id="metode_pembayaran" class="form-control @error('metode_pembayaran') is-invalid @enderror">
 											<option value="">- Pilih Metode Pembayaran -</option>
-											<option value="tunai" {{ old('metode_pembayaran') == 'tunai' ? 'selected' : '' }}>Tunai</option>
-											<option value="transfer" {{ old('metode_pembayaran') == 'transfer' ? 'selected' : '' }}>Transfer</option>
-											<option style="display: block" id="kredit" value="kredit" {{ old('metode_pembayaran') == 'kredit' ? 'selected' : '' }}>Kredit</option>
-										</select>
+											@foreach ($metode as $item)
+											<option value="{{ $item->metode }}" {{ old('metode_pembayaran') == $item->metode ? 'selected' : '' }}>
+												{{ $item->metode }}
+											</option>
+										@endforeach										</select>
 
 										@error('metode_pembayaran')
 										<div class="text-danger">
