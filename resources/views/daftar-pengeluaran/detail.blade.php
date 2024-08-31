@@ -3,7 +3,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content justify-content-start">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Detail Data Pembayaran</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Detail Data Pengeluran</h5>
                 <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
