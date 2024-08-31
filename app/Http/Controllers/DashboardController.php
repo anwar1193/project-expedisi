@@ -146,9 +146,10 @@ class DashboardController extends Controller
         $statusPengiriman = StatusPengiriman::all();
         $customer = $this->data_customer();
 
-        $data = DataPengiriman::select('data_pengirimen.*', 'invoices.id AS invoiceId', 'invoices.diskon', 'customers.diskon AS diskon_customer')
+        $data = DataPengiriman::select('data_pengirimen.*', 'invoices.id AS invoiceId', 'invoices.diskon', 'customers.diskon AS diskon_customer', 'status.keterangan_pengiriman AS keterangan')
                     ->leftjoin('customers', 'customers.kode_customer', '=', 'data_pengirimen.kode_customer')
                     ->leftjoin('invoices', 'invoices.customer_id', '=', 'customers.id')
+                    ->leftjoin('status_pengirimen AS status', 'status.status_pengiriman', '=', 'data_pengirimen.status_pengiriman')
                     ->where('data_pengirimen.kode_customer', '=', $customer->kode_customer)
                     ->when($status, function ($query) use ($status) {
                         return $query->where('status_pembayaran', $status);

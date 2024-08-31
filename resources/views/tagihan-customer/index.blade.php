@@ -188,7 +188,7 @@
                     
                                             if($bukti_pembayaran != ''){
                                                 $explode = explode("/", $bukti_pembayaran);
-                                                $bukti_pembayaran_view = 'https://'.$explode[2].'/thumbnail?id='.$explode[5];
+                                                $bukti_pembayaran_view = 'https://drive.google.com/file/d/'.$explode[5].'/preview';
                                             }else{
                                                 $bukti_pembayaran_view = '#';
                                             }
@@ -210,7 +210,7 @@
                                                 @if ($bukti_pembayaran != '')
                                                     <div id="tooltip{{ $data->id }}" class="tooltip-img">
                                                         <a href="{{ $bukti_pembayaran }}" target="_blank">
-                                                            <img src="{{ $bukti_pembayaran_view }}" alt="Bukti Pembayaran" width="200px">
+                                                            <iframe src="{{ $bukti_pembayaran_view }}" width="400" height="400" allow="autoplay"></iframe>
                                                         </a>
                                                     </div>
                                                 @endif
@@ -225,7 +225,7 @@
                                                 </span>
                                             </td>
                     
-                                            <td>{{ $data->status_pengiriman }}</td>
+                                            <td>{{ $data->keterangan }}</td>
                                             <td>{{ number_format($data->ongkir, 0, '.', ',') }}</td>
                     
                                             @if (Session::get('user_level') == 2)
