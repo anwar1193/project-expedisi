@@ -81,7 +81,7 @@ class InvoiceController extends Controller
 
         $month = Carbon::now()->format('m');
         $year = Carbon::now()->format('Y');
-        $count_invoice = Invoice::whereMonth('created_at', $month)->count() + 1;
+        $count_invoice = Invoice::whereYear('created_at', $year)->count() + 1;
         $no_invoice = "{$count_invoice}/INV/LP/{$year}";
 
         $invoice = Invoice::create([
