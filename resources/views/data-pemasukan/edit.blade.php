@@ -205,6 +205,27 @@
 								</div>
 							</div>
 
+							<div class="row" id="banks" style="display: none">
+								<div class="col">
+									<div class="mb-2">
+										<label for="" class="form-label">Bank</label>
+										<select name="bank" class="form-control @error('bank') is-invalid @enderror js-example-basic-single">
+											@foreach ($bank as $item)
+												<option value="{{ $item->bank }}" {{ $datas->bank == $item->bank ? 'selected' : '' }}>
+													{{ $item->bank }}
+												</option>
+											@endforeach	
+										</select>
+
+										@error('bank')
+										<div class="text-danger">
+											{{ $message }}
+										</div>
+										@enderror
+									</div>
+								</div>
+							</div>
+
 							<div class="row">
 								<div class="col">
 									<div class="mb-1">
@@ -259,13 +280,36 @@
 									<div class="col">
 										<div class="mb-3">
 											<label class="form-label" for="">Metode Pembayaran 2</label>
-											<select name="metode_pembayaran2" id="metode_pembayaran" class="form-control @error('metode_pembayaran2') is-invalid @enderror">
-												<option value="tunai" {{ $datas->metode_pembayaran2 == 'tunai' ? 'selected' : NULL }}>Tunai</option>
-												<option value="transfer" {{ $datas->metode_pembayaran2 == 'transfer' ? 'selected' : NULL }}>Transfer</option>
-												<option style="display: block" id="kredit" value="kredit" {{ $datas->metode_pembayaran2 == 'kredit' ? 'selected' : NULL }}>Kredit</option>
+											<select name="metode_pembayaran2" id="metode_pembayaran2" class="form-control @error('metode_pembayaran2') is-invalid @enderror">
+												@foreach ($metode as $item)
+													<option value="{{ $item->metode }}" {{ $datas->metode_pembayaran2 == $item->metode ? 'selected' : '' }}>
+														{{ $item->metode }}
+													</option>
+												@endforeach	
 											</select>
 	
 											@error('metode_pembayaran2')
+											<div class="text-danger">
+												{{ $message }}
+											</div>
+											@enderror
+										</div>
+									</div>
+								</div>
+
+								<div class="row" id="banks2" style="display: none">
+									<div class="col">
+										<div class="mb-2">
+											<label for="" class="form-label">Bank</label>
+											<select name="bank2" class="form-control @error('bank2') is-invalid @enderror js-example-basic-single">
+												@foreach ($bank as $item)
+													<option value="{{ $item->bank }}" {{ $datas->bank2 == $item->bank ? 'selected' : '' }}>
+														{{ $item->bank }}
+													</option>
+												@endforeach	
+											</select>
+
+											@error('bank2')
 											<div class="text-danger">
 												{{ $message }}
 											</div>
@@ -508,13 +552,16 @@
 		document.addEventListener("DOMContentLoaded", function() {
 		const dataCustomerCheckbox = document.getElementById('dataCustomer');
 		const customerSelect = document.getElementById('customer');
-		const kredit = document.getElementById('kredit');
 		const sumberPemasukkan = document.getElementById('sumberPemasukkan');
 		const kategori = document.getElementById('kategori');
 		const barang = document.getElementById('barang');
 		const barangs = document.getElementById('barangs');
 		const jumlahBarang = document.getElementById('jumlahBarang');
 		const jasa = document.getElementById('jasa');
+		const metodePembayaran = document.getElementById('metode_pembayaran');
+		const metodePembayaran2 = document.getElementById('metode_pembayaran2');
+		const bank = document.getElementById('banks');
+		const bank2 = document.getElementById('banks2');
 		const modalInput = document.querySelector('input[name="modal"]');
 		const multiPaymentCheckbox = document.getElementById('multi_payment');
 		const pembayaranKeDua = document.getElementById('pembayaran2');
@@ -523,11 +570,9 @@
         function toggleCustomerSelect() {
             if (dataCustomerCheckbox.checked) {
                 customerSelect.style.display = 'block';
-				kredit.style.display = 'block';
 				sumberPemasukkan.style.display = 'none';
             } else {
                 customerSelect.style.display = 'none';
-                kredit.style.display = 'none';
 				sumberPemasukkan.style.display = 'block';
             }
 		}
@@ -566,18 +611,36 @@
             }
 		}
 
+		function toggleMetodeTransfer() {
+			const metode = (metodePembayaran.value).toLowerCase();
+
+			 (metode == 'transfer') ? bank.style.display = 'block' : bank.style.display = 'none';
+
+		}
+		
+		function toggleMetodeTransfer2() {
+			const metode = (metodePembayaran2.value).toLowerCase();
+
+			 (metode == 'transfer') ? bank2.style.display = 'block' : bank2.style.display = 'none';
+
+		}
+
 		barang.addEventListener('change', toggleBarangSelect);
 		kategori.addEventListener('change', toggleCategorySelect);
+		metodePembayaran.addEventListener('change', toggleMetodeTransfer);
+		metodePembayaran2.addEventListener('change', toggleMetodeTransfer2);
 
-		// Tambahkan event listener ke checkbox
-		dataCustomerCheckbox.addEventListener('change', toggleCustomerSelect);
+        // Tambahkan event listener ke checkbox
+        dataCustomerCheckbox.addEventListener('change', toggleCustomerSelect);
 		multiPaymentCheckbox.addEventListener('change', toggleMultiPayment)
-
-		// Panggil fungsi saat halaman pertama kali dimuat
-		toggleCustomerSelect();
+		
+        // Panggil fungsi saat halaman pertama kali dimuat
+        toggleCustomerSelect();
 		toggleCategorySelect();
 		toggleBarangSelect();
 		toggleMultiPayment();
+		toggleMetodeTransfer();
+		toggleMetodeTransfer2();
 	});
 	</script>
 	@endpush

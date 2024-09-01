@@ -218,12 +218,35 @@
 										<select name="metode_pembayaran" id="metode_pembayaran" class="form-control @error('metode_pembayaran') is-invalid @enderror">
 											<option value="">- Pilih Metode Pembayaran -</option>
 											@foreach ($metode as $item)
-											<option value="{{ $item->metode }}" {{ old('metode_pembayaran') == $item->metode ? 'selected' : '' }}>
-												{{ $item->metode }}
-											</option>
-										@endforeach										</select>
+												<option value="{{ $item->metode }}" {{ old('metode_pembayaran') == $item->metode ? 'selected' : '' }}>
+													{{ $item->metode }}
+												</option>
+											@endforeach										
+										</select>
 
 										@error('metode_pembayaran')
+										<div class="text-danger">
+											{{ $message }}
+										</div>
+										@enderror
+									</div>
+								</div>
+							</div>
+
+							<div class="row" id="banks" style="display: none">
+								<div class="col">
+									<div class="mb-2">
+										<label for="" class="form-label">Bank</label>
+										<select name="bank" class="form-control @error('bank') is-invalid @enderror js-example-basic-single">
+											<option value="">- Pilih Bank -</option>
+											@foreach ($bank as $item)
+												<option value="{{ $item->bank }}" {{ old('bank') == $item->bank ? 'selected' : '' }}>
+													{{ $item->bank }}
+												</option>
+											@endforeach	
+										</select>
+
+										@error('bank')
 										<div class="text-danger">
 											{{ $message }}
 										</div>
@@ -278,14 +301,38 @@
 									<div class="col">
 										<div class="mb-3">
 											<label class="form-label" for="">Metode Pembayaran 2</label>
-											<select name="metode_pembayaran2" id="metode_pembayaran" class="form-control @error('metode_pembayaran2') is-invalid @enderror">
+											<select name="metode_pembayaran2" id="metode_pembayaran2" class="form-control @error('metode_pembayaran2') is-invalid @enderror">
 												<option value="">- Pilih Metode Pembayaran -</option>
-												<option value="tunai" {{ old('metode_pembayaran') == 'tunai' ? 'selected' : '' }}>Tunai</option>
-												<option value="transfer" {{ old('metode_pembayaran') == 'transfer' ? 'selected' : '' }}>Transfer</option>
-												<option style="display: block" id="kredit" value="kredit" {{ old('metode_pembayaran') == 'kredit' ? 'selected' : '' }}>Kredit</option>
+	]											@foreach ($metode as $item)
+													<option value="{{ $item->metode }}" {{ old('metode_pembayaran2') == $item->metode ? 'selected' : '' }}>
+														{{ $item->metode }}
+													</option>
+												@endforeach	
 											</select>
 	
 											@error('metode_pembayaran2')
+											<div class="text-danger">
+												{{ $message }}
+											</div>
+											@enderror
+										</div>
+									</div>
+								</div>
+
+								<div class="row" id="banks2" style="display: none">
+									<div class="col">
+										<div class="mb-2">
+											<label for="" class="form-label">Bank</label>
+											<select name="bank2" class="form-control @error('bank2') is-invalid @enderror js-example-basic-single">
+												<option value="">- Pilih Bank -</option>
+												@foreach ($bank as $item)
+													<option value="{{ $item->bank }}" {{ old('bank') == $item->bank ? 'selected' : '' }}>
+														{{ $item->bank }}
+													</option>
+												@endforeach	
+											</select>
+
+											@error('bank2')
 											<div class="text-danger">
 												{{ $message }}
 											</div>
@@ -572,6 +619,10 @@
 		const barangs = document.getElementById('barangs');
 		const jumlahBarang = document.getElementById('jumlahBarang');
 		const jasa = document.getElementById('jasa');
+		const metodePembayaran = document.getElementById('metode_pembayaran');
+		const metodePembayaran2 = document.getElementById('metode_pembayaran2');
+		const bank = document.getElementById('banks');
+		const bank2 = document.getElementById('banks2');
 		const modalInput = document.querySelector('input[name="modal"]');
 		const multiPaymentCheckbox = document.getElementById('multi_payment');
 		const pembayaranKeDua = document.getElementById('pembayaran2');
@@ -623,8 +674,24 @@
             }
 		}
 
+		function toggleMetodeTransfer() {
+			const metode = (metodePembayaran.value).toLowerCase();
+
+			 (metode == 'transfer') ? bank.style.display = 'block' : bank.style.display = 'none';
+
+		}
+		
+		function toggleMetodeTransfer2() {
+			const metode = (metodePembayaran2.value).toLowerCase();
+
+			 (metode == 'transfer') ? bank2.style.display = 'block' : bank2.style.display = 'none';
+
+		}
+
 		barang.addEventListener('change', toggleBarangSelect);
 		kategori.addEventListener('change', toggleCategorySelect);
+		metodePembayaran.addEventListener('change', toggleMetodeTransfer);
+		metodePembayaran2.addEventListener('change', toggleMetodeTransfer2);
 
         // Tambahkan event listener ke checkbox
         dataCustomerCheckbox.addEventListener('change', toggleCustomerSelect);
@@ -635,6 +702,9 @@
 		toggleCategorySelect();
 		toggleBarangSelect();
 		toggleMultiPayment();
+		toggleMetodeTransfer();
+		toggleMetodeTransfer2();
+
     });
 	</script>
 	@endpush

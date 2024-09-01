@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Helper;
+use App\Models\Bank;
 use App\Models\Barang;
 use App\Models\Customer;
 use App\Models\Jasa;
@@ -43,12 +44,13 @@ class PemasukanLainnyaController extends Controller
     public function create()
     {
         $customer = Customer::orderBy('kode_customer', 'ASC')->get();
+        $bank = Bank::all();
         $barangs = Barang::all();
         $jasas = Jasa::all();
         $resi = DataPengiriman::all();
         $metode = MetodePembayaran::all();
 
-        return view('data-pemasukan.create', compact('customer', 'barangs', 'jasas', 'resi', 'metode'));
+        return view('data-pemasukan.create', compact('customer', 'bank', 'barangs', 'jasas', 'resi', 'metode'));
     }
 
     public function store(Request $request)
@@ -130,15 +132,25 @@ class PemasukanLainnyaController extends Controller
         $barang = $request->barang;
         $jasa = $request->jasa;
         $jumlah_barang = $request->jumlah_barang;
+        $bank1 = $request->bank;
+        $bank2 = $request->bank2;
 
         if ($validateData['metode_pembayaran2'] != '' && $validateData['bukti_pembayaran2'] == '') {
             return back()->with('error', 'Bukti Pembayaran 2 Wajib Diisi Jika Pilih Multi Pembayaran');
+        }
+        if (strtolower($validateData['metode_pembayaran']) == 'transfer' && $bank1 == '') {
+            return back()->with('error', 'Bank Wajib Diisi Jika Pilih Metode Pembayaran Transfer');
+        }
+        if (strtolower($validateData['metode_pembayaran2']) == 'transfer' && $bank2 == '') {
+            return back()->with('error', 'Bank Wajib Diisi Jika Pilih Metode Pembayaran Transfer');
         }
         $validateData['barang_jasa'] = $barang != '' ? $barang : $jasa;
         $validateData['jumlah_barang'] = $barang != '' ? $jumlah_barang : 0;
         $validateData['diterima_oleh'] = Session::get('nama');
         $validateData['tgl_pemasukkan'] = $today;
         $validateData['sumber_pemasukkan'] = !$request->dataCustomer ? $request->sumber_pemasukkan : $request->customer;
+        $validateData['bank'] = $bank1 ?? '';
+        $validateData['bank2'] = $bank2 ?? '';
         $validateData['keterangan_tambahan'] = $request->keterangan_tambahan;
 
         PemasukanLainnya::create($validateData);
@@ -165,6 +177,7 @@ class PemasukanLainnyaController extends Controller
         $datas = PemasukanLainnya::find($id);
         $data['customerSelected'] = Customer::where('nama', $datas->sumber_pemasukkan)->first();
         $data['customer'] = Customer::orderBy('kode_customer', 'ASC')->get();
+        $data['bank'] = Bank::orderBy('id', 'ASC')->get();
         $data['barang'] = Barang::orderBy('id', 'ASC')->get();
         $data['jasa'] = Jasa::orderBy('id', 'ASC')->get();
         $data['datas'] = $datas;
@@ -276,8 +289,10 @@ class PemasukanLainnyaController extends Controller
             'jumlah_pemasukkan' => $request->jumlah_pemasukkan,
             'sumber_pemasukkan' => $sumber_pemasukkan,
             'metode_pembayaran' => $request->metode_pembayaran,
+            'bank' => $request->bank,
             'bukti_pembayaran' => ($foto || $img ? $buktiPembayaran : $getImage->bukti_pembayaran),
             'metode_pembayaran2' => $request->metode_pembayaran2,
+            'bank2' => $request->bank2,
             'bukti_pembayaran2' => ($foto2 || $img2 ? $buktiPembayaran2 : $getImage->bukti_pembayaran2),
             'keterangan_tambahan' => $request->keterangan_tambahan,
         ]);
