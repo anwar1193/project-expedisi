@@ -459,6 +459,9 @@ class DataPengirimanController extends Controller
                 }
             // }
 
+            // dd($request->metode_pembayaran_2[1],$request->bukti_pembayaran_2[1], $request->bank_2[1]);
+            // dd($request->bukti_pembayaran_2, $request->bank_2, $request->metode_pembayaran_2);
+
             DataPengiriman::create([
                 'no_resi' => $request->no_resi[$i],
                 'tgl_transaksi' => $request->tgl_transaksi[$i],
@@ -479,7 +482,7 @@ class DataPengirimanController extends Controller
                 'bukti_pembayaran' => $request->bukti_pembayaran[$i] ?? '',
                 'metode_pembayaran_2' => $request->metode_pembayaran_2[$i] ? $request->metode_pembayaran_2[$i] : "",
                 'bank_2' => $request->bank_2[$i] ? $request->bank_2[$i] : "",
-                'bukti_pembayaran_2' => $request->bukti_pembayaran_2[$i] ? $request->bukti_pembayaran_2 : "",
+                'bukti_pembayaran_2' => $request->bukti_pembayaran_2[$i] ? $request->bukti_pembayaran_2[$i] : "",
                 'jenis_pengiriman' => $request->jenis_pengiriman[$i],
                 'bawa_sendiri' => $request->bawa_sendiri[$i],
                 'status_pengiriman' => $request->status_pengiriman[$i],
