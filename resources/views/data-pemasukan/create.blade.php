@@ -90,6 +90,21 @@
 								</div>
 							</div>
 							
+							<div id="jumlahBarang" class="row" style="display: none">
+								<div class="col">
+									<div class="mb-3">
+										<label class="form-label" for="">Jumlah Barang</label>
+										<input type="number" name="jumlah_barang" id="" class="form-control @error('jumlah_barang') is-invalid @enderror" value="{{ old('jumlah_barang') }}">
+										
+										@error('jumlah_barang')
+										<div class="text-danger">
+											{{ $message }}
+										</div>
+										@enderror
+									</div>
+								</div>
+							</div>
+							
 							<div id="jasa" class="row" style="display: none">
 								<div class="col">
 									<div class="mb-3">
@@ -555,6 +570,7 @@
 		const kategori = document.getElementById('kategori');
 		const barang = document.getElementById('barang');
 		const barangs = document.getElementById('barangs');
+		const jumlahBarang = document.getElementById('jumlahBarang');
 		const jasa = document.getElementById('jasa');
 		const modalInput = document.querySelector('input[name="modal"]');
 		const multiPaymentCheckbox = document.getElementById('multi_payment');
@@ -579,10 +595,12 @@
 			
 			if (value === "barang") {
 				barang.style.display = 'block';
+				jumlahBarang.style.display = 'block';
 				jasa.style.display = 'none';
 			} else if (value === "jasa") {
 				jasa.style.display = 'block';
 				barang.style.display = 'none';
+				jumlahBarang.style.display = 'none';
 				modalInput.value = "";
 			}
 		}

@@ -129,11 +129,13 @@ class PemasukanLainnyaController extends Controller
 
         $barang = $request->barang;
         $jasa = $request->jasa;
+        $jumlah_barang = $request->jumlah_barang;
 
         if ($validateData['metode_pembayaran2'] != '' && $validateData['bukti_pembayaran2'] == '') {
             return back()->with('error', 'Bukti Pembayaran 2 Wajib Diisi Jika Pilih Multi Pembayaran');
         }
         $validateData['barang_jasa'] = $barang != '' ? $barang : $jasa;
+        $validateData['jumlah_barang'] = $barang != '' ? $jumlah_barang : 0;
         $validateData['diterima_oleh'] = Session::get('nama');
         $validateData['tgl_pemasukkan'] = $today;
         $validateData['sumber_pemasukkan'] = !$request->dataCustomer ? $request->sumber_pemasukkan : $request->customer;
@@ -264,10 +266,12 @@ class PemasukanLainnyaController extends Controller
 
         $sumber_pemasukkan = !$request->dataCustomer ? $request->sumber_pemasukkan : $request->customer;
         $barang_jasa = $request->barang ? $request->barang : $request->jasa;
+        $jumlah_barang = $request->jumlah_barang;
 
         PemasukanLainnya::where('id', '=', $id)->update([
             'kategori' => $request->keterangan,
             'barang_jasa' => $barang_jasa,
+            'jumlah_barang' => $jumlah_barang,
             'modal' => $request->modal,
             'jumlah_pemasukkan' => $request->jumlah_pemasukkan,
             'sumber_pemasukkan' => $sumber_pemasukkan,

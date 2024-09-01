@@ -23,6 +23,13 @@
                                         <div class="col-2">:</div>
                                         <div class="col-4">{{ $data->kategori }}</div>
                                     </div>
+                                    @if ($data->kategori == 'barang')
+                                        <div class="row d-flex py-1 text-start justify-content-start">
+                                            <div class="col-6">Jumlah Barang</div>
+                                            <div class="col-2">:</div>
+                                            <div class="col-4">{{ $data->jumlah_barang }}</div>
+                                        </div>
+                                    @endif
                                     <div class="row d-flex py-1 text-start justify-content-start">
                                         <div class="col-6">Modal</div>
                                         <div class="col-2">:</div>
