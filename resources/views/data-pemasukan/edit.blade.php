@@ -19,6 +19,13 @@
 	
 	<div class="container-fluid">
 		<div class="row">
+			@if (session()->has('error'))
+				<div class="alert alert-danger alert-dismissible fade show" role="alert">
+					<strong>Gagal <i class="fa fa-info-circle"></i></strong> 
+					{{ session('error') }}
+					<button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+				</div>
+			@endif
 			<div class="col-sm-12">
 				<div class="card">
 					<div class="card-header pb-0">
@@ -71,6 +78,7 @@
 										<label class="form-label" for="">Jumlah Barang</label>
 										<input type="number" name="jumlah_barang" id="" class="form-control @error('jumlah_barang') is-invalid @enderror" value="{{ $datas->jumlah_barang }}">
 										
+										<p id="stokBarang" class="text-muted" style="font-size: 12px"></p>
 										@error('jumlah_barang')
 										<div class="text-danger">
 											{{ $message }}
@@ -562,6 +570,7 @@
 		const metodePembayaran2 = document.getElementById('metode_pembayaran2');
 		const bank = document.getElementById('banks');
 		const bank2 = document.getElementById('banks2');
+		const stokBarang = document.getElementById('stokBarang');
 		const modalInput = document.querySelector('input[name="modal"]');
 		const multiPaymentCheckbox = document.getElementById('multi_payment');
 		const pembayaranKeDua = document.getElementById('pembayaran2');
@@ -600,6 +609,7 @@
 			
 			const valueBarang = barangData.find(item => item.id == value);
 			
+			stokBarang.textContent = 'Stok Barang Tersedia: ' + valueBarang.stok;
 			modalInput.value = valueBarang.harga_jual;
 		}
 

@@ -134,6 +134,7 @@ class PemasukanLainnyaController extends Controller
         $jumlah_barang = $request->jumlah_barang;
         $bank1 = $request->bank;
         $bank2 = $request->bank2;
+        $data_barang = Barang::where('id', '=', $request->barang)->first();
 
         if ($validateData['metode_pembayaran2'] != '' && $validateData['bukti_pembayaran2'] == '') {
             return back()->with('error', 'Bukti Pembayaran 2 Wajib Diisi Jika Pilih Multi Pembayaran');
@@ -145,7 +146,12 @@ class PemasukanLainnyaController extends Controller
             return back()->with('error', 'Bank Wajib Diisi Jika Pilih Metode Pembayaran Transfer');
         }
         $validateData['barang_jasa'] = $barang != '' ? $barang : $jasa;
-        $validateData['jumlah_barang'] = $barang != '' ? $jumlah_barang : 0;
+        if ($barang != '') {
+            if ($jumlah_barang > $data_barang->stok) return back()->with('error', 'Jumlah Barang Yang Diinput Melebihi Stok Barang');
+            $validateData['jumlah_barang'] = $jumlah_barang;
+        } else {
+            $validateData['jumlah_barang'] = 0;
+        }
         $validateData['diterima_oleh'] = Session::get('nama');
         $validateData['tgl_pemasukkan'] = $today;
         $validateData['sumber_pemasukkan'] = !$request->dataCustomer ? $request->sumber_pemasukkan : $request->customer;
@@ -157,9 +163,8 @@ class PemasukanLainnyaController extends Controller
 
         // Jika barang, stok barang berkurang
         if($barang != ''){
-            $data_barang = Barang::where('id', '=', $request->barang)->first();
             $stok_lama = $data_barang->stok;
-            $stok_baru = $stok_lama - 1;
+            $stok_baru = $stok_lama - $jumlah_barang;
 
             Barang::where('id' ,'=' ,$request->barang)->update([
                 'stok' => $stok_baru
