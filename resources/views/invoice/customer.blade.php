@@ -30,6 +30,9 @@
 	                <div class="card-body">
 						{{-- Table --}}
 						<div class="table-responsive">
+                            <div class="float-end">
+                                <h5>Total Tagihan: Rp {{ number_format($total, 0, '.', '.') }}</h5>
+                            </div>
 	                        <table class="display" id="basic-1">
 	                            <thead>
                                     <tr>

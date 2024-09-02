@@ -131,7 +131,7 @@
                             <select name="status_pengiriman" id="search-pengiriman" class="form-control js-example-basic-single">
                                 <option value="">- Pilih Status Pengiriman -</option>
                                 @foreach ($statusPengiriman as $status)
-                                    <option value="{{ $status->status_pengiriman }}" {{ request('status_pengiriman') == $status->status_pengiriman ? 'selected' : '' }}>{{ $status->status_pengiriman }}</option>
+                                    <option value="{{ $status->status_pengiriman }}" {{ request('status_pengiriman') == $status->status_pengiriman ? 'selected' : '' }}>{{ $status->status_pengiriman }} - {{ $status->keterangan_pengiriman }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -157,9 +157,6 @@
 	                <div class="card-body">
                         <div class="row"></div>
                         <div class="table-responsive">
-                            <div class="float-end">
-                                <h5>Total Tagihan: Rp {{ number_format($total, 0, '.', '.') }}</h5>
-                            </div>
                             <table class="display" id="basic-1">
                                 <thead>
                                     <tr>
@@ -169,7 +166,6 @@
                                         <th>Nama Penerima</th>
                                         <th>Kota Tujuan</th>
                                         <th>Metode Pembayaran</th>
-                                        <th>Status Pembayaran</th>
                                         <th>Status Pengiriman</th>
                                         <th>Ongkir</th>
                                         
@@ -188,7 +184,7 @@
                     
                                             if($bukti_pembayaran != ''){
                                                 $explode = explode("/", $bukti_pembayaran);
-                                                $bukti_pembayaran_view = 'https://'.$explode[2].'/thumbnail?id='.$explode[5];
+                                                $bukti_pembayaran_view = 'https://drive.google.com/file/d/'.$explode[5].'/preview';
                                             }else{
                                                 $bukti_pembayaran_view = '#';
                                             }
@@ -210,7 +206,7 @@
                                                 @if ($bukti_pembayaran != '')
                                                     <div id="tooltip{{ $data->id }}" class="tooltip-img">
                                                         <a href="{{ $bukti_pembayaran }}" target="_blank">
-                                                            <img src="{{ $bukti_pembayaran_view }}" alt="Bukti Pembayaran" width="200px">
+                                                            <iframe src="{{ $bukti_pembayaran_view }}" width="400" height="400" allow="autoplay"></iframe>
                                                         </a>
                                                     </div>
                                                 @endif
@@ -218,14 +214,7 @@
                                                 {{ $data->metode_pembayaran }} <i class="{{ $data->metode_pembayaran != 'Tunai' ? 'fa fa-eye' : '' }}"></i>
                                             </td>
                     
-                                            <td class="text-center">
-                                                <span class="badge {{ $data->sisa == 0 ? 'badge-primary' : 'badge-warning' }}">
-                                                    <i class="fa {{ $data->sisa == 0 ? 'fa-check' : 'fa-warning' }}"></i>
-                                                    {{ $data->status }}
-                                                </span>
-                                            </td>
-                    
-                                            <td>{{ $data->status_pengiriman }}</td>
+                                            <td>{{ $data->keterangan }}</td>
                                             <td>{{ number_format($data->ongkir, 0, '.', ',') }}</td>
                     
                                             @if (Session::get('user_level') == 2)

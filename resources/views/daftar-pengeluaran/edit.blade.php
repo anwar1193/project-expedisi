@@ -1,6 +1,6 @@
 @extends('layouts.admin.master')
 
-@section('title')Edit Daftar Pengeluaran
+@section('title')Edit Data Pengeluaran
  {{ $title }}
 @endsection
 
@@ -11,9 +11,9 @@
 @section('content')
 	@component('components.breadcrumb')
 		@slot('breadcrumb_title')
-			<h3>Daftar Pengeluaram</h3>
+			<h3>Data Pengeluaram</h3>
 		@endslot
-		<li class="breadcrumb-item active"><a href="{{ route('daftar-pengeluaran') }}">Daftar Pengeluaran</a></li>
+		<li class="breadcrumb-item active"><a href="{{ route('daftar-pengeluaran') }}">Data Pengeluaran</a></li>
         <li class="breadcrumb-item active">Edit</li>
 	@endcomponent
 	
@@ -22,7 +22,7 @@
 			<div class="col-sm-12">
 				<div class="card">
 					<div class="card-header pb-0">
-						<h5>Form Edit Daftar Pengeluaran</h5>
+						<h5>Form Edit Data Pengeluaran</h5>
 					</div>
 					<form class="form theme-form" method="POST" action="{{ route('daftar-pengeluaran.update', $datas->id) }}" enctype="multipart/form-data">
                         @csrf

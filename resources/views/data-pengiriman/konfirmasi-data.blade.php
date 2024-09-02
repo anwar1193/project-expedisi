@@ -137,6 +137,7 @@
                                                 <th>Komisi</th>
                                                 <th>Metode Pembayaran</th>
                                                 <th>Bank</th>
+                                                <th id="headJumlahPembayaran">Jumlah Pembayaran</th>
                                                 <th>Bukti Pembayaran</th>
                                                 <th>Jenis Pengiriman</th>
                                                 <th>Bawa Sendiri</th>
@@ -157,7 +158,7 @@
                                                         @enderror
                                                     </td>
                                                     <td>
-                                                        <input class="@error('tgl_transaksi')  @enderror" type="date" name="tgl_transaksi[]" value="{{ $row['tgl_transaksi'] }}">
+                                                        <input class="digits @error('tgl_transaksi')  @enderror" id="example-datetime-local-input" type="datetime-local" name="tgl_transaksi[]" value="{{ $row['tgl_transaksi'] }}">
 
                                                         @error('tgl_transaksi[]')
                                                         <div class="text-danger">
@@ -322,7 +323,7 @@
                                                         </select>
 
                                                         <div class="additionalBankOptions pt-2" style="display: none;">
-                                                            <select name="bank_2[]" class="form-control js-example-basic-single bankSelect2">
+                                                            <select name="bank_2[]" id="bankSelect" class="form-control js-example-basic-single bankSelect2">
                                                                 <option value="">-Pilih-</option>
                                                                 @foreach ($bank as $item)
                                                                 <option value="{{ $item->bank }}">
@@ -346,6 +347,17 @@
                                                                 {{ $message }}
                                                             </div>
                                                         @enderror
+                                                    </td>
+                                                    <td>
+                                                        <div class="py-1 captionJumlahPembayaran">
+                                                            <p>Tampil Jika Pilih Multi Payment</p>
+                                                        </div>
+                                                        <div class="py-1 dataJumlahPembayaran1" style="display: none">
+                                                            <input class="@error('jumlah_pembayaran')  @enderror" id="jumlahPembayaran" type="number" name="jumlah_pembayaran[]" value="{{ old('jumlah_pembayaran[]') }}">
+                                                        </div>
+                                                        <div class="py-1 dataJumlahPembayaran2" style="display: none">
+                                                            <input class="@error('jumlah_pembayaran_2')  @enderror" id="jumlahPembayaran2" type="number" name="jumlah_pembayaran_2[]" value="{{ old('jumlah_pembayaran_2[]') }}">
+                                                        </div>
                                                     </td>
                                                     <td>
                                                         <input id="bukti_pembayaran" class="@error('bukti_pembayaran')  @enderror" type="text" name="bukti_pembayaran[]" value="{{ $row['bukti_pembayaran'] }}"> 
@@ -479,10 +491,24 @@
                     $row.find('.additionalPaymentOptions').show();
                     $row.find('.additionalBankOptions').show();
                     $row.find('.additionalBuktiOptions').show();
+                    $row.find('.dataJumlahPembayaran1').show();
+                    $row.find('.dataJumlahPembayaran2').show();
+                    $row.find('.captionJumlahPembayaran').hide();
+                    $row.find('.metodePembayaran2').val('').trigger('change');;
+                    $row.find('.bankSelect2').val('').trigger('change');;
+                    $row.find('#jumlahPembayaran').val('');
+                    $row.find('#jumlahPembayaran2').val('');
                 } else {
                     $row.find('.additionalPaymentOptions').hide();
                     $row.find('.additionalBankOptions').hide();
                     $row.find('.additionalBuktiOptions').hide();
+                    $row.find('.dataJumlahPembayaran1').hide();
+                    $row.find('.dataJumlahPembayaran2').hide();
+                    $row.find('.captionJumlahPembayaran').show();
+                    $row.find('.metodePembayaran2').val('').trigger('change');;
+                    $row.find('.bankSelect2').val('').trigger('change');;
+                    $row.find('#jumlahPembayaran').val('');
+                    $row.find('#jumlahPembayaran2').val('');
                 }
             });
 

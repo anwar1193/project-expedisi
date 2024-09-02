@@ -233,6 +233,12 @@ class Helper
                         }
                     }
                 }
+
+                if ($data['jumlah_pembayaran'] && $data['jumlah_pembayaran_2']) {
+                    if ($data['jumlah_pembayaran'] + $data['jumlah_pembayaran_2'] > $data['ongkir']) {
+                        $errors[] = 'Jumlah Pembayaran Melebihi Nilai Ongkir!';
+                    }
+                }
                 
                 // if ($data['metode_pembayaran'] != 'Tunai' && $data['metode_pembayaran'] != 'Kredit') {
                 //     if (empty($data['bukti_pembayaran'])) {

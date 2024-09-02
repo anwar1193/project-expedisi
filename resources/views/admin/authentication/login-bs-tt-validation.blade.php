@@ -1,5 +1,5 @@
 @extends('admin.authentication.master')
-@include('admin.authentication.register')
+{{-- @include('admin.authentication.register') --}}
 
 @section('title')login
  {{ $title }}
@@ -70,7 +70,7 @@
 	                        <label>Kata Sandi</label>
 	                        <div class="input-group">
 	                            <span class="input-group-text"><i class="icon-lock"></i></span>
-	                            <input class="form-control" type="password" name="password" id="password" />
+	                            <input class="form-control" type="password" name="password" id="passwordLogin" />
 	                        </div>
 	                        <div class="input-group mt-2 pt-2">
 								<input class="ms-3 me-2" type="checkbox" id="showPassword"> <label class="pt-1" for="showPassword">Tampilkan Kata Sandi</label>
@@ -101,40 +101,6 @@
 	        </div>
 	    </div>
 	</div>
-	<script>
-		const passwordInput = document.getElementById('password');
-        const showPasswordCheckbox = document.getElementById('showPassword');
-
-        showPasswordCheckbox.addEventListener('change', function () {
-            passwordInput.type = showPasswordCheckbox.checked ? 'text' : 'password';
-        });
-
-	    (function () {
-	        "use strict";
-	        window.addEventListener(
-	            "load",
-	            function () {
-	                // Fetch all the forms we want to apply custom Bootstrap validation styles to
-	                var forms = document.getElementsByClassName("needs-validation");
-	                // Loop over them and prevent submission
-	                var validation = Array.prototype.filter.call(forms, function (form) {
-	                    form.addEventListener(
-	                        "submit",
-	                        function (event) {
-	                            if (form.checkValidity() === false) {
-	                                event.preventDefault();
-	                                event.stopPropagation();
-	                            }
-	                            form.classList.add("was-validated");
-	                        },
-	                        false
-	                    );
-	                });
-	            },
-	            false
-	        );
-	    })();
-	</script>
 
 	<script src="{{ asset('assets/js/sweet-alert/sweetalert.min.js') }}"></script>
 
@@ -142,6 +108,40 @@
     @push('scripts')
 		<script src="{{ asset('assets/js/select2/select2.full.min.js') }}"></script>
 		<script src="{{ asset('assets/js/select2/select2-custom.js') }}"></script>
+		<script>
+			const passwordInput = document.getElementById('passwordLogin');
+			const showPasswordCheckbox = document.getElementById('showPassword');
+	
+			showPasswordCheckbox.addEventListener('change', function () {
+				passwordInput.type = showPasswordCheckbox.checked ? 'text' : 'password';
+			});
+	
+			(function () {
+				"use strict";
+				window.addEventListener(
+					"load",
+					function () {
+						// Fetch all the forms we want to apply custom Bootstrap validation styles to
+						var forms = document.getElementsByClassName("needs-validation");
+						// Loop over them and prevent submission
+						var validation = Array.prototype.filter.call(forms, function (form) {
+							form.addEventListener(
+								"submit",
+								function (event) {
+									if (form.checkValidity() === false) {
+										event.preventDefault();
+										event.stopPropagation();
+									}
+									form.classList.add("was-validated");
+								},
+								false
+							);
+						});
+					},
+					false
+				);
+			})();
+		</script>
 		<script>
 			function toggleUserFields() {
 				var addUserCheckbox = document.getElementById('addUser');

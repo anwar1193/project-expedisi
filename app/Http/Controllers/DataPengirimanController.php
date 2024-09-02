@@ -227,30 +227,35 @@ class DataPengirimanController extends Controller
     public function approve($id)
     {
         $data_pengiriman = DataPengiriman::find($id);
+        $new_status = $data_pengiriman->status_pembayaran == DataPengiriman::STATUS_APPROVE ? 
+                    DataPengiriman::STATUS_PENDING : DataPengiriman::STATUS_APPROVE;
         
         $data_pengiriman->update([
-            'status_pembayaran' => DataPengiriman::STATUS_APPROVE
+            'status_pembayaran' => $new_status
+
         ]);
 
         // Masukkan point ke customer
-        // $kode_cust = $data_pengiriman->kode_customer;
-        // $besar_transaksi = $data_pengiriman->ongkir;
+        $kode_cust = $data_pengiriman->kode_customer;
+        $besar_transaksi = $data_pengiriman->ongkir;
 
-        // $konversi_point = KonversiPoint::find(1);
-        // $pembagi_point = $konversi_point->nominal;
-        // $point_baru = $besar_transaksi / $pembagi_point;
+        $konversi_point = KonversiPoint::find(1);
+        $pembagi_point = $konversi_point->nominal;
+        $point_baru = $besar_transaksi / $pembagi_point;
 
-        // Customer::where('kode_customer', $kode_cust)->update([
-        //     'point' => DB::raw("point + $point_baru")
-        // ]);
+        Customer::where('kode_customer', $kode_cust)->update([
+            'point' => DB::raw("point + $point_baru")
+        ]);
 
         $data = DataPengiriman::where('status_pembayaran', DataPengiriman::STATUS_PENDING)->count();
+        $message = $new_status == 1 ? 'Data Pengiriman Telah Di Approve' : 'Approval Data Pengiriman Telah Dibatalkan';
 
-        if ($data == 0) {
-            return redirect()->route('data-pengiriman')->with('success', 'Data Pengiriman Telah Di Approve');
-        }
+        # Temporary Comment
+        // if ($data == 0) {
+        //     return redirect()->route('data-pengiriman')->with('success', 'Data Pengiriman Telah Di Approve');
+        // }
 
-        return back()->with('success', 'Data Pengiriman Telah Di Approve');
+        return back()->with('success', $message);
     }
 
     public function approveSelected(Request $request)
@@ -264,21 +269,25 @@ class DataPengirimanController extends Controller
         for($i=0; $i<sizeof($id_pengiriman); $i++){
             $data_pengiriman = DataPengiriman::find($id_pengiriman[$i]);
             
+            $new_status = $data_pengiriman->status_pembayaran == DataPengiriman::STATUS_APPROVE ? 
+                    DataPengiriman::STATUS_PENDING : DataPengiriman::STATUS_APPROVE;
+        
             $data_pengiriman->update([
-                'status_pembayaran' => DataPengiriman::STATUS_APPROVE
+                'status_pembayaran' => $new_status
+
             ]);
 
             // Masukkan point ke customer
-            // $kode_cust = $data_pengiriman->kode_customer;
-            // $besar_transaksi = $data_pengiriman->ongkir;
+            $kode_cust = $data_pengiriman->kode_customer;
+            $besar_transaksi = $data_pengiriman->ongkir;
 
-            // $konversi_point = KonversiPoint::find(1);
-            // $pembagi_point = $konversi_point->nominal;
-            // $point_baru = $besar_transaksi / $pembagi_point;
+            $konversi_point = KonversiPoint::find(1);
+            $pembagi_point = $konversi_point->nominal;
+            $point_baru = $besar_transaksi / $pembagi_point;
 
-            // Customer::where('kode_customer', $kode_cust)->update([
-            //     'point' => DB::raw("point + $point_baru")
-            // ]);
+            Customer::where('kode_customer', $kode_cust)->update([
+                'point' => DB::raw("point + $point_baru")
+            ]);
         }
 
         $data = DataPengiriman::where('status_pembayaran', DataPengiriman::STATUS_PENDING)->count();
@@ -287,7 +296,10 @@ class DataPengirimanController extends Controller
             return redirect()->route('data-pengiriman')->with('success', 'Data Pengiriman Telah Di Approve');
         }
 
-        return back()->with('success', 'Data Pengiriman Telah Di Approve');
+        if ($request->unapprove == 'unapprove') {
+            return back()->with('success', 'Approval Data Pengiriman Telah Dibatalkan');
+        }
+         return back()->with('success', 'Data Pengiriman Telah Di Approve');
     }
 
     public function import_status_pengiriman(Request $request)
@@ -390,9 +402,11 @@ class DataPengirimanController extends Controller
 
                 'metode_pembayaran' => $request->metode_pembayaran[$i],
                 'bank' => $request->bank[$i],
+                'jumlah_pembayaran' => $request->jumlah_pembayaran[$i] ?? "",
                 'bukti_pembayaran' => $request->bukti_pembayaran[$i] ?? "",
                 'metode_pembayaran_2' => $request->metode_pembayaran_2[$i] ?? "",
                 'bank_2' => $request->bank_2[$i] ?? "",
+                'jumlah_pembayaran_2' => $request->jumlah_pembayaran_2[$i] ?? "",
                 'bukti_pembayaran_2' => $request->bukti_pembayaran_2[$i] ?? "",
                 'jenis_pengiriman' => $request->jenis_pengiriman[$i],
                 'bawa_sendiri' => $request->bawa_sendiri[$i],
@@ -420,16 +434,16 @@ class DataPengirimanController extends Controller
             $customer = Customer::where('kode_customer', $request->kode_customer[$i]);
             $rcustomer = $customer->first();
 
-            // if($rcustomer != NULL){
-            //     $pointOld = $rcustomer->point;
-            //     $kreditOld = $rcustomer->limit_credit;
+            if($rcustomer != NULL){
+                $pointOld = $rcustomer->point;
+                $kreditOld = $rcustomer->limit_credit;
                 
-            //     // Update Point & Credit
-            //     $customer->update([
-            //         'point' => $pointOld + ($request->ongkir[$i] / $konversi_point->nominal),
-            //         'limit_credit' => $kreditOld - $request->ongkir[$i]
-            //     ]);
-            // }
+                // Update Point & Credit
+                $customer->update([
+                    'point' => $pointOld + ($request->ongkir[$i] / $konversi_point->nominal),
+                    'limit_credit' => $kreditOld - $request->ongkir[$i]
+                ]);
+            }
 
             $metode_pembayaran_2 = '';
             $bank_2 = '';
@@ -447,6 +461,9 @@ class DataPengirimanController extends Controller
                 }
             // }
 
+            // dd($request->metode_pembayaran_2[1],$request->bukti_pembayaran_2[1], $request->bank_2[1]);
+            // dd($request->bukti_pembayaran_2, $request->bank_2, $request->metode_pembayaran_2);
+
             DataPengiriman::create([
                 'no_resi' => $request->no_resi[$i],
                 'tgl_transaksi' => $request->tgl_transaksi[$i],
@@ -459,15 +476,15 @@ class DataPengirimanController extends Controller
                 'berat_barang' => $request->berat_barang[$i],
                 'ongkir' => $request->ongkir[$i],
                 'komisi' => $request->komisi[$i],
-
                 'status_pembayaran' => strtolower($request->metode_pembayaran[$i]) == 'tunai' ? DataPengiriman::STATUS_LUNAS : (strtolower($request->metode_pembayaran[$i]) == 'transfer' ? DataPengiriman::STATUS_LUNAS : DataPengiriman::STATUS_PENDING ),
-
                 'metode_pembayaran' => $request->metode_pembayaran[$i],
                 'bank' => $request->bank[$i] ?? '',
+                'jumlah_pembayaran' => $request->jumlah_pembayaran[$i] ?? 0,
                 'bukti_pembayaran' => $request->bukti_pembayaran[$i] ?? '',
                 'metode_pembayaran_2' => $request->metode_pembayaran_2[$i] ? $request->metode_pembayaran_2[$i] : "",
                 'bank_2' => $request->bank_2[$i] ? $request->bank_2[$i] : "",
-                'bukti_pembayaran_2' => $request->bukti_pembayaran_2[$i] ? $request->bukti_pembayaran_2 : "",
+                'jumlah_pembayaran_2' => $request->jumlah_pembayaran_2[$i] ? $request->jumlah_pembayaran_2[$i] : 0,
+                'bukti_pembayaran_2' => $request->bukti_pembayaran_2[$i] ? $request->bukti_pembayaran_2[$i] : "",
                 'jenis_pengiriman' => $request->jenis_pengiriman[$i],
                 'bawa_sendiri' => $request->bawa_sendiri[$i],
                 'status_pengiriman' => $request->status_pengiriman[$i],

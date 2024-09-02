@@ -110,10 +110,23 @@
                     return false;
                 }
             });
-            $('input[name="ongkir[]"]').each(function() {
+            $('input[name="ongkir[]"]').each(function(index) {
                 if ($(this).val() == "") {
                     $(this).addClass('is-invalid');
                     alert("Ongkir harus diisi");
+                    isValid = false;
+                    return false;
+                }
+
+                let ongkir = parseFloat($(this).val());
+
+                let jumlahPembayaran = parseFloat($('input[name="jumlah_pembayaran[]"]').eq(index).val()) || 0;
+                let jumlahPembayaran2 = parseFloat($('input[name="jumlah_pembayaran_2[]"]').eq(index).val()) || 0;
+
+                if (jumlahPembayaran + jumlahPembayaran2 > ongkir) {
+                    $('input[name="jumlah_pembayaran[]"]').eq(index).addClass('is-invalid');
+                    $('input[name="jumlah_pembayaran_2[]"]').eq(index).addClass('is-invalid');
+                    alert("Jumlah Pembayaran 1 dan 2 melebihi Ongkir!");
                     isValid = false;
                     return false;
                 }
@@ -124,7 +137,7 @@
                     alert("Komisi harus diisi");
                     isValid = false;
                     return false;
-                }
+                }              
             });
             $('select[name="metode_pembayaran[]"]').each(function(index) {
                 // if ($(this).val() == "") {
