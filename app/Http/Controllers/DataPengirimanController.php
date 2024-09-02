@@ -402,9 +402,11 @@ class DataPengirimanController extends Controller
 
                 'metode_pembayaran' => $request->metode_pembayaran[$i],
                 'bank' => $request->bank[$i],
+                'jumlah_pembayaran' => $request->jumlah_pembayaran[$i] ?? "",
                 'bukti_pembayaran' => $request->bukti_pembayaran[$i] ?? "",
                 'metode_pembayaran_2' => $request->metode_pembayaran_2[$i] ?? "",
                 'bank_2' => $request->bank_2[$i] ?? "",
+                'jumlah_pembayaran_2' => $request->jumlah_pembayaran_2[$i] ?? "",
                 'bukti_pembayaran_2' => $request->bukti_pembayaran_2[$i] ?? "",
                 'jenis_pengiriman' => $request->jenis_pengiriman[$i],
                 'bawa_sendiri' => $request->bawa_sendiri[$i],
@@ -432,16 +434,16 @@ class DataPengirimanController extends Controller
             $customer = Customer::where('kode_customer', $request->kode_customer[$i]);
             $rcustomer = $customer->first();
 
-            // if($rcustomer != NULL){
-            //     $pointOld = $rcustomer->point;
-            //     $kreditOld = $rcustomer->limit_credit;
+            if($rcustomer != NULL){
+                $pointOld = $rcustomer->point;
+                $kreditOld = $rcustomer->limit_credit;
                 
-            //     // Update Point & Credit
-            //     $customer->update([
-            //         'point' => $pointOld + ($request->ongkir[$i] / $konversi_point->nominal),
-            //         'limit_credit' => $kreditOld - $request->ongkir[$i]
-            //     ]);
-            // }
+                // Update Point & Credit
+                $customer->update([
+                    'point' => $pointOld + ($request->ongkir[$i] / $konversi_point->nominal),
+                    'limit_credit' => $kreditOld - $request->ongkir[$i]
+                ]);
+            }
 
             $metode_pembayaran_2 = '';
             $bank_2 = '';
@@ -474,14 +476,14 @@ class DataPengirimanController extends Controller
                 'berat_barang' => $request->berat_barang[$i],
                 'ongkir' => $request->ongkir[$i],
                 'komisi' => $request->komisi[$i],
-
                 'status_pembayaran' => strtolower($request->metode_pembayaran[$i]) == 'tunai' ? DataPengiriman::STATUS_LUNAS : (strtolower($request->metode_pembayaran[$i]) == 'transfer' ? DataPengiriman::STATUS_LUNAS : DataPengiriman::STATUS_PENDING ),
-
                 'metode_pembayaran' => $request->metode_pembayaran[$i],
                 'bank' => $request->bank[$i] ?? '',
+                'jumlah_pembayaran' => $request->jumlah_pembayaran[$i] ?? 0,
                 'bukti_pembayaran' => $request->bukti_pembayaran[$i] ?? '',
                 'metode_pembayaran_2' => $request->metode_pembayaran_2[$i] ? $request->metode_pembayaran_2[$i] : "",
                 'bank_2' => $request->bank_2[$i] ? $request->bank_2[$i] : "",
+                'jumlah_pembayaran_2' => $request->jumlah_pembayaran_2[$i] ? $request->jumlah_pembayaran_2[$i] : 0,
                 'bukti_pembayaran_2' => $request->bukti_pembayaran_2[$i] ? $request->bukti_pembayaran_2[$i] : "",
                 'jenis_pengiriman' => $request->jenis_pengiriman[$i],
                 'bawa_sendiri' => $request->bawa_sendiri[$i],
