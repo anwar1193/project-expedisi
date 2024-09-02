@@ -159,7 +159,7 @@ class DashboardController extends Controller
                     })->when($no_resi, function($query, $no_resi) {
                         return $query->where('no_resi', 'LIKE', $no_resi);
                     })->when($status_pengiriman, function($query, $status_pengiriman) {
-                        return $query->where('status_pengiriman', 'LIKE', $status_pengiriman);
+                        return $query->where('data_pengirimen.status_pengiriman', 'LIKE', $status_pengiriman);
                     })
                     ->orderBy('data_pengirimen.id', 'DESC')->get();
                     foreach ($data as $item) {
@@ -234,6 +234,8 @@ class DashboardController extends Controller
             $item->status = ($item->sisa == 0) ? 'Lunas' : 'Belum Lunas';
             $item->totalBersih = $totalBersih;
         }
+
+        $data['total'] = $data['invoice']->sum('totalBersih');
 
         return view('invoice.customer', $data);
     }
