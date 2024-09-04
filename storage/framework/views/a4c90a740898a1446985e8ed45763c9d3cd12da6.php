@@ -282,8 +282,12 @@
 												$bukti_pembayaran = $data->bukti_pembayaran;
 	
 												if($bukti_pembayaran != ''){
-													$explode = explode("/", $bukti_pembayaran);
-													$bukti_pembayaran_view = 'https://drive.google.com/file/d/'.$explode[5].'/preview';
+													if (filter_var($bukti_pembayaran, FILTER_VALIDATE_URL)) {
+														$explode = explode("/", $bukti_pembayaran);
+														$bukti_pembayaran_view = 'https://drive.google.com/file/d/'.$explode[5].'/preview';
+													} else {
+														$bukti_pembayaran_view = $bukti_pembayaran;
+													}
 													// $bukti_pembayaran_view = 'https://'.$explode[2].'/thumbnail?id='.$explode[5];
 												}else{
 													$bukti_pembayaran_view = '#';
@@ -345,16 +349,20 @@
 													<?php endif; ?>
 												</td>
 												<td onmouseover="showBukti(<?php echo e($data->id); ?>)" onmouseout="hideBukti(<?php echo e($data->id); ?>)" style="position: relative;">
-													<?php if($bukti_pembayaran != ''): ?>
+													<?php if($bukti_pembayaran != '' && (filter_var($bukti_pembayaran, FILTER_VALIDATE_URL))): ?>
 														<div id="tooltip<?php echo e($data->id); ?>" class="tooltip-img">
 															<a href="<?php echo e($bukti_pembayaran); ?>" target="_blank">
 																
 																<iframe src="<?php echo e($bukti_pembayaran_view); ?>" width="400" height="400" allow="autoplay"></iframe>
 															</a>
 														</div>
+
+														<?php echo e($data->metode_pembayaran); ?> <i class="<?php echo e($data->metode_pembayaran == 'Transfer' ? 'fa fa-eye' : ''); ?>"></i>
+
+													<?php else: ?>
+														<?php echo e($data->metode_pembayaran); ?>
+
 													<?php endif; ?>
-												
-													<?php echo e($data->metode_pembayaran); ?> <i class="<?php echo e($data->metode_pembayaran == 'Transfer' ? 'fa fa-eye' : ''); ?>"></i>
 												</td>
 												
 	
@@ -427,7 +435,7 @@
 					},
 				},
 				lengthMenu: [
-					[10, 25, 50, -1],
+					[-1, 10, 25, 50],
 					['All', 10, 25, 50]
 				],
 				fixedHeader: {

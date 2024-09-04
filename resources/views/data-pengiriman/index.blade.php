@@ -281,8 +281,12 @@
 												$bukti_pembayaran = $data->bukti_pembayaran;
 	
 												if($bukti_pembayaran != ''){
-													$explode = explode("/", $bukti_pembayaran);
-													$bukti_pembayaran_view = 'https://drive.google.com/file/d/'.$explode[5].'/preview';
+													if (filter_var($bukti_pembayaran, FILTER_VALIDATE_URL)) {
+														$explode = explode("/", $bukti_pembayaran);
+														$bukti_pembayaran_view = 'https://drive.google.com/file/d/'.$explode[5].'/preview';
+													} else {
+														$bukti_pembayaran_view = $bukti_pembayaran;
+													}
 													// $bukti_pembayaran_view = 'https://'.$explode[2].'/thumbnail?id='.$explode[5];
 												}else{
 													$bukti_pembayaran_view = '#';
@@ -343,16 +347,19 @@
 													@endif
 												</td>
 												<td onmouseover="showBukti({{ $data->id }})" onmouseout="hideBukti({{ $data->id }})" style="position: relative;">
-													@if ($bukti_pembayaran != '')
+													@if ($bukti_pembayaran != '' && (filter_var($bukti_pembayaran, FILTER_VALIDATE_URL)))
 														<div id="tooltip{{ $data->id }}" class="tooltip-img">
 															<a href="{{ $bukti_pembayaran }}" target="_blank">
 																{{-- <img src="{{ $bukti_pembayaran_view }}" alt="Bukti Pembayaran" width="200px"> --}}
 																<iframe src="{{ $bukti_pembayaran_view }}" width="400" height="400" allow="autoplay"></iframe>
 															</a>
 														</div>
+
+														{{ $data->metode_pembayaran }} <i class="{{ $data->metode_pembayaran == 'Transfer' ? 'fa fa-eye' : '' }}"></i>
+
+													@else
+														{{ $data->metode_pembayaran }}
 													@endif
-												
-													{{ $data->metode_pembayaran }} <i class="{{ $data->metode_pembayaran == 'Transfer' ? 'fa fa-eye' : '' }}"></i>
 												</td>
 												{{-- <td onmouseover="showBukti({{ $data->id }})" onmouseout="hideBukti({{ $data->id }})">
 													@if ($bukti_pembayaran != '')
@@ -433,7 +440,7 @@
 					},
 				},
 				lengthMenu: [
-					[10, 25, 50, -1],
+					[-1, 10, 25, 50],
 					['All', 10, 25, 50]
 				],
 				fixedHeader: {
