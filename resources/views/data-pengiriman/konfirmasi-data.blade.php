@@ -125,23 +125,23 @@
                                             <tr>
                                                 <th>No Resi</th>
                                                 <th>Tgl Transaksi</th>
-                                                <th>Diinput Oleh</th>
                                                 <th>Kode Customer</th>
                                                 <th>Nama Pengirim</th>
-                                                <th>Nama Penerima</th>
-                                                <th>Kota Tujuan</th>
                                                 <th>No HP Pengirim</th>
+                                                <th>Nama Penerima</th>
                                                 <th>No HP Penerima</th>
+                                                <th>Kota Tujuan</th>
+                                                <th>Jenis Pengiriman</th>
                                                 <th>Berat Barang</th>
                                                 <th>Ongkir</th>
-                                                <th>Komisi</th>
                                                 <th>Metode Pembayaran</th>
+                                                <th>Bukti Pembayaran</th>
                                                 <th>Bank</th>
                                                 <th id="headJumlahPembayaran">Jumlah Pembayaran</th>
-                                                <th>Bukti Pembayaran</th>
-                                                <th>Jenis Pengiriman</th>
+                                                <th>Diinput Oleh</th>
                                                 <th>Bawa Sendiri</th>
                                                 <th>Status Pengiriman</th>
+                                                <th>Komisi</th>
                                                 <th>Keterangan</th>
                                             </tr>
                                         </thead>
@@ -168,23 +168,6 @@
                                                     </td>
 
                                                     <td>
-                                                        <select name="input_by[]" class="form-control @error('input_by')  @enderror js-example-basic-single">
-                                                            <option value="">-Pilih-</option>
-                                                            @foreach ($kasir as $item)
-                                                                <option value="{{ $item->nama }}" {{ strtolower($row['diinput_oleh']) == strtolower($item->nama) ? 'selected' : '' }}>
-                                                                    {{ $item->nama }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-
-                                                        @error('input_by[]')
-                                                        <div class="text-danger">
-                                                            {{ $message }}
-                                                        </div>
-                                                        @enderror
-                                                    </td>
-
-                                                    <td>
                                                         <select name="kode_customer[]" class="form-select @error('kode_customer')  @enderror js-example-basic-single">
                                                             <option value="General" {{ $row['kode_customer'] == 'General' ? 'selected' : '' }}> General </option>
                                                             @foreach ($customer as $item)
@@ -200,6 +183,7 @@
                                                             </div>
                                                         @enderror
                                                     </td>
+
                                                     <td>
                                                         <input class="" type="text" name="nama_pengirim[]" value="{{ $row['nama_pengirim'] }}">
 
@@ -209,6 +193,17 @@
                                                             </div>
                                                         @enderror
                                                     </td>
+
+                                                    <td>
+                                                        <input class="@error('no_hp_pengirim')  @enderror" type="text" name="no_hp_pengirim[]" value="{{ $row['no_hp_pengirim'] }}">
+
+                                                        @error('no_hp_pengirim[]')
+                                                            <div class="text-danger">
+                                                                {{ $message }}
+                                                            </div>
+                                                        @enderror
+                                                    </td>
+
                                                     <td>
                                                         <input class="@error('nama_penerima')  @enderror" type="text" name="nama_penerima[]" value="{{ $row['nama_penerima'] }}">
 
@@ -218,24 +213,7 @@
                                                             </div>
                                                         @enderror
                                                     </td>
-                                                    <td>
-                                                        <input class="@error('kota_tujuan')  @enderror" type="text" name="kota_tujuan[]" value="{{ $row['kota_tujuan'] }}">
 
-                                                        @error('kota_tujuan[]')
-                                                            <div class="text-danger">
-                                                                {{ $message }}
-                                                            </div>
-                                                        @enderror
-                                                    </td>
-                                                    <td>
-                                                        <input class="@error('no_rno_hp_pengirimesi')  @enderror" type="text" name="no_hp_pengirim[]" value="{{ $row['no_hp_pengirim'] }}">
-
-                                                        @error('no_hp_pengirim[]')
-                                                            <div class="text-danger">
-                                                                {{ $message }}
-                                                            </div>
-                                                        @enderror
-                                                    </td>
                                                     <td>
                                                         <input class="@error('no_hp_penerima')  @enderror" type="text" name="no_hp_penerima[]" value="{{ $row['no_hp_penerima'] }}">
                                                         
@@ -245,6 +223,27 @@
                                                             </div>
                                                         @enderror
                                                     </td>
+
+                                                    <td>
+                                                        <input class="@error('kota_tujuan')  @enderror" type="text" name="kota_tujuan[]" value="{{ $row['kota_tujuan'] }}">
+
+                                                        @error('kota_tujuan[]')
+                                                            <div class="text-danger">
+                                                                {{ $message }}
+                                                            </div>
+                                                        @enderror
+                                                    </td>
+
+                                                    <td>
+                                                        <input class="@error('jenis_pengiriman')  @enderror" type="text" name="jenis_pengiriman[]" value="{{ $row['jenis_pengiriman'] }}"> 
+
+                                                        @error('jenis_pengiriman[]')
+                                                            <div class="text-danger">
+                                                                {{ $message }}
+                                                            </div>
+                                                        @enderror
+                                                    </td>
+
                                                     <td>
                                                         <input class="@error('berat_barang')  @enderror" type="number" name="berat_barang[]" value="{{ $row['berat_barang'] }}">
 
@@ -254,6 +253,7 @@
                                                             </div>
                                                         @enderror
                                                     </td>
+
                                                     <td>
                                                         <input class="@error('ongkir')  @enderror" type="number" name="ongkir[]" value="{{ $row['ongkir'] }}">
 
@@ -263,15 +263,7 @@
                                                             </div>
                                                         @enderror
                                                     </td>
-                                                    <td>
-                                                        <input class="@error('komisi')  @enderror" type="number" name="komisi[]" value="{{ $row['komisi'] }}">
 
-                                                        @error('komisi[]')
-                                                            <div class="text-danger">
-                                                                {{ $message }}
-                                                            </div>
-                                                        @enderror
-                                                    </td>
                                                     <td>
                                                         <select name="metode_pembayaran[]" class="form-control @error('metode_pembayaran')  @enderror js-example-basic-single" id="metodePembayaran">
                                                             <option value="">-Pilih-</option>
@@ -312,6 +304,20 @@
                                                             </div>
                                                         @enderror
                                                     </td>
+
+                                                    <td>
+                                                        <input id="bukti_pembayaran" class="@error('bukti_pembayaran')  @enderror" type="text" name="bukti_pembayaran[]" value="{{ $row['bukti_pembayaran'] }}"> 
+                                                        
+                                                        <div class="additionalBuktiOptions pt-2" style="display: none;">
+                                                            <input id="bukti_pembayaran_2" class="@error('bukti_pembayaran')  @enderror" type="text" name="bukti_pembayaran_2[]" value="{{ old('bukti_pembayaran_2[]') }}"> 
+                                                        </div>
+                                                        @error('bukti_pembayaran[]')
+                                                            <div class="text-danger">
+                                                                {{ $message }}
+                                                            </div>
+                                                        @enderror
+                                                    </td>
+
                                                     <td>
                                                         <select name="bank[]" class="form-control @error('bank')  @enderror js-example-basic-single" id="bankSelect">
                                                             <option value="">-Pilih-</option>
@@ -348,6 +354,7 @@
                                                             </div>
                                                         @enderror
                                                     </td>
+
                                                     <td>
                                                         <div class="py-1 captionJumlahPembayaran">
                                                             <p>Tampil Jika Pilih Multi Payment</p>
@@ -359,29 +366,26 @@
                                                             <input class="@error('jumlah_pembayaran_2')  @enderror" id="jumlahPembayaran2" type="number" name="jumlah_pembayaran_2[]" value="{{ old('jumlah_pembayaran_2[]') }}">
                                                         </div>
                                                     </td>
-                                                    <td>
-                                                        <input id="bukti_pembayaran" class="@error('bukti_pembayaran')  @enderror" type="text" name="bukti_pembayaran[]" value="{{ $row['bukti_pembayaran'] }}"> 
-                                                        
-                                                        <div class="additionalBuktiOptions pt-2" style="display: none;">
-                                                            <input id="bukti_pembayaran_2" class="@error('bukti_pembayaran')  @enderror" type="text" name="bukti_pembayaran_2[]" value="{{ old('bukti_pembayaran_2[]') }}"> 
-                                                        </div>
-                                                        @error('bukti_pembayaran[]')
-                                                            <div class="text-danger">
-                                                                {{ $message }}
-                                                            </div>
-                                                        @enderror
-                                                    </td>
-                                                    <td>
-                                                        <input class="@error('jenis_pengiriman')  @enderror" type="text" name="jenis_pengiriman[]" value="{{ $row['jenis_pengiriman'] }}"> 
 
-                                                        @error('jenis_pengiriman[]')
-                                                            <div class="text-danger">
-                                                                {{ $message }}
-                                                            </div>
+                                                    <td>
+                                                        <select name="input_by[]" class="form-control @error('input_by')  @enderror js-example-basic-single">
+                                                            <option value="">-Pilih-</option>
+                                                            @foreach ($kasir as $item)
+                                                                <option value="{{ $item->nama }}" {{ strtolower($row['diinput_oleh']) == strtolower($item->nama) ? 'selected' : '' }}>
+                                                                    {{ $item->nama }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+
+                                                        @error('input_by[]')
+                                                        <div class="text-danger">
+                                                            {{ $message }}
+                                                        </div>
                                                         @enderror
                                                     </td>
+                                                    
                                                     <td>
-                                                        <select name="bawa_sendiri[]" class="form-control @error('metode_pembayaran')  @enderror js-example-basic-single">
+                                                        <select name="bawa_sendiri[]" class="form-control @error('bawa_sendiri[]')  @enderror js-example-basic-single">
                                                             <option value="Ya" {{ $row['bawa_sendiri'] == 'Ya' ? 'selected' : '' }}> Ya </option>
                                                             <option value="Di jemput" {{ $row['bawa_sendiri'] == 'Di jemput' ? 'selected' : '' }}> Di jemput </option>
                                                         </select>
@@ -407,6 +411,15 @@
                                                             </div>
                                                         @enderror
                                                         {{-- <input type="text" name="status_pengiriman[]" value="{{ $row['status_pengiriman'] }}">  --}}
+                                                    </td>
+                                                    <td>
+                                                        <input class="@error('komisi')  @enderror" type="number" name="komisi[]" value="{{ $row['komisi'] }}">
+
+                                                        @error('komisi[]')
+                                                            <div class="text-danger">
+                                                                {{ $message }}
+                                                            </div>
+                                                        @enderror
                                                     </td>
                                                     <td>
                                                         <input class="@error('keterangan')  @enderror" type="text" name="keterangan[]" value="{{ $row['keterangan'] }}"> 
