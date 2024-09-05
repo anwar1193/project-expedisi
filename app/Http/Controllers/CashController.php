@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Helper;
 use App\Models\DaftarPengeluaran;
 use App\Models\PemasukanCash;
 use App\Models\PemasukanLainnya;
 use App\Models\PengeluaranCash;
 use App\Models\SaldoCash;
+use App\Models\SettingWa;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\URL;
 
 class CashController extends Controller
 {
@@ -143,6 +147,11 @@ class CashController extends Controller
         $today = date('Y-m-d');
         $inputSaldo = $request->saldo;
         $saldo = SaldoCash::orderBy('id', 'DESC')->first();
+        $url = SettingWa::select('url_message AS url')->latest()->first();
+        $no_hp = Helper::dataOwner()->nomor_telepon;
+        $message = 'Terdapat Closing Saldo Baru Yang Membutuhkan Approval. Silahkan Klik Link Berikut Untuk Approve : ' . URL::to('/').'/owner/approve-saldo/'.($saldo->id + 1).'?link=owner';
+
+        $dataSending = sendWaText($no_hp, $message);
         
         if ($request->tanggal != $today) {
             return back()->with('error', 'Tanggal Closing Saldo Harus Sama Dengan Tanggal Hari ini');
@@ -156,6 +165,10 @@ class CashController extends Controller
             $saldo->saldo = $inputSaldo;
             $saldo->save();
 
+            $response = Http::withHeaders([
+                'Content-Type' => 'application/json',
+            ])->post($url->url, $dataSending);
+
             return redirect()->route('posisi-cash')->with('success', 'Saldo cash berhasil ditutup');
         } else {
             SaldoCash::create([
@@ -163,17 +176,34 @@ class CashController extends Controller
                 'tanggal' => $today
             ]);
 
+            $response = Http::withHeaders([
+                'Content-Type' => 'application/json',
+            ])->post($url->url, $dataSending);
+
             return redirect()->route('posisi-cash')->with('success', 'Saldo cash berhasil ditambahkan');
         }
     }
 
     public function approve($id)
     {
-        PengeluaranCash::find($id)->update([
-            'status' => 1
+        $link = request('link');
+        $saldo = SaldoCash::find($id);
+
+        if($link && $saldo->is_approve == SaldoCash::STATUS_APPROVE){
+            return redirect()->route('error-page1')->with('error', 'Closingan Saldo Cash Telah Di Approve');
+        } 
+
+        if($link && !$saldo) {
+            return redirect()->route('error-page1')->with('error', 'Data Tidak Ditemukan');
+        }
+        
+        SaldoCash::find($id)->update([
+            'is_approve' => SaldoCash::STATUS_APPROVE
         ]);
 
-        return back()->with('success', 'Pengeluaran Cash Telah Di Approve');
+        if($link) return redirect()->route('approved');
+
+        return back()->with('success', 'Closingan Saldo Cash Telah Di Approve');
     }
 
     public function approveSelected(Request $request)
@@ -186,16 +216,16 @@ class CashController extends Controller
 
         for($i=0; $i<sizeof($id_pengeluaran); $i++){
             PengeluaranCash::find($id_pengeluaran[$i])->update([
-                'status' => 1
+                'is_approve' => SaldoCash::STATUS_APPROVE
             ]);
         }
 
-        return back()->with('success', 'Pengeluaran Cash Telah Di Approve');
+        return back()->with('success', 'Closingan Saldo Cash Telah Di Approve');
     }
 
-    public function data_pengeluaran_cash()
+    public function data_saldo_cash()
     {
-        $data['pengeluaran'] = PengeluaranCash::where('status', false)->orderBy('id', 'DESC')->get();
+        $data['saldo'] = SaldoCash::where('is_approve', false)->orderBy('id', 'DESC')->get();
 
         return view('posisi-cash.pengeluaran-cash', $data);
     }

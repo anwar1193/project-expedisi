@@ -57,7 +57,7 @@ if (! function_exists('getNotifClosingSaldo')) {
             }
         }
 
-        $data['text_notif'] = $text;
+        $data['text_notif'] = $text ?? '-';
 
         return $data;
     }

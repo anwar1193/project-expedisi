@@ -80,7 +80,7 @@
                           </div>
                       </li>
                     @endif
-                    @if ($notificationSaldo)
+                    @if ($notificationSaldo['text_notif'] !== '-')
                       <li class="noti-success">
                           <div class="media">
                               <span class="notification-bg bg-light-success"><i data-feather="file-text"></i></span>

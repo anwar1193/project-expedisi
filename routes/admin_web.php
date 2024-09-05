@@ -217,6 +217,7 @@ Route::view('error-page1', 'admin.errors.error-page1')->name('error-page1');
 Route::view('error-page2', 'admin.errors.error-page2')->name('error-page2');
 Route::view('error-page3', 'admin.errors.error-page3')->name('error-page3');
 Route::view('error-page4', 'admin.errors.error-page4')->name('error-page4');
+Route::view('approved', 'admin.errors.approved')->name('approved');
 
 Route::view('login', 'admin.authentication.login')->name('login');
 Route::view('login_one', 'admin.authentication.login_one')->name('login_one');

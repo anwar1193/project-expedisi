@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use App\Helpers\Helper;
 use App\Models\DaftarPengeluaran;
 use App\Models\JenisPengeluaran;
+use App\Models\SettingWa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\URL;
 use Yaza\LaravelGoogleDriveStorage\Gdrive;
 
 class DaftarPengeluaranController extends Controller
@@ -109,6 +112,16 @@ class DaftarPengeluaranController extends Controller
         $validateData['keterangan_tambahan'] = $request->keterangan_tambahan;
 
         DaftarPengeluaran::create($validateData);
+
+        $data = DaftarPengeluaran::orderBy('id', 'DESC')->first();
+        $url = SettingWa::select('url_message AS url')->latest()->first();
+        $no_hp = Helper::dataOwner()->nomor_telepon;
+        $message = 'Terdapat Pengeluaran Baru Yang Membutuhkan Approval. Silahkan Klik Link Berikut Untuk Approve : ' . URL::to('/').'/owner/approve/'.($data->id + 1).'?link=owner';
+
+        $dataSending = sendWaText($no_hp, $message);
+        $response = Http::withHeaders([
+            'Content-Type' => 'application/json',
+        ])->post($url->url, $dataSending);
 
         Helper::logActivity('Simpan daftar pengeluaran');
 
@@ -215,9 +228,21 @@ class DaftarPengeluaranController extends Controller
 
     public function approve($id)
     {
+        $link = request('link');
+        $data = DaftarPengeluaran::find($id);
+
+        if($link && $data->status_pengeluaran == DaftarPengeluaran::STATUS_APPROVE){
+            return redirect()->route('error-page1')->with('error', 'Data Pengeluaran Telah Di Approve');
+        }
+
+        if($link && !$data){
+            return redirect()->route('error-page1')->with('error', 'Data Pengeluaran Tidak Ditemukan');
+        }
         $proses = DaftarPengeluaran::find($id)->update([
-            'status_pengeluaran' => 1
+            'status_pengeluaran' => DaftarPengeluaran::STATUS_APPROVE
         ]);
+
+        if($link) return redirect()->route('approved');
 
         return back()->with('success', 'Data Pengeluaran Telah Di Approve');
     }
@@ -232,7 +257,7 @@ class DaftarPengeluaranController extends Controller
 
         for($i=0; $i<sizeof($id_pengeluaran); $i++){
             DaftarPengeluaran::find($id_pengeluaran[$i])->update([
-                'status_pengeluaran' => 1
+                'status_pengeluaran' => DaftarPengeluaran::STATUS_APPROVE
             ]);
         }
 
@@ -242,7 +267,7 @@ class DaftarPengeluaranController extends Controller
     public function cancelApprove($id)
     {
         $proses = DaftarPengeluaran::find($id)->update([
-            'status_pengeluaran' => 2
+            'status_pengeluaran' => DaftarPengeluaran::STATUS_PENDING
         ]);
 
         return back()->with('success', 'Approval Data Pengeluaran Telah Dibatalkan');
@@ -258,10 +283,19 @@ class DaftarPengeluaranController extends Controller
 
         for($i=0; $i<sizeof($id_pengeluaran); $i++){
             DaftarPengeluaran::find($id_pengeluaran[$i])->update([
-                'status_pengeluaran' => 2
+                'status_pengeluaran' => DaftarPengeluaran::STATUS_PENDING
             ]);
         }
 
         return back()->with('success', 'Approval Data Pengeluaran Telah Dibatalkan');
+    }
+
+    public function linkApprove() 
+    {
+        $data['data'] = DaftarPengeluaran::where('status_pengeluaran', DaftarPengeluaran::STATUS_PENDING)
+                    ->orderBy('id', 'DESC')
+                    ->first();
+
+        return view('approve.index', $data);
     }
 }

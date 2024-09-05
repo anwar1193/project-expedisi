@@ -72,6 +72,7 @@ class DataPengirimanImport implements ToArray, WithValidation, WithHeadingRow
                 'jenis_pengiriman' => $row['jenis_pengiriman'],
                 'bawa_sendiri' => $row['bawa_sendiri'],
                 'status_pengiriman' => $row['status_pengiriman'],
+                'status_kirim_wa' => $row['status_kirim_wa'],
                 'keterangan' => $row['keterangan'] != '' ? $row['keterangan'] : '-',
             ];
         }

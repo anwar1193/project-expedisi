@@ -142,6 +142,7 @@
                                                 <th>Bawa Sendiri</th>
                                                 <th>Status Pengiriman</th>
                                                 <th>Komisi</th>
+                                                <th>Status Kirim WA</th>
                                                 <th>Keterangan</th>
                                             </tr>
                                         </thead>
@@ -420,6 +421,12 @@
                                                                 {{ $message }}
                                                             </div>
                                                         @enderror
+                                                    </td>
+                                                    <td>
+                                                        <select name="status_kirim_wa[]" class="form-control @error('status_kirim_wa')  @enderror js-example-basic-single">
+                                                            <option value="ya" {{ strtolower($row['status_kirim_wa']) == 'ya' ? 'selected' : '' }}>Ya</option>
+                                                            <option value="tidak" {{ strtolower($row['status_kirim_wa']) == 'tidak' ? 'selected' : '' }}>Tidak</option>
+                                                        </select>
                                                     </td>
                                                     <td>
                                                         <input class="@error('keterangan')  @enderror" type="text" name="keterangan[]" value="{{ $row['keterangan'] }}"> 

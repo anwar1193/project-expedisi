@@ -51,6 +51,9 @@ use App\Http\Controllers\SettingWaController;
 //     return redirect()->route('index');
 // })->name('/');
 
+Route::get('owner/approve/{id}', [DaftarPengeluaranController::class, 'approve'])->name('data-pengeluaran.approve');
+Route::get('owner/approve-saldo/{id}', [CashController::class, 'approve'])->name('closing-saldo.approve');
+
 Route::middleware("guest")->group(function() {
 
     Route::get('login', [AuthController::class, 'index'])->name('login');
@@ -325,7 +328,7 @@ Route::middleware("auth")->group(function() {
     });
 
     Route::prefix('pengeluaran-cash')->group(function() {
-        Route::get('/', [CashController::class, 'data_pengeluaran_cash'])->name('pengeluaran-cash');
+        Route::get('/', [CashController::class, 'data_saldo_cash'])->name('pengeluaran-cash');
     });
     
     Route::prefix('tagihan-customer')->group(function() {

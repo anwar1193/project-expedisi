@@ -490,6 +490,7 @@ class DataPengirimanController extends Controller
                 'jenis_pengiriman' => $request->jenis_pengiriman[$i],
                 'bawa_sendiri' => $request->bawa_sendiri[$i],
                 'status_pengiriman' => $request->status_pengiriman[$i],
+                'status_kirim_wa' => strtolower($request->status_kirim_wa[$i]) == 'ya' ? 1 : 0,
                 'keterangan' => $request->keterangan[$i] != '' ? $request->keterangan[$i] : '-',
                 'input_by' => $request->input_by[$i],
             ]);

@@ -11,6 +11,7 @@ use App\Models\Level;
 use App\Models\Barang;
 use App\Models\Jasa;
 use App\Models\MetodePembayaran;
+use App\Models\User;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
@@ -325,6 +326,12 @@ class Helper
         $data = Jasa::where('id', $id)->first();
         $nama_jasa = $data->nama_jasa;
         return $nama_jasa;
+    }
+
+    public static function dataOwner() 
+    {
+        $data = User::where('user_level', User::OWNER)->first();
+        return $data;
     }
 
 }
