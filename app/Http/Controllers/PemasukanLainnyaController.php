@@ -146,6 +146,15 @@ class PemasukanLainnyaController extends Controller
         if (strtolower($validateData['metode_pembayaran2']) == 'transfer' && $bank2 == '') {
             return back()->with('error', 'Bank Wajib Diisi Jika Pilih Metode Pembayaran Transfer');
         }
+        if (!$request->dataCustomer) {
+            $metodePembayaran = ['metode_pembayaran', 'metode_pembayaran2'];
+        
+            foreach ($metodePembayaran as $metode) {
+                if (strtolower($validateData[$metode]) == 'kredit') {
+                    return back()->with('error', 'Metode Pembayaran Kredit Hanya Berlaku Untuk Customer');
+                }
+            }
+        }
         $validateData['barang_jasa'] = $barang != '' ? $barang : $jasa;
         if ($barang != '') {
             if ($jumlah_barang > $data_barang->stok) return back()->with('error', 'Jumlah Barang Yang Diinput Melebihi Stok Barang');
@@ -288,6 +297,16 @@ class PemasukanLainnyaController extends Controller
         $sumber_pemasukkan = !$request->dataCustomer ? $request->sumber_pemasukkan : $request->customer;
         $barang_jasa = $request->barang ? $request->barang : $request->jasa;
         $jumlah_barang = $request->jumlah_barang;
+
+        if (!$request->dataCustomer) {
+            $metodePembayaran = ['metode_pembayaran', 'metode_pembayaran2'];
+        
+            foreach ($metodePembayaran as $metode) {
+                if (strtolower($validateData[$metode]) == 'kredit') {
+                    return back()->with('error', 'Metode Pembayaran Kredit Hanya Berlaku Untuk Customer');
+                }
+            }
+        }
 
         PemasukanLainnya::where('id', '=', $id)->update([
             'no_resi_pengiriman' => $request->no_resi_pengiriman,

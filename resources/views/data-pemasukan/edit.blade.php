@@ -254,7 +254,8 @@
 								<div class="col">
 									<div class="mb-2">
 										<label for="" class="form-label">Bank</label>
-										<select name="bank" class="form-control @error('bank') is-invalid @enderror js-example-basic-single">
+										<select name="bank" id="selectBank" class="form-control @error('bank') is-invalid @enderror js-example-basic-single">
+											<option value="">- Pilih Bank -</option>
 											@foreach ($bank as $item)
 												<option value="{{ $item->bank }}" {{ $datas->bank == $item->bank ? 'selected' : '' }}>
 													{{ $item->bank }}
@@ -346,7 +347,8 @@
 									<div class="col">
 										<div class="mb-2">
 											<label for="" class="form-label">Bank</label>
-											<select name="bank2" class="form-control @error('bank2') is-invalid @enderror js-example-basic-single">
+											<select name="bank2" id="selectBank2" class="form-control @error('bank2') is-invalid @enderror js-example-basic-single">
+												<option value="">- Pilih Bank -</option>
 												@foreach ($bank as $item)
 													<option value="{{ $item->bank }}" {{ $datas->bank2 == $item->bank ? 'selected' : '' }}>
 														{{ $item->bank }}
@@ -660,15 +662,29 @@
 
 		function toggleMetodeTransfer() {
 			const metode = (metodePembayaran.value).toLowerCase();
+			const select = document.getElementById('selectBank');
 
-			 (metode == 'transfer') ? bank.style.display = 'block' : bank.style.display = 'none';
+			if (metode === 'transfer') {
+				bank.style.display = 'block';
+			} else {
+				bank.style.display = 'none';
+				select.value = '';
+				select.dispatchEvent(new Event('change'));
+			}
 
 		}
 		
 		function toggleMetodeTransfer2() {
 			const metode = (metodePembayaran2.value).toLowerCase();
+			const select = document.getElementById('selectBank2');
 
-			 (metode == 'transfer') ? bank2.style.display = 'block' : bank2.style.display = 'none';
+			 if (metode === 'transfer') {
+				bank2.style.display = 'block';
+			} else {
+				bank2.style.display = 'none';
+				select.value = '';
+				select.dispatchEvent(new Event('change'));
+			}
 
 		}
 
