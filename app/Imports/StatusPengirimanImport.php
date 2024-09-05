@@ -60,10 +60,13 @@ class StatusPengirimanImport implements ToModel, WithValidation, WithHeadingRow
             
             $url = SettingWa::select('url_message AS url')->latest()->first();
             $dataSending = sendWaText($data->no_hp_pengirim, $message);
-            $response = Http::withHeaders([
-                'Content-Type' => 'application/json',
-            ])->post($url->url, $dataSending);
-            // ])->post('https://api.watzap.id/v1/send_message', $dataSending);
+
+            if($data->status_kirim_wa == DataPengiriman::STATUS_WA_AKTIF) {
+                $response = Http::withHeaders([
+                    'Content-Type' => 'application/json',
+                ])->post($url->url, $dataSending);
+                // ])->post('https://api.watzap.id/v1/send_message', $dataSending);
+            }
         }
 //08172645362
         return null;

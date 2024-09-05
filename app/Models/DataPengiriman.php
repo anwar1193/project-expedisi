@@ -12,4 +12,5 @@ class DataPengiriman extends Model
     const STATUS_LUNAS = 1;
     const STATUS_PENDING = 2;
     const STATUS_APPROVE = 3;
+    const STATUS_WA_AKTIF = 1;
 }
