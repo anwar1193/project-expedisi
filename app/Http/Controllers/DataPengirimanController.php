@@ -64,6 +64,7 @@ class DataPengirimanController extends Controller
         $data['status_lunas'] = DataPengiriman::STATUS_LUNAS;
         $data['status_approve'] = DataPengiriman::STATUS_APPROVE;
         $data['status_pending'] = DataPengiriman::STATUS_PENDING;
+        $data['total'] = $datas->sum('ongkir');
 
         if (isOwner() && $jumlahApprove == 0) {
             return view('data-pengiriman.detail-lengkap-pengiriman', $data);

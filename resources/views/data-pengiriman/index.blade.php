@@ -395,6 +395,9 @@
 										
 									</tbody>
 								</table>
+								<div class="mt-3 pt-3 float-end">
+									<h5>Total Nilai Transaksi: Rp {{ number_format($total, 0, '.', '.') }}</h5>
+								</div>
 								
 							</div>
 						</div>
