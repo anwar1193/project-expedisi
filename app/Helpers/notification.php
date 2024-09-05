@@ -1,7 +1,9 @@
 <?php
 
+use App\Models\DaftarPengeluaran;
 use App\Models\DataPengiriman;
 use App\Models\PengeluaranCash;
+use App\Models\SaldoCash;
 use Illuminate\Support\Facades\Session;
 
 if (! function_exists('getNotification')) {
@@ -25,17 +27,36 @@ if (! function_exists('getNotification')) {
 
 if (! function_exists('getNotifPengeluaran')) {
     function getNotifPengeluaran() {
-        $jumlah = PengeluaranCash::where('status', false)->count();
+        $jumlah = DaftarPengeluaran::where('status_pengeluaran', DaftarPengeluaran::STATUS_PENDING)->count();
         if (Session::get('user_level') == 2) {
-            $text = 'Terdapat '.$jumlah. ' Data Pengeluaran Cash Yang Belum Diapprove';
+            $text = 'Terdapat '.$jumlah. ' Data Pengeluaran Yang Belum Diapprove';
         } elseif (Session::get('user_level') == 1) {
-            $text = 'Terdapat '.$jumlah. ' Data Pengeluaran Cash Yang Masih Berstatus Pending';
-        }elseif (Session::get('user_level') == 4) {
+            $text = 'Terdapat '.$jumlah. ' Data Pengeluaran Yang Masih Berstatus Pending';
+        } elseif (Session::get('user_level') == 4) {
             $text = 'Selamat Datang';
         }
         
         
         $data['jumlah'] = $jumlah;
+        $data['text_notif'] = $text;
+
+        return $data;
+    }
+}
+
+if (! function_exists('getNotifClosingSaldo')) {
+    function getNotifClosingSaldo() {
+        $lastSaldo = SaldoCash::where('is_approve', SaldoCash::STATUS_PENDING)->orderBy('id', 'DESC')->first();
+        if ($lastSaldo) {
+            if (Session::get('user_level') == 2) {
+                $text = 'Terdapat Closingan Saldo Yang Belum Diapprove';
+            } elseif (Session::get('user_level') == 1) {
+                $text = 'Terdapat Closingan Saldo Yang Belum Diapprove';
+            } elseif (Session::get('user_level') == 4) {
+                $text = 'Terdapat Closingan Saldo Yang Belum Diapprove';
+            }
+        }
+
         $data['text_notif'] = $text;
 
         return $data;
