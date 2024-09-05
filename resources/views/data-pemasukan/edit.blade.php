@@ -38,6 +38,43 @@
 							<div class="row">
 								<div class="col">
 									<div class="mb-3">
+										<label class="form-label" for="">Tanggal Pemasukan</label>
+										<input class="form-control @error('tgl_pemasukkan') is-invalid @enderror" type="date" name="tgl_pemasukkan" autocomplete="off" value="{{ old('tgl_pemasukkan', $datas->tgl_pemasukkan) }}"/>
+
+										@error('tgl_pemasukkan')
+										<div class="text-danger">
+											{{ $message }}
+										</div>
+										@enderror
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col">
+									<div class="mb-3">
+										<label class="form-label" for="">No Resi Pengiriman</label>
+										
+										<select name="no_resi_pengiriman" id="no_resi_pengiriman" class="form-control @error('no_resi_pengiriman') is-invalid @enderror js-example-basic-single">
+											@foreach ($resi as $item)
+												<option value="{{ $item->no_resi }}" {{ $item->no_resi == $datas->no_resi ? 'selected' : '' }}>
+													{{ $item->no_resi }} - {{ $item->nama_pengirim }} To {{ $item->nama_penerima }}
+												</option>
+											@endforeach
+										</select>
+
+										@error('no_resi_pengiriman')
+										<div class="text-danger">
+											{{ $message }}
+										</div>
+										@enderror
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col">
+									<div class="mb-3">
 										<label class="form-label" for="">Kategori</label>
 										<select name="kategori" id="kategori" class="form-control @error('kategori') is-invalid @enderror">
 											<option value="barang" {{ $datas->kategori == 'barang' ? 'selected' : '' }}>Barang</option>

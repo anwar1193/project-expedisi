@@ -57,6 +57,7 @@ class PemasukanLainnyaController extends Controller
     { 
         $today = date('Y-m-d');
         $validateData = $request->validate([
+            'tgl_pemasukkan' => 'required|date',
             'no_resi_pengiriman' => 'required',
             'kategori' => 'required',
             'modal' => 'required',
@@ -187,6 +188,7 @@ class PemasukanLainnyaController extends Controller
         $data['jasa'] = Jasa::orderBy('id', 'ASC')->get();
         $data['datas'] = $datas;
         $data['metode'] = MetodePembayaran::all();
+        $data['resi'] = DataPengiriman::all();
 
         return view('data-pemasukan.edit', $data);
     }
@@ -194,6 +196,7 @@ class PemasukanLainnyaController extends Controller
     public function update($id, Request $request)
     {
         $validateData = $request->validate([
+            'tgl_pemasukkan' => 'required|date',
             'kategori' => 'required',
             'modal' => 'required',
             'keterangan' => 'required',
@@ -287,6 +290,8 @@ class PemasukanLainnyaController extends Controller
         $jumlah_barang = $request->jumlah_barang;
 
         PemasukanLainnya::where('id', '=', $id)->update([
+            'no_resi_pengiriman' => $request->no_resi_pengiriman,
+            'tgl_pemasukkan' => $request->tgl_pemasukkan,
             'kategori' => $request->keterangan,
             'barang_jasa' => $barang_jasa,
             'jumlah_barang' => $jumlah_barang,
