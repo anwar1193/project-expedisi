@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DaftarPengeluaran;
 use App\Models\PemasukanCash;
+use App\Models\PemasukanLainnya;
 use App\Models\PengeluaranCash;
 use App\Models\SaldoCash;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -13,11 +15,15 @@ class CashController extends Controller
     public function index() 
     {
         $data['tanggal'] = request('tanggal') ?? date('Y-m-d');
-        $data['pemasukan'] = PemasukanCash::selectRaw('SUM(jumlah) AS total')
-                            ->where('tanggal', $data['tanggal'])
+        $data['pemasukan'] = PemasukanLainnya::selectRaw('SUM(jumlah_pemasukkan) AS total')
+                            ->where('tgl_pemasukkan', $data['tanggal'])
+                            ->where('metode_pembayaran', 'LIKE', PemasukanLainnya::TUNAI)
+                            ->orWhere('metode_pembayaran2', 'LIKE', PemasukanLainnya::TUNAI)
                             ->first();
-        $data['pengeluaran'] = PengeluaranCash::selectRaw('SUM(jumlah) AS total')
-                            ->where('tanggal', $data['tanggal'])
+
+        $data['pengeluaran'] = DaftarPengeluaran::selectRaw('SUM(jumlah_pembayaran) AS total')
+                            ->where('tgl_pengeluaran', $data['tanggal'])
+                            ->where('metode_pembayaran', 'LIKE', PemasukanLainnya::TUNAI)
                             ->first();
 
         $data['saldoToday'] = SaldoCash::where('tanggal', $data['tanggal'])

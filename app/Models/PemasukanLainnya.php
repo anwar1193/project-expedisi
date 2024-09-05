@@ -11,4 +11,5 @@ class PemasukanLainnya extends Model
     protected $table = 'pemasukkan_lainnyas';
     protected $primaryKey = 'id';
     protected $guarded = ['id'];
+    const TUNAI = 'tunai';
 }

@@ -32,11 +32,11 @@
 					<a href="{{ route('posisi-cash') }}" class="btn btn-md btn-secondary" title="Reset"><i class="fa fa-refresh"></i> Reset</a>
 				</div>
 
-				<div class="px-1">
+				{{-- <div class="px-1">
 					<a href="{{ route('posisi-cash.truncate') }}" class="btn btn-danger btn-md" data-bs-toggle="tooltip" data-bs-placement="top" title="Truncate Data" onclick="return confirm('Apakah anda yakin untuk menghapus semua data cash?')">
 						<i class="fa fa-trash"></i> Truncate
 					</a>
-				</div>
+				</div> --}}
 			</div>
 		</form>
         <div class="row">
@@ -72,7 +72,7 @@
 
                         <div class="row ps-3 ms-3 pt-3 mt-3">
                               <div class="col-xl-4 col-md-4 col-sm-4 box-col-4 des-xl-25 rate-sec">
-								<a class="text-white"  href="{{ route('posisi-cash.history-pemasukan') }}">
+								{{-- <a class="text-white"  href="{{ route('posisi-cash.history-pemasukan') }}"> --}}
 									<div class="card shadow-lg" style="width: 18rem; border-radius:15px; background-color: rgb(33, 174, 47)">
 										<div class="card-body fw-bold">
 											<div class="row">
@@ -84,11 +84,11 @@
 											</div>
 										</div>
 									</div>
-								</a>
+								{{-- </a> --}}
                               </div>
 
                               <div class="col-xl-4 col-md-4 col-sm-4 box-col-4 des-xl-25 rate-sec">
-								<a class="text-white"  href="{{ route('posisi-cash.history-pengeluaran') }}">
+								{{-- <a class="text-white"  href="{{ route('posisi-cash.history-pengeluaran') }}"> --}}
 									<div class="card shadow-lg" style="width: 18rem; border-radius:15px; background-color: rgb(200, 75, 75)">
 										<div class="card-body text-center fw-bold">
 											<div class="row">
@@ -100,11 +100,11 @@
 											</div>
 										</div>
 									</div>
-								</a>
+								{{-- </a> --}}
                               </div>
 
 							  <div class="col-xl-4 col-md-4 col-sm-4 box-col-4 des-xl-25 rate-sec">
-								<a class="text-white" href="{{ route('posisi-cash.history-saldo') }}">
+								{{-- <a class="text-white" href="{{ route('posisi-cash.history-saldo') }}"> --}}
 									<div class="card shadow-lg" style="width: 18rem; border-radius:15px; background-color: rgb(219, 176, 55)">
 										<div class="card-body fw-bold">
 											<div class="row">
@@ -114,20 +114,14 @@
 													<div class="row"><h5 class="fw-bold">{{ 'Rp '.number_format($saldoToday->saldo ?? 0, 0, '.', '.') }}</h5></div>
 												</div>
 											</div>
-
-										{{-- <h5 class="card-title pb-3 text-center fw-bold">Total Saldo</h5>
-										<h4><i class="icofont icofont-sale-discount"></i></h4>
-										<h3 class="fw-bold">{{ 'Rp '.number_format($saldo, 0, '.', '.') }}</h3> --}}
 										</div>
 									</div>
-								</a>
+								{{-- </a> --}}
                               </div>
                         </div>
 	                </div>
                     <div class="card-footer">
                         <div class="d-flex justify-content-evenly">
-                            <button class="btn btn-secondary" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#pemasukan">Input Pemasukan</button>
-                            <button class="btn btn-secondary" href="#" data-bs-toggle="modal" data-original-title="test" data-bs-target="#pengeluaran">Input Pengeluaran</button>
 							@if ($tanggal == date('Y-m-d'))
 								<form action="{{ route('posisi-cash.closing') }}" method="POST">
 									@csrf
