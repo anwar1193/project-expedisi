@@ -338,7 +338,7 @@
 
 													</span>
 												</td>
-												<td><?php echo e(date('d-m-Y', strtotime($data->tgl_transaksi))); ?></td>
+												<td><?php echo e(date('d-m-Y H:i', strtotime($data->tgl_transaksi))); ?></td>
 												<td>
 													<?php if($data->kode_customer == "General"): ?>
 														<?php echo e($data->kode_customer); ?>

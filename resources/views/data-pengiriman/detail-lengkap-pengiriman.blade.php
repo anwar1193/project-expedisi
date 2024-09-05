@@ -290,7 +290,7 @@
 														{{ $data->no_resi }}
 													</span>
 												</td>
-												<td>{{ date('d-m-Y', strtotime($data->tgl_transaksi)) }}</td>
+												<td>{{ date('d-m-Y H:i', strtotime($data->tgl_transaksi)) }}</td>
 												<td>
 													@if ($data->kode_customer == "General")
 														{{ $data->kode_customer }}

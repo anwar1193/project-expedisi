@@ -48,7 +48,7 @@ class DataPengirimanController extends Controller
         })->when($owner && $jumlahApprove != 0, function ($query) {
             return $query->where('status_pembayaran', DataPengiriman::STATUS_PENDING)->orderBy('tgl_transaksi', 'DESC');
         })->when($tanggal, function ($query, $tanggal) {
-            return $query->where('tgl_transaksi', $tanggal)->orderBy('tgl_transaksi', 'DESC');
+            return $query->where('tgl_transaksi', 'LIKE', '%'.$tanggal.'%')->orderBy('tgl_transaksi', 'DESC');
         })->when($metode, function ($query, $metode) {
             return $query->where('metode_pembayaran', $metode)->orderBy('tgl_transaksi', 'DESC');
         })->when($customer, function ($query, $customer) {
