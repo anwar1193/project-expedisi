@@ -161,26 +161,16 @@ class CashController extends Controller
             return back()->with('error', 'Jumlah Saldo Sudah Diclosing Dan Sedang Menunggu Approval Owner');
         }
 
-        $saldo->saldo = $inputSaldo;
-        $saldo->save();
+        SaldoCash::create([
+            'saldo' => $inputSaldo,
+            'tanggal' => $today
+        ]);
 
         $response = Http::withHeaders([
             'Content-Type' => 'application/json',
         ])->post($url->url, $dataSending);
 
-        return redirect()->route('posisi-cash')->with('success', 'Saldo cash berhasil ditutup');
-        // else {
-        //     SaldoCash::create([
-        //         'saldo' => $inputSaldo,
-        //         'tanggal' => $today
-        //     ]);
-
-        //     $response = Http::withHeaders([
-        //         'Content-Type' => 'application/json',
-        //     ])->post($url->url, $dataSending);
-
-        //     return redirect()->route('posisi-cash')->with('success', 'Saldo cash berhasil ditambahkan');
-        // }
+        return redirect()->route('posisi-cash')->with('success', 'Saldo cash berhasil ditambahkan');
     }
 
     public function approve($id)
