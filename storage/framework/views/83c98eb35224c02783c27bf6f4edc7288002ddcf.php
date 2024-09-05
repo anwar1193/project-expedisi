@@ -1,4 +1,4 @@
-<?php $__env->startSection('title'); ?>Daftar Pengeluaran
+<?php $__env->startSection('title'); ?>Data Pengeluaran
  <?php echo e($title); ?>
 
 <?php $__env->stopSection(); ?>
@@ -92,9 +92,9 @@
 <?php $__env->startSection('content'); ?>
 	<?php $__env->startComponent('components.breadcrumb'); ?>
 		<?php $__env->slot('breadcrumb_title'); ?>
-			<h3>Daftar Pengeluaran</h3>
+			<h3>Data Pengeluaran</h3>
 		<?php $__env->endSlot(); ?>
-		<li class="breadcrumb-item active"><a href="<?php echo e(route('daftar-pengeluaran')); ?>">Daftar Pengeluaran</a></li>
+		<li class="breadcrumb-item active"><a href="<?php echo e(route('daftar-pengeluaran')); ?>">Data Pengeluaran</a></li>
 		<li class="breadcrumb-item active">Table</li>
 	<?php echo $__env->renderComponent(); ?>
 

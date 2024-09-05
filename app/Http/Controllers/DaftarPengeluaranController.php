@@ -60,6 +60,7 @@ class DaftarPengeluaranController extends Controller
     {
         $today = date('Y-m-d');
         $validateData = $request->validate([
+            'tgl_pengeluaran' => 'required|date',
             'keterangan' => 'required',
             'jumlah_pembayaran' => 'required',
             'yang_menerima' => 'required',
@@ -104,7 +105,6 @@ class DaftarPengeluaranController extends Controller
         }
 
         $validateData['yang_membayar'] = Session::get('nama');
-        $validateData['tgl_pengeluaran'] = $today;
         $validateData['status_pengeluaran'] = DaftarPengeluaran::STATUS_PENDING;
         $validateData['keterangan_tambahan'] = $request->keterangan_tambahan;
 
@@ -129,6 +129,7 @@ class DaftarPengeluaranController extends Controller
     public function update($id, Request $request)
     {
         $validateData = $request->validate([
+            'tgl_pengeluaran' => 'required|date',
             'keterangan' => 'required',
             'jumlah_pembayaran' => 'required',
             'yang_menerima' => 'required',
@@ -180,6 +181,7 @@ class DaftarPengeluaranController extends Controller
         }
 
         DaftarPengeluaran::where('id', '=', $id)->update([
+            'tgl_pengeluaran' => $request->tgl_pengeluaran,
             'keterangan' => $request->keterangan,
             'jumlah_pembayaran' => $request->jumlah_pembayaran,
             'yang_menerima' => $request->yang_menerima,

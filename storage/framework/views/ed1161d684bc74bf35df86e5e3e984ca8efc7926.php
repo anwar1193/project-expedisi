@@ -1,4 +1,4 @@
-<?php $__env->startSection('title'); ?>Edit Daftar Pengeluaran
+<?php $__env->startSection('title'); ?>Edit Data Pengeluaran
  <?php echo e($title); ?>
 
 <?php $__env->stopSection(); ?>
@@ -10,9 +10,9 @@
 <?php $__env->startSection('content'); ?>
 	<?php $__env->startComponent('components.breadcrumb'); ?>
 		<?php $__env->slot('breadcrumb_title'); ?>
-			<h3>Daftar Pengeluaram</h3>
+			<h3>Data Pengeluaram</h3>
 		<?php $__env->endSlot(); ?>
-		<li class="breadcrumb-item active"><a href="<?php echo e(route('daftar-pengeluaran')); ?>">Daftar Pengeluaran</a></li>
+		<li class="breadcrumb-item active"><a href="<?php echo e(route('daftar-pengeluaran')); ?>">Data Pengeluaran</a></li>
         <li class="breadcrumb-item active">Edit</li>
 	<?php echo $__env->renderComponent(); ?>
 	
@@ -21,12 +21,42 @@
 			<div class="col-sm-12">
 				<div class="card">
 					<div class="card-header pb-0">
-						<h5>Form Edit Daftar Pengeluaran</h5>
+						<h5>Form Edit Data Pengeluaran</h5>
 					</div>
 					<form class="form theme-form" method="POST" action="<?php echo e(route('daftar-pengeluaran.update', $datas->id)); ?>" enctype="multipart/form-data">
                         <?php echo csrf_field(); ?>
 						<div class="card-body">
 							
+                            <div class="row">
+								<div class="col">
+									<div class="mb-3">
+										<label class="form-label" for="">Tanggal Pengeluaran</label>
+										<input class="form-control <?php $__errorArgs = ['tgl_pengeluaran'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" type="date" name="tgl_pengeluaran" autocomplete="off" value="<?php echo e(old('tgl_pengeluaran', $datas->tgl_pengeluaran)); ?>"/>
+
+										<?php $__errorArgs = ['tgl_pengeluaran'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+										<div class="text-danger">
+											<?php echo e($message); ?>
+
+										</div>
+										<?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+									</div>
+								</div>
+							</div>
+
                             <div class="row">
 								<div class="col">
 									<div class="mb-3">
