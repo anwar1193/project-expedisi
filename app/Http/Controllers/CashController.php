@@ -12,6 +12,31 @@ use Illuminate\Http\Request;
 
 class CashController extends Controller
 {
+    protected $yesterday;
+    protected $lastSaldo;
+
+    public function __construct()
+    {
+        $this->yesterday = date('Y-m-d', strtotime('-1 day'));
+        $this->lastSaldo = SaldoCash::where('is_approve', SaldoCash::STATUS_PENDING)->orderBy('id', 'DESC')->first();
+    }
+
+    private function checkSaldoYesterday() 
+    {
+        $pemasukan = PemasukanLainnya::where('tgl_pemasukkan', $this->yesterday)
+                            ->where('metode_pembayaran', 'LIKE', PemasukanLainnya::TUNAI)
+                            ->orWhere('metode_pembayaran2', 'LIKE', PemasukanLainnya::TUNAI)
+                            ->sum('jumlah_pemasukkan');
+
+        $pengeluaran = DaftarPengeluaran::where('tgl_pengeluaran', $this->yesterday)
+                            ->where('metode_pembayaran', 'LIKE', PemasukanLainnya::TUNAI)
+                            ->sum('jumlah_pembayaran');
+
+        $saldo = round($pemasukan - $pengeluaran);
+
+        return $saldo;
+    }
+
     public function index() 
     {
         $data['tanggal'] = request('tanggal') ?? date('Y-m-d');
@@ -25,10 +50,19 @@ class CashController extends Controller
                             ->where('tgl_pengeluaran', $data['tanggal'])
                             ->where('metode_pembayaran', 'LIKE', PemasukanLainnya::TUNAI)
                             ->first();
-
-        $data['saldoToday'] = SaldoCash::where('tanggal', $data['tanggal'])
-                                ->first();
-        $data['saldo'] = round($data['pemasukan']->total - $data['pengeluaran']->total);
+        
+        $todaySaldo = SaldoCash::where('tanggal', $data['tanggal'])->orderBy('id', 'DESC')->first();
+        $yesterdaySaldo = SaldoCash::where('tanggal', $this->yesterday)->orderBy('id', 'DESC')->first();
+        
+        if ($this->lastSaldo) {
+            $data['saldo'] = $this->lastSaldo->saldo;
+        } elseif (!$yesterdaySaldo) {
+            $data['saldo'] = ($this->checkSaldoYesterday() + $data['pemasukan']->total - $data['pengeluaran']->total);
+        } elseif ($todaySaldo) {
+            $data['saldo'] = $todaySaldo->saldo;
+        } else {
+            $data['saldo'] = round($data['pemasukan']->total - $data['pengeluaran']->total);
+        }
 
         return view('posisi-cash.index', $data);
     }
@@ -112,6 +146,10 @@ class CashController extends Controller
         
         if ($request->tanggal != $today) {
             return back()->with('error', 'Tanggal Closing Saldo Harus Sama Dengan Tanggal Hari ini');
+        }
+
+        if ($this->lastSaldo) {
+            return back()->with('error', 'Jumlah Saldo Sudah Diclosing Dan Sedang Menunggu Approval Owner');
         }
 
         if (($saldo && $saldo->tanggal == $today)) {

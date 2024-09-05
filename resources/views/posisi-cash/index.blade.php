@@ -104,19 +104,17 @@
                               </div>
 
 							  <div class="col-xl-4 col-md-4 col-sm-4 box-col-4 des-xl-25 rate-sec">
-								{{-- <a class="text-white" href="{{ route('posisi-cash.history-saldo') }}"> --}}
-									<div class="card shadow-lg" style="width: 18rem; border-radius:15px; background-color: rgb(219, 176, 55)">
-										<div class="card-body fw-bold">
-											<div class="row">
-												<div class="col-4 d-flex align-items-center"><h1><i class="icofont icofont-sale-discount"></i></h1></div>
-												<div class="col">
-													<div class="row"><h5 class="fw-bold">Total Saldo</h5></div>
-													<div class="row"><h5 class="fw-bold">{{ 'Rp '.number_format($saldoToday->saldo ?? 0, 0, '.', '.') }}</h5></div>
-												</div>
+								<div class="card shadow-lg" style="width: 18rem; border-radius:15px; background-color: rgb(219, 176, 55)">
+									<div class="card-body fw-bold">
+										<div class="row">
+											<div class="col-4 d-flex align-items-center"><h1><i class="icofont icofont-sale-discount"></i></h1></div>
+											<div class="col">
+												<div class="row"><h5 class="fw-bold">Total Saldo</h5></div>
+												<div class="row"><h5 class="fw-bold">{{ 'Rp '.number_format($saldo ?? 0, 0, '.', '.') }}</h5></div>
 											</div>
 										</div>
 									</div>
-								{{-- </a> --}}
+								</div>
                               </div>
                         </div>
 	                </div>
@@ -131,6 +129,12 @@
 								</form>
 							@endif
                         </div>
+						<br>
+						<div class="d-flex justify-content-center">
+							<a class="text-white btn btn-secondary" href="{{ route('posisi-cash.history-saldo') }}">
+								Riwayat Closing
+							</a>
+						</div>
                     </div>
 	            </div>
 	        </div>
