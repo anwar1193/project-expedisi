@@ -116,7 +116,7 @@ class DaftarPengeluaranController extends Controller
         $data = DaftarPengeluaran::orderBy('id', 'DESC')->first();
         $url = SettingWa::select('url_message AS url')->latest()->first();
         $no_hp = Helper::dataOwner()->nomor_telepon;
-        $message = 'Terdapat Pengeluaran Baru Yang Membutuhkan Approval. Silahkan Klik Link Berikut Untuk Approve : ' . URL::to('/').'/owner/approve/'.($data->id + 1).'?link=owner';
+        $message = 'Telah terjadi pengeluaran kategori '. $validateData['jenis_pengeluaran'] .' sejumlah Rp '. $validateData['jumlah_pembayaran'] .' ditanggal '. $validateData['tgl_pengeluaran'] .', diterima oleh xxx. Silahkan Klik Link Berikut Untuk Approve : ' . URL::to('/').'/owner/approve/'.($data->id + 1).'?link=owner';
 
         $dataSending = sendWaText($no_hp, $message);
         $response = Http::withHeaders([
