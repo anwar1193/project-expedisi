@@ -36,6 +36,7 @@ class DataPengirimanController extends Controller
         $tanggal = request('tanggal');
         $metode = request('metode');
         $customer = request('customer');
+        $bukti_pembayaran = request('bukti_pembayaran');
         $owner = isOwner();
         $jumlahApprove = DataPengiriman::where('status_pembayaran', DataPengiriman::STATUS_PENDING)->count();
 
@@ -53,6 +54,8 @@ class DataPengirimanController extends Controller
             return $query->where('metode_pembayaran', $metode)->orderBy('tgl_transaksi', 'DESC');
         })->when($customer, function ($query, $customer) {
             return $query->where('data_pengirimen.kode_customer', $customer)->orderBy('tgl_transaksi', 'DESC');
+        })->when($bukti_pembayaran, function ($query, $bukti_pembayaran) {
+            return $query->where('data_pengirimen.bukti_pembayaran', 'LIKE', $bukti_pembayaran)->orderBy('tgl_transaksi', 'DESC');
         })
         ->get();
         $status = StatusPengiriman::orderBy('id', 'ASC')->get();
@@ -65,6 +68,7 @@ class DataPengirimanController extends Controller
         $data['status_approve'] = DataPengiriman::STATUS_APPROVE;
         $data['status_pending'] = DataPengiriman::STATUS_PENDING;
         $data['total'] = $datas->sum('ongkir');
+        $data['bukti_pembayarans'] = $bukti_pembayaran;
 
         if (isOwner() && $jumlahApprove == 0) {
             return view('data-pengiriman.detail-lengkap-pengiriman', $data);

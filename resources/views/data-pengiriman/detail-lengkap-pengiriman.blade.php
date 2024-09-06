@@ -233,6 +233,7 @@
 													<input type="checkbox" id="checkAll" title="Pilih Semua">
 												</th>
 											@endif
+											<th>Resi Terkait</th>
 											<th>No Resi</th>
 											<th>Tanggal Transaksi</th>
 											<th>Customer</th>
@@ -285,6 +286,20 @@
 														<input type="checkbox" value="{{ $data->id }}" class="checkbox-item" id="checkbox-{{ $data->id }}" onclick="ceklis({{ $data->id }})">
 													</td>
 												@endif
+												<td>
+													<form method="GET">
+														<input type="hidden" name="bukti_pembayaran" value="{{ $data->bukti_pembayaran }}">
+														@if ((filter_var($bukti_pembayaran, FILTER_VALIDATE_URL)))
+															@if (!$bukti_pembayarans)
+																<button type="submit" class="btn btn-secondary">
+																	Lihat
+																</button>															
+															@elseif ($bukti_pembayarans)
+																<a href="{{ route('data-pengiriman') }}" class="text-dark btn btn-md btn-secondary" title="Reset"><i class="fa fa-refresh"></i> Kembali</a>
+															@endif															
+														@endif
+													</form>
+												</td>
 												<td>
 													<span class="badge badge-danger">
 														{{ $data->no_resi }}
