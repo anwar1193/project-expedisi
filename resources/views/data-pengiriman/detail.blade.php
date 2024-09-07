@@ -28,6 +28,14 @@
                                         <div class="col-2">:</div>
                                         <div class="col-4 text-capitalize">{{ $data->metode_pembayaran }} {{ $data->bank }}</div>
                                     </div>
+                                    @if ($data->metode_pembayaran_2)
+                                        <div class="row d-flex py-1 text-start justify-content-start">
+                                            <div class="col-6">Metode Pembayaran</div>
+                                            <div class="col-2">:</div>
+                                            <div class="col-4 text-capitalize">{{ $data->metode_pembayaran_2 }} {{ $data->bank_2 }}</div>
+                                        </div>
+                                        
+                                    @endif
                                     <div class="row d-flex py-1 text-start justify-content-start">
                                         <div class="col-6">No Resi</div>
                                         <div class="col-2">:</div>
@@ -92,6 +100,11 @@
                                         <div class="col-6">Status Pengiriman</div>
                                         <div class="col-2">:</div>
                                         <div class="col-4">{{ $data->status_pengiriman }}</div>
+                                    </div>
+                                    <div class="row d-flex py-1 text-start justify-content-start">
+                                        <div class="col-6">Status Kirim WA</div>
+                                        <div class="col-2">:</div>
+                                        <div class="col-4">{{ !$data->status_kirim_wa ? "Tidak" : "Ya" }}</div>
                                     </div>
                                     <div class="row d-flex py-1 text-start justify-content-start">
                                         <div class="col-6">Diinput Oleh</div>
