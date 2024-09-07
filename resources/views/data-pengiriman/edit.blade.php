@@ -71,7 +71,7 @@
 								<div class="col">
 									<div class="mb-3">
 										<label class="form-label" for="">Tanggal Transaksi</label>
-										<input class="form-control @error('tgl_transaksi') is-invalid @enderror" type="date" name="tgl_transaksi" autocomplete="off" value="{{ old('tgl_transaksi', $datas->tgl_transaksi) }}"/>
+										<input class="form-control @error('tgl_transaksi')@enderror" id="example-datetime-local-input" type="datetime-local" name="tgl_transaksi" autocomplete="off" value="{{ old('tgl_transaksi', $datas->tgl_transaksi) }}"/>
 
 										@error('tgl_transaksi')
 										<div class="text-danger">
@@ -255,6 +255,27 @@
                                             @enderror
     
                                             <img src="{{ asset('storage/bukti_pembayaran/'.$datas->bukti_pembayaran) }}" alt="" width="200px" class="img-fluid mt-2"> --}}
+                                        </div>
+									</div>
+								</div>
+							</div>
+							
+							<div class="row">
+								<div class="col">
+									<div class="mb-3">
+                                        <div class="mb-3">
+                                            <label class="form-label" for="">Status Kirim WA</label>
+											<select name="status_kirim_wa" class="form-control @error('status_kirim_wa')  @enderror js-example-basic-single">
+												<option value="{{ $aktif }}" {{ $datas->status_kirim_wa == $aktif ? 'selected' : '' }}>Ya</option>
+												<option value="{{ $nonaktif }}" {{ $datas->status_kirim_wa == $nonaktif ? 'selected' : '' }}>Tidak</option>
+											</select>
+
+                                            @error('status_kirim_wa')
+                                            <div class="text-danger">
+                                                {{ $message }}
+                                            </div>
+                                            @enderror
+    
                                         </div>
 									</div>
 								</div>

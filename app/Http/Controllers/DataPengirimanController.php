@@ -134,6 +134,8 @@ class DataPengirimanController extends Controller
         $data['bank'] = Bank::all();
         $data['metode'] = MetodePembayaran::all();
         $data['customer'] = Customer::orderBy('id')->get();
+        $data['aktif'] = DataPengiriman::STATUS_WA_AKTIF;
+        $data['nonaktif'] = DataPengiriman::STATUS_WA_NONAKTIF;
 
         return view('data-pengiriman.edit', $data);
     }
@@ -175,7 +177,8 @@ class DataPengirimanController extends Controller
             'ongkir' => $request->ongkir,
             'komisi' => $request->komisi,
             'metode_pembayaran' => $request->metode_pembayaran,
-            'bukti_pembayaran' => $request->bukti_pembayaran == NULL ? '' : $request->bukti_pembayaran
+            'bukti_pembayaran' => $request->bukti_pembayaran == NULL ? '' : $request->bukti_pembayaran,
+            'status_kirim_wa' => $request->status_kirim_wa
             // 'bukti_pembayaran' => ($foto != '' ? $foto->hashName() : $getImage->bukti_pembayaran)
         ]);
 
