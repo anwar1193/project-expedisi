@@ -9,6 +9,7 @@ use App\Models\MasterMenu;
 use App\Models\MenuPermission;
 use App\Models\Level;
 use App\Models\Barang;
+use App\Models\DataPengiriman;
 use App\Models\Jasa;
 use App\Models\MetodePembayaran;
 use App\Models\User;
@@ -331,6 +332,18 @@ class Helper
     public static function dataOwner() 
     {
         $data = User::where('user_level', User::OWNER)->first();
+        return $data;
+    }
+
+    public static function nama_pengirim()
+    {
+        $data = DataPengiriman::select('nama_pengirim')->distinct()->get();
+        return $data;
+    }
+    
+    public static function nama_penerima()
+    {
+        $data = DataPengiriman::select('nama_penerima')->distinct()->get();
         return $data;
     }
 
