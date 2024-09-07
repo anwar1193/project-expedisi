@@ -215,6 +215,24 @@
 												@endforeach
 											</select>
 										</div>
+										<div id="customer_id" class="px-2">
+											<select name="nama_pengirim" class="form-control js-example-basic-single py-2">
+												<option value="">- Pilih Nama Pengirim -</option>
+												@foreach($nama_pengirim as $item)
+													<option value="{{ $item->nama_pengirim }}" {{ request('nama_pengirim') == $item->nama_pengirim ? 'selected' : '' }}>{{ $item->nama_pengirim }}</option>
+												@endforeach
+											</select>
+										</div>
+										<div id="customer_id" class="px-2">
+											<select name="nama_penerima" class="form-control js-example-basic-single py-2">
+												<option value="">- Pilih Nama Penerima -</option>
+												@foreach($nama_penerima as $item)
+													<option value="{{ $item->nama_penerima }}" {{ request('nama_penerima') == $item->nama_penerima ? 'selected' : '' }}>{{ $item->nama_penerima }}</option>
+												@endforeach
+											</select>
+										</div>
+									</div>
+									<div class="d-flex justify-content-end pt-2">
 										<div class="px-1">
 											<button type="submit" class="btn btn-primary" title="Cari"><i class="fa fa-search"></i> Cari</button>
 										</div>
@@ -289,7 +307,7 @@
 												<td>
 													<form method="GET">
 														<input type="hidden" name="bukti_pembayaran" value="{{ $data->bukti_pembayaran }}">
-														@if ((filter_var($bukti_pembayaran, FILTER_VALIDATE_URL)))
+														@if ((filter_var($bukti_pembayaran, FILTER_VALIDATE_URL)) && $data->jumlahBuktiPembayaran > 1)
 															@if (!$bukti_pembayarans)
 																<button type="submit" class="btn btn-secondary">
 																	Lihat
