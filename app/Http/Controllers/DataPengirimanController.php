@@ -58,6 +58,9 @@ class DataPengirimanController extends Controller
             return $query->where('data_pengirimen.bukti_pembayaran', 'LIKE', $bukti_pembayaran)->orderBy('tgl_transaksi', 'DESC');
         })
         ->get();
+        foreach ($datas as $item) {
+            $item->jumlahBuktiPembayaran = DataPengiriman::where('bukti_pembayaran', $item->bukti_pembayaran)->count(); 
+        }
         $status = StatusPengiriman::orderBy('id', 'ASC')->get();
 
         $data['datas'] = $datas;

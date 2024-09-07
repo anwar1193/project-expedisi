@@ -336,7 +336,7 @@
 												<td>
 													<form method="GET">
 														<input type="hidden" name="bukti_pembayaran" value="{{ $data->bukti_pembayaran }}">
-														@if ((filter_var($bukti_pembayaran, FILTER_VALIDATE_URL)))
+														@if ((filter_var($bukti_pembayaran, FILTER_VALIDATE_URL)) && $data->jumlahBuktiPembayaran > 1)
 															@if (!$bukti_pembayarans)
 																<button type="submit" class="btn btn-secondary">
 																	Lihat
