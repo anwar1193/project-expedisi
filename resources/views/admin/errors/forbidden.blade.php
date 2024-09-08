@@ -1361,7 +1361,7 @@
                         </svg>
                     </div>
                     <div class="col-md-8 offset-md-2">
-                        <h3>200 - Data Telah Berhasil Diapprove</h3>
+                        <h3>403 - Maaf, Anda Tidak Memiliki Akses</h3>
                         <a class="btn btn-primary btn-lg" href="{{ route('index') }}">Masuk Ke Aplikasi</a>
                     </div>
                 </div>

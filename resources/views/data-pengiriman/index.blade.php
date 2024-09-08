@@ -12,6 +12,7 @@
 {{-- <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> --}}
 <!-- Link to FixedHeader CSS -->
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/fixedheader/3.1.8/css/fixedHeader.dataTables.css">
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/date-picker.css') }}">
 <style>
 	body {
 		margin: 0;
@@ -221,7 +222,7 @@
 								<form class="d-flex flex-column col-12" role="search" action="" method="GET">
 									<div class="d-flex justify-content-end">
 										<div id="tanggal">
-											<input class="form-control" type="date" name="tanggal" value="{{ request('tanggal') }}" />
+											<input class="datepicker-here form-control digits" autocomplete="off" type="text" name="tanggal" value="{{ request('tanggal') ?? date('d/m/Y').' - '.date('d/m/Y') }}" data-range="true" data-multiple-dates-separator=" - " data-language="en" />
 										</div>
 										<div id="customer_id" class="px-2">
 											<select name="customer" class="form-control js-example-basic-single py-2">
@@ -454,6 +455,9 @@
 	 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/fixedheader/3.1.8/js/dataTables.fixedHeader.js"></script>	 
 	{{-- <script src="{{ asset('assets/js/datatable/datatables/fixedHeader.dataTable.js') }}"></script> --}}
 	<script src="{{asset('assets/js/tooltip-init.js')}}"></script>
+	<script src="{{ asset('assets/js/datepicker/date-picker/datepicker.js') }}"></script>
+    <script src="{{ asset('assets/js/datepicker/date-picker/datepicker.en.js') }}"></script>
+    <script src="{{ asset('assets/js/datepicker/date-picker/datepicker.custom.js') }}"></script>
     <script>
 		$(document).ready(function() {
 			var table = $('#basic-1').DataTable({
@@ -475,8 +479,8 @@
 					},
 				},
 				lengthMenu: [
-					[-1, 10, 25, 50],
-					['All', 10, 25, 50]
+					[100, -1, 10, 25, 50],
+					[100, 'All', 10, 25, 50]
 				],
 				fixedHeader: {
 					header: true,

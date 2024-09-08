@@ -17,6 +17,7 @@ use App\Models\Invoice;
 use App\Models\TransaksiInvoice;
 use App\Models\TransaksiPembayaran;
 use App\Models\InvoiceBank;
+use DateTime;
 use Dflydev\DotAccessData\Data;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -33,7 +34,10 @@ class DataPengirimanController extends Controller
     {
         // $level = Session::get('user_level') == 2;
         $notif = request('notif');
-        $tanggal = request('tanggal');
+        $startDate = new DateTime(rangeDate()[0]);
+        $startDate = $startDate->format('Y-m-d');
+        $endDate = new DateTime(rangeDate()[1]);
+        $endDate = $endDate->format('Y-m-d');
         $metode = request('metode');
         $customer = request('customer');
         $bukti_pembayaran = request('bukti_pembayaran');
@@ -50,8 +54,9 @@ class DataPengirimanController extends Controller
             return $query->where('status_pembayaran', DataPengiriman::STATUS_PENDING)->orderBy('tgl_transaksi', 'DESC');
         })->when($owner && $jumlahApprove != 0, function ($query) {
             return $query->where('status_pembayaran', DataPengiriman::STATUS_PENDING)->orderBy('tgl_transaksi', 'DESC');
-        })->when($tanggal, function ($query, $tanggal) {
-            return $query->where('tgl_transaksi', 'LIKE', '%'.$tanggal.'%')->orderBy('tgl_transaksi', 'DESC');
+        })->when($startDate && $endDate, function ($query) use ($startDate, $endDate) {
+            return $query->whereBetween('tgl_transaksi', [$startDate, $endDate])
+                         ->orderBy('tgl_transaksi', 'DESC');
         })->when($metode, function ($query, $metode) {
             return $query->where('metode_pembayaran', $metode)->orderBy('tgl_transaksi', 'DESC');
         })->when($customer, function ($query, $customer) {

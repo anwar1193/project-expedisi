@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Helper;
 use App\Models\DaftarPengeluaran;
+use App\Models\DataPengiriman;
 use App\Models\PemasukanCash;
 use App\Models\PemasukanLainnya;
 use App\Models\PengeluaranCash;
 use App\Models\SaldoCash;
 use App\Models\SettingWa;
 use Barryvdh\DomPDF\Facade\Pdf;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\URL;
@@ -44,14 +46,36 @@ class CashController extends Controller
     public function index() 
     {
         $data['tanggal'] = request('tanggal') ?? date('Y-m-d');
-        $data['pemasukan'] = PemasukanLainnya::selectRaw('SUM(jumlah_pemasukkan) AS total')
-                            ->where('tgl_pemasukkan', $data['tanggal'])
-                            ->where('metode_pembayaran', 'LIKE', PemasukanLainnya::TUNAI)
-                            ->orWhere('metode_pembayaran2', 'LIKE', PemasukanLainnya::TUNAI)
+        $startDate = new DateTime(rangeDate()[0]);
+        $startDate = $startDate->format('Y-m-d');
+        $endDate = new DateTime(rangeDate()[1]);
+        $endDate = $endDate->format('Y-m-d');
+
+        $totalPengiriman = DataPengiriman::selectRaw('SUM(ongkir) AS total')
+                            ->whereBetween('tgl_transaksi', [$startDate, $endDate])
+                            ->where(function($query) {
+                                $query->where('metode_pembayaran', 'LIKE', 'tunai')
+                                      ->orWhere('metode_pembayaran_2', 'LIKE', 'tunai');
+                            })
                             ->first();
 
+
+        $totalPemasukan = PemasukanLainnya::selectRaw('SUM(jumlah_pemasukkan) AS total')
+                            ->whereBetween('tgl_pemasukkan', [$startDate, $endDate])
+                            ->where(function($query) {
+                                $query->where('metode_pembayaran', 'LIKE', 'tunai')
+                                    ->orWhere('metode_pembayaran2', 'LIKE', 'tunai');
+                            })
+                            ->first();
+
+                            // dd($totalPengiriman->total, $totalPemasukan->total);
+
+
+        $data['pemasukan'] = $totalPengiriman->total + $totalPemasukan->total;
+
+
         $data['pengeluaran'] = DaftarPengeluaran::selectRaw('SUM(jumlah_pembayaran) AS total')
-                            ->where('tgl_pengeluaran', $data['tanggal'])
+                            ->whereBetween('tgl_pengeluaran', [$startDate, $endDate])
                             ->where('metode_pembayaran', 'LIKE', PemasukanLainnya::TUNAI)
                             ->first();
         
@@ -61,11 +85,11 @@ class CashController extends Controller
         if ($this->lastSaldo) {
             $data['saldo'] = $this->lastSaldo->saldo;
         } elseif (!$yesterdaySaldo) {
-            $data['saldo'] = ($this->checkSaldoYesterday() + $data['pemasukan']->total - $data['pengeluaran']->total);
+            $data['saldo'] = ($this->checkSaldoYesterday() + $data['pemasukan'] - $data['pengeluaran']->total);
         } elseif ($todaySaldo) {
             $data['saldo'] = $todaySaldo->saldo;
         } else {
-            $data['saldo'] = round($data['pemasukan']->total - $data['pengeluaran']->total);
+            $data['saldo'] = round($data['pemasukan'] - $data['pengeluaran']->total);
         }
 
         return view('posisi-cash.index', $data);
@@ -149,7 +173,7 @@ class CashController extends Controller
         $saldo = SaldoCash::orderBy('id', 'DESC')->first();
         $url = SettingWa::select('url_message AS url')->latest()->first();
         $no_hp = Helper::dataOwner()->nomor_telepon;
-        $message = 'Terdapat Closing Saldo Baru Yang Membutuhkan Approval. Silahkan Klik Link Berikut Untuk Approve : ' . URL::to('/').'/owner/approve-saldo/'.($saldo->id + 1).'?link=owner';
+        $message = 'Terdapat Closing Saldo Baru Yang Membutuhkan Approval. Silahkan Klik Link Berikut Untuk Approve : ' . URL::to('/').'/owner/approve-saldo/'.($saldo->id).'?link=owner';
 
         $dataSending = sendWaText($no_hp, $message);
         

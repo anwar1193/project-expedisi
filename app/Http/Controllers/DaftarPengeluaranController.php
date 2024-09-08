@@ -84,7 +84,7 @@ class DaftarPengeluaranController extends Controller
             $foto->storeAs('public/daftar-pengeluaran', $foto->hashName());
 
             // Proses Simpan GDrive
-            Storage::disk('google')->put($namafile, File::get($path));
+            // Storage::disk('google')->put($namafile, File::get($path));
 
             $validateData['bukti_pembayaran'] = $foto->hashName();
         } elseif (($img != '') && ($request->takeImage == 'on')) {
@@ -116,7 +116,8 @@ class DaftarPengeluaranController extends Controller
         $data = DaftarPengeluaran::orderBy('id', 'DESC')->first();
         $url = SettingWa::select('url_message AS url')->latest()->first();
         $no_hp = Helper::dataOwner()->nomor_telepon;
-        $message = 'Telah terjadi pengeluaran kategori '. $validateData['jenis_pengeluaran'] .' sejumlah Rp '. $validateData['jumlah_pembayaran'] .' ditanggal '. $validateData['tgl_pengeluaran'] .', diterima oleh xxx. Silahkan Klik Link Berikut Untuk Approve : ' . URL::to('/').'/owner/approve/'.($data->id + 1).'?link=owner';
+        $nama_owner = Helper::dataOwner()->nama;
+        $message = 'Telah terjadi pengeluaran kategori '. $validateData['metode_pembayaran'] .' sejumlah Rp '. $validateData['jumlah_pembayaran'] .' ditanggal '. $validateData['tgl_pengeluaran'] .', diterima oleh '. $nama_owner .'. Silahkan Klik Link Berikut Untuk Approve : ' . URL::to('/').'/owner/approve/'.($data->id).'?link=owner';
 
         $dataSending = sendWaText($no_hp, $message);
         $response = Http::withHeaders([
@@ -125,7 +126,7 @@ class DaftarPengeluaranController extends Controller
 
         Helper::logActivity('Simpan daftar pengeluaran');
 
-        return redirect()->route('daftar-pengeluaran')->with('success', 'Data Berhasil Disimpan');
+        return redirect()->route('daftar-pengeluaran')->with('success', $message);
 
     }
     

@@ -120,6 +120,10 @@
 				columnDefs: [
 					{ searchable: false, targets: [0, 1, 2, 4, 5, 9]}
 				],
+				lengthMenu: [
+					[100, -1, 10, 25, 50],
+					[100, 'All', 10, 25, 50]
+				],
 			});
 
 			var tableSecond = $('#basic-2').DataTable({
@@ -141,6 +145,10 @@
 					},
 				},
                 searching: false,
+				lengthMenu: [
+					[100, -1, 10, 25, 50],
+					[100, 'All', 10, 25, 50]
+				],
 			});
 
 			var tableThird = $('#basic-3').DataTable({
@@ -164,6 +172,10 @@
                 searching: true,
 				columnDefs: [
 					{ searchable: false, targets: [0, 1, 2, 3, 7, 8]}
+				],
+				lengthMenu: [
+					[100, -1, 10, 25, 50],
+					[100, 'All', 10, 25, 50]
 				],
 			});
 

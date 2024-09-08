@@ -8,6 +8,7 @@
 
 @push('css')
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/datatables.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/date-picker.css') }}">
 @endpush
 
 @section('content')
@@ -22,7 +23,7 @@
 		<form class="d-flex flex-column col-12 mb-2" role="search" action="" method="GET">
 			<div class="d-flex justify-content-end">
                 <div id="customer_id" class="px-2">
-                    <input class="form-control" type="date" name="tanggal" value="{{ $tanggal }}" />
+					<input class="datepicker-here form-control digits" autocomplete="off" type="text" name="tanggal" value="{{ request('tanggal') ?? date('d/m/Y').' - '.date('d/m/Y') }}" data-range="true" data-multiple-dates-separator=" - " data-language="en" />
                 </div>
 				<div class="px-1">
 					<button type="submit" class="btn btn-primary" title="Cari"><i class="fa fa-search"></i> Cari</button>
@@ -76,10 +77,10 @@
 									<div class="card shadow-lg" style="width: 18rem; border-radius:15px; background-color: rgb(33, 174, 47)">
 										<div class="card-body fw-bold">
 											<div class="row">
-												<div class="col-4 d-flex align-items-center"><h1><i class="icofont icofont-arrow-up"></i></h1></div>
+												<div class="col-3 d-flex align-items-center"><h1><i class="icofont icofont-arrow-up"></i></h1></div>
 												<div class="col">
 													<div class="row"><h5 class="fw-bold">Pemasukkan</h5></div>
-													<div class="row"><h5 class="fw-bold">{{ 'Rp '.number_format($pemasukan->total ?? 0, 0, '.', '.') }}</h5></div>
+													<div class="row"><h5 class="fw-bold">{{ 'Rp '.number_format($pemasukan ?? 0, 0, '.', '.') }}</h5></div>
 												</div>
 											</div>
 										</div>
@@ -92,7 +93,7 @@
 									<div class="card shadow-lg" style="width: 18rem; border-radius:15px; background-color: rgb(200, 75, 75)">
 										<div class="card-body text-center fw-bold">
 											<div class="row">
-												<div class="col-4 d-flex align-items-center"><h1><i class="icofont icofont-arrow-down"></i></h1></div>
+												<div class="col-3 d-flex align-items-center"><h1><i class="icofont icofont-arrow-down"></i></h1></div>
 												<div class="col">
 													<div class="row"><h5 class="fw-bold">Pengeluaran</h5></div>
 													<div class="row"><h5 class="fw-bold">{{ 'Rp '.number_format($pengeluaran->total ?? 0, 0, '.', '.') }}</h5></div>
@@ -107,7 +108,7 @@
 								<div class="card shadow-lg" style="width: 18rem; border-radius:15px; background-color: rgb(219, 176, 55)">
 									<div class="card-body fw-bold">
 										<div class="row">
-											<div class="col-4 d-flex align-items-center"><h1><i class="icofont icofont-sale-discount"></i></h1></div>
+											<div class="col-3 d-flex align-items-center"><h1><i class="icofont icofont-sale-discount"></i></h1></div>
 											<div class="col">
 												<div class="row"><h5 class="fw-bold">Total Saldo</h5></div>
 												<div class="row"><h5 class="fw-bold">{{ 'Rp '.number_format($saldo ?? 0, 0, '.', '.') }}</h5></div>
@@ -145,6 +146,9 @@
 	@push('scripts')
 	<script src="{{ asset('assets/js/datatable/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('assets/js/datatable/datatables/datatable.custom.js') }}"></script>
+	<script src="{{ asset('assets/js/datepicker/date-picker/datepicker.js') }}"></script>
+    <script src="{{ asset('assets/js/datepicker/date-picker/datepicker.en.js') }}"></script>
+    <script src="{{ asset('assets/js/datepicker/date-picker/datepicker.custom.js') }}"></script>
     <script>
 		document.addEventListener('DOMContentLoaded', function() {
 			const jumlahPembayaranInput = document.querySelector('input[id="pemasukan"]');

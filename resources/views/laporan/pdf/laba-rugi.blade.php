@@ -48,7 +48,7 @@
                 <h4>Jumlah Pengiriman : Rp {{ number_format($jumlah_pengiriman->totalPengiriman, 0, ',', '.') ?? 0 }} ,-</h4>
             </div>
             <div class="row">
-                <h4>Jumlah Pemasukkan : Rp {{ number_format($jumlah_pemasukkan->totalPemasukan, 0, ',', '.') ?? 0 }} ,-</h4>
+                <h4>Jumlah Pemasukan : Rp {{ number_format($jumlah_pemasukkan->totalPemasukan, 0, ',', '.') ?? 0 }} ,-</h4>
             </div>
             <div class="row">
                 <h4>Jumlah Pengeluaran : Rp {{ number_format($jumlah_pengeluaran->totalPengeluaran, 0, ',', '.') ?? 0 }} ,-</h4>
