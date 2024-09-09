@@ -222,7 +222,7 @@
 								<form class="d-flex flex-column col-12" role="search" action="" method="GET">
 									<div class="d-flex justify-content-end">
 										<div id="tanggal">
-											<input class="datepicker-here form-control digits" autocomplete="off" type="text" name="tanggal" value="{{ request('tanggal') ?? date('d/m/Y').' - '.date('d/m/Y') }}" data-range="true" data-multiple-dates-separator=" - " data-language="en" />
+											<input class="datepicker-here form-control digits" autocomplete="off" type="text" name="tanggal" value="{{ request('tanggal') ?? date('d/m/Y', strtotime('-7 day')).' - '.date('d/m/Y') }}" data-range="true" data-multiple-dates-separator=" - " data-language="en" />
 										</div>
 										<div id="customer_id" class="px-2">
 											<select name="customer" class="form-control js-example-basic-single py-2">

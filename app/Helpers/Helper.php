@@ -11,6 +11,7 @@ use App\Models\Level;
 use App\Models\Barang;
 use App\Models\DataPengiriman;
 use App\Models\Jasa;
+use App\Models\JenisPengeluaran;
 use App\Models\MetodePembayaran;
 use App\Models\User;
 use Illuminate\Support\Facades\Session;
@@ -344,6 +345,12 @@ class Helper
     public static function nama_penerima()
     {
         $data = DataPengiriman::select('nama_penerima')->distinct()->get();
+        return $data;
+    }
+
+    public static function daftar_pengeluaran($id)
+    {
+        $data = JenisPengeluaran::find($id);
         return $data;
     }
 

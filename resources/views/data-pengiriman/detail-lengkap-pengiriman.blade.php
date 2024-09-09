@@ -196,7 +196,7 @@
 								<form class="d-flex flex-column col-12" role="search" action="" method="GET">
 									<div class="d-flex justify-content-end">
 										<div id="tanggal">
-											<input class="form-control" type="date" name="tanggal" value="{{ request('tanggal') }}" />
+											<input class="form-control" type="date" name="tanggal" value="{{ request('tanggal') ?? date('d/m/Y', strtotime('-7 day')).' - '.date('d/m/Y') }}" />
 										</div>
 										<div id="customer_id" class="px-2">
 											<select name="customer" class="form-control js-example-basic-single py-2">

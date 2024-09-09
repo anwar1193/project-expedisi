@@ -53,6 +53,7 @@ use App\Http\Controllers\SettingWaController;
 
 Route::get('owner/approve/{id}', [DaftarPengeluaranController::class, 'approve'])->name('data-pengeluaran.approve');
 Route::get('owner/approve-saldo/{id}', [CashController::class, 'approve'])->name('closing-saldo.approve');
+Route::get('data-pengeluaran/{id}/approved', [DaftarPengeluaranController::class, 'linkApprove'])->name('data-pengeluaran.approved');
 
 Route::middleware("guest")->group(function() {
 

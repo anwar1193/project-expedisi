@@ -117,12 +117,13 @@ class DaftarPengeluaranController extends Controller
         $url = SettingWa::select('url_message AS url')->latest()->first();
         $no_hp = Helper::dataOwner()->nomor_telepon;
         $nama_owner = Helper::dataOwner()->nama;
-        $message = 'Telah terjadi pengeluaran kategori '. $validateData['metode_pembayaran'] .' sejumlah Rp '. $validateData['jumlah_pembayaran'] .' ditanggal '. $validateData['tgl_pengeluaran'] .', diterima oleh '. $nama_owner .'. Silahkan Klik Link Berikut Untuk Approve : ' . URL::to('/').'/owner/approve/'.($data->id).'?link=owner';
+        $kategori = Helper::daftar_pengeluaran($validateData['jenis_pengeluaran'])->jenis_pengeluaran;
+        $message = 'Telah terjadi pengeluaran kategori '. $kategori .' sejumlah Rp '. $validateData['jumlah_pembayaran'] .' ditanggal '. $validateData['tgl_pengeluaran'] .', diterima oleh '. $nama_owner .'. Silahkan Klik Link Berikut Untuk Approve : ' . URL::to('/').'/owner/approve/'.($data->id).'?link=owner';
 
-        $dataSending = sendWaText($no_hp, $message);
-        $response = Http::withHeaders([
-            'Content-Type' => 'application/json',
-        ])->post($url->url, $dataSending);
+        // $dataSending = sendWaText($no_hp, $message);
+        // $response = Http::withHeaders([
+        //     'Content-Type' => 'application/json',
+        // ])->post($url->url, $dataSending);
 
         Helper::logActivity('Simpan daftar pengeluaran');
 
@@ -243,7 +244,7 @@ class DaftarPengeluaranController extends Controller
             'status_pengeluaran' => DaftarPengeluaran::STATUS_APPROVE
         ]);
 
-        if($link) return redirect()->route('approved');
+        if($link) return redirect()->route('data-pengeluaran.approved', ['id' => $id])->with('success', 'Data Pengeluaran Telah Di Approve');
 
         return back()->with('success', 'Data Pengeluaran Telah Di Approve');
     }
@@ -291,12 +292,13 @@ class DaftarPengeluaranController extends Controller
         return back()->with('success', 'Approval Data Pengeluaran Telah Dibatalkan');
     }
 
-    public function linkApprove() 
+    public function linkApprove($id) 
     {
-        $data['data'] = DaftarPengeluaran::where('status_pengeluaran', DaftarPengeluaran::STATUS_PENDING)
-                    ->orderBy('id', 'DESC')
+        $data['data'] = DaftarPengeluaran::select('daftar_pengeluarans.*', 'jenis_pengeluarans.jenis_pengeluaran AS jenisPengeluaran')
+                    ->where('daftar_pengeluarans.id', $id)
+                    ->join('jenis_pengeluarans', 'jenis_pengeluarans.id', '=', 'daftar_pengeluarans.jenis_pengeluaran')
                     ->first();
 
-        return view('approve.index', $data);
+        return view('approve.data-pengeluaran', $data);
     }
 }

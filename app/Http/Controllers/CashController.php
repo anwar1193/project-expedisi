@@ -12,6 +12,7 @@ use App\Models\SaldoCash;
 use App\Models\SettingWa;
 use Barryvdh\DomPDF\Facade\Pdf;
 use DateTime;
+use Google\Service\AdExchangeBuyerII\Date;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\URL;
@@ -20,11 +21,13 @@ class CashController extends Controller
 {
     protected $yesterday;
     protected $lastSaldo;
+    protected $tunai;
 
     public function __construct()
     {
         $this->yesterday = date('Y-m-d', strtotime('-1 day'));
         $this->lastSaldo = SaldoCash::where('is_approve', SaldoCash::STATUS_PENDING)->orderBy('id', 'DESC')->first();
+        $this->tunai = "tunai";
     }
 
     private function checkSaldoYesterday() 
@@ -52,7 +55,7 @@ class CashController extends Controller
         $endDate = $endDate->format('Y-m-d');
 
         $totalPengiriman = DataPengiriman::selectRaw('SUM(ongkir) AS total')
-                            ->whereBetween('tgl_transaksi', [$startDate, $endDate])
+                            // ->whereBetween('tgl_transaksi', [$startDate, $endDate])
                             ->where(function($query) {
                                 $query->where('metode_pembayaran', 'LIKE', 'tunai')
                                       ->orWhere('metode_pembayaran_2', 'LIKE', 'tunai');
@@ -61,7 +64,7 @@ class CashController extends Controller
 
 
         $totalPemasukan = PemasukanLainnya::selectRaw('SUM(jumlah_pemasukkan) AS total')
-                            ->whereBetween('tgl_pemasukkan', [$startDate, $endDate])
+                            // ->whereBetween('tgl_pemasukkan', [$startDate, $endDate])
                             ->where(function($query) {
                                 $query->where('metode_pembayaran', 'LIKE', 'tunai')
                                     ->orWhere('metode_pembayaran2', 'LIKE', 'tunai');
@@ -75,7 +78,7 @@ class CashController extends Controller
 
 
         $data['pengeluaran'] = DaftarPengeluaran::selectRaw('SUM(jumlah_pembayaran) AS total')
-                            ->whereBetween('tgl_pengeluaran', [$startDate, $endDate])
+                            // ->whereBetween('tgl_pengeluaran', [$startDate, $endDate])
                             ->where('metode_pembayaran', 'LIKE', PemasukanLainnya::TUNAI)
                             ->first();
         
@@ -245,21 +248,59 @@ class CashController extends Controller
     
     public function history_pengeluaran()
     {
-        $data['pengeluaran'] = PengeluaranCash::orderBy('id', 'DESC')->get();
+        $startDate = new DateTime(rangeDate()[0]);
+        $startDate = $startDate->format('Y-m-d');
+        $endDate = new DateTime(rangeDate()[1]);
+        $endDate = $endDate->format('Y-m-d');
+        $data['pengeluaran'] = DaftarPengeluaran::where('metode_pembayaran', $this->tunai)
+                            ->when($startDate && $endDate, function ($query) use ($startDate, $endDate) {
+                                return $query->whereBetween('tgl_pengeluaran', [$startDate, $endDate])
+                                             ->orderBy('id', 'DESC');
+                            })
+                            ->orderBy('id', 'DESC')->get();
 
         return view('posisi-cash.history-pengeluaran', $data);
     }
 
     public function history_pemasukan()
     {
-        $data['pemasukan'] = PemasukanCash::orderBy('id', 'DESC')->get();
+        $startDate = new DateTime(rangeDate()[0]);
+        $startDate = $startDate->format('Y-m-d 00:00:00');
+        $endDate = new DateTime(rangeDate()[1]);
+        $endDate = $endDate->format('Y-m-d 23:59:59');
+
+        $pemasukan = PemasukanLainnya::whereBetween('tgl_pemasukkan', [$startDate, $endDate])
+                    ->where(function($query) {
+                        $query->where('metode_pembayaran', 'LIKE', $this->tunai)
+                            ->orWhere('metode_pembayaran2', 'LIKE', $this->tunai);
+                    })
+                    ->orderBy('id', 'DESC')
+                    ->get();
+
+        $pengiriman = DataPengiriman::whereBetween('tgl_transaksi', [$startDate, $endDate])
+                        ->where(function($query) {
+                            $query->where('metode_pembayaran', 'LIKE', $this->tunai)
+                                ->orWhere('metode_pembayaran_2', 'LIKE', $this->tunai);
+                        })
+                        ->orderBy('id', 'DESC')->get()
+                        ->map(function ($resi) {
+                            $resi->tgl_transaksi = new DateTime($resi->tgl_transaksi);
+                            $resi->tgl_transaksi = $resi->tgl_transaksi->format('Y-m-d');
+                            return $resi;
+                        });
+
+        $data['transaksi'] = $pemasukan->merge($pengiriman)->sortByDesc('id');
 
         return view('posisi-cash.history-pemasukan', $data);
     }
 
     public function history_saldo()
     {
-        $data['saldo'] = SaldoCash::orderBy('id', 'DESC')->get();
+        $startDate = new DateTime(rangeDate()[0]);
+        $startDate = $startDate->format('Y-m-d');
+        $endDate = new DateTime(rangeDate()[1]);
+        $endDate = $endDate->format('Y-m-d');
+        $data['saldo'] = SaldoCash::whereBetween('tanggal', [$startDate, $endDate])->orderBy('id', 'DESC')->get();
 
         return view('posisi-cash.history-saldo', $data);
     }

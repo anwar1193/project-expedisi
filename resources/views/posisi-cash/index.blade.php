@@ -20,7 +20,7 @@
 	@endcomponent
 	
 	<div class="container-fluid">
-		<form class="d-flex flex-column col-12 mb-2" role="search" action="" method="GET">
+		{{-- <form class="d-flex flex-column col-12 mb-2" role="search" action="" method="GET">
 			<div class="d-flex justify-content-end">
                 <div id="customer_id" class="px-2">
 					<input class="datepicker-here form-control digits" autocomplete="off" type="text" name="tanggal" value="{{ request('tanggal') ?? date('d/m/Y').' - '.date('d/m/Y') }}" data-range="true" data-multiple-dates-separator=" - " data-language="en" />
@@ -33,13 +33,13 @@
 					<a href="{{ route('posisi-cash') }}" class="btn btn-md btn-secondary" title="Reset"><i class="fa fa-refresh"></i> Reset</a>
 				</div>
 
-				{{-- <div class="px-1">
+				<div class="px-1">
 					<a href="{{ route('posisi-cash.truncate') }}" class="btn btn-danger btn-md" data-bs-toggle="tooltip" data-bs-placement="top" title="Truncate Data" onclick="return confirm('Apakah anda yakin untuk menghapus semua data cash?')">
 						<i class="fa fa-trash"></i> Truncate
 					</a>
-				</div> --}}
+				</div>
 			</div>
-		</form>
+		</form> --}}
         <div class="row">
         </div>
 	    <div class="row">
@@ -73,7 +73,7 @@
 
                         <div class="row ps-3 ms-3 pt-3 mt-3">
                               <div class="col-xl-4 col-md-4 col-sm-4 box-col-4 des-xl-25 rate-sec">
-								{{-- <a class="text-white"  href="{{ route('posisi-cash.history-pemasukan') }}"> --}}
+								<a class="text-white"  href="{{ route('posisi-cash.history-pemasukan') }}">
 									<div class="card shadow-lg" style="width: 18rem; border-radius:15px; background-color: rgb(33, 174, 47)">
 										<div class="card-body fw-bold">
 											<div class="row">
@@ -85,13 +85,13 @@
 											</div>
 										</div>
 									</div>
-								{{-- </a> --}}
+								</a>
                               </div>
 
                               <div class="col-xl-4 col-md-4 col-sm-4 box-col-4 des-xl-25 rate-sec">
-								{{-- <a class="text-white"  href="{{ route('posisi-cash.history-pengeluaran') }}"> --}}
+								<a class="text-white"  href="{{ route('posisi-cash.history-pengeluaran') }}">
 									<div class="card shadow-lg" style="width: 18rem; border-radius:15px; background-color: rgb(200, 75, 75)">
-										<div class="card-body text-center fw-bold">
+										<div class="card-body fw-bold">
 											<div class="row">
 												<div class="col-3 d-flex align-items-center"><h1><i class="icofont icofont-arrow-down"></i></h1></div>
 												<div class="col">
@@ -101,7 +101,7 @@
 											</div>
 										</div>
 									</div>
-								{{-- </a> --}}
+								</a>
                               </div>
 
 							  <div class="col-xl-4 col-md-4 col-sm-4 box-col-4 des-xl-25 rate-sec">
@@ -121,14 +121,12 @@
 	                </div>
                     <div class="card-footer">
                         <div class="d-flex justify-content-evenly">
-							@if ($tanggal == date('Y-m-d'))
-								<form action="{{ route('posisi-cash.closing') }}" method="POST">
-									@csrf
-									<input type="hidden" name="saldo" value="{{ $saldo }}">
-									<input type="hidden" name="tanggal" value="{{ $tanggal }}">
-									<button class="btn btn-secondary" type="submit" onclick="return confirm('Apakah Anda Yakin?')">Closing</button>
-								</form>
-							@endif
+							<form action="{{ route('posisi-cash.closing') }}" method="POST">
+								@csrf
+								<input type="hidden" name="saldo" value="{{ $saldo }}">
+								<input type="hidden" name="tanggal" value="{{ $tanggal }}">
+								<button class="btn btn-secondary" type="submit" onclick="return confirm('Apakah Anda Yakin?')">Closing</button>
+							</form>
                         </div>
 						<br>
 						<div class="d-flex justify-content-center">

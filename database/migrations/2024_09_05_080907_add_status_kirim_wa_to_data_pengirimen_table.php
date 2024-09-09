@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('data_pengirimen', function (Blueprint $table) {
-            $table->boolean('status_kirim_wa')->default(false)->after('input_by');
+            $table->boolean('status_kirim_wa')->default(true)->after('input_by');
         });
     }
 

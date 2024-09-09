@@ -35,9 +35,9 @@ class DataPengirimanController extends Controller
         // $level = Session::get('user_level') == 2;
         $notif = request('notif');
         $startDate = new DateTime(rangeDate()[0]);
-        $startDate = $startDate->format('Y-m-d');
+        $startDate = $startDate->format('Y-m-d 00:00:00');
         $endDate = new DateTime(rangeDate()[1]);
-        $endDate = $endDate->format('Y-m-d');
+        $endDate = $endDate->format('Y-m-d 23:59:59');
         $metode = request('metode');
         $customer = request('customer');
         $bukti_pembayaran = request('bukti_pembayaran');
@@ -54,7 +54,7 @@ class DataPengirimanController extends Controller
             return $query->where('status_pembayaran', DataPengiriman::STATUS_PENDING)->orderBy('tgl_transaksi', 'DESC');
         })->when($owner && $jumlahApprove != 0, function ($query) {
             return $query->where('status_pembayaran', DataPengiriman::STATUS_PENDING)->orderBy('tgl_transaksi', 'DESC');
-        })->when($startDate && $endDate, function ($query) use ($startDate, $endDate) {
+        })->when(!$bukti_pembayaran && $startDate && $endDate, function ($query) use ($startDate, $endDate) {
             return $query->whereBetween('tgl_transaksi', [$startDate, $endDate])
                          ->orderBy('tgl_transaksi', 'DESC');
         })->when($metode, function ($query, $metode) {
@@ -365,48 +365,13 @@ class DataPengirimanController extends Controller
         $data = Excel::toArray(new DataPengirimanImport, $request->file('file'));
     
         $formattedData = (new DataPengirimanImport)->array($data[0]);
-
-        // $rules = [
-        //     '*.no_resi' => 'required|unique:data_pengirimen',
-        //     '*.tgl_transaksi' => 'required',
-        //     '*.nama_pengirim' => 'required',
-        //     '*.nama_penerima' => 'required',
-        //     '*.kota_tujuan' => 'required',
-        //     '*.no_hp_pengirim' => 'required',
-        //     '*.no_hp_penerima' => 'required',
-        //     '*.berat_barang' => 'required',
-        //     '*.ongkir' => 'required',
-        //     '*.komisi' => 'required',
-        //     '*.metode_pembayaran' => function($attribute, $value, $onFailure) {
-        //         if($value !== NULL){
-        //             if ($value !== 'Transfer' && $value !== 'Tunai' && $value !== 'Kredit') {
-        //                 $onFailure('Metode Pembayaran Harus Transfer, Tunai, Kredit, atau Dikosongkan');
-        //            }
-        //         }
-        //     },
-
-        //     '*.jenis_pengiriman' => 'required',
-        //     '*.bawa_sendiri' => 'required',
-        //     '*.status_pengiriman' => 'required',
-        // ];
-
-        // $validator = Helper::validateFormattedData($formattedData);
-
-        // if ($validator->fails()) {
-        //     return redirect()->back()->withErrors($validator)->withInput();
-        // }
-
-        // $validationResult = Helper::customValidasi($formattedData);
-
-        // if ($validationResult !== null) {
-        //     return $validationResult;
-        // }
     
         return view('data-pengiriman.konfirmasi-data', compact('bank', 'customer','formattedData', 'kasir', 'metode', 'status'));
     }
 
     public function proses_hasil_import(Request $request)
     {   
+        date_default_timezone_set("Asia/Jakarta");
         $datas = [];
 
         foreach ($request->no_resi as $i => $no_resi) {

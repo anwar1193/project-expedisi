@@ -1,23 +1,24 @@
 @extends('layouts.admin.master')
 
-@section('title')History Pengeluaran Cash
+@section('title')History Pengeluaran
  {{ $title }}
 @endsection
 
 @push('css')
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/datatables.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/date-picker.css') }}">
 @endpush
 
 @section('content')
 	@component('components.breadcrumb')
 		@slot('breadcrumb_title')
-			<h3>History Pengeluaran Cash</h3>
+			<h3>History Pengeluaran</h3>
 		@endslot
 		<li class="breadcrumb-item active"><a href="{{ route('posisi-cash') }}">Posisi Cash</a></li>
-		<li class="breadcrumb-item active">History Pengeluaran Cash</li>
+		<li class="breadcrumb-item active">History Pengeluaran</li>
 	@endcomponent
 
-    <nav class="page-breadcrumb">
+    {{-- <nav class="page-breadcrumb">
         <ol class="breadcrumb align-items-center">
             <div class="d-grid gap-2 d-md-block mx-2">
                 <a class="btn btn-danger btn-sm" href="{{ route('posisi-cash.export-pengeluaran') }}">
@@ -25,9 +26,23 @@
                 </a>
             </div>
         </ol>
-    </nav>
+    </nav> --}}
     
 	<div class="container-fluid">
+		<form class="d-flex flex-column col-12 mb-2" role="search" action="" method="GET">
+			<div class="d-flex justify-content-end">
+                <div id="customer_id" class="px-2">
+					<input class="datepicker-here form-control digits" autocomplete="off" type="text" name="tanggal" value="{{ request('tanggal') ?? date('d/m/Y', strtotime('-7 day')).' - '.date('d/m/Y') }}" data-range="true" data-multiple-dates-separator=" - " data-language="en" />
+                </div>
+				<div class="px-1">
+					<button type="submit" class="btn btn-primary" title="Cari"><i class="fa fa-search"></i> Cari</button>
+				</div>
+
+				<div class="px-1">
+					<a href="{{ route('posisi-cash.history-pengeluaran') }}" class="btn btn-md btn-secondary" title="Reset"><i class="fa fa-refresh"></i> Reset</a>
+				</div>
+			</div>
+		</form>
         <div class="row">
         </div>
 	    <div class="row">
@@ -66,16 +81,18 @@
 	                            <thead>
 	                                <tr>
 	                                    <th width="5%">No</th>
-	                                    <th>Jumlah Saldo</th>
-										<th>Tanggal</th>
+										<th>Tanggal Pengeluaran</th>
+	                                    <th>Jumlah Pembayaran</th>
+										<th>Keterangan</th>
 	                                </tr>
 	                            </thead>
 	                            <tbody>
 	                                @foreach ($pengeluaran as $data)
 										<tr>
 											<td>{{ $loop->iteration; }}</td>
-											<td>{{ 'Rp '.number_format($data->jumlah, 0, '.', '.') }} </td>
-											<td>{{ $data->tanggal }}</td>
+											<td>{{ $data->tgl_pengeluaran }}</td>
+											<td>{{ 'Rp '.number_format($data->jumlah_pembayaran, 0, '.', '.') }} </td>
+											<td>{{ $data->keterangan }}</td>
 										</tr>
 									@endforeach
 	                            </tbody>
@@ -92,6 +109,9 @@
 	@push('scripts')
 	<script src="{{ asset('assets/js/datatable/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('assets/js/datatable/datatables/datatable.custom.js') }}"></script>
+	<script src="{{ asset('assets/js/datepicker/date-picker/datepicker.js') }}"></script>
+    <script src="{{ asset('assets/js/datepicker/date-picker/datepicker.en.js') }}"></script>
+    <script src="{{ asset('assets/js/datepicker/date-picker/datepicker.custom.js') }}"></script>
 	@endpush
 
 @endsection
