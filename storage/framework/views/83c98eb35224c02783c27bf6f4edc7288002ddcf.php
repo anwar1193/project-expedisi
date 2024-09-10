@@ -105,17 +105,21 @@
                     <a href="<?php echo e(route('daftar-pengeluaran.create')); ?>" class="btn btn-info btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Tambah Data">
                         <i class="fa fa-plus"></i> Tambah
                     </a>
+                    
+					<a class="btn btn-danger btn-sm" href="<?php echo e(route('daftar-pengeluaran.export-pdf')); ?>" target="_blank">
+						<i class="fa fa-check-square"></i> Download PDF
+					</a>
 
 					<?php if(Session::get('user_level') == 2): ?>
-					<form action="<?php echo e(route('data-pengeluaran.approve-selected')); ?>" method="post" style="display: inline-block">
-						<?php echo csrf_field(); ?>
-						<div class="inner"></div>
-						<button type="submit" class="btn btn-success btn-sm" style="display: inline" onclick="return confirm('Approve semua data terpilih?')">
-							<i class="fa fa-check-square"></i> Approve Selected
-						</button>
-					</form>
-					
-				<?php endif; ?>
+						<form action="<?php echo e(route('data-pengeluaran.approve-selected')); ?>" method="post" style="display: inline-block">
+							<?php echo csrf_field(); ?>
+							<div class="inner"></div>
+							<button type="submit" class="btn btn-success btn-sm" style="display: inline" onclick="return confirm('Approve semua data terpilih?')">
+								<i class="fa fa-check-square"></i> Approve Selected
+							</button>
+						</form>
+						
+					<?php endif; ?>
                 
             </div>
         </ol>

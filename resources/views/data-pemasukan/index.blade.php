@@ -36,6 +36,10 @@
                         <i class="fa fa-plus"></i> Tambah Pemasukan
                     </a>
 
+					<a class="btn btn-danger btn-sm" href="{{ route('data-pemasukan.export-pdf') }}" target="_blank">
+						<i class="fa fa-check-square"></i> Export PDF
+					</a>
+
 					{{-- <a href="{{ route('data-barang') }}" class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Data Barang">
                         <i class="fa fa-cube"></i> Data Barang
                     </a> --}}

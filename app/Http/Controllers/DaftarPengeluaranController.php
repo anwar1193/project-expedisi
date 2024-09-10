@@ -6,6 +6,7 @@ use App\Helpers\Helper;
 use App\Models\DaftarPengeluaran;
 use App\Models\JenisPengeluaran;
 use App\Models\SettingWa;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
@@ -300,5 +301,13 @@ class DaftarPengeluaranController extends Controller
                     ->first();
 
         return view('approve.data-pengeluaran', $data);
+    }
+
+    public function export_pdf()
+    {
+        $data['data'] = DaftarPengeluaran::orderBy('id', 'DESC')->get();;
+
+        $pdf = Pdf::loadView('daftar-pengeluaran.export-pdf', $data)->setPaper('a4', 'landscape');
+        return $pdf->stream('Data-Pengeluaran.pdf');
     }
 }

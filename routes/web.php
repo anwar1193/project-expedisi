@@ -187,6 +187,7 @@ Route::middleware("auth")->group(function() {
         Route::post('/konfimasi-excel', [DataPengirimanController::class, 'konfimasiExcel'])->name('data-pengiriman.konfimasi-excel');
         Route::post('/proses-konfirmasi-excel', [DataPengirimanController::class, 'proses_hasil_import'])->name('data-pengiriman.proses-konfimasi-excel');
         Route::get('/download-resi', [DataPengirimanController::class, 'download_resi'])->name('data-pengiriman.download-resi');
+        Route::get('/export-pdf', [DataPengirimanController::class, 'export_pdf'])->name('data-pengiriman.export-pdf');
     });
     
     Route::prefix('daftar-pengeluaran')->group(function () {
@@ -200,6 +201,7 @@ Route::middleware("auth")->group(function() {
         Route::post('/approve-selected', [DaftarPengeluaranController::class, 'approveSelected'])->name('data-pengeluaran.approve-selected');
         Route::get('/unapprove/{id}', [DaftarPengeluaranController::class, 'cancelApprove'])->name('daftar-pengeluaran.unapprove');
         Route::post('/unapprove-selected', [DaftarPengeluaranController::class, 'cancelApproveSelected'])->name('data-pengeluaran.unapprove-selected');
+        Route::get('/export-pdf', [DaftarPengeluaranController::class, 'export_pdf'])->name('daftar-pengeluaran.export-pdf');
     });
     
     Route::prefix('supplier')->group(function () {
@@ -219,6 +221,7 @@ Route::middleware("auth")->group(function() {
         Route::post('/update/{id}', [PemasukanLainnyaController::class, 'update'])->name('data-pemasukan.update');
         Route::get('/delete/{id}', [PemasukanLainnyaController::class, 'delete'])->name('data-pemasukan.delete');
         Route::get('/tanda-terima-pdf/{id}', [PemasukanLainnyaController::class, 'tanda_terima_pdf'])->name('tanda-terima.export-pdf');
+        Route::get('/export-pdf', [PemasukanLainnyaController::class, 'export_pdf'])->name('data-pemasukan.export-pdf');
     });
 
     Route::prefix('data-barang')->group(function () {
@@ -255,6 +258,7 @@ Route::middleware("auth")->group(function() {
         Route::post('/', [PembelianPerlengkapanController::class, 'store'])->name('pembelian-perlengkapan.store');
         Route::post('/update/{id}', [PembelianPerlengkapanController::class, 'update'])->name('pembelian-perlengkapan.update');
         Route::get('/delete/{id}', [PembelianPerlengkapanController::class, 'delete'])->name('pembelian-perlengkapan.delete');
+        Route::get('/export-pdf', [PembelianPerlengkapanController::class, 'export_pdf'])->name('pembelian-perlengkapan.export-pdf');
     });
     
     Route::prefix('laporan')->group(function () {

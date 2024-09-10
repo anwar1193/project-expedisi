@@ -17,6 +17,7 @@ use App\Models\Invoice;
 use App\Models\TransaksiInvoice;
 use App\Models\TransaksiPembayaran;
 use App\Models\InvoiceBank;
+use Barryvdh\DomPDF\Facade\Pdf;
 use DateTime;
 use Dflydev\DotAccessData\Data;
 use Illuminate\Http\Request;
@@ -491,6 +492,14 @@ class DataPengirimanController extends Controller
     public function download_resi()
     {
         return Excel::download(new StatusPengirimanExport, 'StatusPengiriman.xlsx');
+    }
+
+    public function export_pdf()
+    {
+        $data['data'] = DataPengiriman::orderBy('id', 'DESC')->get();;
+
+        $pdf = Pdf::loadView('data-pengiriman.export-pdf', $data)->setPaper('a4', 'landscape');
+        return $pdf->stream('Data-Pengiriman.pdf');
     }
 }
 

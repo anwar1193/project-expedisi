@@ -106,23 +106,27 @@
                     <a href="{{ route('daftar-pengeluaran.create') }}" class="btn btn-info btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Tambah Data">
                         <i class="fa fa-plus"></i> Tambah
                     </a>
+                    
+					<a class="btn btn-danger btn-sm" href="{{ route('daftar-pengeluaran.export-pdf') }}" target="_blank">
+						<i class="fa fa-check-square"></i> Export PDF
+					</a>
 
 					@if (Session::get('user_level') == 2)
-					<form action="{{ route('data-pengeluaran.approve-selected') }}" method="post" style="display: inline-block">
-						@csrf
-						<div class="inner"></div>
-						<button type="submit" class="btn btn-success btn-sm" style="display: inline" onclick="return confirm('Approve semua data terpilih?')">
-							<i class="fa fa-check-square"></i> Approve Selected
-						</button>
-					</form>
-					{{-- <form action="{{ route('data-pengeluaran.unapprove-selected') }}" method="post" style="display: inline-block">
-						@csrf
-						<div class="inner"></div>
-						<button type="submit" class="btn btn-danger btn-sm" style="display: inline" onclick="return confirm('Approve semua data terpilih?')">
-							<i class="fa fa-check-square"></i> Cancel Approve Selected
-						</button>
-					</form> --}}
-				@endif
+						<form action="{{ route('data-pengeluaran.approve-selected') }}" method="post" style="display: inline-block">
+							@csrf
+							<div class="inner"></div>
+							<button type="submit" class="btn btn-success btn-sm" style="display: inline" onclick="return confirm('Approve semua data terpilih?')">
+								<i class="fa fa-check-square"></i> Approve Selected
+							</button>
+						</form>
+						{{-- <form action="{{ route('data-pengeluaran.unapprove-selected') }}" method="post" style="display: inline-block">
+							@csrf
+							<div class="inner"></div>
+							<button type="submit" class="btn btn-danger btn-sm" style="display: inline" onclick="return confirm('Approve semua data terpilih?')">
+								<i class="fa fa-check-square"></i> Cancel Approve Selected
+							</button>
+						</form> --}}
+					@endif
                 {{-- @endif --}}
             </div>
         </ol>

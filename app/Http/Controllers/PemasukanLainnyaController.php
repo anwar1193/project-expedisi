@@ -359,4 +359,12 @@ class PemasukanLainnyaController extends Controller
         $pdf = Pdf::loadView('data-pemasukan.tanda-terima-pdf', compact('picture', 'data'))->setPaper($customPaper, 'landscape');
         return $pdf->stream('Tanda-Terima.pdf');
     }
+
+    public function export_pdf()
+    {
+        $data['data'] = PemasukanLainnya::orderBy('id', 'DESC')->get();;
+
+        $pdf = Pdf::loadView('data-pemasukan.export-pdf', $data)->setPaper('a4', 'landscape');
+        return $pdf->stream('Data-Pemasukan.pdf');
+    }
 }

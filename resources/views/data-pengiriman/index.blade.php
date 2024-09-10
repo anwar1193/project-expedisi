@@ -112,9 +112,9 @@
         <ol class="breadcrumb align-items-center">
             <div class="d-grid gap-2 d-md-block mx-2">
 				
-				{{-- <a href="{{ route('data-pengiriman.create') }}" class="btn btn-info btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Tambah Data">
-					<i class="fa fa-plus"></i> Tambah
-				</a> --}}
+				<a class="btn btn-danger btn-sm" href="{{ route('data-pengiriman.export-pdf') }}" target="_blank">
+					<i class="fa fa-check-square"></i> Export PDF
+				</a>
 
 				<a class="btn btn-primary btn-sm" type="button" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalImport" title="Import Excel">
 					<i class="fa fa-file-excel-o"></i> Import Excel

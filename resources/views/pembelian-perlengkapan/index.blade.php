@@ -35,6 +35,10 @@
                     <a href="{{ route('pembelian-perlengkapan.create') }}" class="btn btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Tambah Data">
                         <i class="fa fa-plus"></i> Tambah
                     </a>
+
+					<a class="btn btn-danger btn-sm" href="{{ route('pembelian-perlengkapan.export-pdf') }}" target="_blank">
+						<i class="fa fa-check-square"></i> Download PDF
+					</a>
                 {{-- @endif --}}
             </div>
         </ol>
@@ -94,11 +98,11 @@
 											$bukti_pembayaran = $data->nota;
 
 											if($bukti_pembayaran != ''){
-												$explode = explode("/", $bukti_pembayaran);
-												$bukti_pembayaran_view = 'https://'.$explode[2].'/thumbnail?id='.$explode[5];
-											}else{
-												$bukti_pembayaran_view = '#';
-											}
+													$explode = explode("/", $bukti_pembayaran);
+													$bukti_pembayaran_view = 'https://drive.google.com/file/d/'.$explode[5].'/preview';
+												}else{
+													$bukti_pembayaran_view = '#';
+												}
 										@endphp
 										<tr>
 											<td>{{ $loop->iteration; }}</td>
@@ -111,7 +115,7 @@
 												@if ($bukti_pembayaran != '')
 													<div id="tooltip{{ $data->id }}" class="tooltip-img">
 														<a href="{{ $bukti_pembayaran }}" target="_blank">
-															<img src="{{ $bukti_pembayaran_view }}" alt="test" width="200px">
+															<iframe src="{{ $bukti_pembayaran_view }}" width="400" height="400" allow="autoplay"></iframe>
 														</a>
 													</div>
 												@endif

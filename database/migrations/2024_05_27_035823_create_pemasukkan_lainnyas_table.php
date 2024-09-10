@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('diterima_oleh');
             $table->string('metode_pembayaran');
             $table->text('bukti_pembayaran');
-            $table->string('keterangan_tambahan');
+            $table->string('keterangan_tambahan')->nullable(true);
             $table->timestamps();
         });
     }
