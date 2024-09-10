@@ -21,12 +21,14 @@ class CashController extends Controller
 {
     protected $yesterday;
     protected $lastSaldo;
+    protected $saldoApproveYet;
     protected $tunai;
 
     public function __construct()
     {
         $this->yesterday = date('Y-m-d', strtotime('-1 day'));
-        $this->lastSaldo = SaldoCash::where('is_approve', SaldoCash::STATUS_PENDING)->orderBy('id', 'DESC')->first();
+        $this->lastSaldo = SaldoCash::orderBy('id', 'DESC')->first();
+        $this->saldoApproveYet = SaldoCash::where('is_approve', SaldoCash::STATUS_PENDING)->orderBy('id', 'DESC')->first();
         $this->tunai = "tunai";
     }
 
@@ -48,52 +50,38 @@ class CashController extends Controller
 
     public function index() 
     {
-        $data['tanggal'] = request('tanggal') ?? date('Y-m-d');
-        $startDate = new DateTime(rangeDate()[0]);
-        $startDate = $startDate->format('Y-m-d');
-        $endDate = new DateTime(rangeDate()[1]);
-        $endDate = $endDate->format('Y-m-d');
+        date_default_timezone_set("Asia/Jakarta");
+        $data['tanggal'] = date('Y-m-d');
+        $startDate = new DateTime($this->lastSaldo->created_at);
+        $startDate = $startDate->format('Y-m-d H:i:s');
+        $startDateTime = new DateTime($this->lastSaldo->created_at);
+        $startDateTime = $startDateTime->format('Y-m-d');
+        $endDate = date('Y-m-d H:i:s');
 
         $totalPengiriman = DataPengiriman::selectRaw('SUM(ongkir) AS total')
-                            // ->whereBetween('tgl_transaksi', [$startDate, $endDate])
+                            ->whereBetween('tgl_transaksi', [$startDate, $endDate])
                             ->where(function($query) {
                                 $query->where('metode_pembayaran', 'LIKE', 'tunai')
                                       ->orWhere('metode_pembayaran_2', 'LIKE', 'tunai');
                             })
                             ->first();
 
-
         $totalPemasukan = PemasukanLainnya::selectRaw('SUM(jumlah_pemasukkan) AS total')
-                            // ->whereBetween('tgl_pemasukkan', [$startDate, $endDate])
+                            ->whereBetween('tgl_pemasukkan', [$startDateTime, $data['tanggal']])
                             ->where(function($query) {
                                 $query->where('metode_pembayaran', 'LIKE', 'tunai')
                                     ->orWhere('metode_pembayaran2', 'LIKE', 'tunai');
                             })
                             ->first();
 
-                            // dd($totalPengiriman->total, $totalPemasukan->total);
-
-
         $data['pemasukan'] = $totalPengiriman->total + $totalPemasukan->total;
 
-
         $data['pengeluaran'] = DaftarPengeluaran::selectRaw('SUM(jumlah_pembayaran) AS total')
-                            // ->whereBetween('tgl_pengeluaran', [$startDate, $endDate])
+                            ->whereBetween('tgl_pengeluaran', [$startDateTime, $data['tanggal']])
                             ->where('metode_pembayaran', 'LIKE', PemasukanLainnya::TUNAI)
-                            ->first();
-        
-        $todaySaldo = SaldoCash::where('tanggal', $data['tanggal'])->orderBy('id', 'DESC')->first();
-        $yesterdaySaldo = SaldoCash::where('tanggal', $this->yesterday)->orderBy('id', 'DESC')->first();
-        
-        if ($this->lastSaldo) {
-            $data['saldo'] = $this->lastSaldo->saldo;
-        } elseif (!$yesterdaySaldo) {
-            $data['saldo'] = ($this->checkSaldoYesterday() + $data['pemasukan'] - $data['pengeluaran']->total);
-        } elseif ($todaySaldo) {
-            $data['saldo'] = $todaySaldo->saldo;
-        } else {
-            $data['saldo'] = round($data['pemasukan'] - $data['pengeluaran']->total);
-        }
+                            ->first();        
+
+        $data['saldo'] = round($data['pemasukan'] - $data['pengeluaran']->total);
 
         return view('posisi-cash.index', $data);
     }
@@ -184,7 +172,7 @@ class CashController extends Controller
             return back()->with('error', 'Tanggal Closing Saldo Harus Sama Dengan Tanggal Hari ini');
         }
 
-        if ($this->lastSaldo) {
+        if ($this->saldoApproveYet) {
             return back()->with('error', 'Jumlah Saldo Sudah Diclosing Dan Sedang Menunggu Approval Owner');
         }
 
