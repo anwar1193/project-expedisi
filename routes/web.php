@@ -188,6 +188,7 @@ Route::middleware("auth")->group(function() {
         Route::post('/proses-konfirmasi-excel', [DataPengirimanController::class, 'proses_hasil_import'])->name('data-pengiriman.proses-konfimasi-excel');
         Route::get('/download-resi', [DataPengirimanController::class, 'download_resi'])->name('data-pengiriman.download-resi');
         Route::get('/export-pdf', [DataPengirimanController::class, 'export_pdf'])->name('data-pengiriman.export-pdf');
+        Route::get('/truncate-by-periode', [DataPengirimanController::class, 'truncateByPeriode'])->name('data-pengiriman.truncate-by-periode');
     });
     
     Route::prefix('daftar-pengeluaran')->group(function () {

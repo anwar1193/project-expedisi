@@ -120,9 +120,13 @@
 					<i class="fa fa-file-excel-o"></i> Import Excel
 				</a>
 
-				<a href="{{ route('data-pengiriman.truncate') }}" class="btn btn-danger btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Truncate Data">
+				<a href="{{ route('data-pengiriman.truncate') }}" onclick="return confirm('Apakah Anda Yakin?')" class="btn btn-danger btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Truncate Data">
 					<i class="fa fa-trash"></i> Truncate
 				</a>
+				
+				<button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#truncateModal">
+					<i class="fa fa-trash"></i> Truncate By Periode
+				</button>
 
 				<a class="btn btn-primary btn-sm" type="button" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalUpdateStatus" title="Update Status Pengiriman">
 					<i class="fa fa-file-excel-o"></i> Update Status Pengiriman
@@ -131,6 +135,7 @@
 				@include('data-pengiriman.modal-import')
 				@include('data-pengiriman.status-pengiriman', ['status' => $status])
 				@include('data-pengiriman.modal-status-pengiriman')
+				@include('data-pengiriman.partial.truncate-period')
 
 				@if (Session::get('user_level') == 2)
 					<form action="{{ route('data-pengiriman.approve-selected') }}" method="post" style="display: inline-block">

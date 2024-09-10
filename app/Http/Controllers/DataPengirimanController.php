@@ -501,6 +501,22 @@ class DataPengirimanController extends Controller
         $pdf = Pdf::loadView('data-pengiriman.export-pdf', $data)->setPaper('a4', 'landscape');
         return $pdf->stream('Data-Pengiriman.pdf');
     }
+
+    public function truncateByPeriode() {
+        $startDate = new DateTime(rangeDate()[0]);
+        $startDate = $startDate->format('Y-m-d 00:00:00');
+        $endDate = new DateTime(rangeDate()[1]);
+        $endDate = $endDate->format('Y-m-d 23:59:59');
+        $data = DataPengiriman::whereBetween('tgl_transaksi', [$startDate, $endDate])->get();
+        foreach ($data as $d) {
+            if ($d->status_pembayaran == DataPengiriman::STATUS_LUNAS) {
+                return redirect()->route('data-pengiriman')->with('error', 'Data Pengiriman Pada Periode Tersebut Ada Yang Telah Diapprove');
+            }
+        }
+        $data->each->delete();
+
+        return redirect()->route('data-pengiriman')->with('delete', 'Data Pengiriman Berhasil Dihapus');
+    }
 }
 
 // 13:34
