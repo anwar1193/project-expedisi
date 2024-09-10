@@ -58,7 +58,7 @@ class PemasukanLainnyaController extends Controller
         $today = date('Y-m-d');
         $validateData = $request->validate([
             'tgl_pemasukkan' => 'required|date',
-            'no_resi_pengiriman' => 'required',
+            'no_resi_pengiriman' => 'nullable',
             'kategori' => 'required',
             'modal' => 'required',
             'keterangan' => 'required',
@@ -69,7 +69,7 @@ class PemasukanLainnyaController extends Controller
             'bukti_pembayaran' => 'required_without:image',
             'metode_pembayaran2' => 'nullable',
             'image' => 'required_without:bukti_pembayaran', 
-            'keterangan_tambahan' => 'required',
+            'keterangan_tambahan' => 'nullable',
         ]);
 
         $foto = $request->file('bukti_pembayaran'); // take picture
@@ -214,7 +214,7 @@ class PemasukanLainnyaController extends Controller
             'customer' => 'required_without:sumber_pemasukkan',
             'metode_pembayaran' => 'required',
             'metode_pembayaran2' => 'nullable',
-            'keterangan_tambahan' => 'required',
+            'keterangan_tambahan' => 'nullable',
         ]);
 
         $foto = $request->file('bukti_pembayaran');
