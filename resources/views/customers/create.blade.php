@@ -129,6 +129,23 @@
 										</div>
 									@enderror
 								</div>
+								
+								<div class="col-md-6">
+									<label class="form-label" for="perusahaan">Notif Wa</label>
+									<br>
+									@foreach ($notif as $item)
+										<label class="me-3" for="notif{{ $item['value'] }}">
+											<input id="notif{{ $item['value'] }}" type="radio" name="notif_wa" value="{{ $item['value'] }}" {{ $loop->first ? 'checked' : '' }} />
+											{{ $item['label'] }}
+										</label>
+									@endforeach
+
+									@error('perusahaan')
+										<div class="text-danger">
+											{{ $message }}
+										</div>
+									@enderror
+								</div>
 							</div>
 
 							<div class="row g-3 py-2">

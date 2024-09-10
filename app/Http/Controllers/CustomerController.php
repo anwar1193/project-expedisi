@@ -30,7 +30,11 @@ class CustomerController extends Controller
 
     public function create()
     {
-        return view('customers.create');
+        $data['notif'] = [
+            ['value' => '1', 'label' => 'Ya'],
+            ['value' => '0', 'label' => 'Tidak'],
+        ];
+        return view('customers.create', $data);
     }
 
     public function store(Request $request)
@@ -60,6 +64,7 @@ class CustomerController extends Controller
                 'no_wa_2' => 'nullable|regex:/^0[0-9]{9,14}$/|unique:customers,no_wa|unique:users,nomor_telepon',
                 'no_wa_3' => 'nullable|regex:/^0[0-9]{9,14}$/|unique:customers,no_wa|unique:users,nomor_telepon',
                 'alamat' => 'required',
+                'notif_wa' => 'required',
             ]);
 
             $request['kode_customer'] = $kode_customer;
@@ -89,10 +94,14 @@ class CustomerController extends Controller
     public function edit($id)
     {
         $customer = Customer::findOrFail($id);
+        $notif = [
+            ['value' => '1', 'label' => 'Ya'],
+            ['value' => '0', 'label' => 'Tidak'],
+        ];
         if (!$customer) {
             return view('errors.404');
         }
-        return view('customers.edit', compact('customer'));
+        return view('customers.edit', compact('customer', 'notif'));
     }
 
     public function update(Request $request, $id)
@@ -110,7 +119,8 @@ class CustomerController extends Controller
                 'no_wa_3' => 'nullable|regex:/^0[0-9]{9,14}$/',
                 // 'no_wa' => 'required|regex:/^0[0-9]{9,14}$/|unique:customers,no_wa,' . $id.'|unique:users,nomor_telepon,' . $id,
                 'alamat' => 'required',
-                'password_baru' => 'confirmed'
+                'password_baru' => 'confirmed',
+                'notif_wa' => 'required',
             ]);
 
             $fieldsToUpdate = ['nama', 'username', 'email', 'no_wa'];

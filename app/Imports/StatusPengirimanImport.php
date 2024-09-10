@@ -29,7 +29,9 @@ class StatusPengirimanImport implements ToModel, WithValidation, WithHeadingRow
     {
         $statusValid = StatusPengiriman::where('status_pengiriman', $row['status_pengiriman'])->exists();
         $pesan = Pesan::find(Pesan::SP);
-        $data = DataPengiriman::where('no_resi', $row['no_resi'])->first();
+        $data = DataPengiriman::where('no_resi', $row['no_resi'])
+                ->leftjoin('customers', 'data_pengirimen.kode_customer', '=', 'customers.kode_customer')
+                ->first();
 
         if (!$statusValid) {
             $this->errors[] = 'Status pengiriman yang diiput untuk no resi: ' . $row['no_resi'] .' tidak sesuai';
@@ -39,19 +41,18 @@ class StatusPengirimanImport implements ToModel, WithValidation, WithHeadingRow
         // $update = data::where('no_resi', $row['no_resi'])->update([
         //     'status_pengiriman' => $row['status_pengiriman']
         // ]);
-
         if ($data) {
             $data->update(['status_pengiriman' => $row['status_pengiriman']]);
-
+            
             $statusUpdate = StatusPengiriman::where('status_pengiriman', $row['status_pengiriman'])->first();
-
+            
             $timeOfDay = Helper::getTimeOfDay().' '.'*'.$data->nama_pengirim.'*';
             $tanggal = $data->tgl_transaksi;
             $noResi = $data->no_resi;
             $namaPenerima = $data->nama_penerima;
             $tujuan = $data->kota_tujuan;
             $status = $statusUpdate->keterangan_pengiriman;
-
+            
             $message = str_replace(
                 ['{timeof_day}', '{tanggal}', '{no_resi}', '{nama_penerima}', '{tujuan}', '{status}'],
                 [$timeOfDay, '*'.$tanggal.'*', '*'.$noResi.'*', '*'.$namaPenerima.'*', '*'.$tujuan.'*', '*'.$status.'*'],
@@ -60,8 +61,12 @@ class StatusPengirimanImport implements ToModel, WithValidation, WithHeadingRow
             
             $url = SettingWa::select('url_message AS url')->latest()->first();
             $dataSending = sendWaText($data->no_hp_pengirim, $message);
-
-            if($data->status_kirim_wa == DataPengiriman::STATUS_WA_AKTIF) {
+            
+            if ($data->notif_wa && $data->notif_wa == DataPengiriman::STATUS_WA_AKTIF) {
+                $response = Http::withHeaders([
+                    'Content-Type' => 'application/json',
+                ])->post($url->url, $dataSending);
+            } elseif($data->notif_wa == '' && $data->status_kirim_wa == DataPengiriman::STATUS_WA_AKTIF) {
                 $response = Http::withHeaders([
                     'Content-Type' => 'application/json',
                 ])->post($url->url, $dataSending);
