@@ -84,7 +84,7 @@ class DaftarPengeluaranController extends Controller
             $foto->storeAs('public/daftar-pengeluaran', $foto->hashName());
 
             // Proses Simpan GDrive
-            // Storage::disk('google')->put($namafile, File::get($path));
+            Storage::disk('google')->put($namafile, File::get($path));
 
             $validateData['bukti_pembayaran'] = $foto->hashName();
         } elseif (($img != '') && ($request->takeImage == 'on')) {
@@ -120,14 +120,14 @@ class DaftarPengeluaranController extends Controller
         $kategori = Helper::daftar_pengeluaran($validateData['jenis_pengeluaran'])->jenis_pengeluaran;
         $message = 'Telah terjadi pengeluaran kategori '. $kategori .' sejumlah Rp '. $validateData['jumlah_pembayaran'] .' ditanggal '. $validateData['tgl_pengeluaran'] .', diterima oleh '. $nama_owner .'. Silahkan Klik Link Berikut Untuk Approve : ' . URL::to('/').'/owner/approve/'.($data->id).'?link=owner';
 
-        // $dataSending = sendWaText($no_hp, $message);
-        // $response = Http::withHeaders([
-        //     'Content-Type' => 'application/json',
-        // ])->post($url->url, $dataSending);
+        $dataSending = sendWaText($no_hp, $message);
+        $response = Http::withHeaders([
+            'Content-Type' => 'application/json',
+        ])->post($url->url, $dataSending);
 
         Helper::logActivity('Simpan daftar pengeluaran');
 
-        return redirect()->route('daftar-pengeluaran')->with('success', $message);
+        return redirect()->route('daftar-pengeluaran')->with('success', 'Data Pengeluaran Berhasil Ditambahkan');
 
     }
     
