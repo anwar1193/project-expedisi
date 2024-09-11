@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\DataPemasukanExport;
 use App\Helpers\Helper;
 use App\Models\Bank;
 use App\Models\Barang;
@@ -15,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
+use Maatwebsite\Excel\Facades\Excel;
 use Yaza\LaravelGoogleDriveStorage\Gdrive;
 
 class PemasukanLainnyaController extends Controller
@@ -360,11 +362,15 @@ class PemasukanLainnyaController extends Controller
         return $pdf->stream('Tanda-Terima.pdf');
     }
 
-    public function export_pdf()
+    public function export()
     {
-        $data['data'] = PemasukanLainnya::orderBy('id', 'DESC')->get();;
+        if (request('format') === 'pdf') {
+            $data['data'] = PemasukanLainnya::orderBy('id', 'DESC')->get();;
 
-        $pdf = Pdf::loadView('data-pemasukan.export-pdf', $data)->setPaper('a4', 'landscape');
-        return $pdf->stream('Data-Pemasukan.pdf');
+            $pdf = Pdf::loadView('data-pemasukan.export-pdf', $data)->setPaper('a4', 'landscape');
+            return $pdf->stream('Data-Pemasukan.pdf');
+        } elseif (request('format') === 'excel') {
+            return Excel::download(new DataPemasukanExport, 'Data-Pemasukan.xlsx');
+        }
     }
 }

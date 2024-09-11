@@ -112,9 +112,10 @@
         <ol class="breadcrumb align-items-center">
             <div class="d-grid gap-2 d-md-block mx-2">
 				
-				<a class="btn btn-danger btn-sm" href="{{ route('data-pengiriman.export-pdf') }}" target="_blank">
-					<i class="fa fa-check-square"></i> Export PDF
-				</a>
+				{{-- <a class="btn btn-danger btn-sm" href="{{ route('data-pengiriman.export-pdf') }}" target="_blank"> --}}
+				<button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#exportModal">
+					<i class="fa fa-check-square"></i> Export
+				</button>
 
 				<a class="btn btn-primary btn-sm" type="button" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalImport" title="Import Excel">
 					<i class="fa fa-file-excel-o"></i> Import Excel
@@ -136,6 +137,7 @@
 				@include('data-pengiriman.status-pengiriman', ['status' => $status])
 				@include('data-pengiriman.modal-status-pengiriman')
 				@include('data-pengiriman.partial.truncate-period')
+				@include('data-pengiriman.partial.export-modeal')
 
 				@if (Session::get('user_level') == 2)
 					<form action="{{ route('data-pengiriman.approve-selected') }}" method="post" style="display: inline-block">

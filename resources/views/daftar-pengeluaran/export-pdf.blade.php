@@ -45,9 +45,9 @@
                 <th>Tanggal Pengeluaran</th>
                 <th>Keterangan</th>
                 <th>Jumlah Pembayaran</th>
+                <th>Yang Melakukan Pembayaran</th>
                 <th>Yang Menerima Pembayaran</th>
                 <th>Metode Pembayaran</th>
-                <th>Yang Melakukan Pembayaran</th>
             </tr>
         </thead>
 
@@ -58,9 +58,9 @@
                     <td>{{ $row->tgl_pengeluaran }}</td>
                     <td>{{ $row->keterangan }}</td>
                     <td>{{ 'Rp '.number_format($row->jumlah_pembayaran, 0, '.', '.') }} </td>
+                    <td>{{ $row->yang_membayar }}</td>
                     <td>{{ $row->yang_menerima }}</td>
                     <td>{{ $row->metode_pembayaran }}</td>
-                    <td>{{ $row->yang_membayar }}</td>
                 </tr>
             @endforeach
         </tbody>

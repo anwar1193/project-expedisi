@@ -107,9 +107,9 @@
                         <i class="fa fa-plus"></i> Tambah
                     </a>
                     
-					<a class="btn btn-danger btn-sm" href="{{ route('daftar-pengeluaran.export-pdf') }}" target="_blank">
-						<i class="fa fa-check-square"></i> Export PDF
-					</a>
+					<button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#exportModal">
+						<i class="fa fa-check-square"></i> Export
+					</button>
 
 					@if (Session::get('user_level') == 2)
 						<form action="{{ route('data-pengeluaran.approve-selected') }}" method="post" style="display: inline-block">
@@ -127,6 +127,8 @@
 							</button>
 						</form> --}}
 					@endif
+
+					@include('daftar-pengeluaran.partial.export-modal')
                 {{-- @endif --}}
             </div>
         </ol>

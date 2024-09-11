@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Data Pengeluaran</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <style type="text/css">
+            .center{
+                line-height: 100%;
+                text-align: center;
+            }
+
+            .left{
+                line-height: 100%;
+                text-align: left;
+            }
+            
+            .full{
+                width : 100%;
+            }
+            .wrapper{
+                padding-left:30px;
+                padding-right: 30px;
+            }
+            .kanan{
+                float:right;
+                display:block;
+                width:200px;
+            }
+            .kiri{
+                float:left;
+                display:block;
+                width:200px;
+            }
+        </style>
+    </head>
+    <body>
+        <table class="table">
+            <tr>
+                <td colspan="7" rowspan="2">
+                    <h2><b>Data Pengeluaran</b></h2>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+            </tr> 
+            <tr>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+        <table class="table table-bordered">
+            <tr>
+                <th class="center"><b>No</b></th>
+                <th class="center"><b>Tanggal Pengeluaran</b></th>
+                <th class="center"><b>Keterangan</b></th>
+                <th class="center"><b>Jumlah Pembayaran</b></th>
+                <th class="center"><b>Yang Melakukan Pembayaran</b></th>
+                <th class="center"><b>Yang Menerima Pembayaran</b></th>
+                <th class="center"><b>Metode Pembayaran</b></th>
+            </tr>
+            @forelse($data as $row)
+            <tr>
+                <td>{{ $loop->iteration }}</td>
+                <td>{{ $row->tgl_pengeluaran }}</td>
+                <td>{{ $row->keterangan }}</td>
+                <td>{{ 'Rp '.number_format($row->jumlah_pembayaran, 0, '.', '.') }} </td>
+                <td>{{ $row->yang_membayar }}</td>
+                <td>{{ $row->yang_menerima }}</td>
+                <td>{{ $row->metode_pembayaran }}</td>
+            </tr>
+            @empty
+            <tr>
+                <td colspan="3">Tidak Ada Data</td>
+            </tr>
+            @endforelse
+        </table>
+    </body>
+</html>

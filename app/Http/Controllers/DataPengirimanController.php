@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\DataPengirimanExport;
 use App\Exports\StatusPengirimanExport;
 use App\Helpers\Helper;
 use App\Imports\DataPengirimanImport;
@@ -496,10 +497,17 @@ class DataPengirimanController extends Controller
 
     public function export_pdf()
     {
-        $data['data'] = DataPengiriman::orderBy('id', 'DESC')->get();;
+        if (request('format') === 'pdf') {
+            $data['data'] = DataPengiriman::select('data_pengirimen.*', 'customers.nama')
+                            ->orderBy('data_pengirimen.id', 'DESC')
+                            ->leftjoin('customers', 'customers.kode_customer', '=', 'data_pengirimen.kode_customer')
+                            ->get();
 
-        $pdf = Pdf::loadView('data-pengiriman.export-pdf', $data)->setPaper('a4', 'landscape');
-        return $pdf->stream('Data-Pengiriman.pdf');
+            $pdf = Pdf::loadView('data-pengiriman.export-pdf', $data)->setPaper('a4', 'landscape');
+            return $pdf->stream('Data-Pengiriman.pdf');
+        } elseif (request('format') === 'excel') {
+            return Excel::download(new DataPengirimanExport, 'Data-Pengiriman.xlsx');
+        }
     }
 
     public function truncateByPeriode() {

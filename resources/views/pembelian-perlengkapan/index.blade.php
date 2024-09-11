@@ -36,9 +36,11 @@
                         <i class="fa fa-plus"></i> Tambah
                     </a>
 
-					<a class="btn btn-danger btn-sm" href="{{ route('pembelian-perlengkapan.export-pdf') }}" target="_blank">
-						<i class="fa fa-check-square"></i> Download PDF
-					</a>
+					<button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#exportModal">
+						<i class="fa fa-check-square"></i> Export
+					</button>
+					
+					@include('pembelian-perlengkapan.partial.export-modal')
                 {{-- @endif --}}
             </div>
         </ol>

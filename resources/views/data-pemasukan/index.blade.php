@@ -36,9 +36,9 @@
                         <i class="fa fa-plus"></i> Tambah Pemasukan
                     </a>
 
-					<a class="btn btn-danger btn-sm" href="{{ route('data-pemasukan.export-pdf') }}" target="_blank">
-						<i class="fa fa-check-square"></i> Export PDF
-					</a>
+					<button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#exportModal">
+						<i class="fa fa-check-square"></i> Export
+					</button>
 
 					{{-- <a href="{{ route('data-barang') }}" class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Data Barang">
                         <i class="fa fa-cube"></i> Data Barang
@@ -59,6 +59,8 @@
 					<a href="{{ route('data-jasa') }}" class="btn btn-warning btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Data Jasa">
                         <i class="fa fa-male"></i> Data Jasa
                     </a>
+
+					@include('data-pemasukan.partial.export-modal')
                 {{-- @endif --}}
             </div>
         </ol>

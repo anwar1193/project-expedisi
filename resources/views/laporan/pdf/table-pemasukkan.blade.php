@@ -17,6 +17,7 @@
         #emp td, #emp th{
             border: 1px solid #ddd;
             padding: 8px;
+            font-size: 12px
         }
 
         /* #emp tr:nth-child(even){
@@ -27,15 +28,16 @@
             padding-top: 12px;
             padding-bottom: 12px;
             text-align: left;
-            background-color: aquamarine;
-            color: #000;
+            background-color: #d22d3d;
+            color: #fff;
+            text-align: center
         }
     </style>
 </head>
 <body>
     <div style="text-align: center;">
         <h2>Data Pemasukkan</h2>
-        <em>Dicetak Pada : {{ $waktuCetak }}</em>
+        {{-- <em>Dicetak Pada : {{ $waktuCetak }}</em> --}}
     </div>
 
     <div style="text-align: start">
@@ -46,23 +48,34 @@
         <thead>
             <tr>
                 <th>No</th>
-                <th>Kategori</th>
-                <th>Customer</th>
-                <th>Harga</th>
-                <th>Tanggal Transaksi</th>
-                <th>Komisi</th>
+                <th>Tanggal Pemasukan</th>
+                <th>Barang/Jasa</th>
+                <th>Keterangan</th>
+                <th>Sumber Pemasukan</th>
+                <th>Jumlah Pemasukan</th>
+                <th>Metode Pembayaran</th>
+                <th>Diterima Oleh</th>
             </tr>
         </thead>
+
         <tbody>
-            @foreach ($pemasukkan as $item)
-            <tr>
-                <td>{{ $loop->iteration }}</td>
-                <td>{{ $item->kategori }}</td>
-                <td>{{ $item->nama_customer }}</td>
-                <td>Rp. {{ number_format($item->harga, 0, ',', '.') }}</td>
-                <td>{{ $item->tanggal_transaksi }}</td>
-                <td>Rp. {{ number_format($item->komisi, 0, ',', '.') }}</td>
-            </tr>
+            @foreach ($pemasukkan as $row)
+                <tr>
+                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $row->tgl_pemasukkan }}</td>
+                    <td>
+                        @if ($row->kategori == 'barang')
+                            {{ HApp::namaBarang($row->barang_jasa) }}
+                        @else
+                            {{ HApp::namaJasa($row->barang_jasa) }}
+                        @endif
+                    </td>
+                    <td>{{ $row->keterangan }}</td>
+                    <td>{{ $row->sumber_pemasukkan }}</td>
+                    <td>{{ 'Rp '.number_format($row->jumlah_pemasukkan, 0, '.', '.') }} </td>
+                    <td>{{ $row->metode_pembayaran }} {{ $row->metode_pembayaran2 ? '-' : '' }} {{ $row->metode_pembayaran2 }} </td>
+                    <td>{{ $row->diterima_oleh }}</td>
+                </tr>
             @endforeach
         </tbody>
     </table>

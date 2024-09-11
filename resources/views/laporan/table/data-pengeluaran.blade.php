@@ -34,12 +34,13 @@
     </div>
     @endif
 
-    {{-- <div class="tombol-export mb-3">
-        <a href="{{ route('laporan.pengeluaran.export-pdf', ['start' => request('start'), 'end' => request('end')]) }}" class="btn btn-danger" data-bs-toggle="tooltip"
-            data-bs-placement="top" title="Cetak PDF">
-            <i class="fa fa-file-pdf-o"></i> Cetak PDF
-        </a>
-    </div> --}}
+    <div class="tombol-export mb-3">
+        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#pengeluaranModal">
+            <i class="fa fa-check-square"></i> Export
+        </button>
+
+        @include('laporan.modal-export.pengeluaran-modal')
+    </div>
 
     <div class="table-responsive">
         <div class="row py-3">
@@ -86,7 +87,7 @@
                     <td>{{ $item->yang_menerima }}</td>
                     <td>{{ $item->metode_pembayaran }}</td>
                     <td>{{ $item->status_pengeluaran == 1 ? 'Disetujui' : 'Pending' }}</td>
-                    <td>{{ $item->jenis_pengeluaran }}</td>
+                    <td>{{ $item->kategori }}</td>
                 </tr>
                 @endforeach
             </tbody>

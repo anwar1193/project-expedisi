@@ -34,12 +34,13 @@
     </div>
     @endif
 
-    {{-- <div class="tombol-export mb-3">
-        <a href="{{ route('laporan.pengiriman.export-pdf', ['start' => request('start'), 'end' => request('end')]) }}" class="btn btn-danger" data-bs-toggle="tooltip"
-            data-bs-placement="top" title="Cetak PDF">
-            <i class="fa fa-file-pdf-o"></i> Cetak PDF
-        </a>
-    </div> --}}
+    <div class="tombol-export mb-3">
+        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#pengirimanModal">
+            <i class="fa fa-check-square"></i> Export
+        </button>
+
+        @include('laporan.modal-export.pengiriman-modal')
+    </div>
 
     <div class="table-responsive">
         <div class="row py-3">
@@ -107,15 +108,21 @@
                     </td>
 
                     <td>{{ $item->tgl_transaksi }}</td>
-                    <td>{{ $item->nama ?? '-' }}</td>
+                    <td>
+                        @if ($item->kode_customer == "General")
+                            {{ $item->kode_customer }}
+                        @else
+                            {{ $item->kode_customer }} - {{ $item->nama }}
+                        @endif
+                    </td>
                     <td>{{ $item->nama_penerima }}</td>
                     <td>{{ $item->kota_tujuan }}</td>
-                    <td>{{ $item->metode_pembayaran }}</td>
+                    <td>{{ $item->metode_pembayaran }} {{ $item->metode_pembayaran_2 ? '-' : '' }} {{ $item->metode_pembayaran_2 }} </td>
 
                     <td>
                         <span class="badge {{ $item->status_pembayaran == 1 ? 'badge-primary' : 'badge-warning' }}">
                             <i class="fa {{ $item->status_pembayaran == 1 ? 'fa-check' : 'fa-warning' }}"></i>
-                            {{ $item->status_pembayaran == 1 ? 'Lunas' : 'Pending'; }}
+                            {{ $item->status_pembayaran == 1 ? 'Disetujui' : 'Pending'; }}
                         </span>
                     </td>
 

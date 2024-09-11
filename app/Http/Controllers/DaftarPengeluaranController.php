@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\DataPengeluaranExport;
 use App\Helpers\Helper;
 use App\Models\DaftarPengeluaran;
 use App\Models\JenisPengeluaran;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
+use Maatwebsite\Excel\Facades\Excel;
 use Yaza\LaravelGoogleDriveStorage\Gdrive;
 
 class DaftarPengeluaranController extends Controller
@@ -303,11 +305,15 @@ class DaftarPengeluaranController extends Controller
         return view('approve.data-pengeluaran', $data);
     }
 
-    public function export_pdf()
+    public function export()
     {
-        $data['data'] = DaftarPengeluaran::orderBy('id', 'DESC')->get();;
+        if (request('format') === 'pdf') {
+            $data['data'] = DaftarPengeluaran::orderBy('id', 'DESC')->get();;
 
-        $pdf = Pdf::loadView('daftar-pengeluaran.export-pdf', $data)->setPaper('a4', 'landscape');
-        return $pdf->stream('Data-Pengeluaran.pdf');
+            $pdf = Pdf::loadView('daftar-pengeluaran.export-pdf', $data)->setPaper('a4', 'landscape');
+            return $pdf->stream('Data-Pengeluaran.pdf');
+        } elseif (request('format') === 'excel') {
+            return Excel::download(new DataPengeluaranExport, 'Data-Pengeluaran.xlsx');      
+        }
     }
 }

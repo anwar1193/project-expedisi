@@ -106,9 +106,9 @@
                         <i class="fa fa-plus"></i> Tambah
                     </a>
                     
-					<a class="btn btn-danger btn-sm" href="<?php echo e(route('daftar-pengeluaran.export-pdf')); ?>" target="_blank">
-						<i class="fa fa-check-square"></i> Download PDF
-					</a>
+					<button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#exportModal">
+						<i class="fa fa-check-square"></i> Export
+					</button>
 
 					<?php if(Session::get('user_level') == 2): ?>
 						<form action="<?php echo e(route('data-pengeluaran.approve-selected')); ?>" method="post" style="display: inline-block">
@@ -120,6 +120,8 @@
 						</form>
 						
 					<?php endif; ?>
+
+					<?php echo $__env->make('daftar-pengeluaran.partial.export-modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                 
             </div>
         </ol>

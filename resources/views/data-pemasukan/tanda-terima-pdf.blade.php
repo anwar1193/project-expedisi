@@ -104,7 +104,7 @@
                     <tbody>
                         <tr>
                             <td width="30%"></td>
-                            <td style="padding-left: 10px">Jakarta, {{ formatTanggalIndonesia($data->tgl_pemasukkan) }}</td>
+                            <td style="padding-left: 10px">Makassar, {{ formatTanggalIndonesia($data->tgl_pemasukkan) }}</td>
                         </tr>
                     </tbody>
                 </table>
