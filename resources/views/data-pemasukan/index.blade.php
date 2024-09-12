@@ -132,20 +132,23 @@
 										<td>{{ number_format($data->jumlah_pemasukkan, 0, '.', ',') }}</td>
 										<td>{{ $data->sumber_pemasukkan }}</td>
 										<td onmouseover="showBukti({{ $data->id }})" onmouseout="hideBukti({{ $data->id }})" style="position: relative; ">
-											@if ($data->bukti_pembayaran != '')
+											@if ($data->bukti_pembayaran != '' && $data->bukti_pembayaran != '-')
 												<div id="tooltip{{ $data->id }}" class="tooltip-img">
 													<a href="{{ asset('storage/data-pemasukkan/'.$data->bukti_pembayaran)}}" target="_blank">
 														<img src="{{ asset('storage/data-pemasukkan/'.$data->bukti_pembayaran) }}" alt="Bukti Pembayaran" width="200px" class="img-fluid mt-2">
 													</a>
+												</div>											
+												<div id="icon-view{{ $data->id }}">
+													<i data-feather="link"></i> Gambar
 												</div>
-											@endif
-											<div id="icon-view{{ $data->id }}">
-												<i data-feather="link"></i> Gambar
-											</div>
-											
+											@else
+												<div>
+													<p> - </p>
+												</div>
+											@endif											
 										</td>
 
-										<td>{{ $data->no_resi_pengiriman }}</td>
+										<td>{{ $data->no_resi_pengiriman ?? '-' }}</td>
 
 										<td class="text-center">
 

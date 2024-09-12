@@ -68,16 +68,22 @@ class PemasukanLainnyaController extends Controller
             'sumber_pemasukkan' => 'required_without:customer',
             'customer' => 'required_without:sumber_pemasukkan',
             'metode_pembayaran' => 'required',
-            'bukti_pembayaran' => 'required_without:image',
+            'bukti_pembayaran' => 'required_without_all:image,metode_pembayaran,tunai',
             'metode_pembayaran2' => 'nullable',
-            'image' => 'required_without:bukti_pembayaran', 
-            'keterangan_tambahan' => 'nullable',
+            'image' => 'required_without_all:bukti_pembayaran,metode_pembayaran,tunai', 
         ]);
 
         $foto = $request->file('bukti_pembayaran'); // take picture
         $img = $request->image;      
         $foto2 = $request->file('bukti_pembayaran2'); // take picture
         $img2 = $request->image2;     
+
+        if (strtolower($validateData['metode_pembayaran']) == 'tunai') {
+            $validateData['bukti_pembayaran'] = '-';
+        }
+        if ($validateData['metode_pembayaran2'] != '' && strtolower($validateData['metode_pembayaran2']) == 'tunai') {
+            $validateData['bukti_pembayaran2'] = '-';
+        }
 
         if($foto != ''){
             // Set Up Untuk Penyimopnan Image ke GDrive
@@ -165,7 +171,6 @@ class PemasukanLainnyaController extends Controller
             $validateData['jumlah_barang'] = 0;
         }
         $validateData['diterima_oleh'] = Session::get('nama');
-        $validateData['tgl_pemasukkan'] = $today;
         $validateData['sumber_pemasukkan'] = !$request->dataCustomer ? $request->sumber_pemasukkan : $request->customer;
         $validateData['bank'] = $bank1 ?? '';
         $validateData['bank2'] = $bank2 ?? '';

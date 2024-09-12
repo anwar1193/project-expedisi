@@ -131,7 +131,7 @@
 								<div class="col">
 									<div class="mb-3">
 										<label class="form-label" for="">Jasa</label>
-										<select name="jasa" id="jasa" class="form-control @error('jasa') is-invalid @enderror">
+										<select name="jasa" id="jasas" class="form-control @error('jasa') is-invalid @enderror">
 											<option value="">- Pilih Jasa -</option>
 											@foreach ($jasas as $item)
 												<option value="{{ $item->id }}" {{ old('id') == $item->id ? 'selected' : '' }}>
@@ -633,6 +633,7 @@
 		const barangs = document.getElementById('barangs');
 		const jumlahBarang = document.getElementById('jumlahBarang');
 		const jasa = document.getElementById('jasa');
+		const jasas = document.getElementById('jasas');
 		const metodePembayaran = document.getElementById('metode_pembayaran');
 		const metodePembayaran2 = document.getElementById('metode_pembayaran2');
 		const bank = document.getElementById('banks');
@@ -655,17 +656,20 @@
 
 		function toggleCategorySelect() {
 			const value = kategori.value;
-			console.log(value);
 			
 			if (value === "barang") {
 				barang.style.display = 'block';
 				jumlahBarang.style.display = 'block';
 				jasa.style.display = 'none';
+				jasas.value = '';
+				jasas.dispatchEvent(new Event('change'));
 			} else if (value === "jasa") {
 				jasa.style.display = 'block';
 				barang.style.display = 'none';
 				jumlahBarang.style.display = 'none';
 				modalInput.value = "";
+				barangs.value = '';
+				barangs.dispatchEvent(new Event('change'));
 			}
 		}
 		
@@ -685,6 +689,8 @@
                 pembayaranKeDua.style.display = 'block';
             } else {
                 pembayaranKeDua.style.display = 'none';
+				metode_pembayaran2.value = '';
+				metodePembayaran2.dispatchEvent(new Event('change'));
             }
 		}
 
