@@ -161,6 +161,10 @@ class DaftarPengeluaranController extends Controller
 
         $getImage = DaftarPengeluaran::find($id);
 
+        if ($getImage->status_pengeluaran == DaftarPengeluaran::STATUS_APPROVE) {
+            return back()->with('error', 'Data Yang Telah Di Approve Tidak Bisa Diedit Kembali');
+        }
+
         if($foto != ''){
             // Proses Simoan Storage
             Storage::delete('public/daftar-pengeluaran/'.$getImage->foto);
@@ -208,6 +212,17 @@ class DaftarPengeluaranController extends Controller
             'bukti_pembayaran' => ($foto || $img || $link_img ? $buktiPembayaran : $getImage->bukti_pembayaran),
             'keterangan_tambahan' => $request->keterangan_tambahan
         ]);
+
+        $url = SettingWa::select('url_message AS url')->latest()->first();
+        $no_hp = Helper::dataOwner()->nomor_telepon;
+        $nama_owner = Helper::dataOwner()->nama;
+        $kategori = Helper::daftar_pengeluaran($validateData['jenis_pengeluaran'])->jenis_pengeluaran;
+        $message = 'Terdapat perubahan data pengeluaran pada data yang belum diapprove. Silahkan Klik Link Berikut Untuk Approve : ' . URL::to('/').'/owner/approve/'.($id).'?link=owner';
+
+        $dataSending = sendWaText($no_hp, $message);
+        $response = Http::withHeaders([
+            'Content-Type' => 'application/json',
+        ])->post($url->url, $dataSending);
 
         Helper::logActivity('Update daftar pengeluaran dengan id: '.$id);
 
