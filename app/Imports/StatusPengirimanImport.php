@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Helpers\Helper;
+use App\Models\Customer;
 use Carbon\Carbon;
 use App\Models\data;
 use App\Models\DataPengiriman;
@@ -28,22 +29,21 @@ class StatusPengirimanImport implements ToModel, WithValidation, WithHeadingRow
     public function model(array $row)
     {
         $statusValid = StatusPengiriman::where('status_pengiriman', $row['status_pengiriman'])->exists();
-        $pesan = Pesan::find(Pesan::SP);
-        $data = DataPengiriman::where('no_resi', $row['no_resi'])
-                ->leftjoin('customers', 'data_pengirimen.kode_customer', '=', 'customers.kode_customer')
-                ->first();
-
         if (!$statusValid) {
             $this->errors[] = 'Status pengiriman yang diiput untuk no resi: ' . $row['no_resi'] .' tidak sesuai';
             return null;
         }
+        $pesan = Pesan::find(Pesan::SP);
+        $data = DataPengiriman::where('no_resi', $row['no_resi'])
+                ->first();
+        $customer = Customer::where('kode_customer', $data->kode_customer)->first();
 
-        // $update = data::where('no_resi', $row['no_resi'])->update([
+        // $update = DataPengiriman::where('no_resi', $row['no_resi'])->update([
         //     'status_pengiriman' => $row['status_pengiriman']
         // ]);
         if ($data) {
             $data->update(['status_pengiriman' => $row['status_pengiriman']]);
-            
+
             $statusUpdate = StatusPengiriman::where('status_pengiriman', $row['status_pengiriman'])->first();
             
             $timeOfDay = Helper::getTimeOfDay().' '.'*'.$data->nama_pengirim.'*';
@@ -61,16 +61,17 @@ class StatusPengirimanImport implements ToModel, WithValidation, WithHeadingRow
             
             $url = SettingWa::select('url_message AS url')->latest()->first();
             $dataSending = sendWaText($data->no_hp_pengirim, $message);
-            
-            if ($data->notif_wa && $data->notif_wa == DataPengiriman::STATUS_WA_AKTIF) {
-                $response = Http::withHeaders([
-                    'Content-Type' => 'application/json',
-                ])->post($url->url, $dataSending);
-            } elseif($data->notif_wa == '' && $data->status_kirim_wa == DataPengiriman::STATUS_WA_AKTIF) {
-                $response = Http::withHeaders([
-                    'Content-Type' => 'application/json',
-                ])->post($url->url, $dataSending);
-                // ])->post('https://api.watzap.id/v1/send_message', $dataSending);
+
+            if ($data->status_pengiriman != 'POD') {
+                if ($customer->notif_wa && $customer->notif_wa == DataPengiriman::STATUS_WA_AKTIF) {
+                    $response = Http::withHeaders([
+                        'Content-Type' => 'application/json',
+                    ])->post($url->url, $dataSending);
+                } elseif($customer->notif_wa == '' && $data->status_kirim_wa == DataPengiriman::STATUS_WA_AKTIF) {
+                    $response = Http::withHeaders([
+                        'Content-Type' => 'application/json',
+                    ])->post($url->url, $dataSending);
+                }                
             }
         }
 //08172645362
