@@ -53,11 +53,12 @@
 							<div class="row">
 								<div class="col">
 									<div class="mb-3">
-										<label class="form-label" for="">No Resi Pengiriman</label>
+										<label class="form-label" for="">No Resi Pengiriman {{ $datas->no_resi }}</label>
 										
 										<select name="no_resi_pengiriman" id="no_resi_pengiriman" class="form-control @error('no_resi_pengiriman') is-invalid @enderror js-example-basic-single">
+											<option value="">- Pilih Resi -</option>
 											@foreach ($resi as $item)
-												<option value="{{ $item->no_resi }}" {{ $item->no_resi == $datas->no_resi ? 'selected' : '' }}>
+												<option value="{{ $item->no_resi }}" {{ $item->no_resi == $datas->no_resi_pengiriman ? 'selected' : '' }}>
 													{{ $item->no_resi }} - {{ $item->nama_pengirim }} To {{ $item->nama_penerima }}
 												</option>
 											@endforeach
