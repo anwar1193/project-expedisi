@@ -121,7 +121,7 @@ class DaftarPengeluaranController extends Controller
         $no_hp = Helper::dataOwner()->nomor_telepon;
         $nama_owner = Helper::dataOwner()->nama;
         $kategori = Helper::daftar_pengeluaran($validateData['jenis_pengeluaran'])->jenis_pengeluaran;
-        $message = 'Telah terjadi pengeluaran kategori '. $kategori .' sejumlah Rp '. $validateData['jumlah_pembayaran'] .' ditanggal '. $validateData['tgl_pengeluaran'] .', diterima oleh '. $nama_owner .'. Silahkan Klik Link Berikut Untuk Approve : ' . URL::to('/').'/owner/approve/'.($data->id).'?link=owner';
+        $message = 'Telah terjadi pengeluaran kategori '. $kategori .' sejumlah Rp '. $validateData['jumlah_pembayaran'] .' ditanggal '. $validateData['tgl_pengeluaran'] .', diterima oleh '. $validateData['yang_menerima'] .'. Silahkan Klik Link Berikut Untuk Approve : ' . URL::to('/').'/owner/approve/'.($data->id).'?link=owner';
 
         $dataSending = sendWaText($no_hp, $message);
         $response = Http::withHeaders([
