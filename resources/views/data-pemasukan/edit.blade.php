@@ -95,6 +95,7 @@
 									<div class="mb-3">
 										<label class="form-label" for="">Barang</label>
 										<select name="barang" id="barangs" class="form-control @error('barang') is-invalid @enderror">
+											<option value="">- Pilih Barang -</option>
 											@foreach ($barang as $item)
 												<option value="{{ $item->id }}" {{ $datas->kategori == "barang" && $datas->barang_jasa == $item->id ? 'selected' : '' }}>
 													{{ $item->nama_barang }}
@@ -130,7 +131,8 @@
 								<div class="col">
 									<div class="mb-3">
 										<label class="form-label" for="">Jasa</label>
-										<select name="jasa" id="jasa" class="form-control @error('jasa') is-invalid @enderror">
+										<select name="jasa" id="jasas" class="form-control @error('jasa') is-invalid @enderror">
+											<option value="">- Pilih Jasa -</option>
 											@foreach ($jasa as $item)
 												<option value="{{ $item->id }}" {{ $datas->kategori == "jasa" && $datas->barang_jasa == $item->id ? 'selected' : '' }}>
 													{{ $item->nama_jasa }}
@@ -150,7 +152,7 @@
 								<div class="col">
 									<div class="mb-3">
 										<label class="form-label" for="">Modal</label>
-										<input class="form-control @error('modal') is-invalid @enderror" type="text" name="modal" autocomplete="off" value="{{ old('modal', $datas->modal) }}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"/>
+										<input class="form-control @error('modal') is-invalid @enderror" type="text" name="modal" autocomplete="off" value="{{ $datas->modal}}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"/>
 
 										@error('modal')
 										<div class="text-danger">
@@ -606,6 +608,7 @@
 		const barangs = document.getElementById('barangs');
 		const jumlahBarang = document.getElementById('jumlahBarang');
 		const jasa = document.getElementById('jasa');
+		const jasas = document.getElementById('jasas');
 		const metodePembayaran = document.getElementById('metode_pembayaran');
 		const metodePembayaran2 = document.getElementById('metode_pembayaran2');
 		const bank = document.getElementById('banks');
@@ -628,17 +631,21 @@
 
 		function toggleCategorySelect() {
 			const value = kategori.value;
-			console.log(value);
-			
+
 			if (value === "barang") {
 				barang.style.display = 'block';
 				jumlahBarang.style.display = 'block';
 				jasa.style.display = 'none';
+				jasas.value = '';
+				jasas.dispatchEvent(new Event('change'));
 			} else if (value === "jasa") {
 				jasa.style.display = 'block';
 				barang.style.display = 'none';
 				jumlahBarang.style.display = 'none';
-				modalInput.value = "";
+				// modalInput.value = "";
+				modalInput.dispatchEvent(new Event('change'));
+				barangs.value = '';
+				barangs.dispatchEvent(new Event('change'));
 			}
 		}
 		

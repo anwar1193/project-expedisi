@@ -303,7 +303,7 @@ class PemasukanLainnyaController extends Controller
 
         $sumber_pemasukkan = !$request->dataCustomer ? $request->sumber_pemasukkan : $request->customer;
         $barang_jasa = $request->barang ? $request->barang : $request->jasa;
-        $jumlah_barang = $request->jumlah_barang;
+        $jumlah_barang = $request->barang ? $request->jumlah_barang : 0;
 
         if (!$request->dataCustomer) {
             $metodePembayaran = ['metode_pembayaran', 'metode_pembayaran2'];
@@ -318,7 +318,8 @@ class PemasukanLainnyaController extends Controller
         PemasukanLainnya::where('id', '=', $id)->update([
             'no_resi_pengiriman' => $request->no_resi_pengiriman,
             'tgl_pemasukkan' => $request->tgl_pemasukkan,
-            'kategori' => $request->keterangan,
+            'keterangan' => $request->keterangan,
+            'kategori' => $request->kategori,
             'barang_jasa' => $barang_jasa,
             'jumlah_barang' => $jumlah_barang,
             'modal' => $request->modal,
