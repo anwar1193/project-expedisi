@@ -36,7 +36,7 @@ class StatusPengirimanImport implements ToModel, WithValidation, WithHeadingRow
         $pesan = Pesan::find(Pesan::SP);
         $data = DataPengiriman::where('no_resi', $row['no_resi'])
                 ->first();
-        $customer = Customer::where('kode_customer', $data->kode_customer)->first();
+        $customer = Customer::where('kode_customer', 'General')->first();
 
         // $update = DataPengiriman::where('no_resi', $row['no_resi'])->update([
         //     'status_pengiriman' => $row['status_pengiriman']
@@ -63,15 +63,19 @@ class StatusPengirimanImport implements ToModel, WithValidation, WithHeadingRow
             $dataSending = sendWaText($data->no_hp_pengirim, $message);
 
             if ($data->status_pengiriman != 'POD') {
-                if ($customer->notif_wa && $customer->notif_wa == DataPengiriman::STATUS_WA_AKTIF) {
-                    $response = Http::withHeaders([
-                        'Content-Type' => 'application/json',
-                    ])->post($url->url, $dataSending);
-                } elseif($customer->notif_wa == '' && $data->status_kirim_wa == DataPengiriman::STATUS_WA_AKTIF) {
-                    $response = Http::withHeaders([
-                        'Content-Type' => 'application/json',
-                    ])->post($url->url, $dataSending);
-                }                
+                if (!$customer && $data->status_kirim_wa == DataPengiriman::STATUS_WA_AKTIF) {
+                    $response = 'test 2';
+                    // $response = Http::withHeaders([
+                    //     'Content-Type' => 'application/json',
+                    // ])->post($url->url, $dataSending);
+                } elseif ($customer != null) {
+                    if ($customer->notif_wa && $data->status_kirim_wa == DataPengiriman::STATUS_WA_AKTIF) {
+                        $response = 'test 3';
+                        // $response = Http::withHeaders([
+                        //     'Content-Type' => 'application/json',
+                        // ])->post($url->url, $dataSending);
+                    }
+                }            
             }
         }
 //08172645362
