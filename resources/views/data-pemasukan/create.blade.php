@@ -39,7 +39,7 @@
 								<div class="col">
 									<div class="mb-3">
 										<label class="form-label" for="">Tanggal Pemasukan</label>
-										<input class="form-control @error('tgl_pemasukkan') is-invalid @enderror" type="date" name="tgl_pemasukkan" autocomplete="off" value="{{ old('tgl_pemasukkan') }}"/>
+										<input class="form-control @error('tgl_pemasukkan') is-invalid @enderror" type="date" name="tgl_pemasukkan" autocomplete="off" value="{{ old('tgl_pemasukkan', $today) }}"/>
 
 										@error('tgl_pemasukkan')
 										<div class="text-danger">

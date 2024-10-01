@@ -32,7 +32,7 @@
 								<div class="col">
 									<div class="mb-3">
 										<label class="form-label" for="">Tanggal Pengeluaran</label>
-										<input class="form-control @error('tgl_pengeluaran') is-invalid @enderror" type="date" name="tgl_pengeluaran" autocomplete="off" value="{{ old('tgl_pengeluaran') }}"/>
+										<input class="form-control @error('tgl_pengeluaran') is-invalid @enderror" type="date" name="tgl_pengeluaran" autocomplete="off" value="{{ old('tgl_pengeluaran', $today) }}"/>
 
 										@error('tgl_pengeluaran')
 										<div class="text-danger">

@@ -56,6 +56,7 @@ class DaftarPengeluaranController extends Controller
     {
         $jenis_pengeluaran = JenisPengeluaran::all();
         $data['jenis_pengeluaran'] = $jenis_pengeluaran;
+        $data['today'] = date('Y-m-d');
         if ($jenis_pengeluaran->count() == 0) {
             return redirect()->route('jenis-pengeluaran.create')->with('error', 'Silahkan tambahkan jenis pengeluaran terlebih dahulu');
         }
@@ -87,7 +88,7 @@ class DaftarPengeluaranController extends Controller
             $foto->storeAs('public/daftar-pengeluaran', $foto->hashName());
 
             // Proses Simpan GDrive
-            Storage::disk('google')->put($namafile, File::get($path));
+            // Storage::disk('google')->put($namafile, File::get($path));
 
             $validateData['bukti_pembayaran'] = $foto->hashName();
         } elseif (($img != '') && ($request->takeImage == 'on')) {
@@ -103,7 +104,7 @@ class DaftarPengeluaranController extends Controller
             Storage::disk('local')->put($file, $image_base64);
 
             // Proses Simpan GDrive
-            Storage::disk('google')->put($fileNamePath, File::get($path));
+            // Storage::disk('google')->put($fileNamePath, File::get($path));
 
             $validateData['bukti_pembayaran'] = $fileName;
         } elseif (($link_img != '') && ($request->addLink == 'on')) {

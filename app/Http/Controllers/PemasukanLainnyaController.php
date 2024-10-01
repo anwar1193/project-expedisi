@@ -51,8 +51,9 @@ class PemasukanLainnyaController extends Controller
         $jasas = Jasa::all();
         $resi = DataPengiriman::all();
         $metode = MetodePembayaran::all();
+        $today = date('Y-m-d');
 
-        return view('data-pemasukan.create', compact('customer', 'bank', 'barangs', 'jasas', 'resi', 'metode'));
+        return view('data-pemasukan.create', compact('customer', 'bank', 'barangs', 'jasas', 'resi', 'metode', 'today'));
     }
 
     public function store(Request $request)
