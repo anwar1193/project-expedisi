@@ -64,16 +64,14 @@ class StatusPengirimanImport implements ToModel, WithValidation, WithHeadingRow
 
             if ($data->status_pengiriman != 'POD') {
                 if (!$customer && $data->status_kirim_wa == DataPengiriman::STATUS_WA_AKTIF) {
-                    $response = 'test 2';
-                    // $response = Http::withHeaders([
-                    //     'Content-Type' => 'application/json',
-                    // ])->post($url->url, $dataSending);
+                    $response = Http::withHeaders([
+                        'Content-Type' => 'application/json',
+                    ])->post($url->url, $dataSending);
                 } elseif ($customer != null) {
                     if ($customer->notif_wa && $data->status_kirim_wa == DataPengiriman::STATUS_WA_AKTIF) {
-                        $response = 'test 3';
-                        // $response = Http::withHeaders([
-                        //     'Content-Type' => 'application/json',
-                        // ])->post($url->url, $dataSending);
+                        $response = Http::withHeaders([
+                            'Content-Type' => 'application/json',
+                        ])->post($url->url, $dataSending);
                     }
                 }            
             }
