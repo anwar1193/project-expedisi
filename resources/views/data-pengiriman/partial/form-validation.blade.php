@@ -21,12 +21,12 @@
 
                 const jarakHari = Math.abs(Math.round(diff / (1000 * 60 * 60 * 24)));
 
-                if (jarakHari > 7) {
-                    $(this).addClass('is-invalid');
-                    alert("Tanggal transaksi tidak boleh mundur lebih dari 7 hari!");
-                    isValid = false;
-                    return false;
-                }
+                // if (jarakHari > 7) {
+                //     $(this).addClass('is-invalid');
+                //     alert("Tanggal transaksi tidak boleh mundur lebih dari 7 hari!");
+                //     isValid = false;
+                //     return false;
+                // }
 
                 if ($(this).val() == "") {
                     $(this).addClass('is-invalid');
