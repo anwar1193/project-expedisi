@@ -284,9 +284,9 @@ class Helper
                 $diff = strtotime($tanggalSekarang) - strtotime($data['tgl_transaksi']);
                 $jarakHari = abs(round($diff / 86400));
 
-                if ($jarakHari > 7) {
-                    $errors[] = 'Tanggal transaksi tidak boleh mundur lebih dari 7 hari!';
-                }
+                // if ($jarakHari > 7) {
+                //     $errors[] = 'Tanggal transaksi tidak boleh mundur lebih dari 7 hari!';
+                // }
             } else {
                 $errors[] = 'Invalid data format.';
             }
