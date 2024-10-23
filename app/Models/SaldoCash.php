@@ -9,4 +9,6 @@ class SaldoCash extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+    const STATUS_PENDING = 0;
+    const STATUS_APPROVE = 1;
 }

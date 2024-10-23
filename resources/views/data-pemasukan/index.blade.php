@@ -36,6 +36,10 @@
                         <i class="fa fa-plus"></i> Tambah Pemasukan
                     </a>
 
+					<button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#exportModal">
+						<i class="fa fa-check-square"></i> Export
+					</button>
+
 					{{-- <a href="{{ route('data-barang') }}" class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Data Barang">
                         <i class="fa fa-cube"></i> Data Barang
                     </a> --}}
@@ -55,6 +59,8 @@
 					<a href="{{ route('data-jasa') }}" class="btn btn-warning btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Data Jasa">
                         <i class="fa fa-male"></i> Data Jasa
                     </a>
+
+					@include('data-pemasukan.partial.export-modal')
                 {{-- @endif --}}
             </div>
         </ol>
@@ -126,20 +132,23 @@
 										<td>{{ number_format($data->jumlah_pemasukkan, 0, '.', ',') }}</td>
 										<td>{{ $data->sumber_pemasukkan }}</td>
 										<td onmouseover="showBukti({{ $data->id }})" onmouseout="hideBukti({{ $data->id }})" style="position: relative; ">
-											@if ($data->bukti_pembayaran != '')
+											@if ($data->bukti_pembayaran != '' && $data->bukti_pembayaran != '-')
 												<div id="tooltip{{ $data->id }}" class="tooltip-img">
 													<a href="{{ asset('storage/data-pemasukkan/'.$data->bukti_pembayaran)}}" target="_blank">
 														<img src="{{ asset('storage/data-pemasukkan/'.$data->bukti_pembayaran) }}" alt="Bukti Pembayaran" width="200px" class="img-fluid mt-2">
 													</a>
+												</div>											
+												<div id="icon-view{{ $data->id }}">
+													<i data-feather="link"></i> Gambar
 												</div>
-											@endif
-											<div id="icon-view{{ $data->id }}">
-												<i data-feather="link"></i> Gambar
-											</div>
-											
+											@else
+												<div>
+													<p> - </p>
+												</div>
+											@endif											
 										</td>
 
-										<td>{{ $data->no_resi_pengiriman }}</td>
+										<td>{{ $data->no_resi_pengiriman ?? '-' }}</td>
 
 										<td class="text-center">
 

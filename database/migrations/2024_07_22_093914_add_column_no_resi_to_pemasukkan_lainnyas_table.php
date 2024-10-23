@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('pemasukkan_lainnyas', function (Blueprint $table) {
-            $table->string('no_resi_pengiriman', 100)->after('tgl_pemasukkan');
+            $table->string('no_resi_pengiriman', 100)->after('tgl_pemasukkan')->nullable(true);
             $table->string('metode_pembayaran2', 255)->after('bukti_pembayaran')->nullable(true);
             $table->text('bukti_pembayaran2')->after('metode_pembayaran2')->nullable(true);
         });

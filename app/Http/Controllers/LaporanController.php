@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\TransaksiDataPemasukanExport;
+use App\Exports\TransaksiDataPengeluaranExport;
+use App\Exports\TransaksiDataPengirimanExport;
 use App\Models\Customer;
 use App\Models\DaftarPengeluaran;
 use App\Models\DataPengiriman;
@@ -10,6 +13,7 @@ use App\Models\PemasukanLainnya;
 use App\Models\StatusPengiriman;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class LaporanController extends Controller
 {
@@ -104,7 +108,7 @@ class LaporanController extends Controller
 
         $pengeluaran = DaftarPengeluaran::join('jenis_pengeluarans', 'jenis_pengeluarans.id', '=', 'daftar_pengeluarans.jenis_pengeluaran')
             ->orderBy('daftar_pengeluarans.id', 'desc')
-            ->whereBetween('daftar_pengeluarans.created_at', [$start, $end])
+            ->whereBetween('daftar_pengeluarans.tgl_pengeluaran', [$start, $end])
             ->get();
 
         $customer = Customer::all();
@@ -119,47 +123,67 @@ class LaporanController extends Controller
         return view('laporan.transaksi-harian', compact('pengiriman', 'pemasukkan', 'pengeluaran', 'start', 'end_date', 'periode', 'filter', 'customer', 'statusPengiriman', 'metodePembayaran', 'statusPembayaran'));
     }
 
-    public function data_pengiriman_pdf(Request $request)
+    public function data_pengiriman(Request $request)
     {
-        $start = $request->start ?? date('Y-m-d');
-        $end_date = $request->end ?? date('Y-m-d');
-        $end = $request->end ?? date('Y-m-d', strtotime('+1 day'));
+        date_default_timezone_set("Asia/Jakarta");
+        if (request('format') === 'pdf') {
+            $start = $request->start ?? date('Y-m-d');
+            $end_date = $request->end ?? date('Y-m-d');
+            $end = $request->end ?? date('Y-m-d', strtotime('+1 day'));
 
+            $pengiriman = DataPengiriman::leftjoin('customers', 'customers.kode_customer', '=', 'data_pengirimen.kode_customer')
+                        ->select('data_pengirimen.*', 'customers.nama')
+                        ->orderBy('id', 'desc')->whereBetween('tgl_transaksi', [$start, $end])->get();
 
-        $pengiriman = DataPengiriman::orderBy('id', 'desc')->whereBetween('created_at', [$start, $end])->get();
+            $waktuCetak = date('d-m-Y H:i:s');
 
-        $waktuCetak = date('d-m-Y H:i:s');
-
-        $pdf = Pdf::loadView('laporan.pdf.table-pengiriman', compact('pengiriman', 'start', 'end_date', 'waktuCetak'))->setPaper('a4', 'landscape');
-        return $pdf->download('Laporan-Transaksi-Harian-Pengiriman.pdf');
+            $pdf = Pdf::loadView('laporan.pdf.table-pengiriman', compact('pengiriman', 'start', 'end_date', 'waktuCetak'))->setPaper('a4', 'landscape');
+            return $pdf->stream('Laporan-Transaksi-Harian-Pengiriman.pdf');
+        } elseif (request('format') === 'excel') {
+            return Excel::download(new TransaksiDataPengirimanExport, 'Transaksi-Harian-Pengiriman.xlsx');
+        }
     }
 
-    public function data_pemasukkan_pdf(Request $request)
+    public function data_pemasukan(Request $request)
     {
-        $start = $request->start ?? date('Y-m-d');
-        $end_date = $request->end ?? date('Y-m-d');
-        $end = $request->end ?? date('Y-m-d', strtotime('+1 day'));
+        date_default_timezone_set("Asia/Jakarta");
+        if (request('format') === 'pdf') {
+            $start = $request->start ?? date('Y-m-d');
+            $end_date = $request->end ?? date('Y-m-d');
+            $end = $request->end ?? date('Y-m-d', strtotime('+1 day'));
 
-        $pemasukkan = PemasukanLainnya::orderBy('id', 'desc')->whereBetween('created_at', [$start, $end])->get();
+            $pemasukkan = PemasukanLainnya::orderBy('id', 'desc')->whereBetween('tgl_pemasukkan', [$start, $end])->get();
 
-        $waktuCetak = date('d-m-Y H:i:s');
+            $waktuCetak = date('d-m-Y H:i:s');
 
-        $pdf = Pdf::loadView('laporan.pdf.table-pemasukkan', compact('pemasukkan', 'start', 'end_date', 'waktuCetak'));
-        return $pdf->download('Laporan-Transaksi-Harian-Pemasukkan.pdf');
+            $pdf = Pdf::loadView('laporan.pdf.table-pemasukkan', compact('pemasukkan', 'start', 'end_date', 'waktuCetak'));
+            return $pdf->stream('Laporan-Transaksi-Harian-Pemasukkan.pdf');
+        } elseif (request('format') === 'excel') {
+            return Excel::download(new TransaksiDataPemasukanExport, 'Transaksi-Harian-Pemasukan.xlsx');
+        }
     }
 
-    public function data_pengeluaran_pdf(Request $request)
+    public function data_pengeluaran(Request $request)
     {
-        $start = $request->start ?? date('Y-m-d');
-        $end_date = $request->end ?? date('Y-m-d');
-        $end = $request->end ?? date('Y-m-d', strtotime('+1 day'));
+        date_default_timezone_set("Asia/Jakarta");
+        if (request('format') === 'pdf') {
+            $start = $request->start ?? date('Y-m-d');
+            $end_date = $request->end ?? date('Y-m-d');
+            $end = $request->end ?? date('Y-m-d', strtotime('+1 day'));
 
-        $pengeluaran = DaftarPengeluaran::join('jenis_pengeluarans', 'jenis_pengeluarans.id', '=', 'daftar_pengeluarans.jenis_pengeluaran')->orderBy('daftar_pengeluarans.id', 'desc')->whereBetween('daftar_pengeluarans.created_at', [$start, $end])->get();
+            $pengeluaran = DaftarPengeluaran::select('daftar_pengeluarans.*', 'jenis_pengeluarans.jenis_pengeluaran AS kategori')
+                            ->join('jenis_pengeluarans', 'jenis_pengeluarans.id', '=', 'daftar_pengeluarans.jenis_pengeluaran')
+                            ->orderBy('daftar_pengeluarans.id', 'desc')
+                            ->whereBetween('daftar_pengeluarans.tgl_pengeluaran', [$start, $end])
+                            ->get();
 
-        $waktuCetak = date('d-m-Y H:i:s');
+            $waktuCetak = date('d-m-Y H:i:s');
 
-        $pdf = Pdf::loadView('laporan.pdf.table-pengeluaran', compact('pengeluaran', 'start', 'end_date', 'waktuCetak'))
-            ->setPaper('a4', 'landscape');
-        return $pdf->download('Laporan-Transaksi-Harian-Pengeluaran.pdf');
+            $pdf = Pdf::loadView('laporan.pdf.table-pengeluaran', compact('pengeluaran', 'start', 'end_date', 'waktuCetak'))
+                ->setPaper('a4', 'landscape');
+            return $pdf->stream('Laporan-Transaksi-Harian-Pengeluaran.pdf');
+        } elseif (request('format') === 'excel') {
+            return Excel::download(new TransaksiDataPengeluaranExport, 'Transaksi-Harian-Pengeluaran.xlsx');
+        }
     }
 }

@@ -1,6 +1,6 @@
 @extends('layouts.admin.master')
 
-@section('title')Pengeluaran Cash
+@section('title')Saldo Cash
  {{ $title }}
 @endsection
 
@@ -11,9 +11,9 @@
 @section('content')
 	@component('components.breadcrumb')
 		@slot('breadcrumb_title')
-			<h3>Pengeluaran Cash</h3>
+			<h3>Saldo Cash</h3>
 		@endslot
-		<li class="breadcrumb-item active"><a href="{{ route('pengeluaran-cash') }}">Pengeluaran Cash</a></li>
+		<li class="breadcrumb-item active"><a href="{{ route('pengeluaran-cash') }}">Saldo Cash</a></li>
 		<li class="breadcrumb-item active">Table</li>
 	@endcomponent
 	
@@ -82,24 +82,24 @@
 	                                </tr>
 	                            </thead>
 	                            <tbody>
-	                                @foreach ($pengeluaran as $data)
+	                                @foreach ($saldo as $data)
 										<tr>
 											<td>{{ $loop->iteration; }}</td>
 											<td>{{ 'Rp '.number_format($data->jumlah, 0, '.', '.') }} </td>
 											<td>{{ $data->tanggal }}</td>
 											<td>
-												<span class="badge {{ $data->status_pengeluaran == 1 ? 'badge-primary' : 'badge-warning' }}">
-													<i class="fa {{ $data->status_pengeluaran == 1 ? 'fa-check' : 'fa-warning' }}"></i>
+												<span class="badge {{ $data->is_approve == 1 ? 'badge-primary' : 'badge-warning' }}">
+													<i class="fa {{ $data->is_approve == 1 ? 'fa-check' : 'fa-warning' }}"></i>
 													{{ $data->status == true ? 'Disetujui' : 'Pending'; }}
 												</span>
 											</td>
 											@if (isOwner())
                                             <td>
-                                                <input type="checkbox" name="id_pengeluaran[]" id="flexCheckDefault" onclick="ceklis({{ $data->id }})">
+                                                <input type="checkbox" name="id_saldo[]" id="flexCheckDefault" onclick="ceklis({{ $data->id }})">
                                             </td>
 											<td class="text-center">
                                                 <form action="{{ route('posisi-cash.approve', $data->id) }}" method="get">
-                                                    <button class="btn btn-secondary btn-sm" type="submit" onclick="return confirm('Approve Pengeluaran Ini?')">Approve</button>
+                                                    <button class="btn btn-secondary btn-sm" type="submit" onclick="return confirm('Approve Closing Saldo Ini?')">Approve</button>
                                                 </form>
 											</td>
 											@endif
@@ -121,7 +121,7 @@
     <script src="{{ asset('assets/js/datatable/datatables/datatable.custom.js') }}"></script>
     <script>
 		function ceklis(id){
-			$('.inner').append("<input type='hidden' value='"+id+"' name='id_pengeluaran[]'>");
+			$('.inner').append("<input type='hidden' value='"+id+"' name='id_saldo[]'>");
 		}
 	</script>
 	@endpush

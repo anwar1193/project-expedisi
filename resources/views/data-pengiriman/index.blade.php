@@ -12,6 +12,7 @@
 {{-- <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> --}}
 <!-- Link to FixedHeader CSS -->
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/fixedheader/3.1.8/css/fixedHeader.dataTables.css">
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/date-picker.css') }}">
 <style>
 	body {
 		margin: 0;
@@ -111,17 +112,22 @@
         <ol class="breadcrumb align-items-center">
             <div class="d-grid gap-2 d-md-block mx-2">
 				
-				{{-- <a href="{{ route('data-pengiriman.create') }}" class="btn btn-info btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Tambah Data">
-					<i class="fa fa-plus"></i> Tambah
-				</a> --}}
+				{{-- <a class="btn btn-danger btn-sm" href="{{ route('data-pengiriman.export-pdf') }}" target="_blank"> --}}
+				<button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#exportModal">
+					<i class="fa fa-check-square"></i> Export
+				</button>
 
 				<a class="btn btn-primary btn-sm" type="button" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalImport" title="Import Excel">
 					<i class="fa fa-file-excel-o"></i> Import Excel
 				</a>
 
-				<a href="{{ route('data-pengiriman.truncate') }}" class="btn btn-danger btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Truncate Data">
+				<a href="{{ route('data-pengiriman.truncate') }}" onclick="return confirm('Apakah Anda Yakin?')" class="btn btn-danger btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Truncate Data">
 					<i class="fa fa-trash"></i> Truncate
 				</a>
+				
+				<button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#truncateModal">
+					<i class="fa fa-trash"></i> Truncate By Periode
+				</button>
 
 				<a class="btn btn-primary btn-sm" type="button" data-bs-toggle="modal" data-original-title="test" data-bs-target="#modalUpdateStatus" title="Update Status Pengiriman">
 					<i class="fa fa-file-excel-o"></i> Update Status Pengiriman
@@ -130,6 +136,8 @@
 				@include('data-pengiriman.modal-import')
 				@include('data-pengiriman.status-pengiriman', ['status' => $status])
 				@include('data-pengiriman.modal-status-pengiriman')
+				@include('data-pengiriman.partial.truncate-period')
+				@include('data-pengiriman.partial.export-modeal')
 
 				@if (Session::get('user_level') == 2)
 					<form action="{{ route('data-pengiriman.approve-selected') }}" method="post" style="display: inline-block">
@@ -221,7 +229,7 @@
 								<form class="d-flex flex-column col-12" role="search" action="" method="GET">
 									<div class="d-flex justify-content-end">
 										<div id="tanggal">
-											<input class="form-control" type="date" name="tanggal" value="{{ request('tanggal') }}" />
+											<input class="datepicker-here form-control digits" autocomplete="off" type="text" name="tanggal" value="{{ request('tanggal') ?? date('d/m/Y', strtotime('-7 day')).' - '.date('d/m/Y') }}" data-range="true" data-multiple-dates-separator=" - " data-language="en" />
 										</div>
 										<div id="customer_id" class="px-2">
 											<select name="customer" class="form-control js-example-basic-single py-2">
@@ -240,6 +248,24 @@
 												@endforeach
 											</select>
 										</div>
+										<div id="customer_id" class="px-2">
+											<select name="nama_pengirim" class="form-control js-example-basic-single py-2">
+												<option value="">- Pilih Nama Pengirim -</option>
+												@foreach($nama_pengirim as $item)
+													<option value="{{ $item->nama_pengirim }}" {{ request('nama_pengirim') == $item->nama_pengirim ? 'selected' : '' }}>{{ $item->nama_pengirim }}</option>
+												@endforeach
+											</select>
+										</div>
+										<div id="customer_id" class="px-2">
+											<select name="nama_penerima" class="form-control js-example-basic-single py-2">
+												<option value="">- Pilih Nama Penerima -</option>
+												@foreach($nama_penerima as $item)
+													<option value="{{ $item->nama_penerima }}" {{ request('nama_penerima') == $item->nama_penerima ? 'selected' : '' }}>{{ $item->nama_penerima }}</option>
+												@endforeach
+											</select>
+										</div>
+									</div>
+									<div class="d-flex justify-content-end pt-2">
 										<div class="px-1">
 											<button type="submit" class="btn btn-primary" title="Cari"><i class="fa fa-search"></i> Cari</button>
 										</div>
@@ -258,6 +284,7 @@
 													<input type="checkbox" id="checkAll" title="Pilih Semua">
 												</th>
 											@endif
+											<th>Resi Terkait</th>
 											<th>No Resi</th>
 											<th>Tanggal Transaksi</th>
 											<th>Customer</th>
@@ -281,8 +308,12 @@
 												$bukti_pembayaran = $data->bukti_pembayaran;
 	
 												if($bukti_pembayaran != ''){
-													$explode = explode("/", $bukti_pembayaran);
-													$bukti_pembayaran_view = 'https://drive.google.com/file/d/'.$explode[5].'/preview';
+													if (filter_var($bukti_pembayaran, FILTER_VALIDATE_URL)) {
+														$explode = explode("/", $bukti_pembayaran);
+														$bukti_pembayaran_view = 'https://drive.google.com/file/d/'.$explode[5].'/preview';
+													} else {
+														$bukti_pembayaran_view = $bukti_pembayaran;
+													}
 													// $bukti_pembayaran_view = 'https://'.$explode[2].'/thumbnail?id='.$explode[5];
 												}else{
 													$bukti_pembayaran_view = '#';
@@ -328,13 +359,26 @@
 														<input type="checkbox" value="{{ $data->id }}" class="checkbox-item" id="checkbox-{{ $data->id }}" onclick="ceklis({{ $data->id }})">
 													</td>
 												@endif
-	
+												<td>
+													<form method="GET">
+														<input type="hidden" name="bukti_pembayaran" value="{{ $data->bukti_pembayaran }}">
+														@if ((filter_var($bukti_pembayaran, FILTER_VALIDATE_URL)) && $data->jumlahBuktiPembayaran > 1)
+															@if (!$bukti_pembayarans)
+																<button type="submit" class="btn btn-secondary">
+																	Lihat
+																</button>															
+															@elseif ($bukti_pembayarans)
+																<a href="{{ route('data-pengiriman') }}" class="text-dark btn btn-md btn-secondary" title="Reset"><i class="fa fa-refresh"></i> Kembali</a>
+															@endif															
+														@endif
+													</form>
+												</td>
 												<td>
 													<span class="badge badge-danger">
 														{{ $data->no_resi }}
 													</span>
 												</td>
-												<td>{{ date('d-m-Y', strtotime($data->tgl_transaksi)) }}</td>
+												<td>{{ date('d-m-Y H:i', strtotime($data->tgl_transaksi)) }}</td>
 												<td>
 													@if ($data->kode_customer == "General")
 														{{ $data->kode_customer }}
@@ -343,16 +387,19 @@
 													@endif
 												</td>
 												<td onmouseover="showBukti({{ $data->id }})" onmouseout="hideBukti({{ $data->id }})" style="position: relative;">
-													@if ($bukti_pembayaran != '')
+													@if ($bukti_pembayaran != '' && (filter_var($bukti_pembayaran, FILTER_VALIDATE_URL)))
 														<div id="tooltip{{ $data->id }}" class="tooltip-img">
 															<a href="{{ $bukti_pembayaran }}" target="_blank">
 																{{-- <img src="{{ $bukti_pembayaran_view }}" alt="Bukti Pembayaran" width="200px"> --}}
 																<iframe src="{{ $bukti_pembayaran_view }}" width="400" height="400" allow="autoplay"></iframe>
 															</a>
 														</div>
+
+														{{ $data->metode_pembayaran }} <i class="{{ $data->metode_pembayaran == 'Transfer' ? 'fa fa-eye' : '' }}"></i>
+
+													@else
+														{{ $data->metode_pembayaran }}
 													@endif
-												
-													{{ $data->metode_pembayaran }} <i class="{{ $data->metode_pembayaran == 'Transfer' ? 'fa fa-eye' : '' }}"></i>
 												</td>
 												{{-- <td onmouseover="showBukti({{ $data->id }})" onmouseout="hideBukti({{ $data->id }})">
 													@if ($bukti_pembayaran != '')
@@ -388,6 +435,9 @@
 										
 									</tbody>
 								</table>
+								<div class="mt-3 pt-3 float-end">
+									<h5>Total Nilai Transaksi: Rp {{ number_format($total, 0, '.', '.') }}</h5>
+								</div>
 								
 							</div>
 						</div>
@@ -412,6 +462,9 @@
 	 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/fixedheader/3.1.8/js/dataTables.fixedHeader.js"></script>	 
 	{{-- <script src="{{ asset('assets/js/datatable/datatables/fixedHeader.dataTable.js') }}"></script> --}}
 	<script src="{{asset('assets/js/tooltip-init.js')}}"></script>
+	<script src="{{ asset('assets/js/datepicker/date-picker/datepicker.js') }}"></script>
+    <script src="{{ asset('assets/js/datepicker/date-picker/datepicker.en.js') }}"></script>
+    <script src="{{ asset('assets/js/datepicker/date-picker/datepicker.custom.js') }}"></script>
     <script>
 		$(document).ready(function() {
 			var table = $('#basic-1').DataTable({
@@ -433,8 +486,8 @@
 					},
 				},
 				lengthMenu: [
-					[10, 25, 50, -1],
-					['All', 10, 25, 50]
+					[100, -1, 10, 25, 50],
+					[100, 'All', 10, 25, 50]
 				],
 				fixedHeader: {
 					header: true,

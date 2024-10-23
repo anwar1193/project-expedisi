@@ -13,3 +13,15 @@ if (! function_exists('getPastDates')) {
         return $dates;
     }
 }
+
+if (!function_exists('rangeDate')) {
+    function rangeDate()
+    {
+        $range = request()->tanggal ?? date('Y/m/d', strtotime('-7 day')). " - " .date('Y/m/d');
+        $dates = explode(' - ', $range);
+        $startDate = $dates[0];
+        $endDate = $dates[1] ?? $dates[0];
+
+        return [$startDate, $endDate];
+    }
+}

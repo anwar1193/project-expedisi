@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\DataPengirimanExport;
 use App\Exports\StatusPengirimanExport;
 use App\Helpers\Helper;
 use App\Imports\DataPengirimanImport;
@@ -17,6 +18,8 @@ use App\Models\Invoice;
 use App\Models\TransaksiInvoice;
 use App\Models\TransaksiPembayaran;
 use App\Models\InvoiceBank;
+use Barryvdh\DomPDF\Facade\Pdf;
+use DateTime;
 use Dflydev\DotAccessData\Data;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -33,9 +36,15 @@ class DataPengirimanController extends Controller
     {
         // $level = Session::get('user_level') == 2;
         $notif = request('notif');
-        $tanggal = request('tanggal');
+        $startDate = new DateTime(rangeDate()[0]);
+        $startDate = $startDate->format('Y-m-d 00:00:00');
+        $endDate = new DateTime(rangeDate()[1]);
+        $endDate = $endDate->format('Y-m-d 23:59:59');
         $metode = request('metode');
         $customer = request('customer');
+        $bukti_pembayaran = request('bukti_pembayaran');
+        $nama_pengirim = request('nama_pengirim');
+        $nama_penerima = request('nama_penerima');
         $owner = isOwner();
         $jumlahApprove = DataPengiriman::where('status_pembayaran', DataPengiriman::STATUS_PENDING)->count();
 
@@ -47,14 +56,24 @@ class DataPengirimanController extends Controller
             return $query->where('status_pembayaran', DataPengiriman::STATUS_PENDING)->orderBy('tgl_transaksi', 'DESC');
         })->when($owner && $jumlahApprove != 0, function ($query) {
             return $query->where('status_pembayaran', DataPengiriman::STATUS_PENDING)->orderBy('tgl_transaksi', 'DESC');
-        })->when($tanggal, function ($query, $tanggal) {
-            return $query->where('tgl_transaksi', $tanggal)->orderBy('tgl_transaksi', 'DESC');
+        })->when(!$bukti_pembayaran && $startDate && $endDate, function ($query) use ($startDate, $endDate) {
+            return $query->whereBetween('tgl_transaksi', [$startDate, $endDate])
+                         ->orderBy('tgl_transaksi', 'DESC');
         })->when($metode, function ($query, $metode) {
             return $query->where('metode_pembayaran', $metode)->orderBy('tgl_transaksi', 'DESC');
         })->when($customer, function ($query, $customer) {
             return $query->where('data_pengirimen.kode_customer', $customer)->orderBy('tgl_transaksi', 'DESC');
+        })->when($bukti_pembayaran, function ($query, $bukti_pembayaran) {
+            return $query->where('data_pengirimen.bukti_pembayaran', 'LIKE', $bukti_pembayaran)->orderBy('tgl_transaksi', 'DESC');
+        })->when($nama_pengirim, function ($query, $nama_pengirim) {
+            return $query->where('data_pengirimen.nama_pengirim', 'LIKE', $nama_pengirim)->orderBy('tgl_transaksi', 'DESC');
+        })->when($nama_penerima, function ($query, $nama_penerima) {
+            return $query->where('nama_penerima', 'LIKE', '%'.$nama_penerima.'%')->orderBy('tgl_transaksi', 'DESC');
         })
         ->get();
+        foreach ($datas as $item) {
+            $item->jumlahBuktiPembayaran = DataPengiriman::where('bukti_pembayaran', $item->bukti_pembayaran)->count(); 
+        }
         $status = StatusPengiriman::orderBy('id', 'ASC')->get();
 
         $data['datas'] = $datas;
@@ -64,6 +83,11 @@ class DataPengirimanController extends Controller
         $data['status_lunas'] = DataPengiriman::STATUS_LUNAS;
         $data['status_approve'] = DataPengiriman::STATUS_APPROVE;
         $data['status_pending'] = DataPengiriman::STATUS_PENDING;
+        $data['total'] = $datas->sum('ongkir');
+        $data['bukti_pembayarans'] = $bukti_pembayaran;
+        $data['nama_pengirim'] = Helper::nama_pengirim();
+
+        $data['nama_penerima'] = Helper::nama_penerima();
 
         if (isOwner() && $jumlahApprove == 0) {
             return view('data-pengiriman.detail-lengkap-pengiriman', $data);
@@ -117,6 +141,8 @@ class DataPengirimanController extends Controller
         $data['bank'] = Bank::all();
         $data['metode'] = MetodePembayaran::all();
         $data['customer'] = Customer::orderBy('id')->get();
+        $data['aktif'] = DataPengiriman::STATUS_WA_AKTIF;
+        $data['nonaktif'] = DataPengiriman::STATUS_WA_NONAKTIF;
 
         return view('data-pengiriman.edit', $data);
     }
@@ -158,7 +184,8 @@ class DataPengirimanController extends Controller
             'ongkir' => $request->ongkir,
             'komisi' => $request->komisi,
             'metode_pembayaran' => $request->metode_pembayaran,
-            'bukti_pembayaran' => $request->bukti_pembayaran == NULL ? '' : $request->bukti_pembayaran
+            'bukti_pembayaran' => $request->bukti_pembayaran == NULL ? '' : $request->bukti_pembayaran,
+            'status_kirim_wa' => $request->status_kirim_wa
             // 'bukti_pembayaran' => ($foto != '' ? $foto->hashName() : $getImage->bukti_pembayaran)
         ]);
 
@@ -340,48 +367,13 @@ class DataPengirimanController extends Controller
         $data = Excel::toArray(new DataPengirimanImport, $request->file('file'));
     
         $formattedData = (new DataPengirimanImport)->array($data[0]);
-
-        // $rules = [
-        //     '*.no_resi' => 'required|unique:data_pengirimen',
-        //     '*.tgl_transaksi' => 'required',
-        //     '*.nama_pengirim' => 'required',
-        //     '*.nama_penerima' => 'required',
-        //     '*.kota_tujuan' => 'required',
-        //     '*.no_hp_pengirim' => 'required',
-        //     '*.no_hp_penerima' => 'required',
-        //     '*.berat_barang' => 'required',
-        //     '*.ongkir' => 'required',
-        //     '*.komisi' => 'required',
-        //     '*.metode_pembayaran' => function($attribute, $value, $onFailure) {
-        //         if($value !== NULL){
-        //             if ($value !== 'Transfer' && $value !== 'Tunai' && $value !== 'Kredit') {
-        //                 $onFailure('Metode Pembayaran Harus Transfer, Tunai, Kredit, atau Dikosongkan');
-        //            }
-        //         }
-        //     },
-
-        //     '*.jenis_pengiriman' => 'required',
-        //     '*.bawa_sendiri' => 'required',
-        //     '*.status_pengiriman' => 'required',
-        // ];
-
-        // $validator = Helper::validateFormattedData($formattedData);
-
-        // if ($validator->fails()) {
-        //     return redirect()->back()->withErrors($validator)->withInput();
-        // }
-
-        // $validationResult = Helper::customValidasi($formattedData);
-
-        // if ($validationResult !== null) {
-        //     return $validationResult;
-        // }
     
         return view('data-pengiriman.konfirmasi-data', compact('bank', 'customer','formattedData', 'kasir', 'metode', 'status'));
     }
 
     public function proses_hasil_import(Request $request)
     {   
+        date_default_timezone_set("Asia/Jakarta");
         $datas = [];
 
         foreach ($request->no_resi as $i => $no_resi) {
@@ -476,7 +468,8 @@ class DataPengirimanController extends Controller
                 'berat_barang' => $request->berat_barang[$i],
                 'ongkir' => $request->ongkir[$i],
                 'komisi' => $request->komisi[$i],
-                'status_pembayaran' => strtolower($request->metode_pembayaran[$i]) == 'tunai' ? DataPengiriman::STATUS_LUNAS : (strtolower($request->metode_pembayaran[$i]) == 'transfer' ? DataPengiriman::STATUS_LUNAS : DataPengiriman::STATUS_PENDING ),
+                // 'status_pembayaran' => strtolower($request->metode_pembayaran[$i]) == 'tunai' ? DataPengiriman::STATUS_LUNAS : (strtolower($request->metode_pembayaran[$i]) == 'transfer' ? DataPengiriman::STATUS_LUNAS : DataPengiriman::STATUS_PENDING ),
+                'status_pembayaran' => DataPengiriman::STATUS_PENDING,
                 'metode_pembayaran' => $request->metode_pembayaran[$i],
                 'bank' => $request->bank[$i] ?? '',
                 'jumlah_pembayaran' => $request->jumlah_pembayaran[$i] ?? 0,
@@ -488,6 +481,7 @@ class DataPengirimanController extends Controller
                 'jenis_pengiriman' => $request->jenis_pengiriman[$i],
                 'bawa_sendiri' => $request->bawa_sendiri[$i],
                 'status_pengiriman' => $request->status_pengiriman[$i],
+                'status_kirim_wa' => strtolower($request->status_kirim_wa[$i]) == 'ya' ? 1 : 0,
                 'keterangan' => $request->keterangan[$i] != '' ? $request->keterangan[$i] : '-',
                 'input_by' => $request->input_by[$i],
             ]);
@@ -499,6 +493,37 @@ class DataPengirimanController extends Controller
     public function download_resi()
     {
         return Excel::download(new StatusPengirimanExport, 'StatusPengiriman.xlsx');
+    }
+
+    public function export_pdf()
+    {
+        if (request('format') === 'pdf') {
+            $data['data'] = DataPengiriman::select('data_pengirimen.*', 'customers.nama')
+                            ->orderBy('data_pengirimen.id', 'DESC')
+                            ->leftjoin('customers', 'customers.kode_customer', '=', 'data_pengirimen.kode_customer')
+                            ->get();
+
+            $pdf = Pdf::loadView('data-pengiriman.export-pdf', $data)->setPaper('a4', 'landscape');
+            return $pdf->stream('Data-Pengiriman.pdf');
+        } elseif (request('format') === 'excel') {
+            return Excel::download(new DataPengirimanExport, 'Data-Pengiriman.xlsx');
+        }
+    }
+
+    public function truncateByPeriode() {
+        $startDate = new DateTime(rangeDate()[0]);
+        $startDate = $startDate->format('Y-m-d 00:00:00');
+        $endDate = new DateTime(rangeDate()[1]);
+        $endDate = $endDate->format('Y-m-d 23:59:59');
+        $data = DataPengiriman::whereBetween('tgl_transaksi', [$startDate, $endDate])->get();
+        foreach ($data as $d) {
+            if ($d->status_pembayaran == DataPengiriman::STATUS_LUNAS) {
+                return redirect()->route('data-pengiriman')->with('error', 'Data Pengiriman Pada Periode Tersebut Ada Yang Telah Diapprove');
+            }
+        }
+        $data->each->delete();
+
+        return redirect()->route('data-pengiriman')->with('delete', 'Data Pengiriman Berhasil Dihapus');
     }
 }
 

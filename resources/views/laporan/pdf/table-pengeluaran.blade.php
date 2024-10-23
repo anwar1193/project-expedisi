@@ -17,6 +17,7 @@
         #emp td, #emp th{
             border: 1px solid #ddd;
             padding: 8px;
+            font-size: 12px
         }
 
         /* #emp tr:nth-child(even){
@@ -27,15 +28,16 @@
             padding-top: 12px;
             padding-bottom: 12px;
             text-align: left;
-            background-color: aquamarine;
-            color: #000;
+            background-color: #d22d3d;
+            color: #fff;
+            text-align: center
         }
     </style>
 </head>
 <body>
     <div style="text-align: center;">
         <h2>Data Pengeluaran</h2>
-        <em>Dicetak Pada : {{ $waktuCetak }}</em>
+        {{-- <em>Dicetak Pada : {{ $waktuCetak }}</em> --}}
     </div>
 
     <div style="text-align: start">

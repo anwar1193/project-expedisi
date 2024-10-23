@@ -1,4 +1,4 @@
-<?php $__env->startSection('title'); ?>Daftar Pengeluaran
+<?php $__env->startSection('title'); ?>Data Pengeluaran
  <?php echo e($title); ?>
 
 <?php $__env->stopSection(); ?>
@@ -92,9 +92,9 @@
 <?php $__env->startSection('content'); ?>
 	<?php $__env->startComponent('components.breadcrumb'); ?>
 		<?php $__env->slot('breadcrumb_title'); ?>
-			<h3>Daftar Pengeluaran</h3>
+			<h3>Data Pengeluaran</h3>
 		<?php $__env->endSlot(); ?>
-		<li class="breadcrumb-item active"><a href="<?php echo e(route('daftar-pengeluaran')); ?>">Daftar Pengeluaran</a></li>
+		<li class="breadcrumb-item active"><a href="<?php echo e(route('daftar-pengeluaran')); ?>">Data Pengeluaran</a></li>
 		<li class="breadcrumb-item active">Table</li>
 	<?php echo $__env->renderComponent(); ?>
 
@@ -105,17 +105,23 @@
                     <a href="<?php echo e(route('daftar-pengeluaran.create')); ?>" class="btn btn-info btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Tambah Data">
                         <i class="fa fa-plus"></i> Tambah
                     </a>
+                    
+					<button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#exportModal">
+						<i class="fa fa-check-square"></i> Export
+					</button>
 
 					<?php if(Session::get('user_level') == 2): ?>
-					<form action="<?php echo e(route('data-pengeluaran.approve-selected')); ?>" method="post" style="display: inline-block">
-						<?php echo csrf_field(); ?>
-						<div class="inner"></div>
-						<button type="submit" class="btn btn-success btn-sm" style="display: inline" onclick="return confirm('Approve semua data terpilih?')">
-							<i class="fa fa-check-square"></i> Approve Selected
-						</button>
-					</form>
-					
-				<?php endif; ?>
+						<form action="<?php echo e(route('data-pengeluaran.approve-selected')); ?>" method="post" style="display: inline-block">
+							<?php echo csrf_field(); ?>
+							<div class="inner"></div>
+							<button type="submit" class="btn btn-success btn-sm" style="display: inline" onclick="return confirm('Approve semua data terpilih?')">
+								<i class="fa fa-check-square"></i> Approve Selected
+							</button>
+						</form>
+						
+					<?php endif; ?>
+
+					<?php echo $__env->make('daftar-pengeluaran.partial.export-modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                 
             </div>
         </ol>

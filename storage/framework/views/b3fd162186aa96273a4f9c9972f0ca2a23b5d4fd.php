@@ -33,11 +33,11 @@
     <div class="nav-right col pull-right right-menu p-0">
       <ul class="nav-menus">
         <li><a class="text-dark" href="#!" onclick="javascript:toggleFullScreen()"><i data-feather="maximize"></i></a></li>
-        
         <?php if(Session::get('user_level') != 3): ?>
             <?php
                 $notificationData = getNotification();
                 $notificationPengeluaran = getNotifPengeluaran();
+                $notificationSaldo = getNotifClosingSaldo();
                 $tema = Session::get("tema");
             ?>
         <?php endif; ?>
@@ -72,8 +72,21 @@
                           <div class="media">
                               <span class="notification-bg bg-light-success"><i data-feather="file-text"></i></span>
                               <div class="media-body">
-                                  <a class="<?php echo e($tema == 'dark' ? 'text-light' : 'text-black'); ?>" href="<?php echo e(route('pengeluaran-cash')); ?>">
+                                  <a class="<?php echo e($tema == 'dark' ? 'text-light' : 'text-black'); ?>" href="<?php echo e(route('daftar-pengeluaran')); ?>">
                                       <?php echo e($notificationPengeluaran['text_notif'] ?? $notificationPengeluaran['text_owner']); ?>
+
+                                  </a>
+                              </div>
+                          </div>
+                      </li>
+                    <?php endif; ?>
+                    <?php if($notificationSaldo['text_notif'] !== '-'): ?>
+                      <li class="noti-success">
+                          <div class="media">
+                              <span class="notification-bg bg-light-success"><i data-feather="file-text"></i></span>
+                              <div class="media-body">
+                                  <a class="<?php echo e($tema == 'dark' ? 'text-light' : 'text-black'); ?>" href="<?php echo e(route('pengeluaran-cash')); ?>">
+                                      <?php echo e($notificationSaldo['text_notif']); ?>
 
                                   </a>
                               </div>
@@ -101,7 +114,6 @@
             </a>
           </div>
         </li>
-        
         <li class="onhover-dropdown p-0">
           <form method="POST" action="<?php echo e(route('logout')); ?>">
             <?php echo csrf_field(); ?>

@@ -38,6 +38,44 @@
 							<div class="row">
 								<div class="col">
 									<div class="mb-3">
+										<label class="form-label" for="">Tanggal Pemasukan</label>
+										<input class="form-control @error('tgl_pemasukkan') is-invalid @enderror" type="date" name="tgl_pemasukkan" autocomplete="off" value="{{ old('tgl_pemasukkan', $datas->tgl_pemasukkan) }}"/>
+
+										@error('tgl_pemasukkan')
+										<div class="text-danger">
+											{{ $message }}
+										</div>
+										@enderror
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col">
+									<div class="mb-3">
+										<label class="form-label" for="">No Resi Pengiriman {{ $datas->no_resi }}</label>
+										
+										<select name="no_resi_pengiriman" id="no_resi_pengiriman" class="form-control @error('no_resi_pengiriman') is-invalid @enderror js-example-basic-single">
+											<option value="">- Pilih Resi -</option>
+											@foreach ($resi as $item)
+												<option value="{{ $item->no_resi }}" {{ $item->no_resi == $datas->no_resi_pengiriman ? 'selected' : '' }}>
+													{{ $item->no_resi }} - {{ $item->nama_pengirim }} To {{ $item->nama_penerima }}
+												</option>
+											@endforeach
+										</select>
+
+										@error('no_resi_pengiriman')
+										<div class="text-danger">
+											{{ $message }}
+										</div>
+										@enderror
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col">
+									<div class="mb-3">
 										<label class="form-label" for="">Kategori</label>
 										<select name="kategori" id="kategori" class="form-control @error('kategori') is-invalid @enderror">
 											<option value="barang" {{ $datas->kategori == 'barang' ? 'selected' : '' }}>Barang</option>
@@ -57,6 +95,7 @@
 									<div class="mb-3">
 										<label class="form-label" for="">Barang</label>
 										<select name="barang" id="barangs" class="form-control @error('barang') is-invalid @enderror">
+											<option value="">- Pilih Barang -</option>
 											@foreach ($barang as $item)
 												<option value="{{ $item->id }}" {{ $datas->kategori == "barang" && $datas->barang_jasa == $item->id ? 'selected' : '' }}>
 													{{ $item->nama_barang }}
@@ -92,7 +131,8 @@
 								<div class="col">
 									<div class="mb-3">
 										<label class="form-label" for="">Jasa</label>
-										<select name="jasa" id="jasa" class="form-control @error('jasa') is-invalid @enderror">
+										<select name="jasa" id="jasas" class="form-control @error('jasa') is-invalid @enderror">
+											<option value="">- Pilih Jasa -</option>
 											@foreach ($jasa as $item)
 												<option value="{{ $item->id }}" {{ $datas->kategori == "jasa" && $datas->barang_jasa == $item->id ? 'selected' : '' }}>
 													{{ $item->nama_jasa }}
@@ -112,7 +152,7 @@
 								<div class="col">
 									<div class="mb-3">
 										<label class="form-label" for="">Modal</label>
-										<input class="form-control @error('modal') is-invalid @enderror" type="text" name="modal" autocomplete="off" value="{{ old('modal', $datas->modal) }}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"/>
+										<input class="form-control @error('modal') is-invalid @enderror" type="text" name="modal" autocomplete="off" value="{{ $datas->modal}}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"/>
 
 										@error('modal')
 										<div class="text-danger">
@@ -217,7 +257,8 @@
 								<div class="col">
 									<div class="mb-2">
 										<label for="" class="form-label">Bank</label>
-										<select name="bank" class="form-control @error('bank') is-invalid @enderror js-example-basic-single">
+										<select name="bank" id="selectBank" class="form-control @error('bank') is-invalid @enderror js-example-basic-single">
+											<option value="">- Pilih Bank -</option>
 											@foreach ($bank as $item)
 												<option value="{{ $item->bank }}" {{ $datas->bank == $item->bank ? 'selected' : '' }}>
 													{{ $item->bank }}
@@ -309,7 +350,8 @@
 									<div class="col">
 										<div class="mb-2">
 											<label for="" class="form-label">Bank</label>
-											<select name="bank2" class="form-control @error('bank2') is-invalid @enderror js-example-basic-single">
+											<select name="bank2" id="selectBank2" class="form-control @error('bank2') is-invalid @enderror js-example-basic-single">
+												<option value="">- Pilih Bank -</option>
 												@foreach ($bank as $item)
 													<option value="{{ $item->bank }}" {{ $datas->bank2 == $item->bank ? 'selected' : '' }}>
 														{{ $item->bank }}
@@ -566,6 +608,7 @@
 		const barangs = document.getElementById('barangs');
 		const jumlahBarang = document.getElementById('jumlahBarang');
 		const jasa = document.getElementById('jasa');
+		const jasas = document.getElementById('jasas');
 		const metodePembayaran = document.getElementById('metode_pembayaran');
 		const metodePembayaran2 = document.getElementById('metode_pembayaran2');
 		const bank = document.getElementById('banks');
@@ -588,17 +631,21 @@
 
 		function toggleCategorySelect() {
 			const value = kategori.value;
-			console.log(value);
-			
+
 			if (value === "barang") {
 				barang.style.display = 'block';
 				jumlahBarang.style.display = 'block';
 				jasa.style.display = 'none';
+				jasas.value = '';
+				jasas.dispatchEvent(new Event('change'));
 			} else if (value === "jasa") {
 				jasa.style.display = 'block';
 				barang.style.display = 'none';
 				jumlahBarang.style.display = 'none';
-				modalInput.value = "";
+				// modalInput.value = "";
+				modalInput.dispatchEvent(new Event('change'));
+				barangs.value = '';
+				barangs.dispatchEvent(new Event('change'));
 			}
 		}
 		
@@ -623,15 +670,29 @@
 
 		function toggleMetodeTransfer() {
 			const metode = (metodePembayaran.value).toLowerCase();
+			const select = document.getElementById('selectBank');
 
-			 (metode == 'transfer') ? bank.style.display = 'block' : bank.style.display = 'none';
+			if (metode === 'transfer') {
+				bank.style.display = 'block';
+			} else {
+				bank.style.display = 'none';
+				select.value = '';
+				select.dispatchEvent(new Event('change'));
+			}
 
 		}
 		
 		function toggleMetodeTransfer2() {
 			const metode = (metodePembayaran2.value).toLowerCase();
+			const select = document.getElementById('selectBank2');
 
-			 (metode == 'transfer') ? bank2.style.display = 'block' : bank2.style.display = 'none';
+			 if (metode === 'transfer') {
+				bank2.style.display = 'block';
+			} else {
+				bank2.style.display = 'none';
+				select.value = '';
+				select.dispatchEvent(new Event('change'));
+			}
 
 		}
 

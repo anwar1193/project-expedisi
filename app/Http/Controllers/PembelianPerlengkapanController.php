@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\PembelianPerlengkapanExport;
 use App\Helpers\Helper;
 use App\Models\PembelianPerlengkapan;
 use App\Models\Perlengkapan;
 use App\Models\Supplier;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PembelianPerlengkapanController extends Controller
 {
@@ -100,5 +103,28 @@ class PembelianPerlengkapanController extends Controller
         Helper::logActivity('Pembelian Perlengkapan', 'Dihapus');
 
         return redirect()->route('pembelian-perlengkapan')->with('success', 'Pembelian Perlengkapan berhasil dihapus');
+    }
+
+    public function export()
+    {
+        if (request('format') === 'pdf') {
+            $data['data'] = PembelianPerlengkapan::leftjoin('perlengkapans', 'pembelian_perlengkapans.id_perlengkapan', '=', 'perlengkapans.id')
+                            ->leftjoin('suppliers', 'pembelian_perlengkapans.id_supplier', '=', 'suppliers.id')
+                            ->select(
+                                'pembelian_perlengkapans.id', 
+                                'pembelian_perlengkapans.tanggal_pembelian', 
+                                'perlengkapans.nama_perlengkapan', 
+                                'suppliers.nama_supplier', 
+                                'pembelian_perlengkapans.harga', 
+                                'pembelian_perlengkapans.jumlah', 
+                                'pembelian_perlengkapans.keterangan', 
+                                'pembelian_perlengkapans.nota')
+                            ->orderBy('id', 'DESC')->get();;
+
+            $pdf = Pdf::loadView('pembelian-perlengkapan.export-pdf', $data)->setPaper('a4', 'landscape');
+            return $pdf->stream('Pembelian-Perlengkapan.pdf');
+        } elseif (request('format') === 'excel') {
+            return Excel::download(new PembelianPerlengkapanExport, 'Pembelian-Perlengkapan.xlsx');
+        }
     }
 }

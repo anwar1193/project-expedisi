@@ -196,7 +196,7 @@
 								<form class="d-flex flex-column col-12" role="search" action="" method="GET">
 									<div class="d-flex justify-content-end">
 										<div id="tanggal">
-											<input class="form-control" type="date" name="tanggal" value="{{ request('tanggal') }}" />
+											<input class="form-control" type="date" name="tanggal" value="{{ request('tanggal') ?? date('d/m/Y', strtotime('-7 day')).' - '.date('d/m/Y') }}" />
 										</div>
 										<div id="customer_id" class="px-2">
 											<select name="customer" class="form-control js-example-basic-single py-2">
@@ -215,6 +215,24 @@
 												@endforeach
 											</select>
 										</div>
+										<div id="customer_id" class="px-2">
+											<select name="nama_pengirim" class="form-control js-example-basic-single py-2">
+												<option value="">- Pilih Nama Pengirim -</option>
+												@foreach($nama_pengirim as $item)
+													<option value="{{ $item->nama_pengirim }}" {{ request('nama_pengirim') == $item->nama_pengirim ? 'selected' : '' }}>{{ $item->nama_pengirim }}</option>
+												@endforeach
+											</select>
+										</div>
+										<div id="customer_id" class="px-2">
+											<select name="nama_penerima" class="form-control js-example-basic-single py-2">
+												<option value="">- Pilih Nama Penerima -</option>
+												@foreach($nama_penerima as $item)
+													<option value="{{ $item->nama_penerima }}" {{ request('nama_penerima') == $item->nama_penerima ? 'selected' : '' }}>{{ $item->nama_penerima }}</option>
+												@endforeach
+											</select>
+										</div>
+									</div>
+									<div class="d-flex justify-content-end pt-2">
 										<div class="px-1">
 											<button type="submit" class="btn btn-primary" title="Cari"><i class="fa fa-search"></i> Cari</button>
 										</div>
@@ -233,6 +251,7 @@
 													<input type="checkbox" id="checkAll" title="Pilih Semua">
 												</th>
 											@endif
+											<th>Resi Terkait</th>
 											<th>No Resi</th>
 											<th>Tanggal Transaksi</th>
 											<th>Customer</th>
@@ -286,11 +305,25 @@
 													</td>
 												@endif
 												<td>
+													<form method="GET">
+														<input type="hidden" name="bukti_pembayaran" value="{{ $data->bukti_pembayaran }}">
+														@if ((filter_var($bukti_pembayaran, FILTER_VALIDATE_URL)) && $data->jumlahBuktiPembayaran > 1)
+															@if (!$bukti_pembayarans)
+																<button type="submit" class="btn btn-secondary">
+																	Lihat
+																</button>															
+															@elseif ($bukti_pembayarans)
+																<a href="{{ route('data-pengiriman') }}" class="text-dark btn btn-md btn-secondary" title="Reset"><i class="fa fa-refresh"></i> Kembali</a>
+															@endif															
+														@endif
+													</form>
+												</td>
+												<td>
 													<span class="badge badge-danger">
 														{{ $data->no_resi }}
 													</span>
 												</td>
-												<td>{{ date('d-m-Y', strtotime($data->tgl_transaksi)) }}</td>
+												<td>{{ date('d-m-Y H:i', strtotime($data->tgl_transaksi)) }}</td>
 												<td>
 													@if ($data->kode_customer == "General")
 														{{ $data->kode_customer }}
@@ -329,6 +362,9 @@
 										
 									</tbody>
 								</table>
+								<div class="mt-3 pt-3 float-end">
+									<h5>Total Nilai Transaksi: Rp {{ number_format($total, 0, '.', '.') }}</h5>
+								</div>
 								
 							</div>
 						</div>
@@ -372,7 +408,7 @@
 					},
 				},
 				lengthMenu: [
-					[10, 25, 50, -1],
+					[-1, 10, 25, 50],
 					['All', 10, 25, 50]
 				],
 				fixedHeader: {

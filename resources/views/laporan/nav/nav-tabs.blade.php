@@ -5,7 +5,7 @@
     </li>
     <li class="nav-item">
         <a class="nav-link {{ $activeTab == 'profile' ? 'active' : '' }}" id="profile-top-secondary" data-bs-toggle="tab" href="#top-profilesecondary" role="tab" aria-controls="top-profilesecondary" aria-selected="false">
-            <i class="pt-2 pe-2" data-feather="trending-up"></i>Pemasukkan
+            <i class="pt-2 pe-2" data-feather="trending-up"></i>Pemasukan
         </a>
         <div class="material-border"></div>
     </li>

@@ -34,35 +34,46 @@
     </div>
     @endif
 
-    {{-- <div class="tombol-export mb-3">
-        <a href="{{ route('laporan.pemasukkan.export-pdf', ['start' => request('start'), 'end' => request('end')]) }}" class="btn btn-danger" data-bs-toggle="tooltip"
-            data-bs-placement="top" title="Cetak PDF">
-            <i class="fa fa-file-pdf-o"></i> Cetak PDF
-        </a>
-    </div> --}}
+    <div class="tombol-export mb-3">
+        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#pemasukanModal">
+            <i class="fa fa-check-square"></i> Export
+        </button>
+
+        @include('laporan.modal-export.pemasukan-modal')
+    </div>
 
     <div class="table-responsive">
         <table class="display" id="{{ $tableId }}">
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>Kategori</th>
-                    <th>Customer</th>
-                    <th>Harga</th>
-                    <th>Tanggal Transaksi</th>
-                    <th>Komisi</th>
+                    <th>Tanggal Pemasukan</th>
+                    <th>Barang/Jasa</th>
+                    <th>Keterangan</th>
+                    <th>Sumber Pemasukan</th>
+                    <th>Jumlah Pemasukan</th>
+                    <th>Metode Pembayaran</th>
+                    <th>Diterima Oleh</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($data as $item)
-                <tr>
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{{ $item->kategori }}</td>
-                    <td>{{ $item->nama_customer }}</td>
-                    <td>{{ number_format($item->harga, 0, ',', '.') }}</td>
-                    <td>{{ $item->tanggal_transaksi }}</td>
-                    <td>{{ number_format($item->komisi, 0, ',', '.') }}</td>
-                </tr>
+                @foreach ($data as $row)
+                    <tr>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $row->tgl_pemasukkan }}</td>
+                        <td>
+                            @if ($row->kategori == 'barang')
+                                {{ HApp::namaBarang($row->barang_jasa) }}
+                            @else
+                                {{ HApp::namaJasa($row->barang_jasa) }}
+                            @endif
+                        </td>
+                        <td>{{ $row->keterangan }}</td>
+                        <td>{{ $row->sumber_pemasukkan }}</td>
+                        <td>{{ 'Rp '.number_format($row->jumlah_pemasukkan, 0, '.', '.') }} </td>
+                        <td>{{ $row->metode_pembayaran }} {{ $row->metode_pembayaran2 ? '-' : '' }} {{ $row->metode_pembayaran2 }} </td>
+                        <td>{{ $row->diterima_oleh }}</td>
+                    </tr>
                 @endforeach
             </tbody>
         </table>

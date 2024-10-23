@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\DataPemasukanExport;
 use App\Helpers\Helper;
 use App\Models\Bank;
 use App\Models\Barang;
@@ -15,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
+use Maatwebsite\Excel\Facades\Excel;
 use Yaza\LaravelGoogleDriveStorage\Gdrive;
 
 class PemasukanLainnyaController extends Controller
@@ -49,15 +51,17 @@ class PemasukanLainnyaController extends Controller
         $jasas = Jasa::all();
         $resi = DataPengiriman::all();
         $metode = MetodePembayaran::all();
+        $today = date('Y-m-d');
 
-        return view('data-pemasukan.create', compact('customer', 'bank', 'barangs', 'jasas', 'resi', 'metode'));
+        return view('data-pemasukan.create', compact('customer', 'bank', 'barangs', 'jasas', 'resi', 'metode', 'today'));
     }
 
     public function store(Request $request)
     { 
         $today = date('Y-m-d');
         $validateData = $request->validate([
-            'no_resi_pengiriman' => 'required',
+            'tgl_pemasukkan' => 'required|date',
+            'no_resi_pengiriman' => 'nullable',
             'kategori' => 'required',
             'modal' => 'required',
             'keterangan' => 'required',
@@ -65,16 +69,22 @@ class PemasukanLainnyaController extends Controller
             'sumber_pemasukkan' => 'required_without:customer',
             'customer' => 'required_without:sumber_pemasukkan',
             'metode_pembayaran' => 'required',
-            'bukti_pembayaran' => 'required_without:image',
+            'bukti_pembayaran' => 'required_without_all:image,metode_pembayaran,tunai',
             'metode_pembayaran2' => 'nullable',
-            'image' => 'required_without:bukti_pembayaran', 
-            'keterangan_tambahan' => 'required',
+            'image' => 'required_without_all:bukti_pembayaran,metode_pembayaran,tunai', 
         ]);
 
         $foto = $request->file('bukti_pembayaran'); // take picture
         $img = $request->image;      
         $foto2 = $request->file('bukti_pembayaran2'); // take picture
         $img2 = $request->image2;     
+
+        if (strtolower($validateData['metode_pembayaran']) == 'tunai') {
+            $validateData['bukti_pembayaran'] = '-';
+        }
+        if ($validateData['metode_pembayaran2'] != '' && strtolower($validateData['metode_pembayaran2']) == 'tunai') {
+            $validateData['bukti_pembayaran2'] = '-';
+        }
 
         if($foto != ''){
             // Set Up Untuk Penyimopnan Image ke GDrive
@@ -145,6 +155,15 @@ class PemasukanLainnyaController extends Controller
         if (strtolower($validateData['metode_pembayaran2']) == 'transfer' && $bank2 == '') {
             return back()->with('error', 'Bank Wajib Diisi Jika Pilih Metode Pembayaran Transfer');
         }
+        if (!$request->dataCustomer) {
+            $metodePembayaran = ['metode_pembayaran', 'metode_pembayaran2'];
+        
+            foreach ($metodePembayaran as $metode) {
+                if (strtolower($validateData[$metode]) == 'kredit') {
+                    return back()->with('error', 'Metode Pembayaran Kredit Hanya Berlaku Untuk Customer');
+                }
+            }
+        }
         $validateData['barang_jasa'] = $barang != '' ? $barang : $jasa;
         if ($barang != '') {
             if ($jumlah_barang > $data_barang->stok) return back()->with('error', 'Jumlah Barang Yang Diinput Melebihi Stok Barang');
@@ -153,7 +172,6 @@ class PemasukanLainnyaController extends Controller
             $validateData['jumlah_barang'] = 0;
         }
         $validateData['diterima_oleh'] = Session::get('nama');
-        $validateData['tgl_pemasukkan'] = $today;
         $validateData['sumber_pemasukkan'] = !$request->dataCustomer ? $request->sumber_pemasukkan : $request->customer;
         $validateData['bank'] = $bank1 ?? '';
         $validateData['bank2'] = $bank2 ?? '';
@@ -187,6 +205,7 @@ class PemasukanLainnyaController extends Controller
         $data['jasa'] = Jasa::orderBy('id', 'ASC')->get();
         $data['datas'] = $datas;
         $data['metode'] = MetodePembayaran::all();
+        $data['resi'] = DataPengiriman::all();
 
         return view('data-pemasukan.edit', $data);
     }
@@ -194,6 +213,7 @@ class PemasukanLainnyaController extends Controller
     public function update($id, Request $request)
     {
         $validateData = $request->validate([
+            'tgl_pemasukkan' => 'required|date',
             'kategori' => 'required',
             'modal' => 'required',
             'keterangan' => 'required',
@@ -202,7 +222,7 @@ class PemasukanLainnyaController extends Controller
             'customer' => 'required_without:sumber_pemasukkan',
             'metode_pembayaran' => 'required',
             'metode_pembayaran2' => 'nullable',
-            'keterangan_tambahan' => 'required',
+            'keterangan_tambahan' => 'nullable',
         ]);
 
         $foto = $request->file('bukti_pembayaran');
@@ -284,10 +304,23 @@ class PemasukanLainnyaController extends Controller
 
         $sumber_pemasukkan = !$request->dataCustomer ? $request->sumber_pemasukkan : $request->customer;
         $barang_jasa = $request->barang ? $request->barang : $request->jasa;
-        $jumlah_barang = $request->jumlah_barang;
+        $jumlah_barang = $request->barang ? $request->jumlah_barang : 0;
+
+        if (!$request->dataCustomer) {
+            $metodePembayaran = ['metode_pembayaran', 'metode_pembayaran2'];
+        
+            foreach ($metodePembayaran as $metode) {
+                if (strtolower($validateData[$metode]) == 'kredit') {
+                    return back()->with('error', 'Metode Pembayaran Kredit Hanya Berlaku Untuk Customer');
+                }
+            }
+        }
 
         PemasukanLainnya::where('id', '=', $id)->update([
-            'kategori' => $request->keterangan,
+            'no_resi_pengiriman' => $request->no_resi_pengiriman,
+            'tgl_pemasukkan' => $request->tgl_pemasukkan,
+            'keterangan' => $request->keterangan,
+            'kategori' => $request->kategori,
             'barang_jasa' => $barang_jasa,
             'jumlah_barang' => $jumlah_barang,
             'modal' => $request->modal,
@@ -334,5 +367,17 @@ class PemasukanLainnyaController extends Controller
         $customPaper = array(0, 0, 350, 700);
         $pdf = Pdf::loadView('data-pemasukan.tanda-terima-pdf', compact('picture', 'data'))->setPaper($customPaper, 'landscape');
         return $pdf->stream('Tanda-Terima.pdf');
+    }
+
+    public function export()
+    {
+        if (request('format') === 'pdf') {
+            $data['data'] = PemasukanLainnya::orderBy('id', 'DESC')->get();;
+
+            $pdf = Pdf::loadView('data-pemasukan.export-pdf', $data)->setPaper('a4', 'landscape');
+            return $pdf->stream('Data-Pemasukan.pdf');
+        } elseif (request('format') === 'excel') {
+            return Excel::download(new DataPemasukanExport, 'Data-Pemasukan.xlsx');
+        }
     }
 }

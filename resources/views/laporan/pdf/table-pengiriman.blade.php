@@ -16,7 +16,8 @@
 
         #emp td, #emp th{
             border: 1px solid #ddd;
-            padding: 5px;
+            padding: 8px;
+            font-size: 12px
         }
 
         /* #emp tr:nth-child(even){
@@ -27,15 +28,16 @@
             padding-top: 12px;
             padding-bottom: 12px;
             text-align: left;
-            background-color: aquamarine;
-            color: #000;
+            background-color: #d22d3d;
+            color: #fff;
+            text-align: center
         }
     </style>
 </head>
 <body>
     <div style="text-align: center;">
         <h2>Data Pengiriman</h2>
-        <em>Dicetak Pada : {{ $waktuCetak }}</em>
+        {{-- <em>Dicetak Pada : {{ $waktuCetak }}</em> --}}
     </div>
     
     <div style="text-align: start">
@@ -47,18 +49,12 @@
                 <th width="2%">No</th>
                 <th>No Resi</th>
                 <th>Tanggal Transaksi</th>
-                <th>Nama Pengirim</th>
+                <th>Customer</th>
                 <th>Nama Penerima</th>
-                <th>No HP Pengirim</th>
-                <th>No HP Penerima</th>
                 <th>Kota Tujuan</th>
-                <th>Berat Barang</th>
-                <th>Ongkir</th>
-                <th>Komisi</th>
-                <th>Status Pembayaran</th>
                 <th>Metode Pembayaran</th>
-                <th>Jenis Pengiriman</th>
-                <th>Status Pengiriman</th>
+                <th>Status Pembayaran</th>
+                <th>Ongkir</th>
             </tr>
         </thead>
         <tbody>
@@ -67,18 +63,18 @@
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $item->no_resi }}</td>
                 <td>{{ $item->tgl_transaksi }}</td>
-                <td>{{ $item->nama_pengirim }}</td>
+                <td>
+                    @if ($item->kode_customer == "General")
+                        {{ $item->kode_customer }}
+                    @else
+                        {{ $item->kode_customer }} - {{ $row->nama }}
+                    @endif
+                </td>
                 <td>{{ $item->nama_penerima }}</td>
-                <td>{{ $item->no_hp_pengirim }}</td>
-                <td>{{ $item->no_hp_penerima }}</td>
                 <td>{{ $item->kota_tujuan }}</td>
-                <td>{{ $item->berat_barang }}</td>
+                <td>{{ $item->metode_pembayaran }} {{ $item->metode_pembayaran_2 ? '-' : '' }} {{ $item->metode_pembayaran_2 }} </td>
+                <td>{{ $item->status_pembayaran == 1 ? 'Approve' : 'Pending' }}</td>
                 <td>Rp. {{ number_format($item->ongkir, 0, ',', '.') }}</td>
-                <td>Rp. {{ number_format($item->komisi, 0, ',', '.') }}</td>
-                <td>{{ $item->status_pembayaran == 1 ? 'Lunas' : 'Pending' }}</td>
-                <td>{{ $item->metode_pembayaran }}</td>
-                <td>{{ $item->jenis_pengiriman }}</td>
-                <td>{{ $item->status_pengiriman }}</td>
             </tr>
             @endforeach
         </tbody>

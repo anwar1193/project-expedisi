@@ -38,6 +38,21 @@
 							<div class="row">
 								<div class="col">
 									<div class="mb-3">
+										<label class="form-label" for="">Tanggal Pemasukan</label>
+										<input class="form-control @error('tgl_pemasukkan') is-invalid @enderror" type="date" name="tgl_pemasukkan" autocomplete="off" value="{{ old('tgl_pemasukkan', $today) }}"/>
+
+										@error('tgl_pemasukkan')
+										<div class="text-danger">
+											{{ $message }}
+										</div>
+										@enderror
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col">
+									<div class="mb-3">
 										<label class="form-label" for="">No Resi Pengiriman</label>
 										
 										<select name="no_resi_pengiriman" id="no_resi_pengiriman" class="form-control @error('no_resi_pengiriman') is-invalid @enderror js-example-basic-single">
@@ -116,7 +131,7 @@
 								<div class="col">
 									<div class="mb-3">
 										<label class="form-label" for="">Jasa</label>
-										<select name="jasa" id="jasa" class="form-control @error('jasa') is-invalid @enderror">
+										<select name="jasa" id="jasas" class="form-control @error('jasa') is-invalid @enderror">
 											<option value="">- Pilih Jasa -</option>
 											@foreach ($jasas as $item)
 												<option value="{{ $item->id }}" {{ old('id') == $item->id ? 'selected' : '' }}>
@@ -244,7 +259,7 @@
 								<div class="col">
 									<div class="mb-2">
 										<label for="" class="form-label">Bank</label>
-										<select name="bank" class="form-control @error('bank') is-invalid @enderror js-example-basic-single">
+										<select name="bank" id="selectBank" class="form-control @error('bank') is-invalid @enderror js-example-basic-single">
 											<option value="">- Pilih Bank -</option>
 											@foreach ($bank as $item)
 												<option value="{{ $item->bank }}" {{ old('bank') == $item->bank ? 'selected' : '' }}>
@@ -330,7 +345,7 @@
 									<div class="col">
 										<div class="mb-2">
 											<label for="" class="form-label">Bank</label>
-											<select name="bank2" class="form-control @error('bank2') is-invalid @enderror js-example-basic-single">
+											<select name="bank2" id="selectBank2" class="form-control @error('bank2') is-invalid @enderror js-example-basic-single">
 												<option value="">- Pilih Bank -</option>
 												@foreach ($bank as $item)
 													<option value="{{ $item->bank }}" {{ old('bank') == $item->bank ? 'selected' : '' }}>
@@ -477,14 +492,6 @@
             const captureButton = document.getElementById('captureButton');
             const cancelButton = document.getElementById('cancelButton');
             const imageInput = document.getElementById('bukti_pembayaran');
-
-			if (dataCustomer.checked) {
-				customer.style.display = 'block';
-				sumberPemasukkan.style.display = 'none';
-			} else {
-				sumberPemasukkan.style.display = 'block';
-				customer.style.display = 'none';
-			}
 		
 			if (video && takeImageCheckbox.checked) {
 				if (navigator.mediaDevices.getUserMedia) {
@@ -626,6 +633,7 @@
 		const barangs = document.getElementById('barangs');
 		const jumlahBarang = document.getElementById('jumlahBarang');
 		const jasa = document.getElementById('jasa');
+		const jasas = document.getElementById('jasas');
 		const metodePembayaran = document.getElementById('metode_pembayaran');
 		const metodePembayaran2 = document.getElementById('metode_pembayaran2');
 		const bank = document.getElementById('banks');
@@ -639,28 +647,29 @@
         function toggleCustomerSelect() {
             if (dataCustomerCheckbox.checked) {
                 customerSelect.style.display = 'block';
-				kredit.style.display = 'block';
 				sumberPemasukkan.style.display = 'none';
             } else {
                 customerSelect.style.display = 'none';
-                kredit.style.display = 'none';
 				sumberPemasukkan.style.display = 'block';
             }
         }
 
 		function toggleCategorySelect() {
 			const value = kategori.value;
-			console.log(value);
 			
 			if (value === "barang") {
 				barang.style.display = 'block';
 				jumlahBarang.style.display = 'block';
 				jasa.style.display = 'none';
+				jasas.value = '';
+				jasas.dispatchEvent(new Event('change'));
 			} else if (value === "jasa") {
 				jasa.style.display = 'block';
 				barang.style.display = 'none';
 				jumlahBarang.style.display = 'none';
 				modalInput.value = "";
+				barangs.value = '';
+				barangs.dispatchEvent(new Event('change'));
 			}
 		}
 		
@@ -680,20 +689,36 @@
                 pembayaranKeDua.style.display = 'block';
             } else {
                 pembayaranKeDua.style.display = 'none';
+				metode_pembayaran2.value = '';
+				metodePembayaran2.dispatchEvent(new Event('change'));
             }
 		}
 
 		function toggleMetodeTransfer() {
 			const metode = (metodePembayaran.value).toLowerCase();
+			const select = document.getElementById('selectBank');
 
-			 (metode == 'transfer') ? bank.style.display = 'block' : bank.style.display = 'none';
+			if (metode === 'transfer') {
+				bank.style.display = 'block';
+			} else {
+				bank.style.display = 'none';
+				select.value = '';
+				select.dispatchEvent(new Event('change'));
+			}
 
 		}
 		
 		function toggleMetodeTransfer2() {
 			const metode = (metodePembayaran2.value).toLowerCase();
+			const select = document.getElementById('selectBank2');
 
-			 (metode == 'transfer') ? bank2.style.display = 'block' : bank2.style.display = 'none';
+			 if (metode === 'transfer') {
+				bank2.style.display = 'block';
+			} else {
+				bank2.style.display = 'none';
+				select.value = '';
+				select.dispatchEvent(new Event('change'));
+			}
 
 		}
 

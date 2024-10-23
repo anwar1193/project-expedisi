@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Helpers\Helper;
+use App\Models\Customer;
 use Carbon\Carbon;
 use App\Models\data;
 use App\Models\DataPengiriman;
@@ -28,30 +29,30 @@ class StatusPengirimanImport implements ToModel, WithValidation, WithHeadingRow
     public function model(array $row)
     {
         $statusValid = StatusPengiriman::where('status_pengiriman', $row['status_pengiriman'])->exists();
-        $pesan = Pesan::find(Pesan::SP);
-        $data = DataPengiriman::where('no_resi', $row['no_resi'])->first();
-
         if (!$statusValid) {
             $this->errors[] = 'Status pengiriman yang diiput untuk no resi: ' . $row['no_resi'] .' tidak sesuai';
             return null;
         }
+        $pesan = Pesan::find(Pesan::SP);
+        $data = DataPengiriman::where('no_resi', $row['no_resi'])
+                ->first();
+        $customer = Customer::where('kode_customer', 'General')->first();
 
-        // $update = data::where('no_resi', $row['no_resi'])->update([
+        // $update = DataPengiriman::where('no_resi', $row['no_resi'])->update([
         //     'status_pengiriman' => $row['status_pengiriman']
         // ]);
-
         if ($data) {
             $data->update(['status_pengiriman' => $row['status_pengiriman']]);
 
             $statusUpdate = StatusPengiriman::where('status_pengiriman', $row['status_pengiriman'])->first();
-
+            
             $timeOfDay = Helper::getTimeOfDay().' '.'*'.$data->nama_pengirim.'*';
             $tanggal = $data->tgl_transaksi;
             $noResi = $data->no_resi;
             $namaPenerima = $data->nama_penerima;
             $tujuan = $data->kota_tujuan;
             $status = $statusUpdate->keterangan_pengiriman;
-
+            
             $message = str_replace(
                 ['{timeof_day}', '{tanggal}', '{no_resi}', '{nama_penerima}', '{tujuan}', '{status}'],
                 [$timeOfDay, '*'.$tanggal.'*', '*'.$noResi.'*', '*'.$namaPenerima.'*', '*'.$tujuan.'*', '*'.$status.'*'],
@@ -60,10 +61,20 @@ class StatusPengirimanImport implements ToModel, WithValidation, WithHeadingRow
             
             $url = SettingWa::select('url_message AS url')->latest()->first();
             $dataSending = sendWaText($data->no_hp_pengirim, $message);
-            $response = Http::withHeaders([
-                'Content-Type' => 'application/json',
-            ])->post($url->url, $dataSending);
-            // ])->post('https://api.watzap.id/v1/send_message', $dataSending);
+
+            if ($data->status_pengiriman != 'POD') {
+                if (!$customer && $data->status_kirim_wa == DataPengiriman::STATUS_WA_AKTIF) {
+                    $response = Http::withHeaders([
+                        'Content-Type' => 'application/json',
+                    ])->post($url->url, $dataSending);
+                } elseif ($customer != null) {
+                    if ($customer->notif_wa && $data->status_kirim_wa == DataPengiriman::STATUS_WA_AKTIF) {
+                        $response = Http::withHeaders([
+                            'Content-Type' => 'application/json',
+                        ])->post($url->url, $dataSending);
+                    }
+                }            
+            }
         }
 //08172645362
         return null;

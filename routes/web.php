@@ -51,6 +51,10 @@ use App\Http\Controllers\SettingWaController;
 //     return redirect()->route('index');
 // })->name('/');
 
+Route::get('owner/approve/{id}', [DaftarPengeluaranController::class, 'approve'])->name('data-pengeluaran.approve');
+Route::get('owner/approve-saldo/{id}', [CashController::class, 'approve'])->name('closing-saldo.approve');
+Route::get('data-pengeluaran/{id}/approved', [DaftarPengeluaranController::class, 'linkApprove'])->name('data-pengeluaran.approved');
+
 Route::middleware("guest")->group(function() {
 
     Route::get('login', [AuthController::class, 'index'])->name('login');
@@ -183,6 +187,8 @@ Route::middleware("auth")->group(function() {
         Route::post('/konfimasi-excel', [DataPengirimanController::class, 'konfimasiExcel'])->name('data-pengiriman.konfimasi-excel');
         Route::post('/proses-konfirmasi-excel', [DataPengirimanController::class, 'proses_hasil_import'])->name('data-pengiriman.proses-konfimasi-excel');
         Route::get('/download-resi', [DataPengirimanController::class, 'download_resi'])->name('data-pengiriman.download-resi');
+        Route::get('/export', [DataPengirimanController::class, 'export_pdf'])->name('data-pengiriman.export');
+        Route::get('/truncate-by-periode', [DataPengirimanController::class, 'truncateByPeriode'])->name('data-pengiriman.truncate-by-periode');
     });
     
     Route::prefix('daftar-pengeluaran')->group(function () {
@@ -196,6 +202,7 @@ Route::middleware("auth")->group(function() {
         Route::post('/approve-selected', [DaftarPengeluaranController::class, 'approveSelected'])->name('data-pengeluaran.approve-selected');
         Route::get('/unapprove/{id}', [DaftarPengeluaranController::class, 'cancelApprove'])->name('daftar-pengeluaran.unapprove');
         Route::post('/unapprove-selected', [DaftarPengeluaranController::class, 'cancelApproveSelected'])->name('data-pengeluaran.unapprove-selected');
+        Route::get('/export', [DaftarPengeluaranController::class, 'export'])->name('daftar-pengeluaran.export');
     });
     
     Route::prefix('supplier')->group(function () {
@@ -215,6 +222,7 @@ Route::middleware("auth")->group(function() {
         Route::post('/update/{id}', [PemasukanLainnyaController::class, 'update'])->name('data-pemasukan.update');
         Route::get('/delete/{id}', [PemasukanLainnyaController::class, 'delete'])->name('data-pemasukan.delete');
         Route::get('/tanda-terima-pdf/{id}', [PemasukanLainnyaController::class, 'tanda_terima_pdf'])->name('tanda-terima.export-pdf');
+        Route::get('/export', [PemasukanLainnyaController::class, 'export'])->name('data-pemasukan.export');
     });
 
     Route::prefix('data-barang')->group(function () {
@@ -251,15 +259,16 @@ Route::middleware("auth")->group(function() {
         Route::post('/', [PembelianPerlengkapanController::class, 'store'])->name('pembelian-perlengkapan.store');
         Route::post('/update/{id}', [PembelianPerlengkapanController::class, 'update'])->name('pembelian-perlengkapan.update');
         Route::get('/delete/{id}', [PembelianPerlengkapanController::class, 'delete'])->name('pembelian-perlengkapan.delete');
+        Route::get('/export', [PembelianPerlengkapanController::class, 'export'])->name('pembelian-perlengkapan.export');
     });
     
     Route::prefix('laporan')->group(function () {
         Route::get('/laba-rugi', [LaporanController::class, 'laba_rugi'])->name('laporan.laba-rugi');
         Route::get('/transaksi-harian', [LaporanController::class, 'transaksi_harian'])->name('laporan.transaksi-harian');
         Route::get('laba-rugi/export-pdf', [LaporanController::class, 'laba_rugi_pdf'])->name('laporan.laba-rugi.export-pdf');
-        Route::get('laporan-pengiriman/export-pdf', [LaporanController::class, 'data_pengiriman_pdf'])->name('laporan.pengiriman.export-pdf');
-        Route::get('laporan-pemasukkan/export-pdf', [LaporanController::class, 'data_pemasukkan_pdf'])->name('laporan.pemasukkan.export-pdf');
-        Route::get('laporan-pengeluaran/export-pdf', [LaporanController::class, 'data_pengeluaran_pdf'])->name('laporan.pengeluaran.export-pdf');
+        Route::get('laporan-pengiriman/export', [LaporanController::class, 'data_pengiriman'])->name('laporan.pengiriman.export');
+        Route::get('laporan-pemasukan/export', [LaporanController::class, 'data_pemasukan'])->name('laporan.pemasukan.export');
+        Route::get('laporan-pengeluaran/export', [LaporanController::class, 'data_pengeluaran'])->name('laporan.pengeluaran.export');
     });
 
     Route::prefix('customer')->group(function () {
@@ -325,7 +334,7 @@ Route::middleware("auth")->group(function() {
     });
 
     Route::prefix('pengeluaran-cash')->group(function() {
-        Route::get('/', [CashController::class, 'data_pengeluaran_cash'])->name('pengeluaran-cash');
+        Route::get('/', [CashController::class, 'data_saldo_cash'])->name('pengeluaran-cash');
     });
     
     Route::prefix('tagihan-customer')->group(function() {

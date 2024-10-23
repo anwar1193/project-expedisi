@@ -106,23 +106,29 @@
                     <a href="{{ route('daftar-pengeluaran.create') }}" class="btn btn-info btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Tambah Data">
                         <i class="fa fa-plus"></i> Tambah
                     </a>
+                    
+					<button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#exportModal">
+						<i class="fa fa-check-square"></i> Export
+					</button>
 
 					@if (Session::get('user_level') == 2)
-					<form action="{{ route('data-pengeluaran.approve-selected') }}" method="post" style="display: inline-block">
-						@csrf
-						<div class="inner"></div>
-						<button type="submit" class="btn btn-success btn-sm" style="display: inline" onclick="return confirm('Approve semua data terpilih?')">
-							<i class="fa fa-check-square"></i> Approve Selected
-						</button>
-					</form>
-					{{-- <form action="{{ route('data-pengeluaran.unapprove-selected') }}" method="post" style="display: inline-block">
-						@csrf
-						<div class="inner"></div>
-						<button type="submit" class="btn btn-danger btn-sm" style="display: inline" onclick="return confirm('Approve semua data terpilih?')">
-							<i class="fa fa-check-square"></i> Cancel Approve Selected
-						</button>
-					</form> --}}
-				@endif
+						<form action="{{ route('data-pengeluaran.approve-selected') }}" method="post" style="display: inline-block">
+							@csrf
+							<div class="inner"></div>
+							<button type="submit" class="btn btn-success btn-sm" style="display: inline" onclick="return confirm('Approve semua data terpilih?')">
+								<i class="fa fa-check-square"></i> Approve Selected
+							</button>
+						</form>
+						{{-- <form action="{{ route('data-pengeluaran.unapprove-selected') }}" method="post" style="display: inline-block">
+							@csrf
+							<div class="inner"></div>
+							<button type="submit" class="btn btn-danger btn-sm" style="display: inline" onclick="return confirm('Approve semua data terpilih?')">
+								<i class="fa fa-check-square"></i> Cancel Approve Selected
+							</button>
+						</form> --}}
+					@endif
+
+					@include('daftar-pengeluaran.partial.export-modal')
                 {{-- @endif --}}
             </div>
         </ol>

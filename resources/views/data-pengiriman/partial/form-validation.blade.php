@@ -13,8 +13,9 @@
             });
             $('input[name="tgl_transaksi[]"]').each(function() {
                 const tanggalSekarang = new Date().toISOString().split('T')[0];
-
                 const tglTransaksi = $(this).val();
+                const tanggalSekarangDate = new Date();
+                const tanggalTransaksiDate = new Date(tglTransaksi);
 
                 const diff = new Date(tanggalSekarang) - new Date(tglTransaksi);
 
@@ -30,6 +31,13 @@
                 if ($(this).val() == "") {
                     $(this).addClass('is-invalid');
                     alert("Tanggal Transaksi harus diisi");
+                    isValid = false;
+                    return false;
+                }
+
+                if (tanggalTransaksiDate.getFullYear() !== tanggalSekarangDate.getFullYear()) {
+                    $(this).addClass('is-invalid');
+                    alert("Tahun transaksi harus sama dengan tahun saat ini!");
                     isValid = false;
                     return false;
                 }

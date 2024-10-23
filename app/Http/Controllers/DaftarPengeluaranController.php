@@ -2,13 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\DataPengeluaranExport;
 use App\Helpers\Helper;
 use App\Models\DaftarPengeluaran;
 use App\Models\JenisPengeluaran;
+use App\Models\SettingWa;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\URL;
+use Maatwebsite\Excel\Facades\Excel;
 use Yaza\LaravelGoogleDriveStorage\Gdrive;
 
 class DaftarPengeluaranController extends Controller
@@ -50,6 +56,7 @@ class DaftarPengeluaranController extends Controller
     {
         $jenis_pengeluaran = JenisPengeluaran::all();
         $data['jenis_pengeluaran'] = $jenis_pengeluaran;
+        $data['today'] = date('Y-m-d');
         if ($jenis_pengeluaran->count() == 0) {
             return redirect()->route('jenis-pengeluaran.create')->with('error', 'Silahkan tambahkan jenis pengeluaran terlebih dahulu');
         }
@@ -60,6 +67,7 @@ class DaftarPengeluaranController extends Controller
     {
         $today = date('Y-m-d');
         $validateData = $request->validate([
+            'tgl_pengeluaran' => 'required|date',
             'keterangan' => 'required',
             'jumlah_pembayaran' => 'required',
             'yang_menerima' => 'required',
@@ -80,7 +88,7 @@ class DaftarPengeluaranController extends Controller
             $foto->storeAs('public/daftar-pengeluaran', $foto->hashName());
 
             // Proses Simpan GDrive
-            Storage::disk('google')->put($namafile, File::get($path));
+            // Storage::disk('google')->put($namafile, File::get($path));
 
             $validateData['bukti_pembayaran'] = $foto->hashName();
         } elseif (($img != '') && ($request->takeImage == 'on')) {
@@ -96,7 +104,7 @@ class DaftarPengeluaranController extends Controller
             Storage::disk('local')->put($file, $image_base64);
 
             // Proses Simpan GDrive
-            Storage::disk('google')->put($fileNamePath, File::get($path));
+            // Storage::disk('google')->put($fileNamePath, File::get($path));
 
             $validateData['bukti_pembayaran'] = $fileName;
         } elseif (($link_img != '') && ($request->addLink == 'on')) {
@@ -104,15 +112,26 @@ class DaftarPengeluaranController extends Controller
         }
 
         $validateData['yang_membayar'] = Session::get('nama');
-        $validateData['tgl_pengeluaran'] = $today;
         $validateData['status_pengeluaran'] = DaftarPengeluaran::STATUS_PENDING;
         $validateData['keterangan_tambahan'] = $request->keterangan_tambahan;
 
         DaftarPengeluaran::create($validateData);
 
+        $data = DaftarPengeluaran::orderBy('id', 'DESC')->first();
+        $url = SettingWa::select('url_message AS url')->latest()->first();
+        $no_hp = Helper::dataOwner()->nomor_telepon;
+        $nama_owner = Helper::dataOwner()->nama;
+        $kategori = Helper::daftar_pengeluaran($validateData['jenis_pengeluaran'])->jenis_pengeluaran;
+        $message = 'Telah terjadi pengeluaran kategori '. $kategori .' sejumlah Rp '. $validateData['jumlah_pembayaran'] .' ditanggal '. $validateData['tgl_pengeluaran'] .', diterima oleh '. $validateData['yang_menerima'] .'. Silahkan Klik Link Berikut Untuk Approve : ' . URL::to('/').'/owner/approve/'.($data->id).'?link=owner';
+
+        $dataSending = sendWaText($no_hp, $message);
+        $response = Http::withHeaders([
+            'Content-Type' => 'application/json',
+        ])->post($url->url, $dataSending);
+
         Helper::logActivity('Simpan daftar pengeluaran');
 
-        return redirect()->route('daftar-pengeluaran')->with('success', 'Data Berhasil Disimpan');
+        return redirect()->route('daftar-pengeluaran')->with('success', 'Data Pengeluaran Berhasil Ditambahkan');
 
     }
     
@@ -129,6 +148,7 @@ class DaftarPengeluaranController extends Controller
     public function update($id, Request $request)
     {
         $validateData = $request->validate([
+            'tgl_pengeluaran' => 'required|date',
             'keterangan' => 'required',
             'jumlah_pembayaran' => 'required',
             'yang_menerima' => 'required',
@@ -141,6 +161,10 @@ class DaftarPengeluaranController extends Controller
         $link_img = $request->link;
 
         $getImage = DaftarPengeluaran::find($id);
+
+        if ($getImage->status_pengeluaran == DaftarPengeluaran::STATUS_APPROVE) {
+            return back()->with('error', 'Data Yang Telah Di Approve Tidak Bisa Diedit Kembali');
+        }
 
         if($foto != ''){
             // Proses Simoan Storage
@@ -180,6 +204,7 @@ class DaftarPengeluaranController extends Controller
         }
 
         DaftarPengeluaran::where('id', '=', $id)->update([
+            'tgl_pengeluaran' => $request->tgl_pengeluaran,
             'keterangan' => $request->keterangan,
             'jumlah_pembayaran' => $request->jumlah_pembayaran,
             'yang_menerima' => $request->yang_menerima,
@@ -188,6 +213,17 @@ class DaftarPengeluaranController extends Controller
             'bukti_pembayaran' => ($foto || $img || $link_img ? $buktiPembayaran : $getImage->bukti_pembayaran),
             'keterangan_tambahan' => $request->keterangan_tambahan
         ]);
+
+        $url = SettingWa::select('url_message AS url')->latest()->first();
+        $no_hp = Helper::dataOwner()->nomor_telepon;
+        $nama_owner = Helper::dataOwner()->nama;
+        $kategori = Helper::daftar_pengeluaran($validateData['jenis_pengeluaran'])->jenis_pengeluaran;
+        $message = 'Terdapat perubahan data pengeluaran pada data yang belum diapprove. Silahkan Klik Link Berikut Untuk Approve : ' . URL::to('/').'/owner/approve/'.($id).'?link=owner';
+
+        $dataSending = sendWaText($no_hp, $message);
+        $response = Http::withHeaders([
+            'Content-Type' => 'application/json',
+        ])->post($url->url, $dataSending);
 
         Helper::logActivity('Update daftar pengeluaran dengan id: '.$id);
 
@@ -213,9 +249,21 @@ class DaftarPengeluaranController extends Controller
 
     public function approve($id)
     {
+        $link = request('link');
+        $data = DaftarPengeluaran::find($id);
+
+        if($link && $data->status_pengeluaran == DaftarPengeluaran::STATUS_APPROVE){
+            return redirect()->route('error-page1')->with('error', 'Data Pengeluaran Telah Di Approve');
+        }
+
+        if($link && !$data){
+            return redirect()->route('error-page1')->with('error', 'Data Pengeluaran Tidak Ditemukan');
+        }
         $proses = DaftarPengeluaran::find($id)->update([
-            'status_pengeluaran' => 1
+            'status_pengeluaran' => DaftarPengeluaran::STATUS_APPROVE
         ]);
+
+        if($link) return redirect()->route('data-pengeluaran.approved', ['id' => $id])->with('success', 'Data Pengeluaran Telah Di Approve');
 
         return back()->with('success', 'Data Pengeluaran Telah Di Approve');
     }
@@ -230,7 +278,7 @@ class DaftarPengeluaranController extends Controller
 
         for($i=0; $i<sizeof($id_pengeluaran); $i++){
             DaftarPengeluaran::find($id_pengeluaran[$i])->update([
-                'status_pengeluaran' => 1
+                'status_pengeluaran' => DaftarPengeluaran::STATUS_APPROVE
             ]);
         }
 
@@ -240,7 +288,7 @@ class DaftarPengeluaranController extends Controller
     public function cancelApprove($id)
     {
         $proses = DaftarPengeluaran::find($id)->update([
-            'status_pengeluaran' => 2
+            'status_pengeluaran' => DaftarPengeluaran::STATUS_PENDING
         ]);
 
         return back()->with('success', 'Approval Data Pengeluaran Telah Dibatalkan');
@@ -256,10 +304,32 @@ class DaftarPengeluaranController extends Controller
 
         for($i=0; $i<sizeof($id_pengeluaran); $i++){
             DaftarPengeluaran::find($id_pengeluaran[$i])->update([
-                'status_pengeluaran' => 2
+                'status_pengeluaran' => DaftarPengeluaran::STATUS_PENDING
             ]);
         }
 
         return back()->with('success', 'Approval Data Pengeluaran Telah Dibatalkan');
+    }
+
+    public function linkApprove($id) 
+    {
+        $data['data'] = DaftarPengeluaran::select('daftar_pengeluarans.*', 'jenis_pengeluarans.jenis_pengeluaran AS jenisPengeluaran')
+                    ->where('daftar_pengeluarans.id', $id)
+                    ->join('jenis_pengeluarans', 'jenis_pengeluarans.id', '=', 'daftar_pengeluarans.jenis_pengeluaran')
+                    ->first();
+
+        return view('approve.data-pengeluaran', $data);
+    }
+
+    public function export()
+    {
+        if (request('format') === 'pdf') {
+            $data['data'] = DaftarPengeluaran::orderBy('id', 'DESC')->get();;
+
+            $pdf = Pdf::loadView('daftar-pengeluaran.export-pdf', $data)->setPaper('a4', 'landscape');
+            return $pdf->stream('Data-Pengeluaran.pdf');
+        } elseif (request('format') === 'excel') {
+            return Excel::download(new DataPengeluaranExport, 'Data-Pengeluaran.xlsx');      
+        }
     }
 }
